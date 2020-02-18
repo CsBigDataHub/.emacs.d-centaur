@@ -177,20 +177,23 @@ happens within a region if one is selected."
 (use-package sort-words)
 
 (use-package isolate
-  )
-(defun activate-mark-hook@set-transient-map ()
-  (set-transient-map
-   (let ((map (make-sparse-keymap)))
-     (define-key map "s" #'isolate-quick-add)
-     (define-key map "S" #'isolate-long-add)
-     (define-key map "d" #'isolate-quick-delete)
-     (define-key map "D" #'isolate-long-delete)
-     (define-key map "c" #'isolate-quick-change)
-     (define-key map "C" #'isolate-long-change)
-     map)
-   #'region-active-p))
+  :demand
+  :config
+  (progn
+    (defun activate-mark-hook@set-transient-map ()
+      (set-transient-map
+       (let ((map (make-sparse-keymap)))
+         (define-key map "s" #'isolate-quick-add)
+         (define-key map "S" #'isolate-long-add)
+         (define-key map "d" #'isolate-quick-delete)
+         (define-key map "D" #'isolate-long-delete)
+         (define-key map "c" #'isolate-quick-change)
+         (define-key map "C" #'isolate-long-change)
+         map)
+       #'region-active-p))
 
-(add-hook 'activate-mark-hook #'activate-mark-hook@set-transient-map)
+    (add-hook 'activate-mark-hook #'activate-mark-hook@set-transient-map)
+    ))
 
 (use-package region-convert
   :bind
@@ -264,7 +267,7 @@ happens within a region if one is selected."
    ("M-s M-L" . loccur)
    ("M-s C-l" . loccur-previous-match)))
 
-
-
+;;(setq inhibit-startup-message t)
+;;(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 (provide 'init-my-personal)

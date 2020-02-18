@@ -35,7 +35,9 @@
 
 (use-package ibuffer
   :ensure nil
-  :bind ("C-x C-b" . ibuffer)
+  :bind (("C-x C-b" . ibuffer)
+         (:map ibuffer-mode-map
+          ( "." . my/hydra-ibuffer-main/body)))
   :init (setq ibuffer-filter-group-name-face '(:inherit (font-lock-string-face bold)))
   :config
   ;; Display icons for buffers

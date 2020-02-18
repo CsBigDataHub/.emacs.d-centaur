@@ -150,6 +150,16 @@
    (use-package company-lsp
      :init (setq company-lsp-cache-candidates 'auto)
      :config
+     ;; my-personal
+     ;; configure terraform for lsp
+     (add-to-list 'lsp-language-id-configuration '(terraform-mode . "terraform"))
+     (lsp-register-client
+      (make-lsp-client :new-connection (lsp-stdio-connection '("~/.emacs.d/custom-el-scripts/lsp/terraform-lsp/terraform-lsp" "-enable-log-file"))
+                       :major-modes '(terraform-mode)
+                       :server-id 'terraform-ls))
+
+     ;; my-personal
+
      ;; WORKAROUND: Fix tons of unrelated completion candidates shown
      ;; when a candidate is fulfilled
      ;; @see https://github.com/emacs-lsp/lsp-python-ms/issues/79
@@ -404,19 +414,23 @@ Return a list of strings as the completion candidates."
        (setq lsp-python-ms-python-executable-cmd "python3")))
 
    ;; C/C++/Objective-C support
-   (use-package ccls
-     :defines projectile-project-root-files-top-down-recurring
-     :hook ((c-mode c++-mode objc-mode cuda-mode) . (lambda () (require 'ccls)))
-     :config
-     (with-eval-after-load 'projectile
-       (setq projectile-project-root-files-top-down-recurring
-             (append '("compile_commands.json"
-                       ".ccls")
-                     projectile-project-root-files-top-down-recurring))))
+   ;; my-personal
+   ;;(use-package ccls
+   ;;  :defines projectile-project-root-files-top-down-recurring
+   ;;  :hook ((c-mode c++-mode objc-mode cuda-mode) . (lambda () (require 'ccls)))
+   ;;  :config
+   ;;  (with-eval-after-load 'projectile
+   ;;    (setq projectile-project-root-files-top-down-recurring
+   ;;          (append '("compile_commands.json"
+   ;;                    ".ccls")
+   ;;                  projectile-project-root-files-top-down-recurring))))
+   ;; my-personal
 
    ;; Julia support
-   (use-package lsp-julia
-     :hook (julia-mode . (lambda () (require 'lsp-julia))))
+   ;; my-personal
+   ;;(use-package lsp-julia
+   ;;  :hook (julia-mode . (lambda () (require 'lsp-julia))))
+   ;; my-personal
 
    ;; Java support
    (use-package lsp-java

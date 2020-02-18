@@ -40,7 +40,10 @@
          ("\\MERGE_MSG\\'" . text-mode))
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch)
-         ("C-c M-g" . magit-file-popup))
+         ("C-c M-g" . magit-file-popup)
+         (:map magit-status-mode-map
+               ("q" . magit-quit-session)
+               ))
   :config
   (when sys/win32p
     (setenv "GIT_ASKPASS" "git-gui--askpass"))
@@ -254,11 +257,12 @@
 
 ;;Emacs comes with a version control interface called "VC", see (emacs)Version Control. It is enabled be default, and if you don’t use it in addition to Magit, then you should disable it to keep it from performing unnecessary work:
 
-(setq vc-handled-backends nil)
+;;(setq vc-handled-backends nil) ;;had to disable this to get git-gutter working
 
 ;;You can also disable its use for Git but keep using it when using another version control system:
 
-(setq vc-handled-backends (delq 'Git vc-handled-backends))
+;;(setq vc-handled-backends (delq 'Git vc-handled-backens)) ;;had to disable this to get git-gutter working
+
 ;; my-personal
 
 (provide 'init-vcs)

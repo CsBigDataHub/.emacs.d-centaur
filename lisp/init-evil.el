@@ -14,9 +14,9 @@
   :init
   (global-evil-matchit-mode 1))
 
-(use-package evil-surround            ; Exactly like tpopes vim-surround
-  :init
-  (global-evil-surround-mode))
+;;(use-package evil-surround            ; Exactly like tpopes vim-surround
+;;  :init
+;;  (global-evil-surround-mode))
 
 ;; Treat underscores '_' part of the words
 (with-eval-after-load 'evil

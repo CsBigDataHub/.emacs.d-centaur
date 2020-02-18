@@ -37,7 +37,8 @@
 (use-package dired
   :ensure nil
   :bind (:map dired-mode-map
-         ("C-c C-p" . wdired-change-to-wdired-mode))
+         ("C-c C-p" . wdired-change-to-wdired-mode)
+         ( "." . my/hydra-dired/body))
   :config
   ;; Always delete and copy recursively
   (setq dired-recursive-deletes 'always
@@ -182,8 +183,8 @@
   (eval-after-load 'image-dired+ '(image-diredx-async-mode 1)))
 
 (use-package dired-filter
-  :init
-  (add-hook 'dired-mode-hook 'dired-filter-group-mode)
+  ;;:init
+  ;;(add-hook 'dired-mode-hook 'dired-filter-group-mode)
   :config
   (setq dired-filter-group-saved-groups
         '(("default"
