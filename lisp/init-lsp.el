@@ -62,9 +62,11 @@
      ;; @see https://github.com/emacs-lsp/lsp-mode#performance
      (setq read-process-output-max (* 1024 1024)) ;; 1MB
 
-     (setq lsp-auto-guess-root t        ; Detect project root
+     (setq lsp-auto-guess-root nil      ; Detect project root
            lsp-keep-workspace-alive nil ; Auto-kill LSP server
            lsp-enable-indentation nil
+           lsp-enable-snippet t
+           lsp-enable-imenu t
            lsp-enable-on-type-formatting nil
            lsp-keymap-prefix "C-c l")
 
@@ -113,7 +115,8 @@
             ("M-<f6>" . lsp-ui-hydra/body))
      :hook (lsp-mode . lsp-ui-mode)
      :init (setq lsp-ui-doc-enable t
-                 lsp-ui-doc-use-webkit nil
+                 lsp-ui-doc-header t
+                 lsp-ui-doc-use-webkit t
                  lsp-ui-doc-delay 0.2
                  lsp-ui-doc-include-signature t
                  lsp-ui-doc-position 'at-point
