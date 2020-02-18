@@ -173,13 +173,14 @@ prepended to the element after the #+HEADER: tag."
 
   ;; Prettify UI
   (use-package org-bullets
-    :if (char-displayable-p ?⚫)
+    ;;:if (char-displayable-p ?⚫)
     :hook (org-mode . org-bullets-mode)
-    ;; My-personal-config
     ;;:init (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫"))
-    :config
-    (setq org-bullets-bullet-list '("☯" "☢" "❀" "◉" "○" "✸" "✿" "~"))
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    ;; My-personal-config
+    :init (setq org-bullets-bullet-list '("☯" "☢" "❀" "◉" "⚫" "○" "✸" "✿" "~"))
+    ;;:config
+    ;;(setq org-bullets-bullet-list '("☯" "☢" "❀" "◉" "○" "✸" "✿" "~"))
+    ;;(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
     ;;; my-personal-config-end-here
     )
 
