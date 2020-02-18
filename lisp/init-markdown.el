@@ -35,7 +35,9 @@
 
 (use-package markdown-mode
   :hook ((markdown-mode . auto-fill-mode))
-  :mode (("README\\.md\\'" . gfm-mode))
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         )
   :init
   (setq markdown-enable-wiki-links t
         markdown-italic-underscore t
@@ -71,6 +73,15 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 ")
   :config
+  ;;mypersonal
+  (setq markdown-command
+        (concat
+         "/usr/local/bin/pandoc"
+         " -f markdown+smart -t html5-smart"
+         " --self-contained --highlight-style=pygments"
+         " -c ~/.emacs.d/site-lisp/github-pandoc.css"
+         " --standalone --mathjax --highlight-style=pygments"))
+  ;;my-personal
   ;; Preview via `grip'
   ;; Install: pip install grip
   (use-package grip-mode

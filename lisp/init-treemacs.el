@@ -86,6 +86,17 @@
               magit-post-unstage)
              . treemacs-magit--schedule-update))))
 
+;; my-personal
+
+(use-package treemacs-persp
+  :after treemacs persp-mode
+  :config (treemacs-set-scope-type 'Perspectives))
+
+(use-package treemacs-evil
+  :after treemacs evil
+  )
+;; my-personal
+
 (provide 'init-treemacs)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

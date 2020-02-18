@@ -35,6 +35,12 @@
   :hook (after-init . yas-global-mode)
   :config (use-package yasnippet-snippets))
 
+;; my-personal
+(use-package ivy-yasnippet)
+
+(use-package auto-yasnippet)
+;; my-personal
+
 (provide 'init-yasnippet)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

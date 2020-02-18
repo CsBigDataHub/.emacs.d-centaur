@@ -175,7 +175,13 @@ prepended to the element after the #+HEADER: tag."
   (use-package org-bullets
     :if (char-displayable-p ?⚫)
     :hook (org-mode . org-bullets-mode)
-    :init (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫")))
+    ;; My-personal-config
+    ;;:init (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫"))
+    :config
+    (setq org-bullets-bullet-list '("☯" "☢" "❀" "◉" "○" "✸" "✿" "~"))
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    ;;; my-personal-config-end-here
+    )
 
   (use-package org-fancy-priorities
     :diminish
@@ -271,6 +277,40 @@ prepended to the element after the #+HEADER: tag."
     (org-pomodoro-mode-line-break ((t (:inherit success))))
     :bind (:map org-agenda-mode-map
            ("P" . org-pomodoro))))
+
+;;;;; My personal modifications
+
+;;(add-hook 'org-mode-hook (lambda ()
+;;                           "Beautify Org Checkbox Symbol"
+;;                           (push '("[ ]" .  "☐") prettify-symbols-alist)
+;;                           (push '("[X]" . "☑" ) prettify-symbols-alist)
+;;                           (push '("[-]" . "❍" ) prettify-symbols-alist)
+;;                           (push '("#+BEGIN_SRC" . "⟾" ) prettify-symbols-alist)
+;;                           (push '("#+END_SRC" . "⟽" ) prettify-symbols-alist)
+;;                           (push '("#+BEGIN_EXAMPLE" . "⟾" ) prettify-symbols-alist)
+;;                           (push '("#+END_EXAMPLE" . "⟽" ) prettify-symbols-alist)
+;;                           (push '("#+BEGIN_QUOTE" . "⟾" ) prettify-symbols-alist)
+;;                           (push '("#+END_QUOTE" . "⟽" ) prettify-symbols-alist)
+;;                           (push '("#+begin_quote" . "⟾" ) prettify-symbols-alist)
+;;                           (push '("#+end_quote" . "⟽" ) prettify-symbols-alist)
+;;                           (push '("#+begin_example" . "⟾" ) prettify-symbols-alist)
+;;                           (push '("#+end_example" . "⟽" ) prettify-symbols-alist)
+;;                           (push '("#+begin_src" . "⟾" ) prettify-symbols-alist)
+;;                           (push '("#+end_src" . "⟽" ) prettify-symbols-alist)
+;;                           (prettify-symbols-mode)))
+;;
+
+;;(use-package org-download
+;;  :config
+;;  (require 'org-download)
+;;  ;; Drag and drop to Dired
+;;  (add-hook 'dired-mode-hook 'org-download-enable)
+;;  (setq org-download-method 'directory)
+;;  (setq-default org-download-image-dir "./img")
+;;  (setq org-download-screenshot-method "screencapture –I %s")
+;;  (setq org-download-screenshot-file "./img/tmp.png")
+;;  )
+;;;;; my personal modification end here
 
 (provide 'init-org)
 

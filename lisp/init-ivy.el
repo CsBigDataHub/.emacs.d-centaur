@@ -39,7 +39,7 @@
          ("C-r"   . swiper-isearch-backward)
          ("s-f"   . swiper)
          ("C-S-s" . swiper-all)
-
+         ("M-y" . counsel-yank-pop) ;;my-personal-config
          ("C-c C-r" . ivy-resume)
          ("C-c v p" . ivy-push-view)
          ("C-c v o" . ivy-pop-view)
@@ -63,7 +63,7 @@
          ("C-c R" . counsel-list-processes)
          ("C-c f" . counsel-find-library)
          ("C-c g" . counsel-grep)
-         ("C-c h" . counsel-command-history)
+         ;;("C-c h" . counsel-command-history)
          ("C-c i" . counsel-git)
          ("C-c j" . counsel-git-grep)
          ("C-c l" . counsel-locate)

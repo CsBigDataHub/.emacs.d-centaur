@@ -45,6 +45,7 @@
          ("o" . easy-kill-er-expand)
          ("i" . easy-kill-er-unexpand))
   :init (setq kill-ring-max 200
+              kill-do-not-save-duplicates t
               save-interprogram-paste-before-kill t ; Save clipboard contents before replacement
               easy-kill-alist '((?w word           " ")
                                 (?s sexp           "\n")

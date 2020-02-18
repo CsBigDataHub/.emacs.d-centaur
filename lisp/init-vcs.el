@@ -205,6 +205,62 @@
 (use-package gitconfig-mode)
 (use-package gitignore-mode)
 
+;; my-personal
+
+(defun my/git-commit-search-message-history ()
+  "Search and insert commit message from history.
+     http://xenodium.com/m-r-history-search-in-git-commit-mode/"
+  (interactive)
+  (insert (completing-read "History: "
+                           ;; Remove unnecessary newlines from beginning and end.
+                           (mapcar (lambda (text)
+                                     (string-trim text))
+                                   (ring-elements log-edit-comment-ring)))))
+
+;;(bind-key "M-r" #'my/git-commit-search-message-history git-commit-mode-map)
+;;(add-to-list 'savehist-additional-variables log-edit-comment-ring)
+;;(savehist-mode +1)
+
+(setq magit-repository-directories
+      `(("~/.emacs.d/" . 0)
+        ("~/GitRepos/" . 1)
+        ("~/IdeaProjects/" . 1)))
+
+;; C-c C-a to amend without any prompt
+;; This code is inbuild by magit so Instead you should be using the built in Extend Commit command: `c e'
+;;(defun magit-just-amend ()
+;;  (interactive)
+;;  (save-window-excursion
+;;    (magit-refresh
+;;     (shell-command "git --no-pager commit --amend --reuse-message=HEAD"))))
+;;
+;;(eval-after-load "magit"
+;;  '(define-key magit-status-mode-map (kbd "C-c C-a") 'magit-just-amend))
+
+;; full screen magit-status
+
+(defadvice magit-status (around magit-fullscreen activate)
+  (window-configuration-to-register :magit-fullscreen)
+  ad-do-it
+  (delete-other-windows))
+
+(defun magit-quit-session ()
+  "Restores the previous window configuration and kills the magit buffer"
+  (interactive)
+  (kill-buffer)
+  (jump-to-register :magit-fullscreen))
+
+;;(define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
+
+;;Emacs comes with a version control interface called "VC", see (emacs)Version Control. It is enabled be default, and if you don’t use it in addition to Magit, then you should disable it to keep it from performing unnecessary work:
+
+(setq vc-handled-backends nil)
+
+;;You can also disable its use for Git but keep using it when using another version control system:
+
+(setq vc-handled-backends (delq 'Git vc-handled-backends))
+;; my-personal
+
 (provide 'init-vcs)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -125,11 +125,15 @@
 
 ;; Jump to things in Emacs tree-style
 (use-package avy
-  :bind (("C-:" . avy-goto-char)
-         ("C-'" . avy-goto-char-2)
-         ("M-g f" . avy-goto-line)
-         ("M-g w" . avy-goto-word-1)
-         ("M-g e" . avy-goto-word-0))
+  ;; ;;my-personal-config
+  :bind (("M-s s" . avy-goto-char)
+         ("M-s W" . avy-goto-word-0)
+         ("M-s a" . avy-goto-char-2)
+         ("M-s l" . avy-goto-line)
+         (:map evil-normal-state-map
+          ("g s" . avy-goto-char)
+          ("g S" . avy-goto-char-2)))
+  ;;;;my-personal-config end
   :hook (after-init . avy-setup-default)
   :config (setq avy-all-windows nil
                 avy-all-windows-alt t
@@ -140,6 +144,14 @@
 (use-package avy-zap
   :bind (("M-z" . avy-zap-to-char-dwim)
          ("M-Z" . avy-zap-up-to-char-dwim)))
+
+;; my-personal
+;; Replace zap-to-char functionaity with the more powerful zop-to-char
+(use-package zop-to-char
+  :bind (("M-s-z" . zop-up-to-char)
+         ("M-s-ω" . zop-to-char)))
+
+;; my-personal
 
 ;; Quickly follow links
 (use-package ace-link
@@ -262,7 +274,53 @@
 
 ;; Multiple cursors
 (use-package multiple-cursors
+  :preface
+  ;; preface is my-personal config
+  ;; insert specific serial number
+  (defvar my/mc/insert-numbers-hist nil)
+  (defvar my/mc/insert-numbers-inc 1)
+  (defvar my/mc/insert-numbers-pad "%01d")
+  (defun my/mc/insert-numbers (start inc pad)
+    "Insert increasing numbers for each cursor specifically."
+    (interactive
+     (list (read-number "Start from: " 0)
+           (read-number "Increment by: " 1)
+           (read-string "Padding (%01d): " nil my/mc/insert-numbers-hist "%01d")))
+    (setq mc--insert-numbers-number start)
+    (setq my/mc/insert-numbers-inc inc)
+    (setq my/mc/insert-numbers-pad pad)
+    (mc/for-each-cursor-ordered
+     (mc/execute-command-for-fake-cursor
+      'my/mc--insert-number-and-increase
+      cursor)))
+
+  (defun my/mc--insert-number-and-increase ()
+    (interactive)
+    (insert (format my/mc/insert-numbers-pad mc--insert-numbers-number))
+    (setq mc--insert-numbers-number (+ mc--insert-numbers-number my/mc/insert-numbers-inc)))
+
+  (defhydra my/hydra-multiple-cursors (:hint nil)
+    "
+ Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
+------------------------------------------------------------------
+ [_p_]   Next     [_n_]   Next     [_l_] Edit lines  [_0_] Insert numbers
+ [_P_]   Skip     [_N_]   Skip     [_a_] Mark all    [_A_] Insert letters
+ [_M-p_] Unmark   [_M-n_] Unmark   [_s_] Search
+ [Click] Cursor at point       [_q_] Quit"
+    ("l" mc/edit-lines :exit t)
+    ("a" mc/mark-all-like-this :exit t)
+    ("n" mc/mark-next-like-this)
+    ("N" mc/skip-to-next-like-this)
+    ("M-n" mc/unmark-next-like-this)
+    ("p" mc/mark-previous-like-this)
+    ("P" mc/skip-to-previous-like-this)
+    ("M-p" mc/unmark-previous-like-this)
+    ("s" mc/mark-all-in-region-regexp :exit t)
+    ("0" mc/insert-numbers :exit t)
+    ("A" mc/insert-letters :exit t)
+    ("q" nil))
   :bind (("C-S-c C-S-c"   . mc/edit-lines)
+         ("C-c h m"       . my/hydra-multiple-cursors/body)
          ("C->"           . mc/mark-next-like-this)
          ("C-<"           . mc/mark-previous-like-this)
          ("C-c C-<"       . mc/mark-all-like-this)
@@ -309,6 +367,18 @@
   :ensure nil
   :bind (("C-." . imenu)))
 
+;; my-personal
+(use-package imenu-anywhere
+  :bind (("M-I" . ivy-imenu-anywhere)
+         ("C-c i i" . ivy-imenu-anywhere)))
+
+
+(use-package imenu-list
+  :config
+  (setq-default imenu-list-position "left"))
+
+;; my-personal
+
 ;; Move to the beginning/end of line or code
 (use-package mwim
   :bind (([remap move-beginning-of-line] . mwim-beginning-of-code-or-line)
@@ -329,6 +399,8 @@
 (use-package undo-tree
   :diminish
   :hook (after-init . global-undo-tree-mode)
+  :config
+  (add-to-list 'undo-tree-incompatible-major-modes #'magit-modes)
   :init
   (setq undo-tree-visualizer-timestamps t
         undo-tree-enable-undo-in-region nil

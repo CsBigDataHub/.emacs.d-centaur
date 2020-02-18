@@ -80,6 +80,15 @@
 (use-package cask-mode)
 (use-package csharp-mode)
 (use-package csv-mode)
+
+;; my-personal
+
+(setq csv-separators '("," ";" "|" "\t"))
+(setq csv-align-padding 2)
+(setq csv-header-lines 1)
+(require 'csv-mode)
+;; my-personal
+
 (use-package dockerfile-mode)
 (use-package julia-mode)
 (use-package lua-mode)

@@ -84,6 +84,16 @@
     :hook (js2-mode . js2-refactor-mode)
     :config (js2r-add-keybindings-with-prefix "C-c C-m")))
 
+;; my-personal
+
+(use-package json-navigator)
+
+(use-package web-beautify)
+
+(use-package json-reformat)
+;; my-personal
+
+
 ;; Live browser JavaScript, CSS, and HTML interaction
 (use-package skewer-mode
   :diminish

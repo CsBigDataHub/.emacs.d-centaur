@@ -121,6 +121,7 @@
     (classic  . doom-molokai)
     (colorful . doom-snazzy)
     (dark     . doom-dark+)
+    (dark-moe . moe-dark)
     (light    . doom-one-light)
     (day      . doom-acario-light)
     (night    . doom-city-lights))

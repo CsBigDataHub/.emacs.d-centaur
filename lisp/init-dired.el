@@ -144,6 +144,165 @@
 (when (executable-find "fd")
   (use-package fd-dired))
 
+;; my-personal
+
+(use-package dired-narrow
+  :config
+  (bind-key "C-c C-n" #'dired-narrow)
+  (bind-key "C-c C-f" #'dired-narrow-fuzzy)
+  (bind-key "C-x C-N" #'dired-narrow-regexp)
+  )
+
+;;(use-package dired-subtree
+;;  :after dired
+;;  :config
+;;  (bind-key "t" #'dired-subtree-toggle dired-mode-map)
+;;  (bind-key "T" #'dired-subtree-cycle dired-mode-map))
+
+
+(use-package peep-dired
+  :config
+  (setq peep-dired-cleanup-on-disable t)
+  (define-key dired-mode-map (kbd "P") 'peep-dired)
+  )
+
+(use-package dired-single
+  :config
+  (define-key dired-mode-map [return] 'dired-single-buffer)
+  (define-key dired-mode-map [mouse-1] 'dired-single-buffer-mouse)
+  )
+
+(use-package dired-collapse
+  :init
+  (add-hook 'dired-mode-hook 'dired-collapse-mode))
+
+(use-package image-dired+
+  :config
+  (setq auto-image-file-mode t)
+  (eval-after-load 'image-dired+ '(image-diredx-async-mode 1)))
+
+(use-package dired-filter
+  :init
+  (add-hook 'dired-mode-hook 'dired-filter-group-mode)
+  :config
+  (setq dired-filter-group-saved-groups
+        '(("default"
+           ("Directories" (directory))
+           ("PDF"
+            (extension . "pdf"))
+           ("LaTeX"
+            (extension "tex" "bib"))
+           ("Org"
+            (extension . "org"))
+           ("Archives"
+            (extension "zip" "rar" "gz" "bz2" "tar"))
+           ("Multimedia"
+            (extension "ogg" "flv" "mpg" "avi" "mp4" "mp3"))
+           )))
+  )
+
+(use-package dired-rsync
+  :config
+  (bind-key "C-c C-r" 'dired-rsync dired-mode-map))
+
+;; Display the recursive size of directories in Dired
+(use-package dired-du
+  :after dired
+  :config
+  ;; human readable size format
+  (setq dired-du-size-format t))
+
+(use-package wdired
+  :after dired
+  :config
+  (setq wdired-create-parent-directories t)
+  ;; Make permission bits editable
+  (setq wdired-allow-to-change-permissions t))
+
+(use-package dired-hacks-utils
+  :hook (dired-mode . dired-utils-format-information-line-mode))
+
+(use-package dired-ranger
+  :after dired
+  :init
+  (bind-keys :map dired-mode-map
+             :prefix "c"
+             :prefix-map dired-ranger-map
+             :prefix-docstring "Map for ranger operations."
+             ("c" . dired-ranger-copy)
+             ("p" . dired-ranger-paste)
+             ("m" . dired-ranger-move))
+
+  (bind-keys :map dired-mode-map
+    ("'" . dired-ranger-bookmark)
+    ("`" . dired-ranger-bookmark-visit)))
+
+(use-package dired-rainbow
+  :config
+  (progn
+    (dired-rainbow-define-chmod directory "#6cb2eb" "d.*")
+    (dired-rainbow-define html "#eb5286" ("css" "less" "sass" "scss" "htm" "html" "jhtm" "mht" "eml" "mustache" "xhtml"))
+    (dired-rainbow-define xml "#f2d024" ("xml" "xsd" "xsl" "xslt" "wsdl" "bib" "json" "msg" "pgn" "rss" "yaml" "yml" "rdata"))
+    (dired-rainbow-define document "#9561e2" ("docm" "doc" "docx" "odb" "odt" "pdb" "pdf" "ps" "rtf" "djvu" "epub" "odp" "ppt" "pptx"))
+    (dired-rainbow-define markdown "#ffed4a" ("org" "etx" "info" "markdown" "md" "mkd" "nfo" "pod" "rst" "tex" "textfile" "txt"))
+    (dired-rainbow-define database "#6574cd" ("xlsx" "xls" "csv" "accdb" "db" "mdb" "sqlite" "nc"))
+    (dired-rainbow-define media "#de751f" ("mp3" "mp4" "MP3" "MP4" "avi" "mpeg" "mpg" "flv" "ogg" "mov" "mid" "midi" "wav" "aiff" "flac"))
+    (dired-rainbow-define image "#f66d9b" ("tiff" "tif" "cdr" "gif" "ico" "jpeg" "jpg" "png" "psd" "eps" "svg"))
+    (dired-rainbow-define log "#c17d11" ("log"))
+    (dired-rainbow-define shell "#f6993f" ("awk" "bash" "bat" "sed" "sh" "zsh" "vim"))
+    (dired-rainbow-define interpreted "#38c172" ("py" "ipynb" "rb" "pl" "t" "msql" "mysql" "pgsql" "sql" "r" "clj" "cljs" "scala" "js"))
+    (dired-rainbow-define compiled "#4dc0b5" ("asm" "cl" "lisp" "el" "c" "h" "c++" "h++" "hpp" "hxx" "m" "cc" "cs" "cp" "cpp" "go" "f" "for" "ftn" "f90" "f95" "f03" "f08" "s" "rs" "hi" "hs" "pyc" ".java"))
+    (dired-rainbow-define executable "#8cc4ff" ("exe" "msi"))
+    (dired-rainbow-define compressed "#51d88a" ("7z" "zip" "bz2" "tgz" "txz" "gz" "xz" "z" "Z" "jar" "war" "ear" "rar" "sar" "xpi" "apk" "xz" "tar"))
+    (dired-rainbow-define packaged "#faad63" ("deb" "rpm" "apk" "jad" "jar" "cab" "pak" "pk3" "vdf" "vpk" "bsp"))
+    (dired-rainbow-define encrypted "#ffed4a" ("gpg" "pgp" "asc" "bfe" "enc" "signature" "sig" "p12" "pem"))
+    (dired-rainbow-define fonts "#6cb2eb" ("afm" "fon" "fnt" "pfb" "pfm" "ttf" "otf"))
+    (dired-rainbow-define partition "#e3342f" ("dmg" "iso" "bin" "nrg" "qcow" "toast" "vcd" "vmdk" "bak"))
+    (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
+    (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*")
+    ))
+
+;;;###autoload - http://oremacs.com/2016/02/24/dired-rsync/
+(defun ora-dired-rsync (dest)
+  (interactive
+   (list
+    (expand-file-name
+     (read-file-name
+      "Rsync to:"
+      (dired-dwim-target-directory)))))
+  ;; store all selected files into "files" list
+  (let ((files (dired-get-marked-files
+                nil current-prefix-arg))
+        ;; the rsync command
+        (tmtxt/rsync-command
+         "rsync -arvz --progress "))
+    ;; add all selected file names as arguments
+    ;; to the rsync command
+    (dolist (file files)
+      (setq tmtxt/rsync-command
+            (concat tmtxt/rsync-command
+                    (shell-quote-argument file)
+                    " ")))
+    ;; append the destination
+    (setq tmtxt/rsync-command
+          (concat tmtxt/rsync-command
+                  (shell-quote-argument dest)))
+    ;; run the async shell command
+    (async-shell-command tmtxt/rsync-command "*rsync*")
+    ;; finally, switch to that window
+    (other-window 1)))
+
+(define-key dired-mode-map "Y" 'ora-dired-rsync)
+
+;;http://xenodium.com/drill-down-emacs-dired-with-dired-subtree/
+(use-package dired-subtree
+  :after dired
+  :config
+  (bind-key ">" #'dired-subtree-toggle dired-mode-map)
+  (bind-key "<" #'dired-subtree-cycle dired-mode-map))
+;; my-personal
+
+
 (provide 'init-dired)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

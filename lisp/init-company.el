@@ -37,8 +37,9 @@
   :diminish
   :defines (company-dabbrev-ignore-case company-dabbrev-downcase)
   :commands company-abort
-  :bind (("M-/" . company-complete)
+  :bind (("M-s-÷" . company-complete);;my-personal-config
          ("C-M-i" . company-complete)
+         ("M-s-𝑓" . company-files)
          :map company-active-map
          ;; ("C-p" . company-select-previous)
          ;; ("C-n" . company-select-next)
@@ -60,6 +61,7 @@
         company-idle-delay 0
         company-echo-delay (if (display-graphic-p) nil 0)
         company-minimum-prefix-length 2
+        company-show-numbers t ;;my-personal-config
         company-require-match nil
         company-dabbrev-ignore-case nil
         company-dabbrev-downcase nil
@@ -165,6 +167,16 @@
              ([remap company-show-doc-buffer] . company-quickhelp-manual-begin))
       :hook (global-company-mode . company-quickhelp-mode)
       :init (setq company-quickhelp-delay 0.5))))
+
+;;my-personal-config
+(use-package company-fuzzy
+  :init
+  (setq company-fuzzy-sorting-backend 'flx)
+  (setq company-fuzzy-prefix-ontop nil)
+  (with-eval-after-load 'company
+    (global-company-fuzzy-mode t)))
+;;my-personal-config
+
 
 (provide 'init-company)
 
