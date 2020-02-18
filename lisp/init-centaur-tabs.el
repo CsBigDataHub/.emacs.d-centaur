@@ -3,7 +3,7 @@
   :demand
   :after evil
   :config
-  (setq centaur-tabs-style "wave"
+  (setq centaur-tabs-style "bar"
         centaur-tabs-height 32
         centaur-tabs-set-icons t
         centaur-tabs-set-modified-marker t
