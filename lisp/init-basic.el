@@ -88,8 +88,6 @@
           exec-path-from-shell-arguments '("-l"))
     (exec-path-from-shell-initialize)
     :config ;;my-personal config added
-    (setq exec-path-from-shell-arguments '("-l"))
-    (exec-path-from-shell-initialize)
     (exec-path-from-shell-copy-env "LC_ALL")
     (exec-path-from-shell-copy-env "LANG")
     (exec-path-from-shell-copy-env "LC_TYPE")

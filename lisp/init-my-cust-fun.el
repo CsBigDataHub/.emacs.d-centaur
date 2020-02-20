@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;----------------------------------------------------------------------------
 ;; Delete the current file
 ;;----------------------------------------------------------------------------
@@ -238,7 +239,7 @@ same directory as the org-buffer and insert a link to this file."
     (isearch-mode t)
     (isearch-yank-string (buffer-substring-no-properties $p1 $p2))))
 
-(global-set-key (kbd "<f8>") 'my/xah-search-current-word)
+;;(global-set-key (kbd "<f8>") 'my/xah-search-current-word)
 
 (require 'ido)
 (defun my/xah-insert-date-time ()
@@ -2282,7 +2283,7 @@ _c_apitalize        _U_PCASE        _d_owncase        _<SPC>_ →Cap→UP→down
                         ("<SPC>" xah-cycle-letter-case :color red)
                         ("q"     nil "cancel" :color blue)))
 
-(global-set-key (kbd "<f9>") 'hydra-move/body)
+(global-set-key (kbd "C-<f9>") 'hydra-move/body)
 
 ;; hydra for movement keys
 (defhydra hydra-move
@@ -2323,5 +2324,30 @@ _S_: <- sentence    _PB_: <- paragraph    _G_: <- page       _<_: beginning-of-b
   ("." next-buffer)
   ("," previous-buffer)
   ("q" nil :color blue))
+
+(add-hook 'after-init-hook #'fira-code-mode)
+
+;;; My repeat commands
+(eval-when-compile (require 'cl))
+(defun def-rep-command (alist)
+  "Return a lambda that calls the first function of ALIST.
+It sets the transient map to all functions of ALIST."
+  (lexical-let ((keymap (make-sparse-keymap))
+                (func (cdar alist)))
+    (mapc (lambda (x)
+            (define-key keymap (car x) (cdr x)))
+          alist)
+    (lambda (arg)
+      (interactive "p")
+      (funcall func arg)
+      (set-transient-map keymap t))))
+
+;; Enlarge and shrink window horizontall commands
+(global-set-key (kbd "C-x ^")
+                (def-rep-command
+                  '(("^" . enlarge-window)
+                    ("6" . shrink-window))))
+
+;;; My repeat commands
 
 (provide 'init-my-cust-fun)

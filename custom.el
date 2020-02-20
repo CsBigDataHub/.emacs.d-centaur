@@ -11,12 +11,12 @@
 ;; (setq centaur-server nil)                      ; Enable `server-mode' or not: t or nil
 ;;(setq centaur-icon nil)                         ; Display icons or not: t or nil
 ;; (setq centaur-package-archives 'emacs-china)   ; Package repo: melpa, melpa-mirror, emacs-china, netease, ustc, tencent or tuna
-(setq centaur-theme 'colorful)                    ; Color theme: default, classic, colorful, dark, light, day or night
+;;(setq centaur-theme 'colorful)                    ; Color theme: default, classic, colorful, dark, light, day or night
 ;;(setq centaur-dashboard nil)                    ; Use dashboard at startup or not: t or nil
 ;; (setq centaur-lsp 'eglot)                      ; Set LSP client: lsp-mode, eglot or nil
 ;; (setq centaur-chinese-calendar nil)            ; Use Chinese calendar or not: t or nil
 ;; (setq centaur-prettify-symbols-alist nil)      ; Alist of symbol prettifications
-;; (setq centaur-benchmark-init t)                ; Enable initialization benchmark or not: t or nil
+(setq centaur-benchmark-init t)                ; Enable initialization benchmark or not: t or nil
 
 ;; For Emacs devel
 ;; (setq package-user-dir (locate-user-emacs-file (format "elpa-%s" emacs-major-version)))
@@ -26,12 +26,12 @@
 ;; Fonts
 (when (display-graphic-p)
   ;; Set default font
-  (cl-loop for font in '("Fira Code Medium" "Source Code Pro" "SF Mono" "Hack"
+  (cl-loop for font in '("Fira Code" "Source Code Pro" "SF Mono" "Hack"
                          "Menlo" "Monaco" "DejaVu Sans Mono" "Consolas")
            when (font-installed-p font)
            return (set-face-attribute 'default nil
                                       :font font
-                                      :height (cond (sys/mac-x-p 150)
+                                      :height (cond (sys/mac-x-p 160)
                                                     (sys/win32p 110)
                                                     (t 100))))
 

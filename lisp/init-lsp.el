@@ -66,6 +66,8 @@
            lsp-keep-workspace-alive nil ; Auto-kill LSP server
            lsp-enable-indentation nil
            lsp-enable-snippet t
+           lsp-enable-xref t
+           lsp-enable-completion-at-point t
            lsp-enable-imenu t
            lsp-enable-on-type-formatting nil
            lsp-keymap-prefix "C-c l")
@@ -115,7 +117,7 @@
             ("M-<f6>" . lsp-ui-hydra/body))
      :hook (lsp-mode . lsp-ui-mode)
      :init (setq lsp-ui-doc-enable t
-                 lsp-ui-doc-header t
+                 lsp-ui-doc-header nil
                  lsp-ui-doc-use-webkit t
                  lsp-ui-doc-delay 0.2
                  lsp-ui-doc-include-signature t

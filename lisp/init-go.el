@@ -37,6 +37,34 @@
          ([remap xref-find-definitions] . godef-jump)
          ("C-c R" . go-remove-unused-imports)
          ("<f1>" . godoc-at-point))
+  :mode-hydra
+  (go-mode
+   (:title "Go Commands")
+   (
+    "Buffer"
+    (("d" lsp-describe-thing-at-point)
+     ("bf" lsp-format-buffer)
+     ("ip" lsp-info-under-point)
+     ("m" lsp-ui-imenu)
+     ("q" nil "quit"))
+    "Errors"
+    (("e" hydra-flycheck/body)
+     ("lf" lsp-ui-flycheck-list))
+    "Refactor"
+    (("rs" lsp-rename))
+    "Find"
+    (("fd" lsp-ui-peek-find-definitions)
+     ("fi" lsp-ui-peek-find-implementation)
+     ("fr" lsp-ui-peek-find-references)
+     ("fs" lsp-ui-peek-find-workspace-symbol))
+    "Go-to/Jump"
+    (("gi" lsp-goto-implementation)
+     ("gt" lsp-goto-type-definition)
+     ("jn" lsp-ui-peek-jump-forward)
+     ("jp" lsp-ui-peek-jump-backward))
+    "Imports"
+    (("ia" go-import-add "add")
+     ("ir" go-remove-unused-imports "cleanup"))))
   :config
   ;; Env vars
   (with-eval-after-load 'exec-path-from-shell

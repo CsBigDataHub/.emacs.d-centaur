@@ -89,5 +89,8 @@
   :config
   (global-evil-mc-extras-mode 1))
 
+;;for shell-pop
+(evil-define-key 'insert vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
+(evil-define-key 'normal vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
 
 (provide 'init-evil)

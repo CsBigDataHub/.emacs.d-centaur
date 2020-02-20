@@ -41,34 +41,34 @@
   :hook (after-init . which-key-mode))
 
 ;; Youdao Dictionary
-(use-package youdao-dictionary
-  :commands youdao-dictionary-play-voice-of-current-word
-  :bind (("C-c y" . my-youdao-search-at-point)
-         ("C-c Y" . youdao-dictionary-search-at-point)
-         :map youdao-dictionary-mode-map
-         ("h" . youdao-dictionary-hydra/body)
-         ("?" . youdao-dictionary-hydra/body))
-  :init
-  (setq url-automatic-caching t
-        youdao-dictionary-use-chinese-word-segmentation t) ; 中文分词
-
-  (defun my-youdao-search-at-point ()
-    "Search word at point and display result with `posframe', `pos-tip', or buffer."
-    (interactive)
-    (if (display-graphic-p)
-        (if emacs/>=26p
-            (youdao-dictionary-search-at-point-posframe)
-          (youdao-dictionary-search-at-point-tooltip))
-      (youdao-dictionary-search-at-point)))
-  :config
-  (with-eval-after-load 'hydra
-    (defhydra youdao-dictionary-hydra (:color blue)
-      ("p" youdao-dictionary-play-voice-of-current-word "play voice of current word")
-      ("y" youdao-dictionary-play-voice-at-point "play voice at point")
-      ("q" quit-window "quit")
-      ("C-g" nil nil)
-      ("h" nil nil)
-      ("?" nil nil))))
+;;(use-package youdao-dictionary
+;;  :commands youdao-dictionary-play-voice-of-current-word
+;;  :bind (("C-c y" . my-youdao-search-at-point)
+;;         ("C-c Y" . youdao-dictionary-search-at-point)
+;;         :map youdao-dictionary-mode-map
+;;         ("h" . youdao-dictionary-hydra/body)
+;;         ("?" . youdao-dictionary-hydra/body))
+;;  :init
+;;  (setq url-automatic-caching t
+;;        youdao-dictionary-use-chinese-word-segmentation t) ; 中文分词
+;;
+;;  (defun my-youdao-search-at-point ()
+;;    "Search word at point and display result with `posframe', `pos-tip', or buffer."
+;;    (interactive)
+;;    (if (display-graphic-p)
+;;        (if emacs/>=26p
+;;            (youdao-dictionary-search-at-point-posframe)
+;;          (youdao-dictionary-search-at-point-tooltip))
+;;      (youdao-dictionary-search-at-point)))
+;;  :config
+;;  (with-eval-after-load 'hydra
+;;    (defhydra youdao-dictionary-hydra (:color blue)
+;;      ("p" youdao-dictionary-play-voice-of-current-word "play voice of current word")
+;;      ("y" youdao-dictionary-play-voice-at-point "play voice at point")
+;;      ("q" quit-window "quit")
+;;      ("C-g" nil nil)
+;;      ("h" nil nil)
+;;      ("?" nil nil))))
 
 ;;
 ;; Search tools
@@ -266,30 +266,30 @@
             '(("github\\.com" . gfm-mode)))))
 
 ;; Music player
-(use-package bongo
-  :functions (bongo-add-dired-files
-              dired-get-filename
-              dired-marker-regexp
-              dired-move-to-filename)
-  :commands (bongo-buffer
-             bongo-library-buffer-p
-             bongo-library-buffer)
-  :bind ("C-<f9>" . bongo)
-  :init
-  (with-eval-after-load 'dired
-    (defun bongo-add-dired-files ()
-      "Add marked files to Bongo library"
-      (interactive)
-      (bongo-buffer)
-      (let (file (files nil))
-        (dired-map-over-marks
-         (setq file (dired-get-filename)
-               files (append files (list file)))
-         nil t)
-        (with-bongo-library-buffer
-         (mapc 'bongo-insert-file files)))
-      (bongo-switch-buffers))
-    (bind-key "b" #'bongo-add-dired-files dired-mode-map)))
+;;(use-package bongo
+;;  :functions (bongo-add-dired-files
+;;              dired-get-filename
+;;              dired-marker-regexp
+;;              dired-move-to-filename)
+;;  :commands (bongo-buffer
+;;             bongo-library-buffer-p
+;;             bongo-library-buffer)
+;;  :bind ("C-<f9>" . bongo)
+;;  :init
+;;  (with-eval-after-load 'dired
+;;    (defun bongo-add-dired-files ()
+;;      "Add marked files to Bongo library"
+;;      (interactive)
+;;      (bongo-buffer)
+;;      (let (file (files nil))
+;;        (dired-map-over-marks
+;;         (setq file (dired-get-filename)
+;;               files (append files (list file)))
+;;         nil t)
+;;        (with-bongo-library-buffer
+;;         (mapc 'bongo-insert-file files)))
+;;      (bongo-switch-buffers))
+;;    (bind-key "b" #'bongo-add-dired-files dired-mode-map)))
 
 ;; IRC
 (use-package erc

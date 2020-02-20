@@ -138,6 +138,13 @@
       ("p u" (centaur-set-package-archives 'tuna t)
        "tuna" :toggle (eq centaur-package-archives 'tuna))))))
 
+;;;my-personal
+(use-package major-mode-hydra
+  :bind
+  ("M-SPC" . major-mode-hydra))
+(require 'major-mode-hydra)
+;;;my-personal
+
 (provide 'init-hydra)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
