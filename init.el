@@ -133,7 +133,7 @@ decrease this. If you experience stuttering, increase this.")
 (require 'init-edit)
 (require 'init-ivy)
 (require 'init-company)
-(require 'init-yasnippet)
+;;(require 'init-yasnippet)
 
 (require 'init-calendar)
 (require 'init-dashboard)

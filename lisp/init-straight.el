@@ -52,4 +52,29 @@
   :bind
   ("s-~" . eshell-toggle))
 
+(use-package gitignore-templates
+  :straight (gitignore-templates :type git :host github :repo "CsBigDataHub/gitignore-templates.el"))
+
+(use-package number-to-word
+  :straight (number-to-word :type git :host github :repo "xuchunyang/number-to-word"))
+
+;; commenting this until terraform pull request is accepted
+;; https://github.com/AndreaCrotti/yasnippet-snippets/pull/363
+;; Getting Terraform snippets from my repo with straight in init-straight.el
+;; https://github.com/CsBigDataHub/yasnippet-snippets
+(use-package yasnippet
+  :diminish yas-minor-mode
+  :straight (yasnippet :type git :host github :repo "joaotavora/yasnippet")
+  :hook (after-init . yas-global-mode)
+  :config
+  (use-package yasnippet-snippets
+    :straight (yasnippet-snippets :type git :host github :repo "CsBigDataHub/yasnippet-snippets")))
+
+(use-package ivy-yasnippet
+  :straight (ivy-yasnippet :type git :host github :repo "CsBigDataHub/ivy-yasnippet"))
+
+(use-package auto-yasnippet
+  :straight (auto-yasnippet :type git :host github :repo "abo-abo/auto-yasnippet"))
+;;; yas-snippet
+
 (provide 'init-straight)

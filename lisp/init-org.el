@@ -280,6 +280,39 @@ prepended to the element after the #+HEADER: tag."
            ("P" . org-pomodoro))))
 
 ;;;;; My personal modifications
+(use-package org-download
+  :after org
+  :bind
+  (:map org-mode-map
+   (("s-Y" . org-download-screenshot)
+    ("s-y" . org-download-yank)))
+  :config
+  (if (memq window-system '(mac ns))
+      (setq org-download-screenshot-method "screencapture -i %s")
+    (setq org-download-screenshot-method "maim -s %s"))
+  (defun my-org-download-method (link)
+    "This is a helper function for org-download.
+It creates a folder in the root directory (~/.org/img/) named after the
+org filename (sans extension) and puts all images from that file in there.
+Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0bc532770e9533b4fc549438/init.el#L701"
+    (let ((filename
+           (file-name-nondirectory
+            (car (url-path-and-query
+                  (url-generic-parse-url link)))))
+          ;; Create folder name with current buffer name, and place in root dir
+          (dirname (concat "./images/"
+                           (replace-regexp-in-string " " "_" (downcase (file-name-base buffer-file-name))))))
+
+      ;; Add timestamp to filename
+      (setq filename-with-timestamp (format "%s%s.%s"
+                                            (file-name-sans-extension filename)
+                                            (format-time-string org-download-timestamp)
+                                            (file-name-extension filename)))
+      ;; Create folder if necessary
+      (unless (file-exists-p dirname)
+        (make-directory dirname))
+      (expand-file-name filename-with-timestamp dirname)))
+  (setq org-download-method 'my-org-download-method))
 
 ;;(add-hook 'org-mode-hook (lambda ()
 ;;                           "Beautify Org Checkbox Symbol"

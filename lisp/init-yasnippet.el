@@ -29,16 +29,19 @@
 ;;
 
 ;;; Code:
-
-(use-package yasnippet
-  :diminish yas-minor-mode
-  :hook (after-init . yas-global-mode)
-  :config (use-package yasnippet-snippets))
+;; commenting this until terraform pull request is accepted
+;; https://github.com/AndreaCrotti/yasnippet-snippets/pull/363
+;; Getting Terraform snippets from my repo with straight in init-straight.el
+;; https://github.com/CsBigDataHub/yasnippet-snippets
+;;(use-package yasnippet
+;;  :diminish yas-minor-mode
+;;  :hook (after-init . yas-global-mode)
+;;  :config (use-package yasnippet-snippets))
 
 ;; my-personal
-(use-package ivy-yasnippet)
-
-(use-package auto-yasnippet)
+;;(use-package ivy-yasnippet)
+;;
+;;(use-package auto-yasnippet)
 ;; my-personal
 
 (provide 'init-yasnippet)
