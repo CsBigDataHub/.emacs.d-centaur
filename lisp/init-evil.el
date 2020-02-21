@@ -14,7 +14,8 @@
   :init
   (global-evil-matchit-mode 1))
 
-;;(use-package evil-surround            ; Exactly like tpopes vim-surround
+;; Exactly like tpopes vim-surround but replacing with isolate which give more features
+;;(use-package evil-surround
 ;;  :init
 ;;  (global-evil-surround-mode))
 
@@ -71,14 +72,6 @@
               (evil-org-set-key-theme)))
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
-
-;;; my-personal-config
-;;(use-package linum-relative
-;;  :config
-;;  (linum-relative-global-mode 1)
-;;  (setq linum-relative-backend 'display-line-numbers-mode)
-;;  )
-     ;;; my-personal-config-end-here
 
 (use-package evil-mc
   :config

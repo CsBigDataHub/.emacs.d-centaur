@@ -2325,8 +2325,6 @@ _S_: <- sentence    _PB_: <- paragraph    _G_: <- page       _<_: beginning-of-b
   ("," previous-buffer)
   ("q" nil :color blue))
 
-(add-hook 'after-init-hook #'fira-code-mode)
-
 ;;; My repeat commands
 (eval-when-compile (require 'cl))
 (defun def-rep-command (alist)

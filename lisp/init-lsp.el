@@ -117,7 +117,7 @@
             ("M-<f6>" . lsp-ui-hydra/body))
      :hook (lsp-mode . lsp-ui-mode)
      :init (setq lsp-ui-doc-enable t
-                 lsp-ui-doc-header nil
+                 lsp-ui-doc-header t
                  lsp-ui-doc-use-webkit t
                  lsp-ui-doc-delay 0.2
                  lsp-ui-doc-include-signature t

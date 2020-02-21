@@ -263,7 +263,10 @@
 
 ;;(setq vc-handled-backends (delq 'Git vc-handled-backens)) ;;had to disable this to get git-gutter working
 
+(use-package gitignore-templates)
+
 ;; my-personal
+
 
 (provide 'init-vcs)
 

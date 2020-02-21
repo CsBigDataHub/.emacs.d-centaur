@@ -60,4 +60,6 @@
   "Setup Fira Code Symbols"
   (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol"))
 
+(add-hook 'after-init-hook #'fira-code-mode)
+
 (provide 'init-fira-code-mode)

@@ -40,6 +40,7 @@
 
 ;; Rectangle
 (use-package rect
+  :after org
   :ensure nil
   :bind (:map text-mode-map
          ("<C-return>" . rect-hydra/body)
