@@ -104,6 +104,10 @@ troubleshooting.
 emacs -Q --l ~/.emacs.d/init-mini.el
 ```
 
+For Symbola font install look in to
+https://github.com/SlackBuildsOrg/slackbuilds/tree/master/system/symbola-font-ttf
+or you should have one locally
+
 ### Update
 
 ``` emacs-lisp
