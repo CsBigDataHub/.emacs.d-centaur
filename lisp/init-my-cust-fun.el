@@ -1077,8 +1077,8 @@ _R_ename-or-move   _M_ chmod                    _t_oggle           _g_ revert bu
 _Y_ rel symlink    _G_ chgrp                    _E_xtension mark   _s_ort               _=_ pdiff
 _S_ymlink          _fc_ copy-file-name          _F_ind marked      _._ toggle hydra     \\ flyspell
 _r_sync            _fp_ copy-file-name-path     _I_ Git Info       ^ ^                  _?_ summary
-_z_ compress-file  _A_ find regexp              ^ ^
-_Z_ compress       _Q_ repl regexp
+_z_ compress-file  _A_ find regexp              _<return>_ Dired-find-file
+_Z_ compress       _Q_ repl regexp              ^        ^
 
 T - tag prefix
 "
@@ -1124,6 +1124,7 @@ T - tag prefix
   ("Y" dired-do-relsymlink)
   ("z" diredp-compress-this-file)
   ("Z" dired-do-compress)
+  ("<return>" dired-find-file)
   ("q" nil)
   ("." nil :color blue))
 
