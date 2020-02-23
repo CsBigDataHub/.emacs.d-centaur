@@ -39,7 +39,7 @@
   :commands company-abort
   :bind (("M-s-÷" . company-complete);;my-personal-config
          ("C-M-i" . company-complete)
-         ("M-s-𝑓" . company-files)
+         ("M-s-ƒ" . company-files)
          :map company-active-map
          ("C-p" . company-select-previous)
          ("C-n" . company-select-next)
@@ -63,7 +63,11 @@
         company-minimum-prefix-length 2
         company-show-numbers t ;;my-personal-config
         company-require-match nil
-        company-dabbrev-ignore-case nil
+        company-dabbrev-code-everywhere t ;;my-personal-config
+        company-dabbrev-code-modes t ;;my-personal-config
+        company-dabbrev-other-buffers 'all ;;my-personal-config
+        company-dabbrev-code-other-buffers 'all ;;my-personal-config
+        company-dabbrev-ignore-case t ;;my-personal-config - changed to t
         company-dabbrev-downcase nil
         company-global-modes '(not erc-mode message-mode help-mode gud-mode eshell-mode shell-mode)
         company-backends '(company-capf)
@@ -176,7 +180,6 @@
   (with-eval-after-load 'company
     (global-company-fuzzy-mode t)))
 ;;my-personal-config
-
 
 (provide 'init-company)
 

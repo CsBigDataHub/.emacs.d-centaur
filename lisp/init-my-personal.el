@@ -21,7 +21,7 @@
 ;;(setq mac-control-modifier 'control) ; make Control key do Control
 (when sys/macp
   (setq ns-function-modifier 'hyper))  ; make Fn key do Hyper
-(setq user-full-name "Chetan Koneru")
+;;(setq user-full-name "")
 
 ;;Text selected with the mouse is automatically copied to clipboard.
 (setq mouse-drag-copy-region t)
@@ -260,7 +260,20 @@ happens within a region if one is selected."
 (use-package manage-minor-mode)
 
 (use-package zoom-window
-  :bind ("C-x C-z" . zoom-window-zoom))
+  :bind ("C-x C-z" . zoom-window-zoom)
+  :custom
+  (zoom-window-mode-line-color "DarkGreen")
+  (zoom-window-use-persp t)
+  :hook (find-file . (lambda () (setq my-solaire-mode solaire-mode)))
+  :init
+  (zoom-window-setup)
+  (defvar-local my-solaire-mode nil)
+  (advice-add #'zoom-window-zoom :before #'turn-off-solaire-mode)
+  (advice-add #'zoom-window--restore-mode-line-face :after
+              (lambda ()
+                (if my-solaire-mode
+                    (turn-on-solaire-mode)
+                  (turn-off-solaire-mode)))))
 
 (use-package loccur
   :bind

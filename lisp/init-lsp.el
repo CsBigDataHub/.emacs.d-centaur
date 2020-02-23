@@ -75,7 +75,17 @@
      ;; For `lsp-clients'
      (setq lsp-clients-python-library-directories '("/usr/local/" "/usr/"))
      (unless (executable-find "rls")
-       (setq lsp-rust-rls-server-command '("rustup" "run" "stable" "rls"))))
+       (setq lsp-rust-rls-server-command '("rustup" "run" "stable" "rls")))
+     :config
+     ;; my-personal
+     ;; configure terraform for lsp
+     (add-to-list 'lsp-language-id-configuration '(terraform-mode . "terraform"))
+     (lsp-register-client
+      (make-lsp-client :new-connection (lsp-stdio-connection '("~/.emacs.d/custom-el-scripts/lsp/terraform-lsp/terraform-lsp" "-enable-log-file"))
+                       :major-modes '(terraform-mode)
+                       :server-id 'terraform-ls))
+     ;; my-personal
+     )
 
    (use-package lsp-ui
      :custom-face
@@ -159,15 +169,6 @@
    (use-package company-lsp
      :init (setq company-lsp-cache-candidates 'auto)
      :config
-     ;; my-personal
-     ;; configure terraform for lsp
-     (add-to-list 'lsp-language-id-configuration '(terraform-mode . "terraform"))
-     (lsp-register-client
-      (make-lsp-client :new-connection (lsp-stdio-connection '("~/.emacs.d/custom-el-scripts/lsp/terraform-lsp/terraform-lsp" "-enable-log-file"))
-                       :major-modes '(terraform-mode)
-                       :server-id 'terraform-ls))
-
-     ;; my-personal
 
      ;; WORKAROUND: Fix tons of unrelated completion candidates shown
      ;; when a candidate is fulfilled
@@ -420,7 +421,8 @@ Return a list of strings as the completion candidates."
      :hook (python-mode . (lambda () (require 'lsp-python-ms)))
      :init
      (when (executable-find "python3")
-       (setq lsp-python-ms-python-executable-cmd "python3")))
+       (setq lsp-python-ms-python-executable-cmd "python3"
+             lsp-python-ms-executable "~/GitRepos/python-language-server/output/bin/Release/osx-x64/publish/Microsoft.Python.LanguageServer")))
 
    ;; C/C++/Objective-C support
    ;; my-personal
