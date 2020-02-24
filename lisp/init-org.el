@@ -314,6 +314,7 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
       (expand-file-name filename-with-timestamp dirname)))
   (setq org-download-method 'my-org-download-method))
 
+(setq org-startup-align-all-table t)
 ;;(add-hook 'org-mode-hook (lambda ()
 ;;                           "Beautify Org Checkbox Symbol"
 ;;                           (push '("[ ]" .  "☐") prettify-symbols-alist)
