@@ -1,14 +1,14 @@
 
 (use-package evil
- ;; :init ((setq evil-disable-insert-state-bindings t)
- ;;        )  ;;full blown emacs in insert mode
-  ;;:config
-  ;;(evil-mode 1)
+  :init
+  (setq evil-disable-insert-state-bindings t) ;;full blown emacs in insert mode
+  (setq evil-want-keybinding nil)
+  (evil-mode 1)
   )
-(setq evil-disable-insert-state-bindings t)
-(setq evil-want-keybinding nil)
-(require 'evil)
-(evil-mode 1)
+;;(setq evil-disable-insert-state-bindings t) ;;full blown emacs in insert mode
+;;(setq evil-want-keybinding nil)
+;;(require 'evil)
+;;(evil-mode 1)
 
 (use-package evil-matchit             ; vi-% for more than {[""]}
   :init
