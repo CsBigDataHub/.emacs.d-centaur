@@ -2355,7 +2355,7 @@ It sets the transient map to all functions of ALIST."
 
 (defconst my-local-dir (concat user-emacs-directory ".local/"))
 
-(defconst my-env-file (concat doom-local-dir "env"))
+(defconst my-env-file (concat my-local-dir "env"))
 
 (defun my-load-envvars-file (file &optional noerror)
   "Read and set envvars from FILE.
