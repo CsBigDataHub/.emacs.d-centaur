@@ -70,7 +70,13 @@
         company-dabbrev-ignore-case t ;;my-personal-config - changed to t
         company-dabbrev-downcase nil
         company-global-modes '(not erc-mode message-mode help-mode gud-mode eshell-mode shell-mode)
-        company-backends '(company-capf)
+        ;; company backend is my-personal-config
+        company-backends '(company-capf
+                           (company-dabbrev-code company-gtags company-etags
+                                                 company-keywords)
+                           company-files
+                           company-dabbrev)
+        ;; company backend is my-personal-config
         company-frontends '(company-pseudo-tooltip-frontend
                             company-echo-metadata-frontend))
 
