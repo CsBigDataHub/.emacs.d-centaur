@@ -88,7 +88,6 @@
 (require 'csv-mode)
 ;; my-personal
 
-(use-package dockerfile-mode)
 (use-package julia-mode)
 (use-package lua-mode)
 (use-package plantuml-mode)

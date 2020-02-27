@@ -1,6 +1,6 @@
-;; init-yasnippet.el --- Initialize yasnippet configurations.	-*- lexical-binding: t -*-
+;; init-docker.el --- Initialize docker configurations.	-*- lexical-binding: t -*-
 
-;; Copyright (C) 2006-2020 Vincent Zhang
+;; Copyright (C) 2019-2020 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
 ;; URL: https://github.com/seagle0128/.emacs.d
@@ -25,29 +25,22 @@
 
 ;;; Commentary:
 ;;
-;; Yasnippet configurations.
+;; Docker configurations.
 ;;
 
 ;;; Code:
-;; commenting this until terraform pull request is accepted
-;; https://github.com/AndreaCrotti/yasnippet-snippets/pull/363
-;; Getting Terraform snippets from my repo with straight in init-straight.el
-;; https://github.com/CsBigDataHub/yasnippet-snippets
-;;(use-package yasnippet
-;;  :diminish yas-minor-mode
-;;  :hook (after-init . yas-global-mode))
 
-;;(use-package yasnippet-snippets
-;;  :after yasnippet)
+;; Docker
+(use-package docker
+  :defines docker-image-run-arguments
+  :bind ("C-c d" . docker)
+  :init (setq docker-image-run-arguments '("-i" "-t" "--rm")
+              docker-container-shell-file-name "/bin/bash"))
 
+(use-package docker-tramp)
+(use-package dockerfile-mode)
 
-;; my-personal
-;;(use-package ivy-yasnippet)
-;;
-;;(use-package auto-yasnippet)
-;; my-personal
-
-(provide 'init-yasnippet)
+(provide 'init-docker)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; init-yasnippet.el ends here
+;;; init-docker.el ends here
