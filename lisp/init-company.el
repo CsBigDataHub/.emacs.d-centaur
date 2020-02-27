@@ -96,6 +96,25 @@
                   company-box-doc-delay 0.5)
       :config
       (with-no-warnings
+        ;;my-personal-config
+        ;; Overright this method to get candidate numbers in company box
+        (defun company-box--render-buffer (string)
+          (let ((selection company-selection))
+            (with-current-buffer (company-box--get-buffer)
+              (erase-buffer)
+              (insert string "\n")
+              (setq mode-line-format nil
+                    display-line-numbers t
+                    truncate-lines t
+                    cursor-in-non-selected-windows nil)
+              (setq-local scroll-step 1)
+              (setq-local scroll-conservatively 10000)
+              (setq-local scroll-margin  0)
+              (setq-local scroll-preserve-screen-position t)
+              (add-hook 'window-configuration-change-hook 'company-box--prevent-changes t t)
+              (company-box--update-line selection))))
+        ;; my-personal-config
+
         ;; Highlight `company-common'
         (defun my-company-box--make-line (candidate)
           (-let* (((candidate annotation len-c len-a backend) candidate)
@@ -186,6 +205,32 @@
   (setq company-fuzzy-prefix-ontop nil)
   (with-eval-after-load 'company
     (global-company-fuzzy-mode t)))
+
+;; http://oremacs.com/2017/12/27/company-numbers/
+(require 'company)
+(let ((map company-active-map))
+  (mapc
+   (lambda (x)
+     (define-key map (format "%d" x) 'ora-company-number))
+   (number-sequence 0 9))
+  (define-key map " " (lambda ()
+                        (interactive)
+                        (company-abort)
+                        (self-insert-command 1)))
+  (define-key map (kbd "<return>") nil))
+
+(defun ora-company-number ()
+  "Forward to `company-complete-number'.
+
+  Unless the number is potentially part of the candidate.
+  In that case, insert the number."
+  (interactive)
+  (let* ((k (this-command-keys))
+         (re (concat "^" company-prefix k)))
+    (if (cl-find-if (lambda (s) (string-match re s))
+                    company-candidates)
+        (self-insert-command 1)
+      (company-complete-number (string-to-number k)))))
 ;;my-personal-config
 
 (provide 'init-company)

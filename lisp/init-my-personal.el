@@ -284,4 +284,20 @@ happens within a region if one is selected."
 ;;(setq inhibit-startup-message t)
 ;;(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+;;;groovy and jenkins
+(use-package groovy-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.g\\(?:ant\\|roovy\\)\\'" . groovy-mode))
+  (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
+  (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . groovy-mode)))
+
+(use-package groovy-imports)
+(use-package flycheck-gradle)
+
+(setq lsp-server-install-dir (concat user-emacs-directory "lsp/")
+      lsp-groovy-server-file (concat lsp-server-install-dir "groovy-language-server/build/libs/groovy-language-server-all.jar")
+      )
+
+;;;groovy and jenkins
+
 (provide 'init-my-personal)
