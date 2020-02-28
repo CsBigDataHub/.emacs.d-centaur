@@ -2349,6 +2349,12 @@ It sets the transient map to all functions of ALIST."
 
 ;;; My repeat commands
 
+;;;my super key bindings
+(global-set-key (kbd "s-b") 'ivy-switch-buffer)
+(global-set-key (kbd "s-O") 'ns-open-file-using-panel)
+(global-set-key (kbd "s-o") 'other-window)
+;;;
+
 ;;; Code to replace exec-path-from-shell
 ;; Need to create file in $HOME/.emacs.d/.local/env
 ;; use this command to create the file  `printenv > $HOME/.emacs.d/.local/env'

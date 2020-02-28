@@ -1,5 +1,3 @@
-;; init-docker.el --- Initialize docker configurations.	-*- lexical-binding: t -*-
-
 ;; Copyright (C) 2019-2020 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
@@ -33,12 +31,13 @@
 ;; Docker
 (use-package docker
   :defines docker-image-run-arguments
-  :bind ("C-c d" . docker)
+  :bind ("C-c d d" . docker)
   :init (setq docker-image-run-arguments '("-i" "-t" "--rm")
               docker-container-shell-file-name "/bin/bash"))
 
 (use-package docker-tramp)
 (use-package dockerfile-mode)
+(use-package docker-compose-mode)
 
 (provide 'init-docker)
 
