@@ -542,7 +542,7 @@ same directory as the org-buffer and insert a link to this file."
 (defun my/open-config ()
   "Opens the configuration file from anywhere"
   (interactive)
-  (find-file (concat user-emacs-directory "myinit.org")))
+  (find-file (concat user-emacs-directory "init.el")))
 
 
 (defun my/goto-closest-number ()
@@ -2401,6 +2401,10 @@ unreadable. Returns the names of envvars that were changed."
 (when (and (or (display-graphic-p)
                (daemonp))
            (file-exists-p my-env-file))
+  (my-load-envvars-file my-env-file))
+
+(defun my-load-envvars-now ()
+  (interactive)
   (my-load-envvars-file my-env-file))
 ;;; Code to replace exec-path-from-shell
 
