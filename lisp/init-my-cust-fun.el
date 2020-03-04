@@ -2349,6 +2349,10 @@ It sets the transient map to all functions of ALIST."
 
 ;;; My repeat commands
 
+;;; Dired copy or move to split window suggestions
+;;https://emacs.stackexchange.com/questions/5603/how-to-quickly-copy-move-file-in-emacs-dired
+(setq dired-dwim-target t)
+
 ;;;my super key bindings
 (global-set-key (kbd "s-b") 'ivy-switch-buffer)
 (global-set-key (kbd "s-O") 'ns-open-file-using-panel)
