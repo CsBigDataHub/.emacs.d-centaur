@@ -1066,37 +1066,57 @@ point reaches the beginning or end of the buffer, stop there."
   (interactive)
   (dired-copy-filename-as-kill 0))
 
+(defun ora-ediff-files ()
+  (interactive)
+  (let ((files (dired-get-marked-files))
+        (wnd (current-window-configuration)))
+    (if (<= (length files) 2)
+        (let ((file1 (car files))
+              (file2 (if (cdr files)
+                         (cadr files)
+                       (read-file-name
+                        "file: "
+                        (dired-dwim-target-directory)))))
+          (if (file-newer-than-file-p file1 file2)
+              (ediff-files file2 file1)
+            (ediff-files file1 file2))
+          (add-hook 'ediff-after-quit-hook-internal
+                    (lambda ()
+                      (setq ediff-after-quit-hook-internal nil)
+                      (set-window-configuration wnd))))
+      (error "no more than 2 files should be marked"))))
+
 ;;Hydra for Dired
 (defhydra my/hydra-dired (:hint nil :color pink)
   "
 _+_ mkdir          _v_iew                       _m_ark             _(_ details          _i_nsert-subdir      _w_dired
 _P_eep             _n_ filter                   _@_ mark regex     _<_ subtree-cycle    _>_ subtree-toggle
-_C_opy             _O_ view other               _U_nmark all       _)_ omit-mode        _$_ hide-subdir      C-x C-q : edit
+_C_opy             _O_ view other               _U_nmark all       _)_ omit-mode                             C-x C-q : edit
 _D_elete           _o_pen other                 _u_nmark           _l_ redisplay        _w_ kill-subdir      C-c C-c : commit
 _R_ename-or-move   _M_ chmod                    _t_oggle           _g_ revert buf       _e_ ediff            C-c ESC : abort
-_Y_ rel symlink    _G_ chgrp                    _E_xtension mark   _s_ort               _=_ pdiff
-_S_ymlink          _fc_ copy-file-name          _F_ind marked      _._ toggle hydra     \\ flyspell
+_Y_ rel symlink    _G_ chgrp                    _E_xtension mark   _s_ort
+_S_ymlink          _fc_ copy-file-name          _F_ind marked      _._ toggle hydra
 _r_sync            _fp_ copy-file-name-path     _I_ Git Info       ^ ^                  _?_ summary
 _z_ compress-file  _A_ find regexp              _<return>_ Dired-find-file
 _Z_ compress       _Q_ repl regexp              ^        ^
 
 T - tag prefix
 "
-  ("\\" dired-do-ispell)
+ ;;("\\" dired-do-ispell)
   ("n" dired-narrow)
   ("(" dired-hide-details-mode)
   (")" dired-omit-mode)
   ("+" dired-create-directory)
-  ("=" diredp-ediff)         ;; smart diff
+  ;;("=" diredp-ediff)         ;; smart diff
   ("?" dired-summary)
-  ("$" diredp-hide-subdir-nomove)
+  ;;("$" diredp-hide-subdir-nomove)
   ("A" dired-do-find-regexp)
   ("C" dired-do-copy)        ;; Copy all marked files
   ("D" dired-do-delete)
   ("E" dired-mark-extension)
   (">" dired-subtree-toggle)
   ("<" dired-subtree-cycle)
-  ("e" dired-ediff-files)
+  ("e" ora-ediff-files)
   ("F" dired-do-find-marked-files)
   ("G" dired-do-chgrp)
   ("g" revert-buffer)        ;; read all directories again (refresh)
@@ -1111,7 +1131,7 @@ T - tag prefix
   ("@" dired-mark-files-regexp)
   ("Q" dired-do-find-regexp-and-replace)
   ("R" dired-do-rename)
-  ("r" dired-do-rsynch)
+  ("r" dired-rsync)
   ("S" dired-do-symlink)
   ("s" dired-sort-toggle-or-edit)
   ("t" dired-toggle-marks)
