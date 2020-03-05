@@ -275,6 +275,34 @@ happens within a region if one is selected."
                     (turn-on-solaire-mode)
                   (turn-off-solaire-mode)))))
 
+;; Golden Ratio
+(use-package golden-ratio                 ; Auto resize windows
+  :diminish golden-ratio-mode
+  :init
+  (golden-ratio-mode 1)
+  (setq golden-ratio-auto-scale t)
+  :config
+  (setq golden-ratio-extra-commands
+        (append golden-ratio-extra-commands
+                '(evil-window-left
+                  evil-window-right
+                  evil-window-up
+                  evil-window-down)))
+
+  (setq golden-ratio-exclude-buffer-names '("*Org Select*", "*vterm-1*")
+        golden-ratio-exclude-modes '(messages-buffer-mode
+                                     fundamental-mode
+                                     ediff-mode
+                                     calendar-mode
+                                     wget-mode
+                                     calc-mode
+                                     calc-trail-mode
+                                     )
+        golden-ratio-recenter t)
+  )
+
+(add-to-list 'golden-ratio-extra-commands 'ace-window)
+
 (use-package loccur
   :bind
   (("M-s M-l" . loccur-current)
