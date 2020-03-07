@@ -348,4 +348,9 @@ happens within a region if one is selected."
   )
 ;;; for Scala - metals
 
+;;;ElMacro
+(use-package elmacro
+  :config
+  (elmacro-mode))
+
 (provide 'init-my-personal)
