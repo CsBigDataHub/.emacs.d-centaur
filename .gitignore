@@ -76,3 +76,7 @@ tutorial/
 url/
 var/
 workspace/
+/straight/
+/.local/
+/bm-repository
+/snippets/
