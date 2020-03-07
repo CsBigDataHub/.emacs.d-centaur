@@ -40,11 +40,11 @@ function backfeed(){
 </script>
 
 <head>
-  
+
   <title>
     Emacros: A Package for Organizing, Saving, Loading, and Conveniently Executing Your Keyboard Macros in GNU Emacs
   </title>
-  
+
   <style>
     body, td, center, p, div { font-family: verdana; font-size: 10pt }
   </style>
@@ -107,7 +107,7 @@ function backfeed(){
 
 <hr>
 
-<h2><a name="overview">Overview</a></h2> 
+<h2><a name="overview">Overview</a></h2>
 
 The purpose of keyboard macros in an editor is to expedite the
 entering of key sequences that occur frequently and are lengthy or
@@ -135,7 +135,7 @@ arrangement makes it easy to keep track of existing macro definitions.
 Emacros works with GNU Emacs Versions 21 and 22. Earlier versions are no
 longer supported.
 
-<h2><a name="installation">Download and Installation</a></h2> 
+<h2><a name="installation">Download and Installation</a></h2>
 
 Click <a href="http://thbecker.net/free_software_utilities/emacs_lisp/emacros/emacros.tar.gz">here</a>
 to download the Emacros package.
@@ -159,13 +159,13 @@ files. Be sure to load <code>emacros.elc</code> and <em>not</em>
 
 <p>
 
-<a name="global_macro_dir">The</a> directory where your global macro files 
-will be kept defaults to your home directory. You may wish to choose a 
+<a name="global_macro_dir">The</a> directory where your global macro files
+will be kept defaults to your home directory. You may wish to choose a
 different directory. In that case, you must also place the line
 
 <pre>
 
-(setq emacros-global-dir "DIR") 
+(setq emacros-global-dir "DIR")
 
 </pre>
 
@@ -173,7 +173,7 @@ in your Emacs initialization file. DIR can be specified in unexpanded
 form, e.g., as <code>"~/emacs"</code>, and it may be given with or
 without trailing slash.
 
-<h2><a name="feedback">Feedback and Bug Reports</a></h2> 
+<h2><a name="feedback">Feedback and Bug Reports</a></h2>
 
 Click
 
@@ -185,9 +185,9 @@ backfeed()
 
 to send feedback and bug reports concerning Emacros.
 
-<h2><a name="manual"></a>Emacros Manual</h2> 
+<h2><a name="manual"></a>Emacros Manual</h2>
 
-<h3><a name="naming_saving_executing">Naming, Saving, and Executing Keyboard Macros</a></h3> 
+<h3><a name="naming_saving_executing">Naming, Saving, and Executing Keyboard Macros</a></h3>
 
 A keyboard macro really consists of two components: the (complicated)
 key sequence which is to be entered, and the (short) command which
@@ -205,7 +205,7 @@ a name with Emacs' <code>name-last-kbd-macro</code> or with kmacro's
 <code>kmacro-name-last-macro</code>, you use
 the Emacros function <code>emacros-name-last-kbd-macro-add</code>.
 
-<h4><a name="emacros-name-last-kbd-macro-add">Function emacros-name-last-kbd-macro-add</a></h4> 
+<h4><a name="emacros-name-last-kbd-macro-add">Function emacros-name-last-kbd-macro-add</a></h4>
 
 This function first prompts the user for a name to be given to the
 most recently defined keyboard macro. The name must neither be the
@@ -220,8 +220,8 @@ Next, the function saves the macro definition to a file named
 <code>MODE-mac.el</code>, where <code>MODE</code> is the name of the
 current major mode. (See Section <a
 href="#slashes_in_mode_names">Slashes in Mode Names</a> for a
-qualification of this statement.) This file can be in the 
-<a href="#global_macro_dir">directory for global macros<a>, 
+qualification of this statement.) This file can be in the
+<a href="#global_macro_dir">directory for global macros<a>,
 in which case the macro will be available whenever
 <code>MODE</code> is the major mode, or it can be in the current
 directory, in which case the macro will be locally available whenever
@@ -249,8 +249,8 @@ saving to, you will be prompted for overwriting the existing definition.
 <p>
 
 It is possible to have several macro definitions with the same name, one in
-the global macro file <code>MODE-mac.el</code> and the others in 
-local files <code>MODE-mac.el</code>. When macros are being loaded, the 
+the global macro file <code>MODE-mac.el</code> and the others in
+local files <code>MODE-mac.el</code>. When macros are being loaded, the
 last local defintion of a multiply defined macro name becomes the active
 one. Functions that manipulate macro files, such as
 <a href="#emacros-remove-macro">emacros-remove-macro</a>,
@@ -276,11 +276,11 @@ example, bind it to <code>Ctrl-a</code> by placing the line
 
 in your Emacs initialization file.
 
-<h4><a name="emacros-execute-named-macro">Function emacros-execute-named-macro</a></h4> 
+<h4><a name="emacros-execute-named-macro">Function emacros-execute-named-macro</a></h4>
 
 Once a macro MACRO has a name MACRONAME, this name is in fact a
 command which causes the macro to be inserted before the cursor:
-typing 
+typing
 
 <pre>
 M-x MACRONAME RET
@@ -292,7 +292,7 @@ resolved by the function <code>emacros-execute-named-macro</code>.This
 function should probably be bound to a key sequence such as
 <code>Ctrl-c e</code>. The line
 
-<pre>     
+<pre>
 (global-set-key "\C-ce" 'emacros-execute-named-macro)
 </pre>
 
@@ -300,7 +300,7 @@ in your Emacs initialization file does the job. Typing
 <code>Ctrl-c e</code> is then similar to <code>M-x</code>, but for
 macros only.
 
-<h4><a name="emacros-auto-execute-named-macro">Function emacros-auto-execute-named-macro</a></h4> 
+<h4><a name="emacros-auto-execute-named-macro">Function emacros-auto-execute-named-macro</a></h4>
 
 This function is provided as a further convenience for the impatient.
 <code>emacros-auto-execute-named-macro</code> should definitely be
@@ -329,31 +329,31 @@ always use <a
 href=#emacros-execute-named-macro><code>emacros-execute-named-macro</code></a>
 to insert such problem macros.
 
-<h3><a name="loading">Loading Macro Definitions</a></h3> 
+<h3><a name="loading">Loading Macro Definitions</a></h3>
 
 One of the most important features of Emacros is that macro
 definitions are loaded automatically when a file is visited. There are
 also ways to load and unload macros manually.
 
-<h4><a name="automatic_loading">Automatic Macro Loading</a></h4> 
+<h4><a name="automatic_loading">Automatic Macro Loading</a></h4>
 
 Everytime you read a file into Emacs with <code>Ctrl-x Ctrl-f</code>,
 <code>Ctrl-x Ctrl-v</code>, or <code>Ctrl-x 4 f</code>, <a
 name="emacros-load-macros">the function</a>
 
 <pre>
-emacros-load-macros 
+emacros-load-macros
 </pre>
 
 will be invoked automatically. It will load those macros that have
 been saved to files named <code>MODE-mac.el</code> in the current
 directory and in the directory for global macros. Here,
 <code>MODE</code> is name of the major mode that Emacs has chosen for
-the visited file. (See Section <a href="#slashes_in_mode_names">Slashes in Mode Names</a> 
+the visited file. (See Section <a href="#slashes_in_mode_names">Slashes in Mode Names</a>
 for a qualification of this statement.) The function can also be used interactively; the
 next section describes a situation where you may want to do this.
 
-<h4><a name="manual_loading">Manually Loading and Unloading Macros</a></h4> 
+<h4><a name="manual_loading">Manually Loading and Unloading Macros</a></h4>
 
 If you have been editing a file and then visit another one with a
 different mode and/or from a different directory, then the macros
@@ -366,13 +366,13 @@ the separation by modes pointless. <a
 name="emacros-refresh-macros">The function</a>
 
 <pre>
-emacros-refresh-macros 
+emacros-refresh-macros
 </pre>
 
-takes care of this problem. Typing 
+takes care of this problem. Typing
 
 <pre>
-M-x emacros-refresh-macros RET 
+M-x emacros-refresh-macros RET
 </pre>
 
 will unload all previously loaded macros and load the ones pertaining
@@ -392,7 +392,7 @@ then Emacros will not automatically load the macros for TeX mode. To
 get things right, you must explicitly refresh your loaded macros:
 
 <pre>
-M-x emacros-refresh-macros RET 
+M-x emacros-refresh-macros RET
 </pre>
 
 If you want to keep previously loaded macros active rather than
@@ -403,7 +403,7 @@ refreshing, then you want to replace
 Since the macro files <code>MODE-mac.el</code> contain ordinary Emacs
 Lisp code, you may also make macros available by loading macro files
 explicitly. This is done using the GNU Emacs function for loading Lisp
-code, as in 
+code, as in
 
 <pre>
 M-x load-file RET
@@ -415,13 +415,13 @@ href=#emacros-name-last-kbd-macro-add><code>emacros-name-last-kbd-macro-add</cod
 with a prefix argument, thus choosing your own file for saving your
 macros.
 
-<h3><a name="manipulating">Manipulating Macro Files</a></h3> 
+<h3><a name="manipulating">Manipulating Macro Files</a></h3>
 
 There are three functions that allow you to manipulate macro definitions
 that have already been saved. You can rename macros, move them betweeen
 local and global macro files, and remove them entirely.
 
-<h4><a name="emacros-rename-macro">Function emacros-rename-macro</a></h4> 
+<h4><a name="emacros-rename-macro">Function emacros-rename-macro</a></h4>
 
 This function assigns a new name to a previously named macro, making the
 change effective in the current session and in the local or global macro
@@ -434,7 +434,7 @@ M-x emacros-rename-macro RET
 
 will prompt for the old name that is to be changed and then for the
 new name, subject to the same restrictions that apply when naming with
-<a href="#emacros-name-last-kbd-macro-add"><code>emacros-name-last-kbd-macro-add</code></a>. 
+<a href="#emacros-name-last-kbd-macro-add"><code>emacros-name-last-kbd-macro-add</code></a>.
 Completion and history are available when entering the old name. If a
 macro with the new name already exists in the file where the change
 takes place, you will be prompted for overwriting the existing defintion.
@@ -459,7 +459,7 @@ You must change back to the buffer visiting the TeX file before you
 can access your macro for renaming.  All this applies to moving and
 removing macros as well.
 
-<h4><a name="emacros-move-macro">Function emacros-move-macro</a></h4> 
+<h4><a name="emacros-move-macro">Function emacros-move-macro</a></h4>
 
 This function moves macro definitions between the local and global
 macro file pertaining to the current buffer. Typing
@@ -472,7 +472,7 @@ will prompt for the name of a macro to be moved and for a choice
 between "from local" and "from global" before performing the desired
 task.
 
-<h4><a name="emacros-remove-macro">Function emacros-remove-macro</a></h4> 
+<h4><a name="emacros-remove-macro">Function emacros-remove-macro</a></h4>
 
 This function deletes macros from current macro files and disables
 them in the current session. Typing
@@ -486,7 +486,7 @@ been deleted is irretrievably lost.  As with <a
 href="#emacros-rename-macro"><code>emacros-rename-macro</code></a>, the
 macro's name is made available for use with a different macro.
 
-<h3><a name="help">Getting Help with Macros</a></h3> 
+<h3><a name="help">Getting Help with Macros</a></h3>
 
 One way in which Emacros assists you with recalling macro names is by
 offering completion and command line history whenever the name of a
@@ -535,13 +535,13 @@ then the output of the function <code>emacros-show-macros</code> would
 display the following line for this macro:
 
 <pre>
-bm  "øbuffer-menu" &lt;return&gt;
+bm  "buffer-menu" &lt;return&gt;
 </pre>
 
 This is certainly less than perfect. It wouldn't be hard to fix, if
 someone has the patience to do it.
 
-<h3><a name="subtleties">Subtleties</a></h3> 
+<h3><a name="subtleties">Subtleties</a></h3>
 
 This chapter discusses a few subtleties about Emacros. Except perhaps
 for the first section, these are things that the user should not really
@@ -667,7 +667,7 @@ and <code>emacros-auto-execute-named-macro</code> with their completion
 features and the help functions <code>emacros-show-macros</code> and
 <code>emacros-show-macro-names</code> are better suited for this purpose.
 
-<h2><a name="copying">Copying Information</a></h2> 
+<h2><a name="copying">Copying Information</a></h2>
 
 Emacros is an extension to GNU Emacs.  Everyone is granted permission to
 copy, modify and redistribute Emacros, but only under the conditions
@@ -684,9 +684,9 @@ for the consequences of using it or for whether it serves any particular
 purpose or works at all, unless he says so in writing.  Refer to the GNU
 Emacs General Public License for full details.
 
-<hr> 
+<hr>
 
-<font size=2> 
+<font size=2>
 <a href="#top">Back to top</a>
 </font>
 
