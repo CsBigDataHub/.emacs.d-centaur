@@ -2346,6 +2346,27 @@ _S_: <- sentence    _PB_: <- paragraph    _G_: <- page       _<_: beginning-of-b
   ("," previous-buffer)
   ("q" nil :color blue))
 
+;;;Sort-paragraphs
+;;https://emacs.stackexchange.com/a/24363
+(defun my-sort-paragraphs (reverse beg end)
+  (interactive "P\nr")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region beg end)
+      (goto-char (point-min))
+      (sort-subr reverse
+                 (function
+                  (lambda ()
+                    (while (and (not (eobp)) (looking-at paragraph-separate))
+                      (forward-line 1))))
+                 'forward-paragraph nil nil
+                 (lambda (a b)
+                   (< (string-to-number (progn (goto-char (car a))
+                                               (current-word)))
+                      (string-to-number (progn (goto-char (car b))
+                                               (current-word)))))))))
+;;;Sort-paragraphs
+
 ;;; My repeat commands
 (eval-when-compile (require 'cl))
 (defun def-rep-command (alist)
