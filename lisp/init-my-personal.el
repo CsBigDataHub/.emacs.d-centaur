@@ -353,4 +353,6 @@ happens within a region if one is selected."
   :config
   (elmacro-mode))
 
+(use-package transpose-mark)
+
 (provide 'init-my-personal)
