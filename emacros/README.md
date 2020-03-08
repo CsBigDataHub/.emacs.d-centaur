@@ -3,35 +3,39 @@ Emacros: A Package for Organizing and Handling Keyboard Macros in GNU Emacs
 
 Emacros: A Package for Organizing, Saving, Loading, and Conveniently Executing Your Keyboard Macros in GNU Emacs
 
-Contents
---------
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
 
-1.  [Overview](#overview)
-2.  [Download and Installation](#Download and Installation)
-3.  [Feedback and Bug Reports](#Feedback and Bug Reports)
-4.  [Emacros Manual](#Emacros Manual)
-    *   [Naming, Saving, and Executing Keyboard Macros](#Naming, Saving, and Executing Keyboard Macros)
-        *   [Function emacros-name-last-kbd-macro-add](#emacros-name-last-kbd-macro-add)
-        *   [Function emacros-execute-named-macro](#emacros-execute-named-macro)
-        *   [Function emacros-auto-execute-named-macro](#emacros-auto-execute-named-macro)
-    *   [Loading Macro Definitions](#loading)
-        *   [Automatic Macro Loading](#automatic_loading)
-        *   [Manually Loading and Unloading Macros](#manual_loading)
-    *   [Manipulating Macro Files](#manipulating)
-        *   [Function emacros-rename-macro](#emacros-rename-macro)
-        *   [Function emacros-move-macro](#emacros-move-macro)
-        *   [Function emacros-remove-macro](#emacros-remove-macro)
-    *   [Getting Help with Macros](#help)
-        *   [Function emacros-show-macro-names](#emacros-show-macro-names)
-        *   [Function emacros-show-macros](#emacros-show-macros)
-    *   [Subtleties](#subtleties)
-        *   [Getting the Right Major Mode](#getting_right_mode)
-        *   [Slashes in Mode Names](#slashes_in_mode_names)
-        *   [Compatibility with Emacs' Macro Saving](#compatibility)
-        *   [Visiting Macro Files](#visiting_macro_files)
-        *   [Completing Macro Names](#completion)
-        *   [Emacros vs. Kmacro](#emacros_vs_kmacro)
-5.  [Copying Information](#copying)
+- [Emacros: A Package for Organizing and Handling Keyboard Macros in GNU Emacs](#emacros-a-package-for-organizing-and-handling-keyboard-macros-in-gnu-emacs)
+    - [Contents](#contents)
+    - [Overview](#overview)
+    - [Download and Installation](#download-and-installation)
+    - [Feedback and Bug Reports](#feedback-and-bug-reports)
+    - [Emacros Manual](#emacros-manual)
+        - [Naming, Saving, and Executing Keyboard Macros](#naming-saving-and-executing-keyboard-macros)
+            - [Function emacros-name-last-kbd-macro-add](#function-emacros-name-last-kbd-macro-add)
+            - [Function emacros-execute-named-macro](#function-emacros-execute-named-macro)
+            - [Function emacros-auto-execute-named-macro](#function-emacros-auto-execute-named-macro)
+        - [Loading Macro Definitions](#loading-macro-definitions)
+            - [Automatic Macro Loading](#automatic-macro-loading)
+            - [Manually Loading and Unloading Macros](#manually-loading-and-unloading-macros)
+        - [Manipulating Macro Files](#manipulating-macro-files)
+            - [Function emacros-rename-macro](#function-emacros-rename-macro)
+            - [Function emacros-move-macro](#function-emacros-move-macro)
+            - [Function emacros-remove-macro](#function-emacros-remove-macro)
+        - [Getting Help with Macros](#getting-help-with-macros)
+            - [Function emacros-show-macro-names](#function-emacros-show-macro-names)
+            - [Function emacros-show-macros](#function-emacros-show-macros)
+        - [Subtleties](#subtleties)
+            - [Getting the Right Major Mode](#getting-the-right-major-mode)
+            - [Slashes in Mode Names](#slashes-in-mode-names)
+            - [Compatibility with Emacs' Macro Saving](#compatibility-with-emacs-macro-saving)
+            - [Visiting Macro Files](#visiting-macro-files)
+            - [Completing Macro Names](#completing-macro-names)
+            - [Emacros vs. Kmacro](#emacros-vs-kmacro)
+    - [Copying Information](#copying-information)
+
+<!-- markdown-toc end -->
 
 * * *
 
