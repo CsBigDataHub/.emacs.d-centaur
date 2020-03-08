@@ -1,16 +1,16 @@
-<!-- function backfeed(){ // To confuse the crawlers var a, b1, b2, b3 ,c ,d ,e, f, g // To confuse the crawlers a='<a href=\\"mai' // To confuse the crawlers b1='ema' // To confuse the crawlers b2='c' // To confuse the crawlers b3='ros' // To confuse the crawlers c='\\">' // To confuse the crawlers a+='lto:' // To confuse the crawlers b3+='@' // To confuse the crawlers e='</a>' // To confuse the crawlers b3+='thbe' // To confuse the crawlers b3+='cker.net' // To confuse the crawlers d='here' // To confuse the crawlers f='' if(f) g = 'blahblahblah' else g = a+b1+b2+b3+c+d+e document.write(g) } //--> Emacros: A Package for Organizing, Saving, Loading, and Conveniently Executing Your Keyboard Macros in GNU Emacs body, td, center, p, div { font-family: verdana; font-size: 10pt }
-
 Emacros: A Package for Organizing and Handling Keyboard Macros in GNU Emacs
 ===========================================================================
+
+Emacros: A Package for Organizing, Saving, Loading, and Conveniently Executing Your Keyboard Macros in GNU Emacs
 
 Contents
 --------
 
 1.  [Overview](#overview)
-2.  [Download and Installation](#installation)
-3.  [Feedback and Bug Reports](#feedback)
-4.  [Emacros Manual](#manual)
-    *   [Naming, Saving, and Executing Keyboard Macros](#naming_saving_executing)
+2.  [Download and Installation](#Download and Installation)
+3.  [Feedback and Bug Reports](#Feedback and Bug Reports)
+4.  [Emacros Manual](#Emacros Manual)
+    *   [Naming, Saving, and Executing Keyboard Macros](#Naming, Saving, and Executing Keyboard Macros)
         *   [Function emacros-name-last-kbd-macro-add](#emacros-name-last-kbd-macro-add)
         *   [Function emacros-execute-named-macro](#emacros-execute-named-macro)
         *   [Function emacros-auto-execute-named-macro](#emacros-auto-execute-named-macro)
