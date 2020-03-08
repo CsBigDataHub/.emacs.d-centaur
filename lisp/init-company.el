@@ -68,6 +68,7 @@
         company-dabbrev-other-buffers 'all ;;my-personal-config
         company-dabbrev-code-other-buffers 'all ;;my-personal-config
         company-dabbrev-ignore-case t ;;my-personal-config - changed to t
+        company-dabbrev-char-regexp "\\(\\sw\\|\\s_\\|_\\|-\\)" ;;my-personal-config
         company-dabbrev-downcase nil
         company-global-modes '(not erc-mode message-mode help-mode gud-mode eshell-mode shell-mode)
         ;; company backend is my-personal-config
