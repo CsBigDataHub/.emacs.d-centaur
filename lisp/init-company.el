@@ -40,6 +40,8 @@
   :bind (("M-s-÷" . company-complete);;my-personal-config
          ("C-M-i" . company-complete)
          ("M-s-ƒ" . company-files)
+         :map company-mode-map
+         ("<backtab>" . company-yasnippet)
          :map company-active-map
          ("C-p" . company-select-previous)
          ("C-n" . company-select-next)
