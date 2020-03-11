@@ -11,13 +11,13 @@
   :hook (terraform-mode . company-terraform-init))
 
 ;; TODO -look in to it lat
-;;(add-to-list 'lsp-language-id-configuration '(terraform-mode . "terraform"))
+(add-to-list 'lsp-language-id-configuration '(terraform-mode . "terraform"))
 
 ;; TODO -look in to it lat
-;;(lsp-register-client
-;; (make-lsp-client :new-connection (lsp-stdio-connection '("~/.emacs.d/custom-el-scripts/lsp/terraform-lsp/terraform-lsp" "-enable-log-file"))
-;;                  :major-modes '(terraform-mode)
-;;                  :server-id 'terraform-ls))
+(lsp-register-client
+ (make-lsp-client :new-connection (lsp-stdio-connection '("~/.emacs.d/lsp/terraform-lsp" "-enable-log-file"))
+                  :major-modes '(terraform-mode)
+                  :server-id 'terraform-ls))
 
 (add-hook 'terraform-mode-hook #'lsp)
 
