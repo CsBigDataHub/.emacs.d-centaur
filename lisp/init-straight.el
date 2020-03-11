@@ -77,4 +77,13 @@
   :straight (auto-yasnippet :type git :host github :repo "abo-abo/auto-yasnippet"))
 ;;; yas-snippet
 
+(use-package lsp-latex
+  :straight (lsp-latex :type git :host github :repo "ROCKTAKEY/lsp-latex")
+  :config
+  (require 'lsp-latex)
+  (setq lsp-latex-texlab-executable "/Users/ckoneru/.emacs.d/lsp/texlab")
+  (with-eval-after-load "tex-mode"
+    (add-hook 'tex-mode-hook 'lsp)
+    (add-hook 'latex-mode-hook 'lsp)))
+
 (provide 'init-straight)
