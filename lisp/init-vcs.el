@@ -40,9 +40,10 @@
          ("C-x M-g" . magit-dispatch)
          ("C-c M-g" . magit-file-popup)
          (:map magit-status-mode-map
-               ("q" . magit-quit-session)
-               ))
+          ("q" . magit-quit-session)
+          ))
   :config
+  (setq magit-git-executable "/usr/local/bin/git")
   (when sys/win32p
     (setenv "GIT_ASKPASS" "git-gui--askpass"))
 
