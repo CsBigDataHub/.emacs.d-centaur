@@ -2462,6 +2462,11 @@ It sets the transient map to all functions of ALIST."
 (global-set-key (kbd "s-o") 'other-window)
 ;;;
 
+;;;;;; Use this if you need it
+  ;;;; Define f5 as an alias for C-x r
+;; (global-set-key (kbd "<f5>") (lookup-key global-map (kbd "C-x r")))
+
+
 ;;; Code to replace exec-path-from-shell
 ;; Need to create file in $HOME/.emacs.d/.local/env
 ;; use this command to create the file  `printenv > $HOME/.emacs.d/.local/env'
