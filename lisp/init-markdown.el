@@ -86,7 +86,7 @@ mermaid.initialize({
   (when (executable-find "multimarkdown")
     (setq markdown-command "multimarkdown"))
 
-  ;; Use `which-key'
+  ;; Use `which-key' instead
   (advice-add #'markdown--command-map-prompt :override #'ignore)
   :config
   ;;mypersonal
