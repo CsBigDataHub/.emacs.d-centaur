@@ -37,6 +37,7 @@
   :functions eshell/alias
   :hook (eshell-mode . (lambda ()
                          (bind-key "C-l" 'eshell/clear eshell-mode-map)
+                         (bind-key "C-r" 'counsel-esh-history eshell-mode-map) ;; my-personal-conf
                          ;; Aliases
                          (eshell/alias "f" "find-file $1")
                          (eshell/alias "fo" "find-file-other-window $1")
