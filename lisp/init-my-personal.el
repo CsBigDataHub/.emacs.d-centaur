@@ -358,11 +358,11 @@ happens within a region if one is selected."
 ;; my-personal-config
 
 ;; Added this to build pdf tools
-(setenv "PKG_CONFIG_PATH" "/usr/local/lib/pkgconfig:/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig")
+(setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig:/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")
 
 (use-package pdf-tools
   :config
-  (pdf-tools-install)
+  (pdf-tools-install :no-query)
   (require 'pdf-tools)
   (setq-default pdf-view-display-size 'fit-page)
   (bind-keys :map pdf-view-mode-map
@@ -452,6 +452,10 @@ happens within a region if one is selected."
   ("h" image-backward-hscroll :color red))
 
 (setq pdf-view-use-scaling t)
+
+;;Added this to disable linum in pdf-tools
+(add-hook 'pdf-view-mode-hook (lambda() (linum-relative-mode -1)))
+(add-hook 'pdf-view-mode-hook (lambda() (display-line-numbers-mode -1)))
 ;;my-personal-config
 
 (provide 'init-my-personal)

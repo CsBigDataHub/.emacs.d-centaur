@@ -2429,6 +2429,50 @@ behavior added."
                                                (current-word)))))))))
 ;;;Sort-paragraphs
 
+(defun copy-lines-matching-re (re)
+  "find all lines matching the regexp RE in the current buffer
+putting the matching lines in a buffer named *matching*"
+  (interactive "sRegexp to match: ")
+  (let ((result-buffer (get-buffer-create "*matching*")))
+    (with-current-buffer result-buffer
+      (erase-buffer))
+    (save-match-data
+      (save-excursion
+        (goto-char (point-min))
+        (while (re-search-forward re nil t)
+          (princ (buffer-substring-no-properties (line-beginning-position)
+                                                 (line-beginning-position 2))
+                 result-buffer))))
+    (pop-to-buffer result-buffer)))
+
+(defun occur-mode-clean-buffer ()
+  "Removes all commentary from the *Occur* buffer, leaving the
+unadorned lines."
+  (interactive)
+  (if (get-buffer "*Occur*")
+      (save-excursion
+        (set-buffer (get-buffer "*Occur*"))
+        (fundamental-mode)
+        (goto-char (point-min))
+        (toggle-read-only 0)
+        (set-text-properties (point-min) (point-max) nil)
+        (if (looking-at (rx bol (one-or-more digit)
+                            (or " lines matching \""
+                                " matches for \"")))
+            (kill-line 1))
+        (while (re-search-forward (rx bol
+                                      (zero-or-more blank)
+                                      (one-or-more digit)
+                                      ":")
+                                  (point-max)
+                                  t)
+          (replace-match "")
+          (forward-line 1)))
+
+    (message "There is no buffer named \"*Occur*\".")))
+
+(define-key occur-mode-map (kbd "C-c C-K") 'occur-mode-clean-buffer)
+
 ;;; My repeat commands
 (eval-when-compile (require 'cl))
 (defun def-rep-command (alist)
