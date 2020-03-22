@@ -43,7 +43,8 @@
           ("q" . magit-quit-session)
           ))
   :config
-  (setq magit-git-executable "/usr/local/bin/git")
+  (when sys/macp
+  (setq magit-git-executable "/usr/local/bin/git"))
   (when sys/win32p
     (setenv "GIT_ASKPASS" "git-gui--askpass"))
 
