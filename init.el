@@ -186,5 +186,7 @@ decrease this. If you experience stuttering, increase this.")
 (require 'init-terraform)
 (require 'init-smartparens)
 
+( cond ((eq system-type 'gnu/linux) (require 'init-linux)))
+( cond ((eq system-type 'gnu/linux) (require 'init-mail)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here

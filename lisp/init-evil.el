@@ -24,6 +24,8 @@
   (defalias #'forward-evil-word #'forward-evil-symbol))
 
 (evil-set-initial-state 'ibuffer-mode 'emacs)
+(cond ((eq system-type 'gnu/linux) (evil-set-initial-state 'mu4e-main-mode 'emacs)))
+(cond ((eq system-type 'gnu/linux) (evil-set-initial-state 'mu4e-headers-mode 'emacs)))
 (evil-set-initial-state 'bookmark-bmenu-mode 'emacs)
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'wgrep-change-to-wgrep-mode 'emacs)
