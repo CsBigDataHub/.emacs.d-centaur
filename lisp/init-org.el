@@ -350,6 +350,17 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 ;;;; my latex function
 ;;;;; my personal modification end here
+;; org-roam
+(when emacs/>=26p
+  (use-package org-roam
+    :hook
+    (after-init . org-roam-mode)
+    :bind (:map org-roam-mode-map
+           (("C-c n l" . org-roam)
+            ("C-c n f" . org-roam-find-file)
+            ("C-c n g" . org-roam-show-graph))
+           :map org-mode-map
+           (("C-c n i" . org-roam-insert)))))
 
 (provide 'init-org)
 
