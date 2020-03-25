@@ -50,6 +50,7 @@
   :straight
   (eshell-toggle :type git :host github :repo "4DA/eshell-toggle")
   :bind
+  ("<f12>" . eshell-toggle)
   ("s-~" . eshell-toggle))
 
 (use-package gitignore-templates
