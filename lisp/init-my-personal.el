@@ -357,11 +357,11 @@ happens within a region if one is selected."
 
 ;; my-personal-config
 
-(use-package dimmer
-  :custom
-  (dimmer-fraction 0.2)
-  :init
-  (dimmer-mode t))
+;; (use-package dimmer
+;;   :custom
+;;   (dimmer-fraction 0.2)
+;;   :init
+;;   (dimmer-mode t))
 
 ;; Added this to build pdf tools
 (setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig:/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")
