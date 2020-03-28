@@ -19,7 +19,7 @@
   "ff" 'counsel-find-file
   "fz" 'counsel-fzf
   "fp" 'counsel-projectile
-  "fd" 'counsel-fd
+  "fd" 'counsel-git
   "dd" 'dired
   "uu" 'undo-tree-visualize
   "wo" 'other-window

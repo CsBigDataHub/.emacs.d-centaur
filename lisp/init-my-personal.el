@@ -358,8 +358,9 @@ happens within a region if one is selected."
 ;; my-personal-config
 
 ;; (use-package dimmer
+;;   :unless noninteractive
 ;;   :custom
-;;   (dimmer-fraction 0.2)
+;;   (dimmer-fraction 0.4)
 ;;   :init
 ;;   (dimmer-mode t))
 

@@ -1,4 +1,4 @@
-;;; init-linux.el --- Initialize ivy configurations.	-*- lexical-binding: t -*-
+;;; init-linux.el --- Initialize key-bindings for linux.	-*- lexical-binding: t -*-
 
 
 (when sys/linuxp
