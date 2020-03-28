@@ -34,6 +34,8 @@
   ;; (add-hook 'mu4e-headers-mode (lambda () (if 'mu4e-headers-mode (remove-hook 'activate-mark-hook #'activate-mark-hook@set-transient-map 'local))))
   )
 (when sys/linuxp
-  (menu-bar-mode 1)
+  (progn
+    (menu-bar-mode 1)
+    )
   )
 (provide 'init-linux)
