@@ -87,6 +87,11 @@
     (add-hook 'tex-mode-hook 'lsp)
     (add-hook 'latex-mode-hook 'lsp)))
 
+;; Java properties
+(use-package properties-mode
+  :straight (properties-mode :type git :host github :repo "iquiw/properties-mode")
+  :mode "\\.properties\\'")
+
 (when sys/linuxp
   (use-package org-mime
     :straight (org-mime :type git :host github :repo "org-mime/org-mime")))
