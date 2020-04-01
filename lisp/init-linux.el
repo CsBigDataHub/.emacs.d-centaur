@@ -25,6 +25,9 @@
    ("C-S-v" . yank)
    ("s-H-n" . make-frame-command)
    ("s-w" . delete-frame)
+   ("s-b" . switch-to-buffer)
+   ("s-k" . my/kill-this-buffer)
+   ("s-0" . delete-window)
    ("s-H-o" . other-window)
    ))
 
