@@ -120,6 +120,7 @@ mermaid.initialize({
     :bind (:map markdown-mode-command-map
            ("g" . grip-mode))
     :init
+    (setq grip-preview-use-webkit t)
     (setq grip-update-after-change nil)
     (let ((credential (auth-source-user-and-password "api.github.com")))
       (setq grip-github-user (car credential)

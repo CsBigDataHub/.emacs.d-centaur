@@ -36,6 +36,9 @@
 (when sys/linuxp
   (progn
     (menu-bar-mode 1)
+    (setq display-time-day-and-date t)
+    (display-time-mode +1)
     )
   )
+
 (provide 'init-linux)
