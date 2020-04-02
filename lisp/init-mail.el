@@ -104,4 +104,10 @@
 ;; don't keep message buffers around
 (setq message-kill-buffer-on-exit t)
 
+;; use 'fancy' non-ascii characters in various places in mu4e
+(setq mu4e-use-fancy-chars t)
+
+;; attempt to show images when viewing messages
+(setq mu4e-view-show-images t)
+
 (provide 'init-mail)

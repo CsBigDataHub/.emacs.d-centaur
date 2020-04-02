@@ -25,17 +25,36 @@
    ("C-S-v" . yank)
    ("s-H-n" . make-frame-command)
    ("s-w" . delete-frame)
+   ("s-b" . switch-to-buffer)
+   ("s-k" . my/kill-this-buffer)
+   ("s-0" . delete-window)
    ("s-H-o" . other-window)
    ))
 
 (when sys/linuxp
-  (add-hook 'mu4e-headers-mode (lambda () (isolate-add-mode -1)))
-  ;; TODO - disable isolate delete mode for mu4e-headers-mode
-  ;; (add-hook 'mu4e-headers-mode (lambda () (if 'mu4e-headers-mode (remove-hook 'activate-mark-hook #'activate-mark-hook@set-transient-map 'local))))
+  (progn
+    (add-hook 'mu4e-headers-mode (lambda () (isolate-add-mode -1)))
+    (defun activate-mark-hook@set-transient-map ()
+      (unless (derived-mode-p 'mu4e-headers-mode)
+        (set-transient-map
+         (let ((map (make-sparse-keymap)))
+           (define-key map "s" #'isolate-quick-add)
+           (define-key map "S" #'isolate-long-add)
+           (define-key map "d" #'isolate-quick-delete)
+           (define-key map "D" #'isolate-long-delete)
+           (define-key map "c" #'isolate-quick-change)
+           (define-key map "C" #'isolate-long-change)
+           map)
+         #'region-active-p)))
+    (add-hook 'activate-mark-hook #'activate-mark-hook@set-transient-map)
+    )
   )
 (when sys/linuxp
   (progn
     (menu-bar-mode 1)
+    (setq display-time-day-and-date t)
+    (display-time-mode +1)
     )
   )
+
 (provide 'init-linux)
