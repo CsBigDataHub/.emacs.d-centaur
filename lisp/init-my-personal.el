@@ -358,6 +358,8 @@ happens within a region if one is selected."
 (use-package company-emoji)
 
 (add-to-list 'company-backends 'company-emoji)
+;;adding company-emoji to magit mode
+;;(add-hook 'git-commit-setup-hook (lambda () (set (make-local-variable 'company-backends) '((company-capf :with company-dabbrev company-files company-emoji)))))
 
 (defun --set-emoji-font (frame)
   "Adjust the font settings of FRAME so Emacs can display emoji properly."
