@@ -2500,6 +2500,10 @@ It sets the transient map to all functions of ALIST."
 ;;https://emacs.stackexchange.com/questions/5603/how-to-quickly-copy-move-file-in-emacs-dired
 (setq dired-dwim-target t)
 
+;;Ispell
+(setq ispell-program-name "aspell")
+(setq ispell-extra-args '("--sug-mode=fast" "--lang=en_US" "--camel-case" "--run-together" "--run-together-limit=16"))
+
 ;;;my super key bindings
 (global-set-key (kbd "s-b") 'ivy-switch-buffer)
 (global-set-key (kbd "s-O") 'ns-open-file-using-panel)
