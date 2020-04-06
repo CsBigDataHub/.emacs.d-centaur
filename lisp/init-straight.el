@@ -92,6 +92,39 @@
   :straight (properties-mode :type git :host github :repo "iquiw/properties-mode")
   :mode "\\.properties\\'")
 
+;;lang-tools
+(use-package langtool
+  :straight (langtool :type git :host github :repo "redguardtoo/Emacs-langtool")
+  :config
+  (when sys/macp
+    (progn
+      ;; place the language-tool directory in $HOME
+      (setq langtool-language-tool-jar
+            "/usr/local/Cellar/languagetool/4.9/libexec/languagetool-commandline.jar")
+      (setq langtool-java-bin "/Users/ckoneru/.sdkman/candidates/java/8.0.232.j9-adpt/bin/java")
+      (setq langtool-bin "/usr/local/bin/languagetool")
+      (setq langtool-default-language "en-US")
+      (setq langtool-java-user-arguments '("-Dfile.encoding=UTF-8"))
+      (setq langtool-mother-tongue "en")
+      )
+    ))
+
+;; hydra for langtool check
+(defhydra hydra-langtool (:color pink
+                          :hint nil)
+  "
+_c_: check    _n_: next error
+_C_: correct  _p_: prev error _d_: done checking
+"
+  ("n"  langtool-goto-next-error)
+  ("p"  langtool-goto-previous-error)
+  ("c"  langtool-check)
+  ("C"  langtool-correct-buffer)
+  ("d"  langtool-check-done :color blue)
+  ("q" nil "quit" :color blue))
+(bind-key "C-c h l t" 'hydra-langtool/body)
+
+
 (when sys/linuxp
   (use-package org-mime
     :straight (org-mime :type git :host github :repo "org-mime/org-mime")))

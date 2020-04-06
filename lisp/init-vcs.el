@@ -43,8 +43,9 @@
           ("q" . magit-quit-session)
           ))
   :config
+  (setq-default magit-diff-refine-hunk 'all)
   (when sys/macp
-  (setq magit-git-executable "/usr/local/bin/git"))
+    (setq magit-git-executable "/usr/local/bin/git"))
   (when sys/win32p
     (setenv "GIT_ASKPASS" "git-gui--askpass"))
 

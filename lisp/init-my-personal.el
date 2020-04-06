@@ -184,8 +184,8 @@ happens within a region if one is selected."
     (defun activate-mark-hook@set-transient-map ()
       (set-transient-map
        (let ((map (make-sparse-keymap)))
-         (define-key map "s" #'isolate-quick-add)
-         (define-key map "S" #'isolate-long-add)
+         (define-key map "a" #'isolate-quick-add)
+         (define-key map "A" #'isolate-long-add)
          (define-key map "d" #'isolate-quick-delete)
          (define-key map "D" #'isolate-long-delete)
          (define-key map "c" #'isolate-quick-change)

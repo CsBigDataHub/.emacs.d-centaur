@@ -2508,7 +2508,35 @@ It sets the transient map to all functions of ALIST."
 (global-set-key (kbd "s-b") 'ivy-switch-buffer)
 (global-set-key (kbd "s-O") 'ns-open-file-using-panel)
 (global-set-key (kbd "s-o") 'other-window)
+(global-set-key (kbd "s-0") 'delete-window)
 ;;;
+
+(defun my/quit ()
+  "Quit in current context.
+
+When there is an active minibuffer and we are not inside it close
+it.  When we are inside the minibuffer use the regular
+`minibuffer-keyboard-quit' which quits any active region before
+exiting.  When there is no minibuffer `keyboard-quit' unless we
+are defining or executing a macro."
+  (interactive)
+  (cond ((active-minibuffer-window)
+         (if (minibufferp)
+             (minibuffer-keyboard-quit)
+           (abort-recursive-edit)))
+        (t
+         (unless (or defining-kbd-macro
+                     executing-kbd-macro)
+           (keyboard-quit))))
+  (message this-command))
+(global-set-key [remap keyboard-quit] #'my/quit)
+
+;; to quit lsp-ui-doc-view
+(when (fboundp 'my/quit)
+  (define-advice lsp-ui-doc--make-request (:around (foo))
+    (unless (eq this-command 'my/quit)
+      (funcall foo))))
+
 
 ;;;;;; Use this if you need it
   ;;;; Define f5 as an alias for C-x r
