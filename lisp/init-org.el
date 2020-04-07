@@ -353,12 +353,11 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 ;; org-roam
 (when emacs/>=26p
   (use-package org-roam
-    :hook
-    (after-init . org-roam-mode)
+    :hook (after-init . org-roam-mode)
     :bind (:map org-roam-mode-map
            (("C-c n l" . org-roam)
             ("C-c n f" . org-roam-find-file)
-            ("C-c n g" . org-roam-show-graph))
+            ("C-c n g" . org-roam-graph-show))
            :map org-mode-map
            (("C-c n i" . org-roam-insert)))))
 
