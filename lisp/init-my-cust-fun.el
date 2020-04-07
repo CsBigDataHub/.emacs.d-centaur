@@ -2504,6 +2504,12 @@ It sets the transient map to all functions of ALIST."
 (setq ispell-program-name "aspell")
 (setq ispell-extra-args '("--sug-mode=fast" "--lang=en_US" "--camel-case" "--run-together" "--run-together-limit=16"))
 
+;;Ispell for camel-case
+;; Spell Check
+(use-package wucuo
+  :config
+  (setq ispell-extra-args "--run-together"))
+
 ;;;my super key bindings
 (global-set-key (kbd "s-b") 'ivy-switch-buffer)
 (global-set-key (kbd "s-O") 'ns-open-file-using-panel)
