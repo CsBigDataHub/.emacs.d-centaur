@@ -52,6 +52,30 @@
   ;; Live Coding in Python
   (use-package live-py-mode))
 
+;;; my-personal-config
+(use-package virtualenvwrapper
+  ;; Automatically switch python venv
+  :hook (projectile-after-switch-project . venv-projectile-auto-workon)
+  :config
+  (venv-initialize-interactive-shells)
+  (venv-initialize-eshell)
+  (setq venv-location "~/.virtualenvs/")
+  )
+
+(use-package auto-virtualenvwrapper
+  :after
+  (:all python virtualenvwrapper)
+  :init
+  (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate))
+
+(use-package pipenv
+  :hook (python-mode . pipenv-mode)
+  :init
+  (setq
+   pipenv-projectile-after-switch-function
+   #'pipenv-projectile-after-switch-extended))
+;;; my-personal-config end
+
 (provide 'init-python)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

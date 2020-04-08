@@ -349,6 +349,9 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 ;;;; my latex function
+
+(use-package org-web-tools)
+
 ;;;;; my personal modification end here
 ;; org-roam
 (when emacs/>=26p
