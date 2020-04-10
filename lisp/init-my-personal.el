@@ -1,3 +1,4 @@
+;; init-my-personal.el --- Initialize personal configurations.	-*- lexical-binding: t -*-
 ;; to speed up tramp
 (setq remote-file-name-inhibit-cache nil)
 (setq vc-ignore-dir-regexp
@@ -383,6 +384,12 @@ happens within a region if one is selected."
 ;;   (dimmer-fraction 0.4)
 ;;   :init
 ;;   (dimmer-mode t))
+
+(use-package adaptive-wrap
+  :config
+  (adaptive-wrap-prefix-mode))
+
+(use-package copy-as-format)
 
 ;; Added this to build pdf tools
 (setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig:/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")

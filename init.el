@@ -185,6 +185,7 @@ decrease this. If you experience stuttering, increase this.")
 (require 'init-straight)
 (require 'init-terraform)
 (require 'init-smartparens)
+(require 'init-shr)
 
 ( cond ((eq system-type 'darwin) (require 'init-macos)))
 ( cond ((eq system-type 'gnu/linux) (require 'init-linux)))
