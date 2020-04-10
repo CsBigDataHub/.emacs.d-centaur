@@ -398,6 +398,7 @@ happens within a region if one is selected."
   (when sys/linuxp
     ;;install from http://manpages.ubuntu.com/manpages/bionic/man1/flite.1.html
     ;; or https://learn.adafruit.com/speech-synthesis-on-the-raspberry-pi/speak-easier-flite
+    ;; also look in to http://manpages.ubuntu.com/manpages/bionic/man1/eBook-speaker.1.html
     (setq read-aloud-engine "flite"))
   )
 
