@@ -391,6 +391,17 @@ happens within a region if one is selected."
 
 (use-package copy-as-format)
 
+(use-package read-aloud
+  :config
+  (when sys/macp
+    (setq read-aloud-engine "say"))
+  (when sys/linuxp
+    ;;install from http://manpages.ubuntu.com/manpages/bionic/man1/flite.1.html
+    ;; or https://learn.adafruit.com/speech-synthesis-on-the-raspberry-pi/speak-easier-flite
+    (setq read-aloud-engine "flite"))
+  )
+
+
 ;; Added this to build pdf tools
 (setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig:/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")
 
