@@ -247,7 +247,20 @@
   :config
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
   (setq ediff-split-window-function 'split-window-horizontally)
-  (setq ediff-merge-split-window-function 'split-window-horizontally))
+  (setq ediff-merge-split-window-function 'split-window-horizontally)
+  ;; To get combined result of A and B in Ediff ;; my-personal
+  ;; https://stackoverflow.com/a/29757750
+
+  (defun ediff-copy-both-to-C ()
+    (interactive)
+    (ediff-copy-diff ediff-current-difference nil 'C nil
+                     (concat
+                      (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+                      (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+  (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
+  (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
+  ;; my-personal
+  )
 
 ;; Automatic parenthesis pairing
 (use-package elec-pair
