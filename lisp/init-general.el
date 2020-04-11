@@ -1,3 +1,5 @@
+;;;init-general.el --- Initialize key-bindings for general.	-*- lexical-binding: t -*-
+
 (use-package general
   :config
   (general-evil-setup t)
