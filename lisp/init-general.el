@@ -56,6 +56,9 @@ The prefix map is named 'my-DEF-map'."
 
 (general-global-spc-menu-definer
  "counsel-file" "f"
+ "c" '(:ignore t :which-key "copy")
+ "cc" 'my/put-current-filename-to-clipboard
+ "cp" 'my/put-current-path-to-clipboard
  "f" 'counsel-find-file
  "z" 'counsel-fzf
  "p" 'counsel-projectile
