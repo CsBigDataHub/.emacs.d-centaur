@@ -3,6 +3,7 @@
 (when sys/macp
   (bind-keys*
    ("<f13>" . treemacs)
+   ("<C-M-s-268632064>" . major-mode-hydra) ;; 268632064 is number for SPACE key locater when used with this combination
    ))
 (when sys/macp
   (progn

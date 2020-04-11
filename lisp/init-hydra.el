@@ -146,9 +146,7 @@
         ("p T" (centaur-test-package-archives) "speed test" :exit t))))))
 
 ;;;my-personal
-(use-package major-mode-hydra
-  :bind
-  ("M-SPC" . major-mode-hydra))
+(use-package major-mode-hydra)
 (require 'major-mode-hydra)
 ;;;my-personal
 
