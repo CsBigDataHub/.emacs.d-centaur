@@ -15,72 +15,117 @@
   )
 
 (my-spc-leader-def
-  "b" '(:ignore t :which-key "buffer")
-  "bl" 'ibuffer
-  "bb" 'counsel-switch-buffer
-  "bs" 'save-buffer
-  "bk" 'my/kill-this-buffer
-  "f" '(:ignore t :which-key "counsel")
-  "ff" 'counsel-find-file
-  "fz" 'counsel-fzf
-  "fp" 'counsel-projectile
-  "fr" 'counsel-recentf
-  "fg" 'counsel-git
   "dd" 'dired
   "uu" 'undo-tree-visualize
-  "v" '(:ignore t :which-key "VC")
-  "v=" 'vc-diff
-  "v+" 'vc-update
-  "v[" 'diff-hl-previous-hunk
-  "v]" 'diff-hl-next-hunk
-  "vB" 'browse-at-remote
-  "vD" 'vc-root-diff
-  "vL" 'vc-print-root-log
-  "vP" 'vc-push
-  "vd" 'vc-dir
-  "vh" 'vc-region-history
-  "vl" 'vc-print-log
-  "vc" 'vc-revert
-  "vv" 'vc-next-action
-  "v SPC" 'diff-hl-mark-hunk
-  "w" '(:ignore t :which-key "window")
-  "wo" 'other-window
-  "w0" 'delete-window
-  "w1" 'delete-other-windows
-  "w2" 'my/split-below-and-move
-  "w3" 'my/split-right-and-move
-  "ww1" 'eyebrowse-switch-to-window-config-0
-  "ww1" 'eyebrowse-switch-to-window-config-1
-  "ww2" 'eyebrowse-switch-to-window-config-2
-  "ww3" 'eyebrowse-switch-to-window-config-3
-  "ww4" 'eyebrowse-switch-to-window-config-4
-  "ww5" 'eyebrowse-switch-to-window-config-5
-  "ww6" 'eyebrowse-switch-to-window-config-6
-  "ww7" 'eyebrowse-switch-to-window-config-7
-  "ww8" 'eyebrowse-switch-to-window-config-8
-  "ww9" 'eyebrowse-switch-to-window-config-9
-  "5" '(:ignore t :which-key "other-frame")
-  "5o" 'other-frame
-  "5f" 'find-file-other-frame
-  "5b" 'switch-to-buffer-other-frame
-  "50" 'delete-frame
-  "51" 'delete-other-frames
-  "5d" 'dired-other-frame
-  "g" '(:ignore t :which-key "magit")
-  "gg" 'magit-status
-  "gi" 'magit-init
-  "gc" 'magit-clone
-  "z" '(:ignore t :which-key "zop-zoom")
-  "za" 'zop-up-to-char
-  "zz" 'zop-to-char
-  "zx" 'zoom-window-zoom
   "mc" 'my/open-config
   "tt" 'treemacs
-  "r" '(:ignore t :which-key "run")
-  "rr" 'quickrun
-  "rc" 'quickrun-compile-only
   ".." 'imenu
   "C-a" 'mark-whole-buffer
   "SPC" 'counsel-M-x)
+
+(defmacro general-global-spc-menu-definer (def infix-key &rest body)
+  "Create a definer named general-global-DEF wrapping global-definer.
+The prefix map is named 'my-DEF-map'."
+  `(progn
+     (general-create-definer ,(intern (concat "general-global-spc-" def))
+       :wrapping my-spc-leader-def ;; defined above
+       :prefix-map (quote ,(intern (concat "my-" def "-spc-map")))
+       :infix ,infix-key
+       :wk-full-keys nil
+       "" '(:ignore t :which-key ,def))
+     (,(intern (concat "general-global-spc-" def))
+      ,@body)))
+
+(general-global-spc-menu-definer
+ "buffer" "b"
+ "l" 'ibuffer
+ "b" 'counsel-switch-buffer
+ "s" 'save-buffer
+ "k" 'my/kill-this-buffer
+ "p"  'previous-buffer
+ "n"  'next-buffer
+ "M" '((lambda () (interactive) (switch-to-buffer "*Messages*"))
+       :which-key "messages-buffer")
+ "S" '((lambda () (interactive) (switch-to-buffer "*scratch*"))
+       :which-key "scratch-buffer")
+ "TAB" '((lambda () (interactive) (switch-to-buffer nil))
+         :which-key "other-buffer")
+ )
+
+(general-global-spc-menu-definer
+ "counsel-file" "f"
+ "f" 'counsel-find-file
+ "z" 'counsel-fzf
+ "p" 'counsel-projectile
+ "r" 'counsel-recentf
+ "g" 'counsel-git
+ )
+
+(general-global-spc-menu-definer
+ "VC" "v"
+ "=" 'vc-diff
+ "+" 'vc-update
+ "[" 'diff-hl-previous-hunk
+ "]" 'diff-hl-next-hunk
+ "B" 'browse-at-remote
+ "D" 'vc-root-diff
+ "L" 'vc-print-root-log
+ "P" 'vc-push
+ "d" 'vc-dir
+ "h" 'vc-region-history
+ "l" 'vc-print-log
+ "c" 'vc-revert
+ "v" 'vc-next-action
+ "SPC" 'diff-hl-mark-hunk
+ )
+
+(general-global-spc-menu-definer
+ "window" "w"
+ "o" 'other-window
+ "0" 'delete-window
+ "1" 'delete-other-windows
+ "2" 'my/split-below-and-move
+ "3" 'my/split-right-and-move
+ "w1" 'eyebrowse-switch-to-window-config-0
+ "w1" 'eyebrowse-switch-to-window-config-1
+ "w2" 'eyebrowse-switch-to-window-config-2
+ "w3" 'eyebrowse-switch-to-window-config-3
+ "w4" 'eyebrowse-switch-to-window-config-4
+ "w5" 'eyebrowse-switch-to-window-config-5
+ "w6" 'eyebrowse-switch-to-window-config-6
+ "w7" 'eyebrowse-switch-to-window-config-7
+ "w8" 'eyebrowse-switch-to-window-config-8
+ "w9" 'eyebrowse-switch-to-window-config-9
+ )
+
+(general-global-spc-menu-definer
+ "other-frame" "5"
+ "o" 'other-frame
+ "f" 'find-file-other-frame
+ "b" 'switch-to-buffer-other-frame
+ "0" 'delete-frame
+ "1" 'delete-other-frames
+ "d" 'dired-other-frame
+ )
+
+(general-global-spc-menu-definer
+ "magit" "g"
+ "g" 'magit-status
+ "i" 'magit-init
+ "c" 'magit-clone
+ )
+
+(general-global-spc-menu-definer
+ "zoom-zop" "z"
+ "a" 'zop-up-to-char
+ "z" 'zop-to-char
+ "x" 'zoom-window-zoom
+ )
+
+(general-global-spc-menu-definer
+ "run" "r"
+ "rr" 'quickrun
+ "rc" 'quickrun-compile-only
+ )
 
 (provide 'init-general)
