@@ -1031,7 +1031,7 @@ region-end is used."
  ("M-m [ e" . my/move-text-up)
  ("M-m ] e" . my/move-text-down))
 
-(defun my/replace-snale-case-with-camel-case (arg)
+(defun my/replace-snake-case-with-camel-case (arg)
   "Change snake case to camel case"
   (interactive "p")
   (if (> arg 0)
@@ -1046,7 +1046,7 @@ region-end is used."
 
 
 (bind-keys*
- ("M-m g C" . my/replace-next-underscore-with-camel))
+ ("M-m g C" . my/replace-snake-case-with-camel-case))
 
 (defun my/snakeify-current-word ()
   (interactive)
@@ -2321,12 +2321,13 @@ C-u C-u C-u M-x xah-cycle-letter-case -> Force capitalize."
 (bind-key "C-c h h c" (defhydra hydra-change-case (:color blue
                                                    :hint nil)
                         "
-_c_apitalize        _U_PCASE        _d_owncase        _<SPC>_ →Cap→UP→down→
+_c_apitalize     _C_ camel→snake→kebab      _U_PCASE        _d_owncase        _<SPC>_ →Cap→UP→down→
 "
                         ("c"     my/capitalize)
                         ("U"     my/upcase)
                         ("u"     my/upcase)
                         ("d"     my/downcase)
+                        ("C"     string-inflection-all-cycle :color red)
                         ("<SPC>" xah-cycle-letter-case :color red)
                         ("q"     nil "cancel" :color blue)))
 
