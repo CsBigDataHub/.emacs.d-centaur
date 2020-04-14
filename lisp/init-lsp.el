@@ -416,8 +416,14 @@ Return a list of strings as the completion candidates."
      :hook (python-mode . (lambda () (require 'lsp-python-ms)))
      :init
      (when (executable-find "python3")
-       (setq lsp-python-ms-python-executable-cmd "python3"
-             lsp-python-ms-executable "~/GitRepos/python-language-server/output/bin/Release/osx-x64/publish/Microsoft.Python.LanguageServer")))
+       (when sys/macp
+         (setq lsp-python-ms-python-executable-cmd "python3"
+               lsp-python-ms-executable "~/GitRepos/python-language-server/output/bin/Release/osx-x64/publish/Microsoft.Python.LanguageServer"))
+       (when sys/linuxp
+         (setq lsp-python-ms-python-executable-cmd "python3"
+               lsp-python-ms-executable "~/Documents/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"))
+       )
+     )
 
    ;; C/C++/Objective-C support
    ;; my-personal
