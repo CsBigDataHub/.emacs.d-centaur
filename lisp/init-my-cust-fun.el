@@ -2495,11 +2495,31 @@ It sets the transient map to all functions of ALIST."
                   '(("^" . enlarge-window)
                     ("6" . shrink-window))))
 
+(global-set-key (kbd "C-x {")
+                (def-rep-command
+                  '(("{" . enlarge-window-horizontally)
+                    ("}" . shrink-window-horizontally))))
+
+
 ;;; My repeat commands
 
 ;;; Dired copy or move to split window suggestions
 ;;https://emacs.stackexchange.com/questions/5603/how-to-quickly-copy-move-file-in-emacs-dired
 (setq dired-dwim-target t)
+
+;; hl-todos
+
+(setq hl-todo-keyword-faces
+      '(("TODO"   . "#cc9393")
+        ("FIXME"  . "#FF0000")
+        ("DONT"   . "#5f7f5f")
+        ("NOTES"  . "#d0bf8f")
+        ("HACK"   . "#d0bf8f")
+        ("TEMP"   . "#d0bf8f")
+        ("XXX+"   . "#cc9393")
+        ("DEBUG"  . "#A020F0")
+        ("GOTCHA" . "#FF4500")
+        ("STUB"   . "#1E90FF")))
 
 ;;Ispell
 (setq ispell-program-name "aspell")

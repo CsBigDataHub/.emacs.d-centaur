@@ -87,6 +87,7 @@ The prefix map is named 'my-DEF-map'."
 (general-global-spc-menu-definer
  "window" "w"
  "o" 'other-window
+ "s" 'ace-swap-window
  "0" 'delete-window
  "1" 'delete-other-windows
  "2" 'my/split-below-and-move
@@ -118,6 +119,7 @@ The prefix map is named 'my-DEF-map'."
  "g" 'magit-status
  "i" 'magit-init
  "c" 'magit-clone
+ "t" 'magit-todos-list
  )
 
 (general-global-spc-menu-definer
