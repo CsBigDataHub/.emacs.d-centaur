@@ -1774,6 +1774,15 @@ _SPC_ cancel	_o_nly this     _d_elete
                (message "%s" branch))
       (user-error "There is not current branch"))))
 
+(defun my/magit-copy-remte-url-to-kill-ring ()
+  "Show the current branch in the echo-area and add it to the `kill-ring'."
+  (interactive)
+  (let ((url (magit-git-string "remote" "get-url" "--push" (magit-get-remote))))
+    (if url
+        (progn (kill-new url)
+               (message "%s" url))
+      (user-error "There is not current branch"))))
+
 (defun get-point (symbol &optional arg)
   "get the point"
   (funcall symbol arg)
