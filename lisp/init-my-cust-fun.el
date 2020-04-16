@@ -1775,13 +1775,17 @@ _SPC_ cancel	_o_nly this     _d_elete
       (user-error "There is not current branch"))))
 
 (defun my/magit-copy-remte-url-to-kill-ring ()
-  "Show the current branch in the echo-area and add it to the `kill-ring'."
+  "Show the current remote url in the echo-area and add it to the `kill-ring'."
   (interactive)
-  (let ((url (magit-git-string "remote" "get-url" "--push" (magit-get-remote))))
+  (let ((url
+         (replace-regexp-in-string "com:" "com/"
+                                   (replace-regexp-in-string "^git@" "https://"
+                                                             (magit-git-string "remote" "get-url" "--push"
+                                                                               (magit-get-remote))))))
     (if url
         (progn (kill-new url)
                (message "%s" url))
-      (user-error "There is not current branch"))))
+      (user-error "There is not current remote URL in path. Is this buffer part of a Git repo?"))))
 
 (defun get-point (symbol &optional arg)
   "get the point"
