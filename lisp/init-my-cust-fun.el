@@ -2536,7 +2536,12 @@ It sets the transient map to all functions of ALIST."
 
 ;;Ispell
 (setq ispell-program-name "aspell")
-(setq ispell-extra-args '("--sug-mode=fast" "--lang=en_US" "--camel-case" "--run-together" "--run-together-limit=16"))
+(when sys/macp
+  (setq ispell-extra-args '("--sug-mode=fast" "--lang=en_US" "--camel-case" "--run-together" "--run-together-limit=16")))
+
+;;aspell in ubuntu is not updated 0.68.0, so removed camelcase
+(when sys/linuxp
+  (setq ispell-extra-args '("--sug-mode=fast" "--lang=en_US" "--run-together" "--run-together-limit=16")))
 
 ;;Ispell for camel-case
 ;; Spell Check
