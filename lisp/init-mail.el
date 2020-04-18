@@ -13,13 +13,9 @@
 (use-package mu4e-alert
   :ensure t)
 
-
 (mu4e-alert-set-default-style 'libnotify)
 (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
 (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
-
-
-
 
 ;;need this for hash access
 (require 'subr-x)
@@ -33,10 +29,14 @@
 (setq mu4e-get-mail-command "offlineimap"
       ;; mu4e-html2text-command "w3m -T text/html" ;;using the default mu4e-shr2text
       mu4e-view-prefer-html t
+      mu4e-headers-include-related t
+      mu4e-headers-skip-duplicates t
       mu4e-update-interval 180
       mu4e-headers-auto-update t
       mu4e-compose-signature-auto-include nil
       mu4e-compose-format-flowed t)
+
+;; (setq mu4e-html2text-command "html2text -utf8 -width 72") ;;using the default mu4e-shr2text
 
 ;; to view selected message in the browser, no signin, just html mail
 (add-to-list 'mu4e-view-actions
@@ -104,10 +104,30 @@
 ;; don't keep message buffers around
 (setq message-kill-buffer-on-exit t)
 
-;; use 'fancy' non-ascii characters in various places in mu4e
-(setq mu4e-use-fancy-chars t)
+(add-hook 'message-send-hook
+          (lambda ()
+            (unless (yes-or-no-p "Sure you want to send this?")
+              (signal 'quit nil))))
 
-;; attempt to show images when viewing messages
-(setq mu4e-view-show-images t)
+(require 'gnus-dired)
+;; make the `gnus-dired-mail-buffers' function also work on
+;; message-mode derived modes, such as mu4e-compose-mode
+(defun gnus-dired-mail-buffers ()
+  "Return a list of active message buffers."
+  (let (buffers)
+    (save-current-buffer
+      (dolist (buffer (buffer-list t))
+        (set-buffer buffer)
+        (when (and (derived-mode-p 'message-mode)
+                   (null message-sent-message-via))
+          (push (buffer-name buffer) buffers))))
+    (nreverse buffers)))
+
+(setq gnus-dired-mail-mode 'mu4e-user-agent)
+(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+
+;; Then, mark the file(s) in dired you would like to attach and press
+;; C-c RET C-a, and you’ll be asked whether to attach them to an existing
+;; message, or create a new one.
 
 (provide 'init-mail)
