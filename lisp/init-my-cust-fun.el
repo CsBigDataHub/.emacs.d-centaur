@@ -822,7 +822,7 @@ point reaches the beginning or end of the buffer, stop there."
  ("M-m g A &"   . my/align-ampersand)
  ("M-m g A ,"   . my/align-comma)
  ("M-m g A \""  . my/align-quote-space)
- ("M-m g A      ." . my/align-dot)
+ ("M-m g A ."   . my/align-dot)
  ("M-m g A ="   . my/align-equals)
  ("M-m g A :"   . my/align-colon)
  ("M-m g A A"   . align-regexp))
