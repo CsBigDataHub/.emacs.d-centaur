@@ -2554,6 +2554,7 @@ It sets the transient map to all functions of ALIST."
 (global-set-key (kbd "s-O") 'ns-open-file-using-panel)
 (global-set-key (kbd "s-o") 'other-window)
 (global-set-key (kbd "s-0") 'delete-window)
+(global-set-key (kbd "M-/") 'company-dabbrev)
 ;;;
 
 (defun my/quit ()
