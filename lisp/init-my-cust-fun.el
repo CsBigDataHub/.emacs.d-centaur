@@ -822,7 +822,7 @@ point reaches the beginning or end of the buffer, stop there."
  ("M-m g A &"   . my/align-ampersand)
  ("M-m g A ,"   . my/align-comma)
  ("M-m g A \""  . my/align-quote-space)
- ("M-m g A      ." . my/align-dot)
+ ("M-m g A ."   . my/align-dot)
  ("M-m g A ="   . my/align-equals)
  ("M-m g A :"   . my/align-colon)
  ("M-m g A A"   . align-regexp))
@@ -1774,7 +1774,7 @@ _SPC_ cancel	_o_nly this     _d_elete
                (message "%s" branch))
       (user-error "There is not current branch"))))
 
-(defun my/magit-copy-remte-url-to-kill-ring ()
+(defun my/magit-copy-remote-url-to-kill-ring ()
   "Show the current remote url in the echo-area and add it to the `kill-ring'."
   (interactive)
   (let ((url
