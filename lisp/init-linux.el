@@ -31,24 +31,7 @@
    ("s-H-o" . other-window)
    ))
 
-(when sys/linuxp
-  (progn
-    (add-hook 'mu4e-headers-mode (lambda () (isolate-add-mode -1)))
-    (defun activate-mark-hook@set-transient-map ()
-      (unless (derived-mode-p 'mu4e-headers-mode)
-        (set-transient-map
-         (let ((map (make-sparse-keymap)))
-           (define-key map "a" #'isolate-quick-add)
-           (define-key map "A" #'isolate-long-add)
-           (define-key map "d" #'isolate-quick-delete)
-           (define-key map "D" #'isolate-long-delete)
-           (define-key map "c" #'isolate-quick-change)
-           (define-key map "C" #'isolate-long-change)
-           map)
-         #'region-active-p)))
-    (add-hook 'activate-mark-hook #'activate-mark-hook@set-transient-map)
-    )
-  )
+
 (when sys/linuxp
   (progn
     (menu-bar-mode 1)

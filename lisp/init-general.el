@@ -50,6 +50,8 @@ The prefix map is named 'my-DEF-map'."
        :which-key "messages-buffer")
  "S" '((lambda () (interactive) (switch-to-buffer "*scratch*"))
        :which-key "scratch-buffer")
+ "D" '((lambda () (interactive) (switch-to-buffer "*dashboard*"))
+       :which-key "dashboard-buffer")
  "TAB" '((lambda () (interactive) (switch-to-buffer nil))
          :which-key "other-buffer")
  )
@@ -121,6 +123,8 @@ The prefix map is named 'my-DEF-map'."
  "i" 'magit-init
  "c" 'magit-clone
  "t" 'magit-todos-list
+ "Cr" 'my/magit-copy-remote-url-to-kill-ring
+ "Cb" 'my/magit-copy-branch-name-to-kill-ring
  )
 
 (general-global-spc-menu-definer

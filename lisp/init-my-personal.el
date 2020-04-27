@@ -183,16 +183,19 @@ happens within a region if one is selected."
   :config
   (progn
     (defun activate-mark-hook@set-transient-map ()
-      (set-transient-map
-       (let ((map (make-sparse-keymap)))
-         (define-key map "a" #'isolate-quick-add)
-         (define-key map "A" #'isolate-long-add)
-         (define-key map "d" #'isolate-quick-delete)
-         (define-key map "D" #'isolate-long-delete)
-         (define-key map "c" #'isolate-quick-change)
-         (define-key map "C" #'isolate-long-change)
-         map)
-       #'region-active-p))
+      (unless (progn
+                (derived-mode-p 'mu4e-headers-mode)
+                (derived-mode-p 'magit-mode))
+        (set-transient-map
+         (let ((map (make-sparse-keymap)))
+           (define-key map "a" #'isolate-quick-add)
+           (define-key map "A" #'isolate-long-add)
+           (define-key map "d" #'isolate-quick-delete)
+           (define-key map "D" #'isolate-long-delete)
+           (define-key map "c" #'isolate-quick-change)
+           (define-key map "C" #'isolate-long-change)
+           map)
+         #'region-active-p)))
 
     (add-hook 'activate-mark-hook #'activate-mark-hook@set-transient-map)
     ))
