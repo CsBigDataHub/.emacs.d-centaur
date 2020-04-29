@@ -1112,6 +1112,18 @@ point reaches the beginning or end of the buffer, stop there."
                       (set-window-configuration wnd))))
       (error "no more than 2 files should be marked"))))
 
+(defvar dired-compress-files-alist
+  '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")
+    ("\\.zip\\'" . "zip %o -r --filesync %i"))
+  "Control the compression shell command for `dired-do-compress-to'.
+
+Each element is (REGEXP . CMD), where REGEXP is the name of the
+archive to which you want to compress, and CMD the the
+corresponding command.
+
+Within CMD, %i denotes the input file(s), and %o denotes the
+output file. %i path(s) are relative, while %o is absolute.")
+
 ;;Hydra for Dired
 (defhydra my/hydra-dired (:hint nil :color pink)
   "
@@ -1123,12 +1135,12 @@ _R_ename-or-move   _M_ chmod                    _t_oggle           _g_ revert bu
 _Y_ rel symlink    _G_ chgrp                    _E_xtension mark   _s_ort
 _S_ymlink          _fc_ copy-file-name          _F_ind marked      _._ toggle hydra
 _r_sync            _fp_ copy-file-name-path     _I_ Git Info       ^ ^                  _?_ summary
-_z_ compress-file  _A_ find regexp              _<return>_ Dired-find-file
+_z_ compress-to    _A_ find regexp              _<return>_ Dired-find-file
 _Z_ compress       _Q_ repl regexp              ^        ^
 
 T - tag prefix
 "
- ;;("\\" dired-do-ispell)
+  ;;("\\" dired-do-ispell)
   ("n" dired-narrow)
   ("(" dired-hide-details-mode)
   (")" dired-omit-mode)
@@ -1168,7 +1180,7 @@ T - tag prefix
   ("fc" dired-copy-filename-as-kill)
   ("fp" dired-copy-file-path-as-kill)
   ("Y" dired-do-relsymlink)
-  ("z" diredp-compress-this-file)
+  ("z" dired-do-compress-to)
   ("Z" dired-do-compress)
   ("<return>" dired-find-file)
   ("q" nil)
