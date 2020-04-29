@@ -139,7 +139,8 @@
         ;;my-personal-config
         ;; Overright this method to get candidate numbers in company box
         (defun company-box--render-buffer (string)
-          (let ((selection company-selection))
+          (let ((selection company-selection)
+                (common company-common))
             (with-current-buffer (company-box--get-buffer)
               (erase-buffer)
               (insert string "\n")
@@ -152,7 +153,7 @@
               (setq-local scroll-margin  0)
               (setq-local scroll-preserve-screen-position t)
               (add-hook 'window-configuration-change-hook 'company-box--prevent-changes t t)
-              (company-box--update-line selection))))
+              (company-box--update-line selection common))))
         ;; my-personal-config
 
         ;; Prettify icons
