@@ -100,7 +100,7 @@
     (progn
       ;; place the language-tool directory in $HOME
       (setq langtool-language-tool-jar
-            "/usr/local/Cellar/languagetool/4.9/libexec/languagetool-commandline.jar")
+            "/usr/local/Cellar/languagetool/4.9.1/libexec/languagetool-commandline.jar")
       (setq langtool-java-bin "/Users/ckoneru/.sdkman/candidates/java/8.0.232.j9-adpt/bin/java")
       (setq langtool-bin "/usr/local/bin/languagetool")
       (setq langtool-default-language "en-US")
