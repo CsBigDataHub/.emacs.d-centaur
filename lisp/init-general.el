@@ -61,6 +61,8 @@ The prefix map is named 'my-DEF-map'."
  "c" '(:ignore t :which-key "copy")
  "cc" 'my/put-current-filename-to-clipboard
  "cp" 'my/put-current-path-to-clipboard
+ "dd" 'counsel-fd-dired-jump
+ "df" 'counsel-fd-file-jump
  "f" 'counsel-find-file
  "z" 'counsel-fzf
  "p" 'counsel-projectile

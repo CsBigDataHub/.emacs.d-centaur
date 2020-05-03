@@ -200,6 +200,10 @@ happens within a region if one is selected."
     (add-hook 'activate-mark-hook #'activate-mark-hook@set-transient-map)
     ))
 
+(use-package counsel-fd
+  :bind (("C-c c d d" . counsel-fd-dired-jump)
+         ("C-c c d f" . counsel-fd-file-jump)))
+
 (use-package region-convert
   :bind
   ("C-c C" . region-convert)
