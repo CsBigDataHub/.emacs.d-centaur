@@ -362,8 +362,8 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
            "* Note %? %^g \n%T")
           ("l" "Link" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/links.org" "Links")
            "* %a %^g\n %?\n %T\n %i" :prepend t :empty-lines 1)
-          ("t" "To Do Item" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/todos.org" "To Do Items")
-           "* %?\n%T" :prepend t)
+          ("t" "To-Do-Item" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/todos.org" "To Do Items")
+           "* TODO %?\n  %i\n  %a" :prepend t)
           )))
 
 (defadvice org-capture-finalize
