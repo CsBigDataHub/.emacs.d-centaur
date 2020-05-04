@@ -33,7 +33,8 @@
 (require 'init-const)
 
 (use-package org
-  :ensure nil
+  ;; :ensure nil
+  :ensure org-plus-contrib ;; My-personal-config
   :custom-face (org-ellipsis ((t (:foreground nil))))
   :preface
   (defun hot-expand (str &optional mod)
@@ -351,6 +352,51 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 ;;;; my latex function
 
 (use-package org-web-tools)
+
+(global-set-key (kbd "C-c c c") 'org-capture)
+
+(when sys/macp
+  (setq org-capture-templates
+        '(
+          ("n" "Note" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/notes.org" "Notes")
+           "* Note %? %^g \n%T")
+          ("l" "Link" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/links.org" "Links")
+           "* %a %^g\n %?\n %T\n %i" :prepend t :empty-lines 1)
+          ("t" "To Do Item" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/todos.org" "To Do Items")
+           "* %?\n%T" :prepend t)
+          )))
+
+(defadvice org-capture-finalize
+    (after delete-capture-frame activate)
+  "Advise capture-finalize to close the frame"
+  (if (equal "capture" (frame-parameter nil 'name))
+      (delete-frame)))
+
+(defadvice org-capture-destroy
+    (after delete-capture-frame activate)
+  "Advise capture-destroy to close the frame"
+  (if (equal "capture" (frame-parameter nil 'name))
+      (delete-frame)))
+
+(use-package noflet)
+
+(defun make-capture-frame ()
+  "Create a new frame and run org-capture."
+  (interactive)
+  (make-frame '((name . "capture")))
+  (select-frame-by-name "capture")
+  (delete-other-windows)
+  (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
+          (org-capture)))
+
+(require 'org-protocol)
+
+;; for org-protocol if using mac go though - it is a little outdated
+;;                    https://blog.aaronbieber.com/2016/11/24/org-capture-from-anywhere-on-your-mac.html
+;;                    But use - https://github.com/aaronbieber/org-protocol-handler
+
+;; for linux go through -
+;;                    https://cestlaz.github.io/post/using-emacs-70-org-protocol/
 
 ;;;;; my personal modification end here
 ;; org-roam
