@@ -391,6 +391,20 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 
 (require 'org-protocol)
 
+(setq org-html-html5-fancy t
+      org-html-doctype "html5")
+
+;; Minted is a latex package used to wrap text
+;; this is used when exporting org file to pdf
+(setq org-latex-listings 'minted
+      org-latex-packages-alist '(("" "minted"))
+      org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+(setq org-latex-minted-options '(("breaklines" "true")
+                                 ("breakanywhere" "true")))
+
 ;; for org-protocol if using mac go though - it is a little outdated
 ;;                    https://blog.aaronbieber.com/2016/11/24/org-capture-from-anywhere-on-your-mac.html
 ;;                    But use - https://github.com/aaronbieber/org-protocol-handler
