@@ -353,6 +353,13 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 
 (use-package org-web-tools)
 
+;; for org-protocol if using mac go though - it is a little outdated
+;;                    https://blog.aaronbieber.com/2016/11/24/org-capture-from-anywhere-on-your-mac.html
+;;                    But use - https://github.com/aaronbieber/org-protocol-handler
+
+;; for linux go through -
+;;                    https://cestlaz.github.io/post/using-emacs-70-org-protocol/
+
 (global-set-key (kbd "C-c c c") 'org-capture)
 
 (when sys/macp
@@ -404,13 +411,6 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 
 (setq org-latex-minted-options '(("breaklines" "true")
                                  ("breakanywhere" "true")))
-
-;; for org-protocol if using mac go though - it is a little outdated
-;;                    https://blog.aaronbieber.com/2016/11/24/org-capture-from-anywhere-on-your-mac.html
-;;                    But use - https://github.com/aaronbieber/org-protocol-handler
-
-;; for linux go through -
-;;                    https://cestlaz.github.io/post/using-emacs-70-org-protocol/
 
 ;;;;; my personal modification end here
 ;; org-roam
