@@ -407,6 +407,7 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
       org-latex-packages-alist '(("" "minted"))
       org-latex-pdf-process
       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
 (setq org-latex-minted-options '(("breaklines" "true")
