@@ -1087,6 +1087,599 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key [remap move-beginning-of-line]
                 'my/smarter-move-beginning-of-line)
 
+(defun xah-change-file-line-ending-style (@files @style)
+  "Change current file or dired marked file's newline convention.
+
+When called non-interactively, *style is one of 'unix 'dos 'mac or any of accepted emacs coding system. See `list-coding-systems'.
+
+URL `http://ergoemacs.org/emacs/elisp_convert_line_ending.html'
+Version 2016-10-16"
+  (interactive
+   (list
+    (if (eq major-mode 'dired-mode )
+        (dired-get-marked-files)
+      (list (buffer-file-name)))
+    (ido-completing-read "Line ending:" '("Linux/MacOSX/Unix" "MacOS9" "Windows") "PREDICATE" "REQUIRE-MATCH")))
+  (let* (
+         ($codingSystem
+          (cond
+           ((equal @style "Linux/MacOSX/Unix") 'unix)
+           ((equal @style "MacOS9") 'mac)
+           ((equal @style "Windows") 'dos)
+           (t (error "code logic error 65327. Expect one of it." )))))
+    (mapc
+     (lambda (x) (xah-convert-file-coding-system x $codingSystem))
+     @files)))
+
+(defun xah-convert-file-coding-system (@fpath @coding-system)
+  "Convert file's encoding.
+ *fpath is full path to file.
+ *coding-system is one of 'unix 'dos 'mac or any of accepted emacs coding system. See `list-coding-systems'.
+
+If the file is already opened, it will be saved after this command.
+
+URL `http://ergoemacs.org/emacs/elisp_convert_line_ending.html'
+Version 2015-07-24"
+  (let ($buffer
+        ($bufferOpened-p (get-file-buffer @fpath)))
+    (if $bufferOpened-p
+        (with-current-buffer $bufferOpened-p
+          (set-buffer-file-coding-system @coding-system)
+          (save-buffer))
+      (progn
+        (setq $buffer (find-file @fpath))
+        (set-buffer-file-coding-system @coding-system)
+        (save-buffer)
+        (kill-buffer $buffer)))))
+
+(defun xah-new-empty-buffer ()
+  "Create a new empty buffer.
+New buffer will be named “untitled” or “untitled<2>”, “untitled<3>”, etc.
+
+It returns the buffer (for elisp programing).
+
+URL `http://ergoemacs.org/emacs/emacs_new_empty_buffer.html'
+Version 2017-11-01"
+  (interactive)
+  (let (($buf (generate-new-buffer "untitled")))
+    (switch-to-buffer $buf)
+    (funcall initial-major-mode)
+    (setq buffer-offer-save t)
+    $buf
+    ))
+
+(defun xah-dired-rename-space-to-hyphen ()
+  "In dired, rename current or marked files by replacing space to hyphen -.
+If not in `dired', do nothing.
+URL `http://ergoemacs.org/emacs/elisp_dired_rename_space_to_underscore.html'
+Version 2019-11-24"
+  (interactive)
+  (require 'dired-aux)
+  (if (eq major-mode 'dired-mode)
+      (progn
+        (mapc (lambda (x)
+                (when (string-match " " x )
+                  (dired-rename-file x (replace-regexp-in-string " " "-" x) nil)))
+              (dired-get-marked-files ))
+        (revert-buffer))
+    (user-error "Not in dired")))
+
+(defun xah-dired-rename-space-to-underscore ()
+  "In dired, rename current or marked files by replacing space to underscore _.
+If not in `dired', do nothing.
+URL `http://ergoemacs.org/emacs/elisp_dired_rename_space_to_underscore.html'
+Version 2017-01-02"
+  (interactive)
+  (require 'dired-aux)
+  (if (equal major-mode 'dired-mode)
+      (progn
+        (mapc (lambda (x)
+                (when (string-match " " x )
+                  (dired-rename-file x (replace-regexp-in-string " " "_" x) nil)))
+              (dired-get-marked-files ))
+        (revert-buffer))
+    (user-error "Not in dired.")))
+
+(progn
+  (require 'dired )
+  (define-key dired-mode-map (kbd "_") 'xah-dired-rename-space-to-underscore)
+  (define-key dired-mode-map (kbd "-") 'xah-dired-rename-space-to-hyphen)
+  ;;
+  )
+
+(defun xah-space-to-newline ()
+  "Replace space sequence to a newline char.
+Works on current block or selection.
+
+   cat dog cow - becomes -  cat
+                            dog
+                            cow
+
+URL `http://ergoemacs.org/emacs/emacs_space_to_newline.html'
+Version 2017-08-19"
+  (interactive)
+  (let* ( $p1 $p2 )
+    (if (use-region-p)
+        (progn
+          (setq $p1 (region-beginning))
+          (setq $p2 (region-end)))
+      (save-excursion
+        (if (re-search-backward "\n[ \t]*\n" nil "move")
+            (progn (re-search-forward "\n[ \t]*\n")
+                   (setq $p1 (point)))
+          (setq $p1 (point)))
+        (re-search-forward "\n[ \t]*\n" nil "move")
+        (skip-chars-backward " \t\n" )
+        (setq $p2 (point))))
+    (save-excursion
+      (save-restriction
+        (narrow-to-region $p1 $p2)
+        (goto-char (point-min))
+        (while (re-search-forward " +" nil t)
+          (replace-match "\n" ))))))
+
+(defun xah-quote-lines ()
+  "Change current text block's lines to quoted lines with comma or other separator char.
+When there is a text selection, act on the selection, else, act on a text block separated by blank lines.
+
+For example,
+
+ cat
+ dog
+ cow
+
+becomes
+
+ \"cat\",
+ \"dog\",
+ \"cow\",
+
+or
+
+ (cat)
+ (dog)
+ (cow)
+
+If the delimiter is any left bracket, the end delimiter is automatically the matching bracket.
+
+URL `http://ergoemacs.org/emacs/emacs_quote_lines.html'
+Version 2017-01-08"
+  (interactive)
+  (let* (
+         $p1
+         $p2
+         ($quoteToUse
+          (read-string
+           "Quote to use:" "\"" nil
+           '(
+             ""
+             "\""
+             "'"
+             "("
+             "{"
+             "["
+             )))
+         ($separator
+          (read-string
+           "line separator:" "," nil
+           '(
+             ""
+             ","
+             ";"
+             )))
+         ($beginQuote $quoteToUse)
+         ($endQuote
+          ;; if begin quote is a bracket, set end quote to the matching one. else, same as begin quote
+          (let (($syntableValue (aref (syntax-table) (string-to-char $beginQuote))))
+            (if (eq (car $syntableValue ) 4) ; ; syntax table, code 4 is open paren
+                (char-to-string (cdr $syntableValue))
+              $quoteToUse
+              ))))
+    (if (use-region-p)
+        (progn
+          (setq $p1 (region-beginning))
+          (setq $p2 (region-end)))
+      (progn
+        (if (re-search-backward "\n[ \t]*\n" nil "NOERROR")
+            (progn (re-search-forward "\n[ \t]*\n")
+                   (setq $p1 (point)))
+          (setq $p1 (point)))
+        (re-search-forward "\n[ \t]*\n" nil "NOERROR")
+        (skip-chars-backward " \t\n" )
+        (setq $p2 (point))))
+    (save-excursion
+      (save-restriction
+        (narrow-to-region $p1 $p2)
+        (goto-char (point-min))
+        (skip-chars-forward "\t ")
+        (insert $beginQuote)
+        (goto-char (point-max))
+        (insert $endQuote)
+        (goto-char (point-min))
+        (while (re-search-forward "\n\\([\t ]*\\)" nil "NOERROR" )
+          (replace-match
+           (concat $endQuote $separator (concat "\n" (match-string 1)) $beginQuote) "FIXEDCASE" "LITERAL"))
+        ;;
+        ))))
+
+
+(defun xah-make-backup ()
+  "Make a backup copy of current file or dired marked files.
+If in dired, backup current file or marked files.
+The backup file name is in this format
+ x.html~2018-05-15_133429~
+ The last part is hour, minutes, seconds.
+in the same dir. If such a file already exist, it's overwritten.
+If the current buffer is not associated with a file, nothing's done.
+
+URL `http://ergoemacs.org/emacs/elisp_make-backup.html'
+Version 2018-05-15"
+  (interactive)
+  (let (($fname (buffer-file-name))
+        ($date-time-format "%Y-%m-%d_%H%M%S"))
+    (if $fname
+        (let (($backup-name
+               (concat $fname "~" (format-time-string $date-time-format) "~")))
+          (copy-file $fname $backup-name t)
+          (message (concat "Backup saved at: " $backup-name)))
+      (if (string-equal major-mode "dired-mode")
+          (progn
+            (mapc (lambda ($x)
+                    (let (($backup-name
+                           (concat $x "~" (format-time-string $date-time-format) "~")))
+                      (copy-file $x $backup-name t)))
+                  (dired-get-marked-files))
+            (message "marked files backed up"))
+        (user-error "buffer not file nor dired")))))
+
+(defun xah-make-backup-and-save ()
+  "Backup of current file and save, or backup dired marked files.
+For detail, see `xah-make-backup'.
+If the current buffer is not associated with a file nor dired, nothing's done.
+URL `http://ergoemacs.org/emacs/elisp_make-backup.html'
+Version 2015-10-14"
+  (interactive)
+  (if (buffer-file-name)
+      (progn
+        (xah-make-backup)
+        (when (buffer-modified-p)
+          (save-buffer)))
+    (progn
+      (xah-make-backup))))
+
+
+(defun xah-open-in-external-app (&optional @fname)
+  "Open the current file or dired marked files in external app.
+The app is chosen from your OS's preference.
+
+When called in emacs lisp, if @fname is given, open that.
+
+URL `http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html'
+Version 2019-11-04"
+  (interactive)
+  (let* (
+         ($file-list
+          (if @fname
+              (progn (list @fname))
+            (if (string-equal major-mode "dired-mode")
+                (dired-get-marked-files)
+              (list (buffer-file-name)))))
+         ($do-it-p (if (<= (length $file-list) 5)
+                       t
+                     (y-or-n-p "Open more than 5 files? "))))
+    (when $do-it-p
+      (cond
+       ((string-equal system-type "windows-nt")
+        (mapc
+         (lambda ($fpath)
+           (w32-shell-execute "open" $fpath)) $file-list))
+       ((string-equal system-type "darwin")
+        (mapc
+         (lambda ($fpath)
+           (shell-command
+            (concat "open " (shell-quote-argument $fpath))))  $file-list))
+       ((string-equal system-type "gnu/linux")
+        (mapc
+         (lambda ($fpath) (let ((process-connection-type nil))
+                       (start-process "" nil "xdg-open" $fpath))) $file-list))))))
+
+(defun xah-show-in-file-manager ()
+  "Show current file in desktop.
+ (Mac Finder, Windows Explorer, Linux file manager)
+ This command can be called when in a file or in `dired'.
+
+URL `http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html'
+Version 2020-02-13"
+  (interactive)
+  (let (($path (if (buffer-file-name) (buffer-file-name)
+                 (shell-quote-argument default-directory))))
+    (cond
+     ((string-equal system-type "windows-nt")
+      (w32-shell-execute "open" default-directory))
+     ((string-equal system-type "darwin")
+      (if (eq major-mode 'dired-mode)
+          (let (($files (dired-get-marked-files )))
+            (if (eq (length $files) 0)
+                (shell-command (concat "open " (shell-quote-argument default-directory)))
+              (shell-command (concat "open -R " (shell-quote-argument (car (dired-get-marked-files )))))))
+        (shell-command
+         (concat "open -R " $path))))
+     ((string-equal system-type "gnu/linux")
+      (let (
+            (process-connection-type nil)
+            (openFileProgram (if (file-exists-p "/usr/bin/gvfs-open")
+                                 "/usr/bin/gvfs-open"
+                               "/usr/bin/xdg-open")))
+        (start-process "" nil openFileProgram $path))
+      ;; (shell-command "xdg-open .") ;; 2013-02-10 this sometimes froze emacs till the folder is closed. eg with nautilus
+      ))))
+
+(defun xah-open-in-vscode ()
+  "Open current file or dir in vscode.
+
+URL `http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html'
+Version 2020-02-13"
+  (interactive)
+  (let (($path (if (buffer-file-name) (buffer-file-name) (expand-file-name default-directory ) )))
+    (message "path is %s" $path)
+    (cond
+     ((string-equal system-type "darwin")
+      (shell-command (format "open -a Visual\\ Studio\\ Code.app \"%s\"" $path)))
+     ((string-equal system-type "windows-nt")
+      (shell-command (format "Code \"%s\"" $path)))
+     ((string-equal system-type "gnu/linux")
+      (shell-command (format "code \"%s\"" $path))))))
+
+(defun xah-open-in-terminal ()
+  "Open the current dir in a new terminal window.
+URL `http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html'
+Version 2020-03-05"
+  (interactive)
+  (cond
+   ((string-equal system-type "windows-nt")
+    (let ((process-connection-type nil))
+      (start-process "" nil "powershell" "start-process" "powershell"  "-workingDirectory" default-directory)))
+   ((string-equal system-type "darwin")
+    (let ((process-connection-type nil))
+      (if (file-exists-p "/System/Applications/")
+          (start-process "" nil "/System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal" default-directory)
+        (start-process "" nil "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal" default-directory))))
+   ((string-equal system-type "gnu/linux")
+    (let ((process-connection-type nil))
+      (start-process "" nil "x-terminal-emulator"
+                     (concat "--working-directory=" default-directory))))))
+
+(when sys/macp
+  (defun xah-open-in-textedit ()
+    "Open the current file or `dired' marked files in Mac's TextEdit.
+This command is for macOS only.
+
+this is great for spell checking! just open it in TextEdit, and you get all misspelled words highlighted automatically. In emacs, it's 10 times slower and doesn't work well.
+URL `http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html'
+Version 2017-11-21"
+    (interactive)
+    (let* (
+           ($file-list
+            (if (string-equal major-mode "dired-mode")
+                (dired-get-marked-files)
+              (list (buffer-file-name))))
+           ($do-it-p (if (<= (length $file-list) 5)
+                         t
+                       (y-or-n-p "Open more than 5 files? "))))
+      (when $do-it-p
+        (cond
+         ((string-equal system-type "darwin")
+          (mapc
+           (lambda ($fpath)
+             (shell-command
+              (format "open -a TextEdit.app \"%s\"" $fpath))) $file-list)))))))
+
+(defun xah-html-open-in-chrome-browser ()
+  "Open the current file or `dired' marked files in Google Chrome browser.
+Work in Windows, macOS, linux.
+URL `http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html'
+Version 2019-11-10"
+  (interactive)
+  (let* (
+         ($file-list
+          (if (string-equal major-mode "dired-mode")
+              (dired-get-marked-files)
+            (list (buffer-file-name))))
+         ($do-it-p (if (<= (length $file-list) 5)
+                       t
+                     (y-or-n-p "Open more than 5 files? "))))
+    (when $do-it-p
+      (cond
+       ((string-equal system-type "darwin")
+        (mapc
+         (lambda ($fpath)
+           (shell-command
+            (format "open -a /Applications/Google\\ Chrome.app \"%s\"" $fpath)))
+         $file-list))
+       ((string-equal system-type "windows-nt")
+        ;; "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" 2019-11-09
+        (let ((process-connection-type nil))
+          (mapc
+           (lambda ($fpath)
+             (start-process "" nil "powershell" "start-process" "chrome" $fpath ))
+           $file-list)))
+       ((string-equal system-type "gnu/linux")
+        (mapc
+         (lambda ($fpath)
+           (shell-command (format "google-chrome-stable \"%s\"" $fpath)))
+         $file-list))))))
+
+(defun xah-html-open-link-in-chrome ()
+  "Open url under cursor in Google Chrome.
+Work in Windows, macOS, linux.
+Version 2019-11-10"
+  (interactive)
+  (let* (($inputStr
+          (if (use-region-p)
+              (buffer-substring-no-properties (region-beginning) (region-end))
+            (let ($p0 $p1 $p2
+                      ($pathStops "^  \t\n\"`'‘’“”|[]{}「」<>〔〕〈〉《》【】〖〗«»‹›❮❯❬❭〘〙·。\\"))
+              (setq $p0 (point))
+              (skip-chars-backward $pathStops)
+              (setq $p1 (point))
+              (goto-char $p0)
+              (skip-chars-forward $pathStops)
+              (setq $p2 (point))
+              (goto-char $p0)
+              (buffer-substring-no-properties $p1 $p2))))
+         ($path
+          (replace-regexp-in-string
+           "^file:///" "/"
+           (replace-regexp-in-string
+            ":\\'" "" $inputStr))))
+    (cond
+     ((string-equal system-type "darwin")
+      (shell-command (format "open -a Google\\ Chrome.app \"%s\"" $path)))
+     ((string-equal system-type "windows-nt")
+      ;; "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" 2019-11-09
+      (let ((process-connection-type nil))
+        (start-process "" nil "powershell" "start-process" "chrome" $path )))
+     ((string-equal system-type "gnu/linux")
+      (shell-command (format "google-chrome-stable \"%s\"" $path))))))
+
+
+(defun xah-html-open-link-in-firefox (&optional @fullpath)
+  "open url under cursor in Firefox browser.
+Work in Windows, macOS. 2019-11-09 linux not yet.
+Version 2019-11-09"
+  (interactive)
+  (let ($path)
+    (if @fullpath
+        (progn (setq $path @fullpath))
+      (let (($inputStr
+             (if (use-region-p)
+                 (buffer-substring-no-properties (region-beginning) (region-end))
+               (let ($p0 $p1 $p2
+                         ($pathStops "^  \t\n\"`'‘’“”|[]{}「」<>〔〕〈〉《》【】〖〗«»‹›❮❯❬❭〘〙·。\\"))
+                 (setq $p0 (point))
+                 (skip-chars-backward $pathStops)
+                 (setq $p1 (point))
+                 (goto-char $p0)
+                 (skip-chars-forward $pathStops)
+                 (setq $p2 (point))
+                 (goto-char $p0)
+                 (buffer-substring-no-properties $p1 $p2)))))
+        (setq $path (replace-regexp-in-string
+                     "^file:///" "/"
+                     (replace-regexp-in-string
+                      ":\\'" "" $inputStr)))))
+    (cond
+     ((string-equal system-type "darwin")
+      (shell-command (format "open -a 'Firefox.app' \"%s\"" $path)))
+     ((string-equal system-type "windows-nt")
+      ;; "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" 2019-11-09
+      (let ((process-connection-type nil))
+        (start-process "" nil "powershell" "start-process" "firefox" $path )))
+     ((string-equal system-type "gnu/linux")
+      (shell-command (format "firefox \"%s\"" $path))))))
+
+(when sys/linuxp
+  (defun xah-html-open-in-brave ()
+    "Open the current file or `dired' marked files in Brave browser.
+If the file is not saved, save it first.
+Version 2019-11-10"
+    (interactive)
+    (let* (
+           ($file-list
+            (if (string-equal major-mode "dired-mode")
+                (dired-get-marked-files)
+              (list (buffer-file-name))))
+           ($do-it-p (if (<= (length $file-list) 5)
+                         t
+                       (y-or-n-p "Open more than 5 files? "))))
+      (when $do-it-p
+        (cond
+         ((string-equal system-type "darwin")
+          (mapc
+           (lambda ($fpath)
+             (shell-command (format "open -a 'Brave Browser.app' \"%s\"" $fpath)))
+           $file-list))
+         ((string-equal system-type "windows-nt")
+          ;; "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" 2019-11-09
+          (let ((process-connection-type nil))
+            (mapc
+             (lambda ($fpath)
+               (start-process "" nil "powershell" "start-process" "brave" $fpath ))
+             $file-list)))
+         ((string-equal system-type "gnu/linux")
+          (mapc
+           (lambda ($fpath)
+             (shell-command (format "brave \"%s\"" $fpath)))
+           $file-list)))))))
+
+(when sys/linuxp
+  (defun xah-html-open-link-in-brave (&optional @fullpath)
+    "open url under cursor in Brave browser.
+Work in Mac OS only
+Version 2019-02-17"
+    (interactive)
+    (let ($path)
+      (if @fullpath
+          (progn (setq $path @fullpath))
+        (let (($inputStr
+               (if (use-region-p)
+                   (buffer-substring-no-properties (region-beginning) (region-end))
+                 (let ($p0 $p1 $p2
+                           ($pathStops "^  \t\n\"`'‘’“”|[]{}「」<>〔〕〈〉《》【】〖〗«»‹›❮❯❬❭〘〙·。\\"))
+                   (setq $p0 (point))
+                   (skip-chars-backward $pathStops)
+                   (setq $p1 (point))
+                   (goto-char $p0)
+                   (skip-chars-forward $pathStops)
+                   (setq $p2 (point))
+                   (goto-char $p0)
+                   (buffer-substring-no-properties $p1 $p2)))))
+          (setq $path (replace-regexp-in-string
+                       "^file:///" "/"
+                       (replace-regexp-in-string
+                        ":\\'" "" $inputStr)))))
+      (cond
+       ((string-equal system-type "darwin")
+        (shell-command (format "open -a 'Brave Browser.app' \"%s\"" $path)))
+       ((string-equal system-type "windows-nt")
+        ;; "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" 2019-11-09
+        (let ((process-connection-type nil))
+          (start-process "" nil "powershell" "start-process" "brave" $path )))
+       ((string-equal system-type "gnu/linux")
+        (shell-command (format "brave \"%s\"" $path)))))))
+
+(when sys/macp
+  (defun xah-open-in-safari ()
+    "Open the current file or `dired' marked files in Mac's Safari browser.
+
+If the file is not saved, save it first.
+
+URL `http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html'
+Version 2018-02-26"
+    (interactive)
+    (let* (
+           ($file-list
+            (if (string-equal major-mode "dired-mode")
+                (dired-get-marked-files)
+              (list (buffer-file-name))))
+           ($do-it-p (if (<= (length $file-list) 5)
+                         t
+                       (y-or-n-p "Open more than 5 files? "))))
+      (when $do-it-p
+        (cond
+         ((string-equal system-type "darwin")
+          (mapc
+           (lambda ($fpath)
+             (when (buffer-modified-p )
+               (save-buffer))
+             (shell-command
+              (format "open -a Safari.app \"%s\"" $fpath))) $file-list)))))))
+
+
+
+
+
+
 (defun dired-copy-file-path-as-kill ()
   "Copy the current buffer file name to the clipboard."
   (interactive)
@@ -2601,5 +3194,15 @@ are defining or executing a macro."
 ;;;;;; Use this if you need it
   ;;;; Define f5 as an alias for C-x r
 ;; (global-set-key (kbd "<f5>") (lookup-key global-map (kbd "C-x r")))
+
+
+;;Aliases
+                                        ; minor modes
+;;(defalias 'wsm 'whitespace-mode)
+;;(defalias 'gwsm 'global-whitespace-mode)
+;;(defalias 'vlm 'visual-line-mode)
+;;(defalias 'ln 'global-display-line-numbers-mode)
+(defalias 'flm font-lock-mode)
+
 
 (provide 'init-my-cust-fun)

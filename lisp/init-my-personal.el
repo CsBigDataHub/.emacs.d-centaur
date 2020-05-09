@@ -178,6 +178,8 @@ happens within a region if one is selected."
 
 (use-package sort-words)
 
+(use-package package-lint)
+
 (use-package isolate
   :demand
   :config
@@ -203,6 +205,11 @@ happens within a region if one is selected."
 (use-package counsel-fd
   :bind (("C-c c d d" . counsel-fd-dired-jump)
          ("C-c c d f" . counsel-fd-file-jump)))
+
+(use-package gcmh
+  :config
+  (gcmh-mode 1)
+  )
 
 (use-package region-convert
   :bind

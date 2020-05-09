@@ -73,6 +73,7 @@
          (proto (if no-ssl "http" "https")))
     `(,(cons 'melpa
              `(,(cons "gnu"   (concat proto "://elpa.gnu.org/packages/"))
+               ,(cons "org"   (concat proto "://orgmode.org/elpa/")) ;; my-personal
                ,(cons "melpa" (concat proto "://melpa.org/packages/"))))
       ,(cons 'melpa-mirror
              `(,(cons "gnu"   (concat proto "://elpa.gnu.org/packages/"))
