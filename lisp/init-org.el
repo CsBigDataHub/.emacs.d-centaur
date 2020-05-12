@@ -365,11 +365,11 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 (when sys/macp
   (setq org-capture-templates
         '(
-          ("n" "Note" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/notes.org" "Notes")
+          ("n" "📖  Note" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/notes.org" "Notes")
            "* Note %? %^g \n%T")
-          ("l" "Link" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/links.org" "Links")
+          ("l" "🌐   Link" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/links.org" "Links")
            "* %a %^g\n %?\n %T\n %i" :prepend t :empty-lines 1)
-          ("t" "To-Do-Item" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/todos.org" "To Do Items")
+          ("t" "✔   To-Do-Item" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/todos.org" "To Do Items")
            "* TODO %?\n  %i\n  %a" :prepend t)
           )))
 

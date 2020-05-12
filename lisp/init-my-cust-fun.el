@@ -817,6 +817,18 @@ point reaches the beginning or end of the buffer, stop there."
   (align-regexp start end
                 "\\(\\s-*\\):" 1 0 t))
 
+(defun counsel-goto-recent-directory ()
+  "Open recent directory with dired"
+  (interactive)
+  (unless recentf-mode (recentf-mode 1))
+  (let ((collection
+         (delete-dups
+          (append (mapcar 'file-name-directory recentf-list)
+                  ;; fasd history
+                  (if (executable-find "fasd")
+                      (split-string (shell-command-to-string "fasd -ld") "\n" t))))))
+    (ivy-read "directories:" collection :action 'dired)))
+
 (bind-keys*
  ("M-m g A SPC" . my/align-whitespace)
  ("M-m g A &"   . my/align-ampersand)

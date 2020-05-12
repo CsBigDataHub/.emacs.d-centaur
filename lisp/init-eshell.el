@@ -150,6 +150,96 @@
   (use-package eshell-z
     :hook (eshell-mode . (lambda () (require 'eshell-z)))))
 
+;;; my-personal from https://protesilaos.com/dotemacs/
+
+(declare-function ffap-file-at-point 'find-file-at-point)
+
+(defun my/eshell-insert-file-at-point ()
+  "Insert (cat) contents of file at point."
+  (interactive)
+  (let ((file (ffap-file-at-point)))
+    (if file
+        (progn
+          (end-of-buffer)
+          (insert (concat "cat " file))
+          (eshell-send-input))
+      (user-error "No file at point"))))
+
+(defun my/eshell-kill-save-file-at-point ()
+  "Add to kill-ring the absolute path of file at point."
+  (interactive)
+  (let ((file (ffap-file-at-point)))
+    (if file
+        (kill-new (concat (eshell/pwd) "/" file))
+      (user-error "No file at point"))))
+
+(defun my/eshell-find-file-at-point ()
+  "Run `find-file' for file at point (ordinary file or dir).
+Recall that this will produce a `dired' buffer if the file is a
+directory."
+  (interactive)
+  (let ((file (ffap-file-at-point)))
+    (if file
+        (find-file file)
+      (user-error "No file at point"))))
+
+(defun my/eshell-file-parent-dir ()
+  "Open `dired' with the parent directory of file at point."
+  (interactive)
+  (let ((file (ffap-file-at-point)))
+    (if file
+        (dired (file-name-directory file))
+      (user-error "No parent dir for file to jump to"))))
+
+(defun my/eshell-complete-redirect-to-buffer ()
+  "Complete the syntax for appending to a buffer via `eshell'."
+  (interactive)
+  (insert
+   (concat " >>> #<"
+           (format "%s"
+                   (read-buffer-to-switch "Switch to buffer: "))
+           ">")))
+
+
+(use-package esh-module
+  :ensure nil
+  :config
+  (setq eshell-modules-list             ; Needs review
+        '(eshell-alias
+          eshell-basic
+          eshell-cmpl
+          eshell-dirs
+          eshell-glob
+          eshell-hist
+          eshell-ls
+          eshell-pred
+          eshell-prompt
+          eshell-script
+          eshell-term
+          eshell-tramp
+          eshell-unix)))
+
+(use-package em-dirs
+  :ensure nil
+  :after esh-mode
+  :config
+  (setq eshell-cd-on-directory t))
+
+(use-package em-tramp
+  :ensure nil
+  :after esh-mode
+  :config
+  (setq password-cache t)
+  (setq password-cache-expiry 600))
+
+(use-package em-hist
+  :ensure nil
+  :after esh-mode
+  :config
+  (setq eshell-hist-ignoredups t)
+  (setq eshell-save-history-on-exit t))
+;;; my-personal ends here
+
 (provide 'init-eshell)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
