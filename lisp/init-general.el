@@ -68,6 +68,7 @@ The prefix map is named 'my-DEF-map'."
  "p" 'counsel-projectile
  "r" 'counsel-recentf
  "g" 'counsel-git
+ "l" 'counsel-locate
  )
 
 (general-global-spc-menu-definer

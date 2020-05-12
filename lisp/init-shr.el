@@ -1,7 +1,7 @@
 ;;init-shr.el --- SHR enhancements.     -*- lexical-binding: t -*-
 (use-package shrface
   :after shr
-  :straight (shrface :type git :host github :repo "chenyanming/shrface")
+  ;; :straight (shrface :type git :host github :repo "chenyanming/shrface")
   :config
   (shrface-basic)
   (setq nov-shr-rendering-functions shr-external-rendering-functions)
