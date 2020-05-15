@@ -197,10 +197,6 @@ Same as `replace-string C-q C-m RET RET'."
        (display-graphic-p)
        (require 'all-the-icons nil t)))
 
-(defun centaur-timemachine-buffer-p ()
-  "Check whether the buffer is a `git-timemachine' buffer."
-  (string-prefix-p "timemachine:" (buffer-name)))
-
 (defun centaur-set-variable (variable value &optional no-save)
   "Set the VARIABLE to VALUE, and return VALUE.
 
@@ -515,7 +511,7 @@ If SYNC is non-nil, the updating process is synchronous."
 (defun proxy-http-toggle ()
   "Toggle HTTP/HTTPS proxy."
   (interactive)
-  (if url-proxy-services
+  (if (bound-and-true-p url-proxy-services)
       (proxy-http-disable)
     (proxy-http-enable)))
 
@@ -523,7 +519,7 @@ If SYNC is non-nil, the updating process is synchronous."
   "Show SOCKS proxy."
   (interactive)
   (when (fboundp 'cadddr)                ; defined 25.2+
-    (if socks-noproxy
+    (if (bound-and-true-p socks-noproxy)
         (message "Current SOCKS%d proxy is %s:%d"
                  (cadddr socks-server) (cadr socks-server) (caddr socks-server))
       (message "No SOCKS proxy"))))

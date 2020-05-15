@@ -47,8 +47,7 @@
      :commands (lsp-enable-which-key-integration lsp-format-buffer lsp-organize-imports)
      :diminish
      :hook ((prog-mode . (lambda ()
-                           (unless (or (derived-mode-p 'emacs-lisp-mode 'lisp-mode)
-                                       (centaur-timemachine-buffer-p))
+                           (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode)
                              (lsp-deferred))))
             (lsp-mode . (lambda ()
                           ;; Integrate `which-key'
@@ -96,6 +95,12 @@
                        :major-modes '(terraform-mode)
                        :server-id 'terraform-ls))
      ;; my-personal
+     (with-no-warnings
+       (defun my-lsp--init-if-visible (func &rest args)
+         "Not enabling lsp in `git-timemachine-mode'."
+         (unless (bound-and-true-p git-timemachine-mode)
+           (apply func args)))
+       (advice-add #'lsp--init-if-visible :around #'my-lsp--init-if-visible))
      )
 
    (use-package lsp-ui
@@ -131,7 +136,21 @@
         ("s c" (setq lsp-ui-sideline-show-code-actions (not lsp-ui-sideline-show-code-actions))
          "code actions" :toggle lsp-ui-sideline-show-code-actions)
         ("s i" (setq lsp-ui-sideline-ignore-duplicate (not lsp-ui-sideline-ignore-duplicate))
-         "ignore duplicate" :toggle lsp-ui-sideline-ignore-duplicate))))
+         "ignore duplicate" :toggle lsp-ui-sideline-ignore-duplicate))
+       "Action"
+       (("h" backward-char "←")
+        ("j" next-line "↓")
+        ("k" previous-line "↑")
+        ("l" forward-char "→")
+        ("C-a" mwim-beginning-of-code-or-line nil)
+        ("C-e" mwim-end-of-code-or-line nil)
+        ("C-b" backward-char nil)
+        ("C-n" next-line nil)
+        ("C-p" previous-line nil)
+        ("C-f" forward-char nil)
+        ("M-b" backward-word nil)
+        ("M-f" forward-word nil)
+        ("c" lsp-ui-sideline-apply-code-actions "apply code actions"))))
      :bind (("C-c u" . lsp-ui-imenu)
             :map lsp-ui-mode-map
             ("M-<f6>" . lsp-ui-hydra/body))
@@ -148,6 +167,7 @@
                  lsp-ui-sideline-enable t
                  lsp-ui-sideline-show-hover nil
                  lsp-ui-sideline-show-diagnostics nil
+                 lsp-ui-sideline-show-code-actions t
                  lsp-ui-sideline-ignore-duplicate t
 
                  lsp-ui-imenu-enable t
@@ -445,6 +465,12 @@ Return a list of strings as the completion candidates."
    ;;                    ".ccls")
    ;;                  projectile-project-root-files-top-down-recurring))))
    ;; my-personal
+
+   ;; Swift/C/C++/Objective-C
+   (when sys/macp
+     (use-package lsp-sourcekit
+       :init (setq lsp-sourcekit-executable
+                   "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp")))
 
    ;; Julia support
    ;; my-personal
