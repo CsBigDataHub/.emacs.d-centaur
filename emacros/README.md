@@ -46,7 +46,7 @@ The purpose of keyboard macros in an editor is to expedite the entering of key s
 
 Emacros' way of saving macro definitions to files is based on the idea that macro definitions should be separated by major modes to which they pertain. The macros used when editing a TeX file, for example, will not be needed when working on a C++ program. Moreover, within each mode, there will be macros that should be available whenever Emacs is in that mode, and others that are relevant for specific projects only. Consequently, each mode should allow one global macro file and several local ones in different directories as needed. This arrangement makes it easy to keep track of existing macro definitions.
 
-Emacros works with GNU Emacs Versions 21 and 22. Earlier versions are no longer supported.
+
 
 Download and Installation
 -------------------------
@@ -66,7 +66,7 @@ in your Emacs initialization file. DIR can be specified in unexpanded form, e.g.
 Feedback and Bug Reports
 ------------------------
 
-Click <!-- backfeed() //--> to send feedback and bug reports concerning Emacros.
+Please open a issue in this repository.
 
 Emacros Manual
 --------------
