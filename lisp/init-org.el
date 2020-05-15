@@ -353,6 +353,11 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 
 (use-package org-web-tools)
 
+(use-package doct
+  :ensure t
+  ;;recommended: defer until calling doct
+  :commands (doct))
+
 ;; for org-protocol if using mac go though - it is a little outdated
 ;;                    https://blog.aaronbieber.com/2016/11/24/org-capture-from-anywhere-on-your-mac.html
 ;;                    But use - https://github.com/aaronbieber/org-protocol-handler
