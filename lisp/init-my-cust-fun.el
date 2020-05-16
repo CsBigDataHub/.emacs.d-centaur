@@ -3216,5 +3216,8 @@ are defining or executing a macro."
 ;;(defalias 'ln 'global-display-line-numbers-mode)
 (defalias 'flm font-lock-mode)
 
+(when sys/macp
+  (setq-default counsel-search-engine 'google))
+
 
 (provide 'init-my-cust-fun)

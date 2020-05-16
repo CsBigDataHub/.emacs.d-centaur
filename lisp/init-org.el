@@ -354,7 +354,7 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 (use-package org-web-tools)
 
 (use-package doct
-  :ensure t
+  ;; :ensure t
   ;;recommended: defer until calling doct
   :commands (doct))
 
@@ -367,16 +367,58 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 
 (global-set-key (kbd "C-c c c") 'org-capture)
 
+;; (when sys/macp
+;;   (setq org-capture-templates
+;;         '(
+;;           ("n" "📖  Note" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/notes.org" "Notes")
+;;            "* Note %? %^g \n%T")
+;;           ("l" "🌐   Link" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/links.org" "Links")
+;;            "* %a %^g\n %?\n %T\n %i" :prepend t :empty-lines 1)
+;;           ("t" "✔   To-Do-Item" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/todos.org" "To Do Items")
+;;            "* TODO %?\n  %i\n  %a" :prepend t)
+;;           )))
+
 (when sys/macp
   (setq org-capture-templates
-        '(
-          ("n" "📖  Note" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/notes.org" "Notes")
-           "* Note %? %^g \n%T")
-          ("l" "🌐   Link" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/links.org" "Links")
-           "* %a %^g\n %?\n %T\n %i" :prepend t :empty-lines 1)
-          ("t" "✔   To-Do-Item" entry (file+headline "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/todos.org" "To Do Items")
-           "* TODO %?\n  %i\n  %a" :prepend t)
-          )))
+        (doct `(
+                ("🌎 Website As Entry"
+                 :keys "w"
+                 :type plain
+                 :file "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/webentries.org"
+                 :prepend t
+                 :empty-lines-after 2
+                 :headline "Web-Entry"
+                 :template ""
+                 :hook ,(defun my/website-to-org-entry ()
+                          "Convert clipboard's URL content to org entry."
+                          (org-web-tools-insert-web-page-as-entry (org-get-x-clipboard 'PRIMARY)))
+                 )
+                ("✔ To-Do-Item"
+                 :keys "t"
+                 :file "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/todos.org"
+                 :template "* TODO %?\n  %i\n  %a"
+                 :prepend t
+                 :empty-lines-after 2
+                 :headline "TODO ITEMS"
+                 )
+                ("🌐 Link"
+                 :keys "l"
+                 :file "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/links.org"
+                 :template "* %a %^g\n %?\n %T\n %i"
+                 :prepend t
+                 :empty-lines-after 2
+                 :headline "Links"
+                 )
+                ("📖 Note"
+                 :keys "n"
+                 :file "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/notes.org"
+                 :template "* Note %? %^g \n%T"
+                 :prepend t
+                 :empty-lines-after 2
+                 :headline "Notes"
+                 )
+                )
+              )))
 
 (defadvice org-capture-finalize
     (after delete-capture-frame activate)
