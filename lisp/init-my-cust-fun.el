@@ -3207,6 +3207,8 @@ are defining or executing a macro."
   ;;;; Define f5 as an alias for C-x r
 ;; (global-set-key (kbd "<f5>") (lookup-key global-map (kbd "C-x r")))
 
+(global-set-key (kbd "C-x v R") 'vc-refresh-state)
+
 
 ;;Aliases
                                         ; minor modes
@@ -3219,5 +3221,39 @@ are defining or executing a macro."
 (when sys/macp
   (setq-default counsel-search-engine 'google))
 
+(when sys/macp
+  (defun my/html2org-clipboard ()
+    "Convert clipboard contents from HTML to Org and then paste (yank)."
+    (interactive)
+    (kill-new (shell-command-to-string "osascript -e 'the clipboard as \"HTML\"' | perl -ne 'print chr foreach unpack(\"C*\",pack(\"H*\",substr($_,11,-3)))' | pandoc -f html -t org"))
+    (yank)))
+
+(defun ztree-dired-diff-toggle ()
+  (interactive)
+
+  (unless (= (length (window-list)) 2)
+    (error "invalid number of visible buffers (expected 2)"))
+
+  (let (dir-A dir-B)
+    (if (and (buffer-file-name)
+             (file-exists-p (buffer-file-name)))
+        (setq dir-A buffer-file-name)
+      (setq dir-A default-directory))
+
+    (other-window 1)
+
+    (if (and (buffer-file-name)
+             (file-exists-p (buffer-file-name)))
+        (setq dir-B buffer-file-name)
+      (setq dir-B default-directory))
+
+    (other-window 1)
+
+    (unless (and (file-directory-p dir-A)
+                 (file-directory-p dir-B))
+      (error "not all buffers directories"))
+
+    (delete-other-windows)
+    (ztree-diff dir-A dir-B)))
 
 (provide 'init-my-cust-fun)

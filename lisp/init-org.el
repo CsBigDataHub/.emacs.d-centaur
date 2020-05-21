@@ -186,6 +186,7 @@ prepended to the element after the #+HEADER: tag."
                                (css . t)
                                (sass . t)
                                (C . t)
+                               (restclient . t)
                                (java . t)
                                (plantuml . t)))
 
@@ -352,6 +353,9 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 ;;;; my latex function
 
 (use-package org-web-tools)
+
+(use-package ob-restclient
+  )
 
 (use-package doct
   ;; :ensure t

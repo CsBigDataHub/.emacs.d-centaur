@@ -1,5 +1,8 @@
 (use-package kubernetes
-  :commands (kubernetes-overview))
+  :commands (kubernetes-overview)
+  :config
+  (setq kubernetes-redraw-frequency 300
+        kubernetes-poll-frequency 300))
 
 ;; If you want to pull in the Evil compatibility package.
 (use-package kubernetes-evil
@@ -10,7 +13,7 @@
   :config
   ;;(setq k8s-search-documentation-browser-function 'browse-url-firefox)
   (setq k8s-site-docs-url "https://kubernetes.io/docs/reference/generated/kubernetes-api/")
-  (setq k8s-site-docs-version "v1.13")
+  (setq k8s-site-docs-version "v1.18")
   )
 
 (add-hook 'k8s-mode-hook 'yas-minor-mode)

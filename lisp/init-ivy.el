@@ -270,9 +270,9 @@
       "Toggle `counsel-rg' and `swiper'/`swiper-isearch' with the current input."
       (interactive)
       (ivy-quit-and-run
-        (if (memq (ivy-state-caller ivy-last) '(swiper swiper-isearch))
-            (my-ivy-switch-to-counsel-rg)
-          (my-ivy-switch-to-swiper-isearch))))
+       (if (memq (ivy-state-caller ivy-last) '(swiper swiper-isearch))
+           (my-ivy-switch-to-counsel-rg)
+         (my-ivy-switch-to-swiper-isearch))))
     (bind-key "<C-return>" #'my-swiper-toggle-counsel-rg swiper-map)
     (bind-key "<C-return>" #'my-swiper-toggle-counsel-rg counsel-ag-map)
 
@@ -281,7 +281,7 @@
         "Toggle `rg-dwim' with the current input."
         (interactive)
         (ivy-quit-and-run
-          (rg-dwim default-directory)))
+         (rg-dwim default-directory)))
       (bind-key "<M-return>" #'my-swiper-toggle-rg-dwim swiper-map)
       (bind-key "<M-return>" #'my-swiper-toggle-rg-dwim counsel-ag-map))
 
@@ -289,16 +289,16 @@
       "Toggle `swiper' and `swiper-isearch' with the current input."
       (interactive)
       (ivy-quit-and-run
-        (if (eq (ivy-state-caller ivy-last) 'swiper-isearch)
-            (swiper ivy-text)
-          (swiper-isearch ivy-text))))
+       (if (eq (ivy-state-caller ivy-last) 'swiper-isearch)
+           (swiper ivy-text)
+         (swiper-isearch ivy-text))))
     (bind-key "<s-return>" #'my-swiper-toggle-swiper-isearch swiper-map)
 
     (defun my-counsel-find-file-toggle-fzf ()
       "Toggle `counsel-fzf' with the current `counsel-find-file' input."
       (interactive)
       (ivy-quit-and-run
-        (counsel-fzf (or ivy-text "") default-directory)))
+       (counsel-fzf (or ivy-text "") default-directory)))
     (bind-key "<C-return>" #'my-counsel-find-file-toggle-fzf counsel-find-file-map)
 
     (defun my-swiper-toggle-rg-dwim ()
@@ -312,9 +312,9 @@
       "Toggle `swiper' and `swiper-isearch' with the current input."
       (interactive)
       (ivy-quit-and-run
-        (if (eq (ivy-state-caller ivy-last) 'swiper-isearch)
-            (my-ivy-switch-to-swiper)
-          (my-ivy-switch-to-swiper-isearch))))
+       (if (eq (ivy-state-caller ivy-last) 'swiper-isearch)
+           (my-ivy-switch-to-swiper)
+         (my-ivy-switch-to-swiper-isearch))))
     (bind-key "<s-return>" #'my-swiper-toggle-swiper-isearch swiper-map)
 
     ;; More actions
@@ -418,8 +418,8 @@ This is for use in `ivy-re-builders-alist'."
             (t . ivy-prescient-re-builder))
           ivy-prescient-sort-commands
           '(:not swiper swiper-isearch ivy-switch-buffer
-            counsel-grep counsel-git-grep counsel-ag counsel-imenu
-            counsel-yank-pop counsel-recentf counsel-buffer-or-recentf))
+                 counsel-grep counsel-git-grep counsel-ag counsel-imenu
+                 counsel-yank-pop counsel-recentf counsel-buffer-or-recentf))
 
     (ivy-prescient-mode 1))
 
@@ -451,17 +451,17 @@ This is for use in `ivy-re-builders-alist'."
    (sys/macp
     (use-package counsel-osx-app
       :bind (:map counsel-mode-map
-             ("s-<f6>" . counsel-osx-app)))))
+                  ("s-<f6>" . counsel-osx-app)))))
 
   ;; Display world clock using Ivy
   (use-package counsel-world-clock
     :bind (:map counsel-mode-map
-           ("C-c c k" . counsel-world-clock)))
+                ("C-c c k" . counsel-world-clock)))
 
   ;; Tramp ivy interface
   (use-package counsel-tramp
     :bind (:map counsel-mode-map
-           ("C-c c T" . counsel-tramp)))
+                ("C-c c T" . counsel-tramp)))
 
   ;; Support pinyin in Ivy
   ;; Input prefix ':' to match pinyin

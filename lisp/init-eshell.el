@@ -238,6 +238,14 @@ directory."
   :config
   (setq eshell-hist-ignoredups t)
   (setq eshell-save-history-on-exit t))
+
+;;https://www.reddit.com/r/emacs/comments/gksqhl/emacs_eshell_demo/fqtveuc?utm_source=share&utm_medium=web2x
+(defun eshell/in-term (prog &rest args)
+  (switch-to-buffer
+   (apply #'make-term (format "in-term %s %s" prog args) prog nil args))
+  (term-mode)
+  (term-char-mode))
+
 ;;; my-personal ends here
 
 (provide 'init-eshell)

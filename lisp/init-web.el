@@ -148,7 +148,12 @@
   (with-eval-after-load 'company
     (use-package company-restclient
       :defines company-backends
-      :init (add-to-list 'company-backends 'company-restclient))))
+      :init (add-to-list 'company-backends 'company-restclient)))
+  (eval-after-load "restclient"
+    (if (not (fboundp 'json-pretty-print-buffer))
+        (defun json-pretty-print-buffer ()
+          (json-prettify-buffer))))
+  )
 
 (provide 'init-web)
 

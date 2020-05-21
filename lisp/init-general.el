@@ -81,6 +81,7 @@ The prefix map is named 'my-DEF-map'."
  "D" 'vc-root-diff
  "L" 'vc-print-root-log
  "P" 'vc-push
+ "R" 'vc-refresh-state
  "d" 'vc-dir
  "h" 'vc-region-history
  "l" 'vc-print-log
