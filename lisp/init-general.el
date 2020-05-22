@@ -109,6 +109,8 @@ The prefix map is named 'my-DEF-map'."
  "w8" 'eyebrowse-switch-to-window-config-8
  "w9" 'eyebrowse-switch-to-window-config-9
  "w." 'eyebrowse-last-window-config
+ "w," 'eyebrowse-switch-to-window-config
+ "w;" 'eyebrowse-rename-window-config
  )
 
 (general-global-spc-menu-definer
