@@ -3256,4 +3256,43 @@ are defining or executing a macro."
     (delete-other-windows)
     (ztree-diff dir-A dir-B)))
 
+(defun my/counsel-company ()
+  (interactive)
+  (let ((my-company-complete-newstr nil)
+        (candidates nil)
+        (no-len nil))
+    (unwind-protect
+        (progn
+          (company-mode 1)
+          (unless company-candidates
+            (company-complete))
+          (let ((len (cond (company-prefix
+                            (length company-prefix)))))
+            (if (not len)
+                (setq no-len t)
+              (setq ivy-completion-beg (- (point) len))
+              (setq ivy-completion-end (point))
+              ;; (ivy-posframe-mode 1)
+              (setq bname (current-buffer))
+              (ivy-read "company cand: " company-candidates
+                        :initial-input (if (ignore-errors (string-prefix-p company-prefix company-common))
+                                           (regexp-quote company-common)
+                                         (regexp-quote company-prefix))
+                        :action #'(lambda (str)
+                                    (setq my-company-complete-newstr str)
+
+                                    ;; this is where you remove the parts that should not be inserted
+                                    ;; you will need to adapt this for the languages you use.
+                                    ;; example: remove everything after "-"
+                                    (setq my-company-complete-newstr (replace-regexp-in-string
+                                                                      " - .+$"
+                                                                      "" my-company-complete-newstr))
+
+                                    (ivy-completion-in-region-action my-company-complete-newstr))
+                        :unwind #'(lambda ()
+                                    (company-abort)
+                                    ;; (ivy-posframe-mode 0)
+                                    )
+                        :caller 'my-counsel-company)))))))
+
 (provide 'init-my-cust-fun)

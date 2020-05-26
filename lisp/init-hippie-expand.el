@@ -36,6 +36,44 @@
          (candidates (dabbrev--find-all-expansions abbrev t))
          (bnd (bounds-of-thing-at-point 'symbol)))
     (list (car bnd) (cdr bnd) candidates)))
-(add-to-list 'completion-at-point-functions 'dabbrev-complation-at-point)
+
+;;https://oremacs.com/2017/10/04/completion-at-point/
+(defun org-completion-symbols ()
+  (when (looking-back "=[a-zA-Z]+")
+    (let (cands)
+      (save-match-data
+        (save-excursion
+          (goto-char (point-min))
+          (while (re-search-forward "=\\([a-zA-Z]+\\)=" nil t)
+            (cl-pushnew
+             (match-string-no-properties 0) cands :test 'equal))
+          cands))
+      (when cands
+        (list (match-beginning 0) (match-end 0) cands)))))
+
+(defun ora-cap-filesystem ()
+  (let (path)
+    (when (setq path (ffap-string-at-point))
+      (when (string-match "\\`file:\\(.*\\)\\'" path)
+        (setq path (match-string 1 path)))
+      (let ((compl (all-completions path #'read-file-name-internal)))
+        (when compl
+          (let* ((str (car compl))
+                 (offset
+                  (let ((i 0)
+                        (len (length str)))
+                    (while (and (< i len)
+                                (equal (get-text-property i 'face str)
+                                       'completions-common-part))
+                      (cl-incf i))
+                    i)))
+            (list (- (point) offset) (point) compl)))))))
+
+(add-to-list 'completion-at-point-functions '(dabbrev-complation-at-point
+                                              dabbrev-completion
+                                              dabbrev-expand
+                                              org-completion-symbols
+                                              ora-cap-filesystem
+                                              ))
 
 (provide 'init-hippie-expand)
