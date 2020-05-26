@@ -450,6 +450,7 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 (require 'org-protocol)
 
 (setq org-html-html5-fancy t
+      org-html-wrap-src-lines t
       org-html-doctype "html5")
 
 ;; Minted is a latex package used to wrap text
@@ -476,6 +477,9 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
             ("C-c n g" . org-roam-graph))
            :map org-mode-map
            (("C-c n i" . org-roam-insert)))))
+
+(use-package org-special-block-extras
+  :hook (org-mode . org-special-block-extras-mode))
 
 (provide 'init-org)
 
