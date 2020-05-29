@@ -228,7 +228,7 @@
        ("u" elfeed-search-tag-all-unread "mark unread")
        ("r" elfeed-search-untag-all-unread "mark read")
        ("RET" elfeed-search-show-entry "show"))))
-    :bind (("C-x w" . elfeed)
+    :bind (("C-x w w" . elfeed)
            :map elfeed-search-mode-map
            ("?" . elfeed-hydra/body)
            :map elfeed-show-mode-map
@@ -243,6 +243,8 @@
                                ("http://www.masteringemacs.org/feed/" mastering)
                                ("https://oremacs.com/atom.xml" oremacs)
                                ("https://pinecast.com/feed/emacscast" emacscast)
+                               ("https://www.reddit.com/r/orgmode.rss" reddit-orgmode)
+                               ("https://www.reddit.com/r/planetemacs.rss" reddit-planet-emacs)
                                ("https://www.reddit.com/r/emacs.rss" reddit)))
     :config (push elfeed-db-directory recentf-exclude)))
 
