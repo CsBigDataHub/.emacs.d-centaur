@@ -209,8 +209,8 @@ same directory as the org-buffer and insert a link to this file."
                                         ; take screenshot
               (if (eq system-type 'darwin)
                   (call-process "screencapture" nil nil nil "-i" filename))
-              (if (eq system-type 'gnu/linux)
-                  (call-process "flameshot" nil nil nil "gui" "-p" filename))  ;; changed from `input' to `flameshot'
+              (if (eq system-type 'gnu/linux) ; changed from `input' to `flameshot'
+                  (call-process "gnome-screenshot" nil nil nil "-a" "-f" filename))
                                         ; insert into file if correctly taken
               (if (file-exists-p filename)
                   (insert (concat "[[file:" filename "]]")))
@@ -235,7 +235,8 @@ same directory as the markdown-mode-buffer and insert a link to this file."
               (if (eq system-type 'darwin)
                   (call-process "screencapture" nil nil nil "-i" filename))
               (if (eq system-type 'gnu/linux)
-                  (call-process "import" nil nil nil filename))
+                  (call-process "gnome-screenshot" nil nil nil "-a" "-f" filename))
+                                        ; changed from `input' to `flameshot'
                                         ; insert into file if correctly taken
               (if (file-exists-p filename)
                   (insert (concat "![" filename "](" filename ")")))
