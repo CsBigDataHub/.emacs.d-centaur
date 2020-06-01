@@ -210,7 +210,7 @@ same directory as the org-buffer and insert a link to this file."
               (if (eq system-type 'darwin)
                   (call-process "screencapture" nil nil nil "-i" filename))
               (if (eq system-type 'gnu/linux)
-                  (call-process "import" nil nil nil filename))
+                  (call-process "flameshot" nil nil nil "gui" "-p" filename))  ;; changed from `input' to `flameshot'
                                         ; insert into file if correctly taken
               (if (file-exists-p filename)
                   (insert (concat "[[file:" filename "]]")))
