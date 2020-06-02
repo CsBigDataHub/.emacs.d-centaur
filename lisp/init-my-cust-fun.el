@@ -243,6 +243,11 @@ same directory as the markdown-mode-buffer and insert a link to this file."
               (markdown-toggle-inline-images)
               )))
 
+(when sys/linuxp
+  (setq org-download-screenshot-method "flameshot gui --raw > %s"))
+(when sys/macp
+  (setq org-download-screenshot-method "screencapture -i %s"))
+
 (defun my/xah-search-current-word ()
   "Call `isearch' on current word or text selection."
   ;;“word” here is A to Z, a to z, and hyphen 「-」 and underline 「_」, independent of syntax table.
