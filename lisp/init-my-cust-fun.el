@@ -244,9 +244,10 @@ same directory as the markdown-mode-buffer and insert a link to this file."
               )))
 
 (when sys/linuxp
-  (setq org-download-screenshot-method "flameshot gui --raw > %s"))
+  (setq-default org-download-screenshot-method "flameshot gui --raw > %s"))
+
 (when sys/macp
-  (setq org-download-screenshot-method "screencapture -i %s"))
+  (setq-default org-download-screenshot-method "screencapture -i %s"))
 
 (defun my/xah-search-current-word ()
   "Call `isearch' on current word or text selection."
