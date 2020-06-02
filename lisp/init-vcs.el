@@ -41,7 +41,9 @@
          ("C-c M-g" . magit-file-popup)
          (:map magit-status-mode-map
           ("q" . magit-quit-session)
-          ))
+          )
+         ("C-c M-g" . magit-file-popup))
+  :init (setq magit-diff-refine-hunk t)
   :config
   (setq-default magit-diff-refine-hunk 'all)
   (when sys/macp

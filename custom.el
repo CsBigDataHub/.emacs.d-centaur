@@ -33,7 +33,7 @@
                                       :font font
                                       :height (cond (sys/mac-x-p 160)
                                                     (sys/win32p 110)
-                                                    (t 130))))
+                                                    (t 120))))
 
   ;; Specify font for all unicode characters
   (cl-loop for font in '("Symbola" "icons-in-terminal" "Apple Symbols" "Symbol")
