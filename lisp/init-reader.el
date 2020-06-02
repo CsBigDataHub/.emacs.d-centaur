@@ -245,7 +245,11 @@
                                ("https://pinecast.com/feed/emacscast" emacscast)
                                ("https://www.reddit.com/r/orgmode.rss" reddit-orgmode)
                                ("https://www.reddit.com/r/planetemacs.rss" reddit-planet-emacs)
-                               ("https://www.reddit.com/r/emacs.rss" reddit)))
+                               ("https://www.reddit.com/r/emacs.rss" reddit)
+                               ("https://itsfoss.com/feed" itsfoss)
+                               ("https://fossbytes.com/feed" fossbytes)
+                               ("https://www.omgubuntu.co.uk/feed" omgubuntu)
+                               ))
     :config (push elfeed-db-directory recentf-exclude)))
 
 ;; Another Atom/RSS reader
