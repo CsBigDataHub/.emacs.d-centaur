@@ -846,6 +846,12 @@ point reaches the beginning or end of the buffer, stop there."
  ("M-m g A :"   . my/align-colon)
  ("M-m g A A"   . align-regexp))
 
+(which-key-add-key-based-replacements
+  "M-m g" "custom-function")
+
+(which-key-add-key-based-replacements
+  "M-m g A" "align-prefix")
+
 (defun my/sk/insert-date (prefix)
   "Insert the current date. With prefix-argument, write out the day and month name."
   (interactive "P")

@@ -72,6 +72,16 @@ The prefix map is named 'my-DEF-map'."
  )
 
 (general-global-spc-menu-definer
+ "org-roam-map" "n"
+ "l" 'org-roam
+ "f" 'org-roam-find-file
+ "d" 'my/toggle-org-roam-directory
+ "g" 'org-roam-graph
+ "i" 'org-roam-insert
+ "s" 'org-roam-server-mode
+ )
+
+(general-global-spc-menu-definer
  "VC" "v"
  "=" 'vc-diff
  "+" 'vc-update
