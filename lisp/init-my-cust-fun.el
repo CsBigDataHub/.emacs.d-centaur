@@ -3199,6 +3199,14 @@ It sets the transient map to all functions of ALIST."
 (global-set-key (kbd "M-/") 'company-dabbrev)
 (global-set-key (kbd "M-i") 'tab-to-tab-stop)
 (global-set-key (kbd "C-M-?") 'complete-symbol)
+
+
+(which-key-add-key-based-replacements
+  "M-m y" "yas-prefix")
+
+(bind-keys*
+ ("M-m y y" . ivy-yasnippet))
+
 ;;;
 
 (defun my/quit ()
