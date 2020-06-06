@@ -245,6 +245,13 @@
                     company-candidates)
         (self-insert-command 1)
       (company-complete-number (string-to-number k)))))
+
+;;https://github.com/company-mode/company-mode/issues/50
+(defun add-pcomplete-to-capf ()
+  (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+
+(add-hook 'org-mode-hook #'add-pcomplete-to-capf)
+
 ;;my-personal-config
 
 (provide 'init-company)

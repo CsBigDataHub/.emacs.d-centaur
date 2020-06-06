@@ -3198,6 +3198,7 @@ It sets the transient map to all functions of ALIST."
 (global-set-key (kbd "s-0") 'delete-window)
 (global-set-key (kbd "M-/") 'company-dabbrev)
 (global-set-key (kbd "M-i") 'tab-to-tab-stop)
+(global-set-key (kbd "C-M-?") 'complete-symbol)
 ;;;
 
 (defun my/quit ()
