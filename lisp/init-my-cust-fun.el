@@ -2955,6 +2955,14 @@ C-u C-u C-u M-x xah-cycle-letter-case -> Force capitalize."
 (defun my/downcase ()   (interactive) (xah-cycle-letter-case 16))
 (defun my/capitalize () (interactive) (xah-cycle-letter-case 64))
 
+
+;; remap M-u to `my/upcase'
+(global-set-key [remap upcase-word] 'my/upcase)
+;; remap M-l to `my/downcase'
+(global-set-key [remap downcase-word] 'my/downcase)
+;; remap M-c to `my/capitalize'
+(global-set-key [remap capitalize-word] 'my/capitalize)
+
 (bind-key "C-c h h c" (defhydra hydra-change-case (:color blue
                                                    :hint nil)
                         "
