@@ -405,6 +405,26 @@ happens within a region if one is selected."
 
 (use-package copy-as-format)
 
+(use-package reformatter)
+
+(reformatter-define xml-format
+  :program "xmllint"
+  :args '("--format" "-")
+  :mode nil)
+
+(use-package eshell-toggle
+  :custom
+  (eshell-toggle-size-fraction 3)
+  (eshell-toggle-use-projectile-root t)
+  (eshell-toggle-run-command nil)
+  (eshell-toggle-init-function #'eshell-toggle-init-eshell)
+  :bind
+  ("<f12>" . eshell-toggle)
+  ("s-~" . eshell-toggle))
+
+(use-package gitignore-templates)
+
+
 (use-package read-aloud
   :config
   (when sys/macp

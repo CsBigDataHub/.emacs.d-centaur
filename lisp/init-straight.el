@@ -33,29 +33,6 @@
   :straight (ivy-point-history :type git :host github :repo "SuzumiyaAoba/ivy-point-history")
   :bind ("C-c C-/" . ivy-point-history))
 
-(use-package reformatter
-  :straight (reformatter :type git :host github :repo "purcell/reformatter.el"))
-
-(reformatter-define xml-format
-  :program "xmllint"
-  :args '("--format" "-")
-  :mode nil)
-
-(use-package eshell-toggle
-  :custom
-  (eshell-toggle-size-fraction 3)
-  (eshell-toggle-use-projectile-root t)
-  (eshell-toggle-run-command nil)
-  (eshell-toggle-init-function #'eshell-toggle-init-eshell)
-  :straight
-  (eshell-toggle :type git :host github :repo "4DA/eshell-toggle")
-  :bind
-  ("<f12>" . eshell-toggle)
-  ("s-~" . eshell-toggle))
-
-(use-package gitignore-templates
-  :straight (gitignore-templates :type git :host github :repo "CsBigDataHub/gitignore-templates.el"))
-
 (use-package number-to-word
   :straight (number-to-word :type git :host github :repo "xuchunyang/number-to-word"))
 
