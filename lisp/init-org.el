@@ -114,9 +114,11 @@ prepended to the element after the #+HEADER: tag."
                               (setq show-paren-mode nil))))
   :config
   ;; To speed up startup, don't put to init section
-  (setq org-agenda-files '("~/GitRepos/my-projects/Mac-pref-Backup/org-file-note"
-                           "~/GitRepos/my-org-notes")
-        org-todo-keywords
+  (when sys/macp
+    (setq org-agenda-files
+          '("/Users/ckoneru/GitRepos/my-projects/Mac-pref-Backup/org-file-note/"
+            "/Users/ckoneru/GitRepos/my-org-notes/")))
+  (setq org-todo-keywords
         '((sequence "TODO(t)" "DOING(i)" "HANGUP(h)" "|" "DONE(d)" "CANCEL(c)")
           (sequence "⚑(T)" "🏴(I)" "❓(H)" "|" "✔(D)" "✘(C)"))
         org-todo-keyword-faces '(("HANGUP" . warning)
