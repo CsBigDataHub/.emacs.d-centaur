@@ -3161,7 +3161,9 @@ It sets the transient map to all functions of ALIST."
 ;;Ispell
 (setq ispell-program-name "aspell")
 ;; (when sys/macp
-(setq ispell-extra-args '("--sug-mode=fast" "--lang=en_US" "--camel-case" "--run-together" "--run-together-limit=16"))
+(setq ispell-extra-args
+      '("--sug-mode=fast" "--lang=en_US" "--camel-case"
+        "--run-together" "--run-together-limit=16"))
 ;; )
 
 ;; NOTES: Aspell is installed by nix
@@ -3181,6 +3183,7 @@ It sets the transient map to all functions of ALIST."
 (global-set-key (kbd "s-o") 'other-window)
 (global-set-key (kbd "s-0") 'delete-window)
 (global-set-key (kbd "M-/") 'company-dabbrev)
+(global-set-key (kbd "M-i") 'tab-to-tab-stop)
 ;;;
 
 (defun my/quit ()

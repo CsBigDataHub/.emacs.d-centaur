@@ -5,8 +5,8 @@
 ;;; Code:
 
 ;;(setq centaur-logo nil)                         ; Logo file or nil (official logo)
-;; (setq centaur-full-name "user name")           ; User full name
-;; (setq centaur-mail-address "user@email.com")   ; Email address
+(setq centaur-full-name "Chetan Koneru")           ; User full name
+(setq centaur-mail-address "kchetan.hadoop@gmail.com")   ; Email address
 ;; (setq centaur-proxy "127.0.0.1:1080")          ; Network proxy
 ;; (setq centaur-server nil)                      ; Enable `server-mode' or not: t or nil
 ;;(setq centaur-icon nil)                         ; Display icons or not: t or nil
@@ -31,7 +31,7 @@
            when (font-installed-p font)
            return (set-face-attribute 'default nil
                                       :font font
-                                      :height (cond (sys/mac-x-p 160)
+                                      :height (cond (sys/mac-x-p 170)
                                                     (sys/win32p 110)
                                                     (t 120))))
 
