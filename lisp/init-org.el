@@ -469,10 +469,29 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 
 ;;;;; my personal modification end here
 ;; org-roam
+
+(when sys/macp
+  (setq org-roam-directory-alist '("~/GitRepos/my-org-notes/"
+                                   "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/")))
+
+(defun my/toggle-org-roam-directory ()
+  "cycles through a list of directories and configures org-roam
+  directory"
+  (interactive)
+  (setq org-roam-directory-alist (append (cdr
+                                          org-roam-directory-alist) (cons (car org-roam-directory-alist)
+                                          ())))
+  (setq org-roam-directory (car org-roam-directory-alist))
+  (org-roam-db-build-cache)
+  (message "org-roam-directory now '%s'" (car
+                                          org-roam-directory-alist)))
+
 (when (and emacs/>=26p (executable-find "cc"))
   (use-package org-roam
     :diminish
-    :custom (org-roam-directory centaur-org-directory)
+    :custom
+    (org-roam-directory (car org-roam-directory-alist))
+    (org-roam-completion-system 'ivy)
     :hook (after-init . org-roam-mode)
     :bind (:map org-roam-mode-map
            (("C-c n l" . org-roam)
@@ -480,6 +499,20 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
             ("C-c n g" . org-roam-graph))
            :map org-mode-map
            (("C-c n i" . org-roam-insert)))))
+
+(use-package company-org-roam
+  :config
+  (push 'company-org-roam company-backends))
+
+(use-package org-roam-server
+  :config
+  (setq org-roam-server-host "127.0.0.1"
+        org-roam-server-port 8181
+        org-roam-server-export-inline-images t
+        org-roam-server-authenticate nil
+        org-roam-server-label-truncate t
+        org-roam-server-label-truncate-length 60
+        org-roam-server-label-wrap-length 20))
 
 (use-package org-special-block-extras
   :hook (org-mode . org-special-block-extras-mode))
