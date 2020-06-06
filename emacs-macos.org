@@ -1,0 +1,274 @@
+* [[https://east.fm/posts/open-with-emacsclient/index.html][OS-X, 'Open With', and emacsclient | KHE]] :website:
+
+[2020-06-05 Fri 13:31]
+
+** Article
+
+Because I've configured my GNU emacs to [[../gnu-emacs-setup-for-os-x/index.html][automatically run in daemon mode]] I wish to 'use' emacs by running =emacsclient= exclusively. But emacsclient isn't an OS-X 'app' which means that I can't double click on a file to open it with emacsclient. It also means that I can't use the 'Open With' menu to edit a file via emacsclient. Here is how to resolve those issues.
+
+*** Create an =emacsclient= app
+
+
+To create the app, I used [[http://www.sveinbjorn.org/platypus][Platypus]]. It is a truly great little application that enables one to put a wrapper around a shell script (or, I suppose, an =a.out=) to make it act like a 'real' application.
+
+1. Create a trivial shell script called =ec= which calls =emacsclient=. Make the script executable. I put it in my =~/bin/=.
+
+   #+BEGIN_SRC sh
+         #!/bin/bash
+         # Start emacsclient and return immediately.
+        /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n -c  " $@ "
+   #+END_SRC
+
+2. Optional: If you want your app to have the pretty GNU Emacs icon, copy =Emacs.app/Contents/Resources/Emacs.icns= to the temp dir.
+
+3. Launch Platypus. In the Platypus UI, do the following:
+
+   #+BEGIN_EXAMPLE
+        App Name              -->  'emacsclient'
+        Script Type           -->  'bash'
+        Script Path           -->  '~/bin/ec'
+        Output                -->  'None'
+        Accepts dropped items -->  'checked'
+        Everything else       -->  'unchecked'
+
+        Optional: Click the gear under the icon and set icon to:  Emacs.icns
+   #+END_EXAMPLE
+
+4. In Platypus, click on 'create'.
+
+   This will create a 'real' OS-X application named =emacsclient.app= in your temp dir. Copy this =emacsclient.app= to =/Applications=.
+
+You now have a functioning emacsclient OS-X 'application'.
+
+*** =emacsclient.app= and File Extensions
+
+
+The app created by Platypus worked fine. However, nothing had been done to associate file extensions with the =emacsclient.app=. Without those associations it would not be possible to, for example, double click a Python file and have emacsclient open it.
+
+It seems like Platypus would offer a mechanism for associating file extensions with the application it generates, but I could not find one. Here's what I did.
+
+=/Applications/emacsclient.app/Contents/Info.plist= contains an array of file extensions that emacsclient knows how to open; they are stored under the =CFBundleDocumentTypes= key. The array was essentially empty.
+
+I decided that I wanted to take the list of supported extensions from the =Info.plist= under =Emacs.app= and insert them into the plist for =emacsclient.app=. But how to do this?
+
+The =duti= utility looked promising, but it would not compile on El Capitan. It may have just been a matter of updating a version string in the config, but I didn't feel like investing time in the necessary research.
+
+I believe that I could have used =plutil= and =PlistBuddy= to convert both plists to XML and then manually edit them, but seemed tedious and error-prone.
+
+I was surprised to discover that Python includes =plistlib= in its standard distribution. It made things ridiculously easy.
+
+The following code will extract a key value from a source plist and insert that same key:value into a destination plist, saving the modified destination plist as a new plist.
+
+#+BEGIN_SRC python
+      #!/usr/bin/env python
+      # cppk.py -- This DOES NOT modify anything in /Applications
+
+      import  sys ,  plistlib ,  os
+
+      ( key ,  src ,  dest ,  new )  =  sys . argv [ 1 :]
+
+      source  =  plistlib . readPlist ( src )
+      destination  =  plistlib . readPlist ( dest )
+
+      destination [ key ]  =  source [ key ]
+
+      plistlib . writePlist ( destination ,  new )
+#+END_SRC
+
+Example usage:
+
+#+BEGIN_SRC sh
+     $  E =/Applications/Emacs.app/Contents/Info.plist
+     $  EC =/Applications/emacsclient.app/Contents/Info.plist
+     $ ./cppk.py CFBundleDocumentTypes  $E  $EC ./Info.plist
+#+END_SRC
+
+This creates the desired plist and saves it as =./Info.plist=. I then copied =./Info.plist= to =emacsclient.app/Contents/Info.plist= (after making a backup copy).
+
+To force OS-X to pick up the change, I ran =lsregister=, causing Launch Services to rebuild its database:
+
+#+BEGIN_SRC sh
+      # Valid for OS-X 10.11.2.  If the path is invalid on your version,
+      # run 'locate lsregister' to find it.
+
+     %  F =/System/Library/Frameworks/CoreServices.framework
+     %  F +=/Versions/A/Frameworks/LaunchServices.framework
+     %  F +=/Versions/A/Support/lsregister
+
+     %  " $F " -lint -kill -r -domain  local -domain system -domain user
+#+END_SRC
+
+This may take a while to complete.
+
+*** Conclusion
+
+
+After this point, =emacsclient= will appear in the 'Open With' menu. Additionally, it is now possible to globally associate emacsclient with file types so that it is the default application used to open them.
+
+I can now double-click on a python file and have emacsclient open it.
+
+I'd like to automate setting the global default application for certain file types (e.g., .py, .txt, etc.), but that will wait for another day.
+
+
+* [[https://east.fm/posts/gnu-emacs-setup-for-os-x/index.html][Gnu Emacs With Server Mode on OS-X | KHE]] :website:
+
+[2020-06-05 Fri 13:32]
+
+**** Article
+
+I have used the [[http://emacsformacosx.com][Emacs for Mac OS-X]] distribution of Gnu Emacs for years and have been quite pleased with it. Emacs' =server-mode= is great in that it makes for very fast load times and it allows sharing buffer contents, kill rings, etc., between windows. However, I found it a little tricky to get it working perfectly on OS-X. These are my notes on how to install and configure it so that =server-mode= works correctly on OS-X.
+
+Under =server-mode=, the =emacsclient= program is used to edit files. I have another note about how to [[../open-with-emacsclient/index.html][configure emacsclient as an OS-X application]]. This may be worth reading as well.
+
+***** Configuration
+
+
+1. Install Emacs for Mac OS-X.
+
+2. Update your path:
+
+   #+BEGIN_SRC sh
+         # Emacs.app binaries must come before /usr/bin
+         # Using the apple provided emacsclient with a different
+         # emacs in server mode is a common source of problems.
+         PATH =/Applications/Emacs.app/Contents/MacOS/bin: $PATH
+   #+END_SRC
+
+3. Create a script named =ec= that invokes emacsclient with desired options. Note that this returns immediately; it does not wait for the edit to complete.
+
+   #+BEGIN_SRC sh
+         #!/usr/bin/env bash
+         # -n    --> Return immediately, don't wait for edit to complete
+         # -a "" --> If emacs is not running in server mode, start it
+         # -c    --> create a new frame instead of using existing frame
+        emacsclient -n -a  "" -c  " $@ "
+   #+END_SRC
+
+4. Create a script named =ecw= that invokes emacsclient with desired options. Note that this command will not exit until the edit is complete.
+
+   #+BEGIN_SRC sh
+         #!/usr/bin/env bash
+         # -a "" --> If emacs is not running in server mode, start it
+         # -c    --> create a new frame instead of using existing frame
+        emacsclient -a  "" -c  " $@ "
+   #+END_SRC
+
+5. Many programs use the EDITOR and VISUAL environment variables to determine which editor to use. Set these up to use =ecw=.
+
+   #+BEGIN_SRC sh
+         export  EDITOR =ecw
+         export  VISUAL =ecw
+   #+END_SRC
+
+Whenever you run =ec= or =ecw=, an emacs daemon in server-mode will be started, if one doesn't already exist.
+
+This is the simplest emacs setup that I've used and it works well.
+
+***** Lagniappe
+
+
+While not specific to OS-X, this is germane to server-mode emacs.
+
+I'm used to killing buffers with = C-x k=. When first starting to use server-mode, I started seeing warnings about a client still using the buffer that I was killing. For my (simple) use case, the following allows me to keep using my old muscle-memory to kill the buffer yet avoid the warning:
+
+#+BEGIN_SRC lisp
+      ( add-hook  'server-switch-hook
+             ( lambda  ()
+               ( when  ( current-local-map )
+                 ( use-local-map  ( copy-keymap  ( current-local-map ))))
+               ( when  server-buffer-clients
+                 ( local-set-key  ( kbd  "C-x k" )  'server-edit ))))
+#+END_SRC
+
+***** Alternate Configuration
+
+
+Before I settled on the above approach, I configured OS-X to automatically start emacs in server-mode at boot time. This does work, but it isn't as clean as the above. Here's how to do it:
+
+1. Create the plist =~/Library/LaunchAgents/org.fsf.gnu.emacs.plist= using an editor:
+
+   #+BEGIN_EXAMPLE
+
+
+           version= "1.0" >
+
+               Label
+               org.fsf.gnu.emacs
+               ProgramArguments
+
+                  /Applications/Emacs.app/Contents/MacOS/Emacs
+                  --daemon
+
+               RunAtLoad
+
+               KeepAlive
+
+               ServiceDescription
+               Gnu Emacs Daemon
+
+
+   #+END_EXAMPLE
+
+2. Install the plist:
+
+   #+BEGIN_SRC sh
+        $ launchctl load -w  ~/Library/LaunchAgents/org.fsf.gnu.emacs.plist
+   #+END_SRC
+
+Note: I made up =org.fsf.gnu.emacs=. There's nothing magic about it; it could be any unique value.
+
+Now OS-X will start emacs in daemon mode and keep it running for you. I have had weird things happen with this approach, which is why I converted to the first method presented.
+
+***** 'Open-with' and emacsclient
+
+
+After creating an =emacsclient= app via Platypus, I was disappointed to notice that the app did not appear in the 'Open With' menu when a supported file was control-clicked on.
+
+Here is how I took care of this issue.
+
+=/Applications/emacsclient.app/Contents/Info.plist= contains an array of file extensions that it knows how to open; they are stored under the =CFBundleDocumentTypes= key. The array was empty, containing only a =*=.
+
+I concluded that a suitable array could be copied from =Emacs.app= and set about trying to insert it into =emacsclient='s =Info.plist=. After a few hours of =PlistBuddy= and =plutil=, I was unable to get what I inserted as the array to be properly recognized.
+
+This is why I don't like binary / non-editable configuration files. There's no reason that the plist shouldn't be editable text: YAML, XML, JSON, or whatever. A binary format for configuration files that can only be modified with dedicated tools is insane.
+
+I finally dropped back to Python, having bypassed it initially, assuming that programming be the long road to get it done. I was surprised to see that Python includes =plistlib= in its standard distribution. It made things ridiculously easy.
+
+The following code grabs the array from =Emacs.app=, and inserts it into a *copy* of =Info.plist= taken from =emacsclient.capp=. It saves the modified result as =Info.plist.new= in the current directory.
+
+#+BEGIN_SRC python
+      #!/usr/bin/env python
+
+      # Run this script from the command line with the path to the Emacs.app
+      # Info.plist as the first argument and the path to the emacsclient.app
+      # Info.plist as the second argument.  'Info.plist.new' will be created
+      # in current direcotory.
+
+      import  sys ,  plistlib ,  os
+
+      ( pl_from ,  pl_to )  =  sys . argv [ 1 :]
+
+      plf  =  plistlib . readPlist ( pl_from )
+      plt  =  plistlib . readPlist ( pl_to )
+
+      plt [ 'CFBundleDocumentTypes' ]  =  plf [ 'CFBundleDocumentTypes' ]
+
+      plistlib . writePlist ( plt ,  os . path . basename ( pl_to )  +  '.new' )
+#+END_SRC
+
+When this completes, copy the resulting =Info.plist.new= to =emacsclient.app/Contents/Info.plist= (after making a backup copy).
+
+So that OS-X picks up the change, it is necessary to run =lsregister=, which causes Launch Services to rebuild its database. Here's how:
+
+#+BEGIN_SRC sh
+      # Valid for OS-X 10.11.2.  If the path is invalid on yours,
+      # run 'locate lsregister' to find it.
+
+     %  F =/System/Library/Frameworks/CoreServices.framework
+     %  F +=/Versions/A/Frameworks/LaunchServices.framework
+     %  F +=/Versions/A/Support/lsregister
+
+     %  $F -lint -kill -r -domain  local -domain system -domain user
+#+END_SRC
+
+This may take 15-30 seconds to run. After that, =emacsclient= will appear in your 'Open With' menu the next time you use it; it's worth the effort.
