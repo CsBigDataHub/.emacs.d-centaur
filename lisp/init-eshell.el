@@ -35,14 +35,6 @@
   :ensure nil
   :defines eshell-prompt-function
   :functions eshell/alias
-  :bind (:map eshell-mode-map
-         ("C-c e e" . my/eshell-insert-file-at-point)
-         ("C-c e f" . my/eshell-find-file-at-point)
-         ("C-c e >" . my/eshell-complete-redirect-to-buffer)
-         ("C-c e p" . my/eshell-file-parent-dir)
-         ("C-c e c" . my/eshell-kill-save-file-at-point)
-         ("C-c e o" . my/eshell-put-last-output-to-buffer)
-         )
   :hook (eshell-mode . (lambda ()
                          (bind-key "C-l" 'eshell/clear eshell-mode-map)
                          (bind-key "C-r" 'counsel-esh-history eshell-mode-map) ;; my-personal-conf
@@ -252,6 +244,14 @@ directory."
 (use-package em-hist
   :ensure nil
   :after esh-mode
+  :bind (:map eshell-mode-map
+         ("C-c e e" . my/eshell-insert-file-at-point)
+         ("C-c e f" . my/eshell-find-file-at-point)
+         ("C-c e >" . my/eshell-complete-redirect-to-buffer)
+         ("C-c e p" . my/eshell-file-parent-dir)
+         ("C-c e c" . my/eshell-kill-save-file-at-point)
+         ("C-c e o" . my/eshell-put-last-output-to-buffer)
+         )
   :config
   (setq eshell-hist-ignoredups t)
   (setq eshell-save-history-on-exit t))
