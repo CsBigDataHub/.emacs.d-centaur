@@ -126,7 +126,7 @@
     :defines eshell-highlight-prompt
     :commands (epe-theme-lambda epe-theme-dakrone epe-theme-pipeline)
     :init (setq eshell-highlight-prompt nil
-                eshell-prompt-function #'epe-theme-lambda))
+                eshell-prompt-function #'epe-theme-pipeline))
 
   ;; Fish-like history autosuggestions
   (use-package esh-autosuggest
@@ -209,6 +209,31 @@ directory."
       (erase-buffer)
       (yank)           ; TODO do it with `insert' and `delete-region'?
       (switch-to-buffer-other-window (current-buffer)))))
+
+(defun my/eshell-execute-current-line ()
+  "Insert text of current line in eshell and execute."
+  (interactive)
+  (require 'eshell)
+  (let ((command (buffer-substring
+                  (save-excursion
+                    (beginning-of-line)
+                    (point))
+                  (save-excursion
+                    (end-of-line)
+                    (point)))))
+    (let ((buf (current-buffer)))
+      (unless (get-buffer eshell-buffer-name)
+        (eshell))
+      (display-buffer eshell-buffer-name t)
+      (switch-to-buffer-other-window eshell-buffer-name)
+      (end-of-buffer)
+      (eshell-kill-input)
+      (insert command)
+      (eshell-send-input)
+      (end-of-buffer)
+      (switch-to-buffer-other-window buf))))
+
+(global-set-key (kbd "C-x E") 'my/eshell-execute-current-line)
 
 (use-package esh-module
   :ensure nil
