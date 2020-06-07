@@ -36,7 +36,10 @@
 (use-package which-key
   :diminish
   :bind ("C-h M-m" . which-key-show-major-mode)
-  :hook (after-init . which-key-mode))
+  :hook (after-init . which-key-mode)
+  :config
+  (setq which-key-show-early-on-C-h t)
+  )
 
 ;; Persistent the scratch buffer
 (use-package persistent-scratch
