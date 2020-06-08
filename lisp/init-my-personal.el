@@ -420,6 +420,7 @@ happens within a region if one is selected."
   (eshell-toggle-size-fraction 3)
   (eshell-toggle-use-projectile-root t)
   (eshell-toggle-run-command nil)
+  (eshell-toggle-window-side 'right)
   (eshell-toggle-init-function #'eshell-toggle-init-eshell)
   :bind
   ("<f12>" . eshell-toggle)
