@@ -405,6 +405,9 @@ happens within a region if one is selected."
 
 (use-package copy-as-format)
 
+(use-package transpose-frame)
+
+
 (use-package reformatter)
 
 (reformatter-define xml-format

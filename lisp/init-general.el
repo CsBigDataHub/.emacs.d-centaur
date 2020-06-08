@@ -108,6 +108,7 @@ The prefix map is named 'my-DEF-map'."
  "1" 'delete-other-windows
  "2" 'my/split-below-and-move
  "3" 'my/split-right-and-move
+ "t" 'transpose-frame
  "w1" 'eyebrowse-switch-to-window-config-0
  "w1" 'eyebrowse-switch-to-window-config-1
  "w2" 'eyebrowse-switch-to-window-config-2

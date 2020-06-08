@@ -204,7 +204,7 @@
          (null (string-match "\\([;{}]\\|\\b\\(if\\|for\\|while\\)\\b\\)"
                              (thing-at-point 'line)))))
 
-  ;; https://github.com/Malabarba/aggressive-indent-mode/issues/138#issuecomment-636300081
+  ;; WORKAROUND: https://github.com/Malabarba/aggressive-indent-mode/issues/138#issuecomment-636300081
   (defun aggressive-indent--indent-if-changed (buffer)
     "Indent any region that changed in BUFFER in the last command loop."
     (if (not (buffer-live-p buffer))

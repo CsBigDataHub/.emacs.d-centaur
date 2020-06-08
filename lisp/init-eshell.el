@@ -231,7 +231,8 @@ directory."
       (insert command)
       (eshell-send-input)
       (end-of-buffer)
-      (switch-to-buffer-other-window buf))))
+      (switch-to-buffer-other-window buf)
+      (transpose-frame))))
 
 (global-set-key (kbd "C-x E") 'my/eshell-execute-current-line)
 
@@ -288,6 +289,23 @@ directory."
   (term-mode)
   (term-char-mode))
 
+;; WORKAROUND: https://github.com/zwild/eshell-prompt-extras/issues/32
+(defvar my-ansi-escape-re
+  (rx (or ?\233 (and ?\e ?\[))
+      (zero-or-more (char (?0 . ?\?)))
+      (zero-or-more (char ?\s ?- ?\/))
+      (char (?@ . ?~))))
+
+(defun my-nuke-ansi-escapes (beg end)
+  (save-excursion
+    (goto-char beg)
+    (while (re-search-forward my-ansi-escape-re end t)
+      (replace-match ""))))
+
+(defun my-eshell-nuke-ansi-escapes ()
+  (my-nuke-ansi-escapes eshell-last-output-start eshell-last-output-end))
+
+(add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
 ;;; my-personal ends here
 
 (provide 'init-eshell)
