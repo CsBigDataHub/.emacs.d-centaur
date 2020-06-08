@@ -232,7 +232,7 @@ directory."
       (eshell-send-input)
       (end-of-buffer)
       (switch-to-buffer-other-window buf)
-      (transpose-frame))))
+      )))
 
 (global-set-key (kbd "C-x E") 'my/eshell-execute-current-line)
 
