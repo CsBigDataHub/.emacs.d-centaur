@@ -21,6 +21,7 @@
   "uu" 'undo-tree-visualize
   "mc" 'my/open-config
   "tt" 'treemacs
+  "te" 'treemacs-display-current-project-exclusively
   ".." 'imenu
   "C-a" 'mark-whole-buffer
   "SPC" 'counsel-M-x)
