@@ -217,7 +217,8 @@
        ("+" elfeed-search-tag-all "tag all")
        ("-" elfeed-search-untag-all "untag all"))
       "Filter"
-      (("s" elfeed-search-live-filter "live filter")
+      (("ss" elfeed-search-live-filter "live filter")
+       ("st" my/elfeed-search-tag-filter "tag filter")
        ("c" elfeed-search-clear-filter "clear filter")
        ("S" elfeed-search-set-filter "set filter")
        ("*" (elfeed-search-set-filter "@6-months-ago +star") "starred")
@@ -266,7 +267,42 @@
       '((t :foreground "#7C00FC000000"))
       "Marks a starred Elfeed entry.")
     (push '(star elfeed-search-starred-title-face) elfeed-search-face-alist)
-    ))
+
+    (defun my/elfeed-search-tag-filter ()
+      "Filter `elfeed' by tags using completion.
+
+Arbitrary input is also possible, but you may need to exit the
+minibuffer with `exit-minibuffer' (I bind it to C-j in
+`minibuffer-local-completion-map')."
+      (interactive)
+      (unwind-protect
+          (elfeed-search-clear-filter)
+        ;; NOTE for the `crm-separator' to work with just a space, you
+        ;; need to make SPC self-insert in the minibuffer (the default is
+        ;; to behave like tab-completion).
+        (let* ((crm-separator " ")
+               (elfeed-search-filter-active :live)
+               (db-tags (elfeed-db-get-all-tags))
+               (plus-tags (delete-dups
+                           (mapcar (lambda (x)
+                                     (concat "+" (format "%s" x)))
+                                   db-tags)))
+               (minus-tags (delete-dups
+                            (mapcar (lambda (x)
+                                      (concat "-" (format "%s" x)))
+                                    db-tags)))
+               (all-tags (append plus-tags minus-tags))
+               (tags (completing-read-multiple
+                      "Apply tag: "
+                      all-tags nil t))
+               (input (cons elfeed-search-filter tags)))
+          (setq elfeed-search-filter
+                ;; How to unlist properly (remove parentheses)?  Keeping
+                ;; this inelegant form until I find that…
+                (substring (format "%s" input) 1 -1)))
+        (elfeed-search-update :force)))
+    )
+  )
 
 
 ;; Another Atom/RSS reader
