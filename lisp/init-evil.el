@@ -28,6 +28,8 @@
 (cond ((eq system-type 'gnu/linux) (evil-set-initial-state 'mu4e-headers-mode 'emacs)))
 (evil-set-initial-state 'bookmark-bmenu-mode 'emacs)
 (evil-set-initial-state 'dired-mode 'emacs)
+(evil-set-initial-state 'elfeed-search-mode 'emacs)
+(evil-set-initial-state 'elfeed-show-mode 'emacs)
 (evil-set-initial-state 'wgrep-change-to-wgrep-mode 'emacs)
 
 (use-package evil-numbers

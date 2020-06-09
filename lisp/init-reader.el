@@ -210,7 +210,7 @@
     ((:title (pretty-hydra-title "Elfeed" 'faicon "rss-square")
       :color amaranth :quit-key "q")
      ("Search"
-      (("c" elfeed-db-compact "compact db")
+      (("C" elfeed-db-compact "compact db")
        ("g" elfeed-search-update--force "refresh")
        ("G" elfeed-search-fetch "update")
        ("y" elfeed-search-yank "copy URL")
@@ -218,6 +218,7 @@
        ("-" elfeed-search-untag-all "untag all"))
       "Filter"
       (("s" elfeed-search-live-filter "live filter")
+       ("c" elfeed-search-clear-filter "clear filter")
        ("S" elfeed-search-set-filter "set filter")
        ("*" (elfeed-search-set-filter "@6-months-ago +star") "starred")
        ("A" (elfeed-search-set-filter "@6-months-ago" "all"))
@@ -226,6 +227,7 @@
       (("b" elfeed-search-browse-url "browse")
        ("n" next-line "next")
        ("p" previous-line "previous")
+       ("8" elfeed-toggle-star "star article")
        ("u" elfeed-search-tag-all-unread "mark unread")
        ("r" elfeed-search-untag-all-unread "mark read")
        ("RET" elfeed-search-show-entry "show"))))
@@ -251,7 +253,21 @@
                                ("https://fossbytes.com/feed" fossbytes)
                                ("https://www.omgubuntu.co.uk/feed" omgubuntu)
                                ))
-    :config (push elfeed-db-directory recentf-exclude)))
+    :config
+    (push elfeed-db-directory recentf-exclude)
+    (setq elfeed-show-unique-buffers t)
+    (defalias 'elfeed-toggle-star
+      (elfeed-expose #'elfeed-search-toggle-all 'star))
+
+    (eval-after-load 'elfeed-search
+      '(define-key elfeed-search-mode-map (kbd "8") 'elfeed-toggle-star))
+    ;; face for starred articles
+    (defface elfeed-search-starred-title-face
+      '((t :foreground "#7C00FC000000"))
+      "Marks a starred Elfeed entry.")
+    (push '(star elfeed-search-starred-title-face) elfeed-search-face-alist)
+    ))
+
 
 ;; Another Atom/RSS reader
 (use-package newsticker
