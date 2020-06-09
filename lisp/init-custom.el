@@ -124,7 +124,7 @@
   '((default  . doom-one)
     (classic  . doom-monokai-classic)
     (colorful . doom-snazzy)
-    (dark     . doom-dark+)
+    (dark     . doom-dracula)
     (light    . doom-one-light)
     (day      . doom-acario-light)
     (night    . doom-city-lights))
