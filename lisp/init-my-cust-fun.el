@@ -3158,6 +3158,13 @@ It sets the transient map to all functions of ALIST."
 ;;https://emacs.stackexchange.com/questions/5603/how-to-quickly-copy-move-file-in-emacs-dired
 (setq dired-dwim-target t)
 
+;; calendar times
+(setq calendar-time-zone -360)
+(setq calendar-standard-time-zone-name "CST")
+(setq calendar-daylight-time-zone-name "CDT")
+(setq calendar-latitude 45.0)
+(setq calendar-longitude 93.0)
+
 ;; hl-todos
 
 (setq hl-todo-keyword-faces

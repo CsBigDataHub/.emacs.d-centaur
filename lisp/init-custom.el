@@ -126,22 +126,22 @@
     (colorful . doom-snazzy)
     (dark     . doom-dracula)
     (light    . doom-one-light)
-    (day      . doom-acario-light)
-    (night    . doom-city-lights))
+    (day      . doom-solarized-light)
+    (night    . doom-solarized-dark))
   "List of themes mapped to internal themes."
   :group 'centaur
   :type '(alist :key-type (symbol :tag "Theme")
                 :value-type (symbol :tag "Internal theme")))
 
-(defcustom centaur-auto-themes '(("8:00"  . doom-one-light)
-				                 ("19:00" . doom-one))
+(defcustom centaur-auto-themes '(("8:00"  . doom-solarized-light)
+				                 ("19:00" . doom-solarized-dark))
   "List of themes mapped to the time they should be loaded.
 
 The keywords `:sunrise' and `:sunset' can be used for the time
 if `calendar-latitude' and `calendar-longitude' are set.
 For example:
-  '((:sunrise . doom-one-light)
-    (:sunset  . doom-one))"
+  '((:sunrise . doom-solarized-light)
+    (:sunset  . doom-solarized-dark))"
   :group 'centaur
   :type `(alist :key-type (string :tag "Time")
                 :value-type (symbol :tag "Theme")))
