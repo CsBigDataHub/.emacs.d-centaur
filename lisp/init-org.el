@@ -476,6 +476,9 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
   (setq org-roam-directory-alist '("~/GitRepos/my-org-notes/"
                                    "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/")))
 
+(when sys/linuxp
+  (setq org-roam-directory-alist '("~/Documents/my-org-notes/")))
+
 (defun my/toggle-org-roam-directory ()
   "cycles through a list of directories and configures org-roam
   directory"
