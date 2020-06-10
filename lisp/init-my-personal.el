@@ -261,6 +261,7 @@ happens within a region if one is selected."
               deft-recursive t
               deft-text-mode 'org-mode
               deft-use-filename-as-title t
+              deft-use-filter-string-for-filename t
               deft-extensions '("org" "md"))
   )
 

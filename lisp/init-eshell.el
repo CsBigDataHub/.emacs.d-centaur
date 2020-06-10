@@ -287,29 +287,29 @@ directory."
   (setq eshell-save-history-on-exit t))
 
 ;;https://www.reddit.com/r/emacs/comments/gksqhl/emacs_eshell_demo/fqtveuc?utm_source=share&utm_medium=web2x
-(defun eshell/in-term (prog &rest args)
-  (switch-to-buffer
-   (apply #'make-term (format "in-term %s %s" prog args) prog nil args))
-  (term-mode)
-  (term-char-mode))
+;; (defun eshell/in-term (prog &rest args)
+;;   (switch-to-buffer
+;;    (apply #'make-term (format "in-term %s %s" prog args) prog nil args))
+;;   (term-mode)
+;;   (term-char-mode))
 
 ;; WORKAROUND: https://github.com/zwild/eshell-prompt-extras/issues/32
-(defvar my-ansi-escape-re
-  (rx (or ?\233 (and ?\e ?\[))
-      (zero-or-more (char (?0 . ?\?)))
-      (zero-or-more (char ?\s ?- ?\/))
-      (char (?@ . ?~))))
+;; (defvar my-ansi-escape-re
+;;   (rx (or ?\233 (and ?\e ?\[))
+;;       (zero-or-more (char (?0 . ?\?)))
+;;       (zero-or-more (char ?\s ?- ?\/))
+;;       (char (?@ . ?~))))
 
-(defun my-nuke-ansi-escapes (beg end)
-  (save-excursion
-    (goto-char beg)
-    (while (re-search-forward my-ansi-escape-re end t)
-      (replace-match ""))))
+;; (defun my-nuke-ansi-escapes (beg end)
+;;   (save-excursion
+;;     (goto-char beg)
+;;     (while (re-search-forward my-ansi-escape-re end t)
+;;       (replace-match ""))))
 
-(defun my-eshell-nuke-ansi-escapes ()
-  (my-nuke-ansi-escapes eshell-last-output-start eshell-last-output-end))
+;; (defun my-eshell-nuke-ansi-escapes ()
+;;   (my-nuke-ansi-escapes eshell-last-output-start eshell-last-output-end))
 
-(add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
+;; ( add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
 ;;; my-personal ends here
 
 (provide 'init-eshell)

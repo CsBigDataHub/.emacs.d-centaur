@@ -116,7 +116,7 @@ prepended to the element after the #+HEADER: tag."
   ;; To speed up startup, don't put to init section
   (when sys/macp
     (setq org-agenda-files
-          '("/Users/ckoneru/GitRepos/my-projects/Mac-pref-Backup/org-file-note/"
+          '("/Users/ckoneru/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/"
             "/Users/ckoneru/GitRepos/my-org-notes/")))
   (setq org-todo-keywords
         '((sequence "TODO(t)" "DOING(i)" "HANGUP(h)" "|" "DONE(d)" "CANCEL(c)")
