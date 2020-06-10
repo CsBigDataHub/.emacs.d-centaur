@@ -267,6 +267,9 @@ directory."
   (setq password-cache t)
   (setq password-cache-expiry 600))
 
+(add-hook 'eshell-mode-hook (lambda()
+                              (local-unset-key (kbd "M-s"))))
+
 (use-package em-hist
   :ensure nil
   :after esh-mode
@@ -277,6 +280,7 @@ directory."
          ("C-c e p" . my/eshell-file-parent-dir)
          ("C-c e c" . my/eshell-kill-save-file-at-point)
          ("C-c e o" . my/eshell-put-last-output-to-buffer)
+         ("M-s i" . eshell-next-matching-input)
          )
   :config
   (setq eshell-hist-ignoredups t)
