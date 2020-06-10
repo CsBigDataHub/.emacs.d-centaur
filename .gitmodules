@@ -1,0 +1,3 @@
+[submodule "notdeft"]
+	path = lisp/notdeft
+	url = https://github.com/hasu/notdeft.git
