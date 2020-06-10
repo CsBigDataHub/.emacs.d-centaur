@@ -74,9 +74,12 @@ The prefix map is named 'my-DEF-map'."
 
 (general-global-spc-menu-definer
  "org-roam-map" "n"
+ "nn" 'notdeft
+ "nh" 'notdeft-mode-hydra/body
+ "de" 'deft
+ "dd" 'my/toggle-org-roam-directory
  "l" 'org-roam
  "f" 'org-roam-find-file
- "d" 'my/toggle-org-roam-directory
  "g" 'org-roam-graph
  "i" 'org-roam-insert
  "s" 'org-roam-server-mode
