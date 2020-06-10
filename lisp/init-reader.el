@@ -226,6 +226,7 @@
        ("T" (elfeed-search-set-filter "@1-day-ago" "today")))
       "Article"
       (("b" elfeed-search-browse-url "browse")
+       ("B" my/elfeed-search-browse-background-url "browse-at-background")
        ("n" next-line "next")
        ("p" previous-line "previous")
        ("8" elfeed-toggle-star "star article")
@@ -301,6 +302,24 @@ minibuffer with `exit-minibuffer' (I bind it to C-j in
                 ;; this inelegant form until I find that…
                 (substring (format "%s" input) 1 -1)))
         (elfeed-search-update :force)))
+
+    (defun  my/elfeed-search-browse-background-url ()
+      "Open current ` elfeed ' entry (or region entries) in browser without losing focus.
+        http://xenodium.com/open-emacs-elfeed-links-in-background/index.html"
+      (interactive)
+      (let ((entries (elfeed-search-selected)))
+        (mapc (lambda (entry)
+                (when sys/macp
+                  (start-process (concat  "open " (elfeed-entry-link entry))
+                                 nil  "open"  "--background" (elfeed-entry-link entry)))
+                (when sys/linuxp ;; https://stackoverflow.com/a/2276679
+                  (start-process (concat "firefox" (elfeed-entry-link entry))
+                                 nil "firefox" "--new-tab" (elfeed-entry-link entry)))
+                (elfeed-untag entry 'unread)
+                (elfeed-search-update-entry entry))
+              entries)
+        (unless (or elfeed-search-remain-on-entry (use-region-p))
+          (forward-line))))
     )
   )
 
