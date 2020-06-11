@@ -2,13 +2,14 @@
 
 (require 'notdeft-autoloads)
 
-(setq notdeft-directories '("/Users/ckoneru/GitRepos/my-org-notes/"
-                            "/Users/ckoneru/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/"))
+(when sys/macp
+  (setq notdeft-directories '("/Users/ckoneru/GitRepos/my-org-notes/"
+                              "/Users/ckoneru/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/")))
 
 (setq notdeft-extension "org")
 (setq notdeft-secondary-extensions '("md" "txt"))
 
-(setq notdeft-xapian-program "/Users/ckoneru/.emacs.d/lisp/notdeft/xapian/notdeft-xapian")
+(setq notdeft-xapian-program "~/.emacs.d/lisp/notdeft/xapian/notdeft-xapian")
 
 (defun run-local-variables-mode-hooks ()
   "Run hooks for `major-mode' with locals set.
