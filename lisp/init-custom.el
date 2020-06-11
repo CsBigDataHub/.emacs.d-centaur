@@ -133,7 +133,7 @@
   :type '(alist :key-type (symbol :tag "Theme")
                 :value-type (symbol :tag "Internal theme")))
 
-(defcustom centaur-auto-themes '(("8:00"  . doom-solarized-light)
+(defcustom centaur-auto-themes '(("6:00"  . doom-solarized-light)
 				                 ("19:00" . doom-solarized-dark))
   "List of themes mapped to the time they should be loaded.
 
