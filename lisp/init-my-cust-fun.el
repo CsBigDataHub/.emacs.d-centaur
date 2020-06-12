@@ -3198,6 +3198,30 @@ It sets the transient map to all functions of ALIST."
   :config
   (setq ispell-extra-args "--run-together"))
 
+;; set specific browser to open links
+;; (setq browse-url-browser-function 'browse-url-firefox)
+
+;; (setq browse-url-browser-function 'eww-browse-url) ; emacs browser
+
+;; (setq browse-url-browser-function 'browse-url-chromium)
+
+(when sys/macp
+  (setq browse-url-browser-function 'browse-url-chrome
+        browse-url-chrome-program "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"))
+
+;; NOTES: Leaving this code for here reference.
+;; code from - http://ergoemacs.org/emacs/emacs_set_default_browser.html
+;; use browser depending on url
+;; ( setq
+;; browse-url-browser-function
+;; '(
+;;   ("wikipedia\\.org" . browse-url-firefox)
+;;   ("github" . browse-url-chromium)
+;;   ("thefreedictionary\\.com" . eww-browse-url)
+;;   ("." . browse-url-default-browser)
+;;   )
+;; )
+
 ;;;my super key bindings
 (global-set-key (kbd "s-b") 'ivy-switch-buffer)
 (global-set-key (kbd "s-O") 'ns-open-file-using-panel)
