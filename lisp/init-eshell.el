@@ -43,7 +43,7 @@
                          (eshell/alias "fo" "find-file-other-window $1")
                          (eshell/alias "d" "dired $1")
                          (eshell/alias "l" "ls -lFh")
-                         (eshell/alias "ll" "ls -l")
+                         (eshell/alias "ll" "ls -ltrah")
                          (eshell/alias "la" "ls -lAFh")
                          (eshell/alias "lr" "ls -tRFh")
                          (eshell/alias "lrt" "ls -lFcrt")
@@ -149,6 +149,12 @@
   ;; `cd' to frequent directory in `eshell'
   (use-package eshell-z
     :hook (eshell-mode . (lambda () (require 'eshell-z)))))
+
+(when sys/linuxp
+  (add-hook 'eshell-mode-hook (lambda ()
+                                (eshell/alias "ad" "sudo apt update")
+                                (eshell/alias "au" "sudo apt upgrade")
+                                (eshell/alias "ai" "sudo apt install $1"))))
 
 ;;; my-personal from https://protesilaos.com/dotemacs/
 
