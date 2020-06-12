@@ -3203,10 +3203,10 @@ It sets the transient map to all functions of ALIST."
 (global-set-key (kbd "s-O") 'ns-open-file-using-panel)
 (global-set-key (kbd "s-o") 'other-window)
 (global-set-key (kbd "s-0") 'delete-window)
-(global-set-key (kbd "M-/") 'company-dabbrev)
+;; (global-set-key (kbd "M-/") 'company-dabbrev)
 (global-set-key (kbd "M-i") 'tab-to-tab-stop)
 (global-set-key (kbd "C-M-?") 'complete-symbol)
-
+(global-set-key (kbd "M-.") 'xref-find-definitions)
 
 (which-key-add-key-based-replacements
   "M-m y" "yas-prefix")

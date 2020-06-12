@@ -11,6 +11,55 @@
   (setq dabbrev-eliminate-newlines nil)
   (setq dabbrev-upcase-means-case-search t))
 
+(defun my-try-expand-company (old)
+  (unless company-candidates
+    (company-auto-begin))
+  (if (not old)
+      (progn
+        (he-init-string (he-lisp-symbol-beg) (point))
+        (if (not (he-string-member he-search-string he-tried-table))
+            (setq he-tried-table (cons he-search-string he-tried-table)))
+        (setq he-expand-list
+              (and (not (equal he-search-string ""))
+                   company-candidates))))
+  (while (and he-expand-list
+              (he-string-member (car he-expand-list) he-tried-table))
+    (setq he-expand-list (cdr he-expand-list)))
+  (if (null he-expand-list)
+      (progn
+        (if old (he-reset-string))
+        ())
+    (progn
+      (he-substitute-string (car he-expand-list))
+      (setq he-expand-list (cdr he-expand-list))
+      t)))
+
+;; The actual expansion function
+(defun my-try-expand-by-dict (old)
+  ;; old is true if we have already attempted an expansion
+  (unless (bound-and-true-p ispell-minor-mode)
+    (ispell-minor-mode 1))
+
+  ;; english-words.txt is the fallback dicitonary
+  (if (not ispell-alternate-dictionary)
+      (setq ispell-alternate-dictionary (file-truename "~/.emacs.d/misc/english-words.txt")))
+  (let ((lookup-func (if (fboundp 'ispell-lookup-words)
+                         'ispell-lookup-words
+                       'lookup-words)))
+    (unless old
+      (he-init-string (he-lisp-symbol-beg) (point))
+      (if (not (he-string-member he-search-string he-tried-table))
+          (setq he-tried-table (cons he-search-string he-tried-table)))
+      (setq he-expand-list
+            (and (not (equal he-search-string ""))
+                 (funcall lookup-func (concat (buffer-substring-no-properties (he-lisp-symbol-beg) (point)) "*")))))
+    (if (null he-expand-list)
+        (if old (he-reset-string))
+      (he-substitute-string (car he-expand-list))
+      (setq he-expand-list (cdr he-expand-list))
+      t)
+    ))
+
 (use-package hippie-exp
   :after dabbrev
   :config
@@ -25,7 +74,9 @@
           try-expand-line
           try-complete-file-name-partially
           try-complete-file-name
-          try-expand-all-abbrevs))
+          try-expand-all-abbrevs
+          my-try-expand-by-dict
+          my-try-expand-company))
   (setq hippie-expand-verbose nil)
   :bind ("M-/" . hippie-expand))
 

@@ -14,7 +14,7 @@
 (setq centaur-theme 'auto)                        ; Color theme: auto, random, default, classic, colorful, dark, light, day or night
 (setq centaur-dashboard t)                    ; Use dashboard at startup or not: t or nil
 ;; (setq centaur-lsp 'eglot)                      ; Set LSP client: lsp-mode, eglot or nil
-;; (setq centaur-lsp-format-on-save-ignore-modes '(c-mode c++-mode)) ; Ignore format on save for some languages
+(setq centaur-lsp-format-on-save-ignore-modes '(json-mode)) ; Ignore format on save for some languages
 ;; (setq centaur-chinese-calendar nil)            ; Use Chinese calendar or not: t or nil
 ;; (setq centaur-prettify-symbols-alist nil)      ; Alist of symbol prettifications
 ;; (setq centaur-prettify-org-symbols-alist nil)  ; Alist of symbol prettifications for `org-mode'
@@ -70,6 +70,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(centaur-package-archives (quote melpa))
+ '(centaur-theme (quote auto))
+ '(circadian-themes
+   (quote
+    (("6:00" . doom-solarized-light)
+     ("19:00" . doom-solarized-dark))))
  '(doom-themes-treemacs-theme "doom-colors")
  '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:"))
 

@@ -9,7 +9,8 @@
 (setq notdeft-extension "org")
 (setq notdeft-secondary-extensions '("md" "txt"))
 
-(setq notdeft-xapian-program "~/.emacs.d/lisp/notdeft/xapian/notdeft-xapian")
+(setq notdeft-xapian-program (expand-file-name "lisp/notdeft/xapian/notdeft-xapian" user-emacs-directory))
+
 
 (defun run-local-variables-mode-hooks ()
   "Run hooks for `major-mode' with locals set.
