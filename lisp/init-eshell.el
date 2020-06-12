@@ -150,6 +150,12 @@
   (use-package eshell-z
     :hook (eshell-mode . (lambda () (require 'eshell-z)))))
 
+(when sys/linuxp
+  (add-hook 'eshell-mode-hook (lambda ()
+                                (eshell/alias "ad" "sudo apt update")
+                                (eshell/alias "au" "sudo apt upgrade")
+                                (eshell/alias "ai" "sudo apt install $1"))))
+
 ;;; my-personal from https://protesilaos.com/dotemacs/
 
 (declare-function ffap-file-at-point 'find-file-at-point)
