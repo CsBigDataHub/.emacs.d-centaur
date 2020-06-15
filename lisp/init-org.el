@@ -498,6 +498,14 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
     (org-roam-directory (car org-roam-directory-alist))
     (org-roam-completion-system 'ivy)
     :hook (after-init . org-roam-mode)
+    :config
+    (require 'org-roam-protocol)
+    (setq org-roam-capture-templates
+          '(("d" "default" plain (function org-roam--capture-get-point)
+             "%?"
+             :file-name "${slug}"
+             :head "#+TITLE: ${title}\n"
+             :unnarowed t)))
     :bind (:map org-roam-mode-map
            (("C-c n l" . org-roam)
             ("C-c n f" . org-roam-find-file)

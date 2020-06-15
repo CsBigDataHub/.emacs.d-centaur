@@ -235,10 +235,13 @@
 ;;(add-to-list 'savehist-additional-variables log-edit-comment-ring)
 ;;(savehist-mode +1)
 
-(setq magit-repository-directories
-      `(("~/.emacs.d/" . 0)
-        ("~/GitRepos/" . 1)
-        ("~/IdeaProjects/" . 1)))
+(when sys/macp
+  (setq magit-repository-directories
+        `(("~/.emacs.d/" . 0)
+          ("~/GitRepos/" . 1)
+          ("~/GitRepos/team-loki/" . 1)
+          ("~/GitRepos/my-projects/" . 1)
+          ("~/IdeaProjects/" . 1))))
 
 ;; C-c C-a to amend without any prompt
 ;; This code is inbuild by magit so Instead you should be using the built in Extend Commit command: `c e'
