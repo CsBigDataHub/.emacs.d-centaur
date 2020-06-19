@@ -488,8 +488,9 @@
    ;; my-personal
 
    ;; Java support
-   (use-package lsp-java
-     :hook (java-mode . (lambda () (require 'lsp-java))))))
+   (when emacs/>=25.2p
+     (use-package lsp-java
+       :hook (java-mode . (lambda () (require 'lsp-java)))))))
 
 (when centaur-lsp
   ;; Enable LSP in org babel

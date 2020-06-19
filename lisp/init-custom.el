@@ -80,9 +80,6 @@
              `(,(cons "gnu"   (concat proto "://elpa.gnu.org/packages/"))
                ,(cons "org"   (concat proto "://orgmode.org/elpa/")) ;; my-personal
                ,(cons "melpa" (concat proto "://melpa.org/packages/"))))
-      ,(cons 'melpa-mirror
-             `(,(cons "gnu"   (concat proto "://elpa.gnu.org/packages/"))
-               ,(cons "melpa" (concat proto "://www.mirrorservice.org/sites/melpa.org/packages/"))))
       ,(cons 'emacs-china
              `(,(cons "gnu"   (concat proto "://elpa.emacs-china.org/gnu/"))
                ,(cons "melpa" (concat proto "://elpa.emacs-china.org/melpa/"))))

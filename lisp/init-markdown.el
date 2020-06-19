@@ -88,6 +88,7 @@ mermaid.initialize({
 
   ;; Use `which-key' instead
   (advice-add #'markdown--command-map-prompt :override #'ignore)
+  (advice-add #'markdown--style-map-prompt   :override #'ignore)
   :config
   ;;mypersonal
   (setq markdown-command
