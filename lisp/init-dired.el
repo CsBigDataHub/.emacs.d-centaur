@@ -204,10 +204,6 @@
            )))
   )
 
-(use-package dired-rsync
-  :config
-  (bind-key "C-c C-r" 'dired-rsync dired-mode-map))
-
 ;; Display the recursive size of directories in Dired
 (use-package dired-du
   :after dired

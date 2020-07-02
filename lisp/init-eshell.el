@@ -50,6 +50,10 @@
                          (eshell/alias "lsa" "ls -lah")
                          (eshell/alias "lt" "ls -ltFh")))
   :config
+  (setq eshell-visual-commands '("ssh" "less" "top" "man")
+        ;; eshell-visual-subcommands '(("git" "log" "l" "diff" "show"))
+        eshell-visual-options '(("git" "commit" "log"))
+        )
   (with-no-warnings
     ;; For compatibility
     (unless (fboundp 'flatten-tree)
