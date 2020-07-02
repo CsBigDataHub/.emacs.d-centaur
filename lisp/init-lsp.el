@@ -43,8 +43,11 @@
    ;; Emacs client for the Language Server Protocol
    ;; https://github.com/emacs-lsp/lsp-mode#supported-languages
    (use-package lsp-mode
-     :defines (lsp-clients-python-library-directories lsp-rust-rls-server-command)
-     :commands (lsp-enable-which-key-integration lsp-format-buffer lsp-organize-imports)
+     :defines (lsp-clients-python-library-directories
+               lsp-rust-server)
+     :commands (lsp-enable-which-key-integration
+                lsp-format-buffer
+                lsp-organize-imports)
      :diminish
      :hook ((prog-mode . (lambda ()
                            (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode)
@@ -71,9 +74,15 @@
            lsp-keep-workspace-alive nil
            lsp-prefer-capf t
            lsp-signature-auto-activate nil
+           lsp-modeline-code-actions-enable nil
 
            lsp-enable-file-watchers nil
+           lsp-enable-file-watchers nil
            lsp-enable-folding nil
+           lsp-enable-semantic-highlighting nil
+           lsp-enable-symbol-highlighting nil
+           lsp-enable-text-document-color nil
+
            lsp-enable-indentation nil
            lsp-enable-snippet t
            lsp-enable-xref t
@@ -84,8 +93,8 @@
 
      ;; For `lsp-clients'
      (setq lsp-clients-python-library-directories '("/usr/local/" "/usr/"))
-     (unless (executable-find "rls")
-       (setq lsp-rust-rls-server-command '("rustup" "run" "stable" "rls")))
+     (when (executable-find "rust-analyzer")
+       (setq lsp-rust-server 'rust-analyzer))
      :config
      ;; my-personal
      ;; configure terraform for lsp
