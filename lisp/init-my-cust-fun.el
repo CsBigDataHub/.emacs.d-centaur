@@ -1742,16 +1742,32 @@ corresponding command.
 Within CMD, %i denotes the input file(s), and %o denotes the
 output file. %i path(s) are relative, while %o is absolute.")
 
+(defun xah-dired-sort ()
+  "Sort dired dir listing in different ways.
+Prompt for a choice.
+URL `http://ergoemacs.org/emacs/dired_sort.html'
+Version 2018-12-23"
+  (interactive)
+  (let ($sort-by $arg)
+    (setq $sort-by (ido-completing-read "Sort by:" '( "date" "size" "name" )))
+    (cond
+     ((equal $sort-by "name") (setq $arg "-Al "))
+     ((equal $sort-by "date") (setq $arg "-Al -t"))
+     ((equal $sort-by "size") (setq $arg "-Al -S"))
+     ;; ((equal $sort-by "dir") (setq $arg "-Al --group-directories-first"))
+     (t (error "logic error 09535" )))
+    (dired-sort-other $arg )))
+
 ;;Hydra for Dired
 (defhydra my/hydra-dired (:hint nil :color pink)
   "
-_+_ mkdir          _v_iew                       _m_ark             _(_ details          _i_nsert-subdir      _w_dired
+_+_ mkdir          _v_iew                       _m_ark             _(_ details          _i_nsert-subdir         _w_dired
 _P_eep             _n_ filter                   _@_ mark regex     _<_ subtree-cycle    _>_ subtree-toggle
-_C_opy             _O_ view other               _U_nmark all       _)_ omit-mode                             C-x C-q : edit
-_D_elete           _o_pen other                 _u_nmark           _l_ redisplay        _w_ kill-subdir      C-c C-c : commit
-_R_ename-or-move   _M_ chmod                    _t_oggle           _g_ revert buf       _e_ ediff            C-c ESC : abort
-_Y_ rel symlink    _G_ chgrp                    _E_xtension mark   _s_ort
-_S_ymlink          _fc_ copy-file-name          _F_ind marked      _._ toggle hydra
+_C_opy             _O_ view other               _U_nmark all       _)_ omit-mode                                C-x C-q : edit
+_D_elete           _o_pen other                 _u_nmark           _l_ redisplay        _w_ kill-subdir         C-c C-c : commit
+_R_ename-or-move   _M_ chmod                    _t_oggle           _g_ revert buf       _e_ ediff               C-c ESC : abort
+_Y_ rel symlink    _G_ chgrp                    _E_xtension mark   _s_ort               ___ rename-file-with-_
+_S_ymlink          _fc_ copy-file-name          _F_ind marked      _._ toggle hydra     _-_ rename-file-with--
 _r_sync            _fp_ copy-file-name-path     _I_ Git Info       ^ ^                  _?_ summary
 _z_ compress-to    _A_ find regexp              _<return>_ Dired-find-file
 _Z_ compress       _Q_ repl regexp              ^        ^
@@ -1789,7 +1805,7 @@ T - tag prefix
   ("R" dired-do-rename)
   ("r" dired-rsync)
   ("S" dired-do-symlink)
-  ("s" dired-sort-toggle-or-edit)
+  ("s" xah-dired-sort)
   ("t" dired-toggle-marks)
   ("U" dired-unmark-all-marks)
   ("u" dired-unmark)
@@ -1800,6 +1816,8 @@ T - tag prefix
   ("Y" dired-do-relsymlink)
   ("z" dired-do-compress-to)
   ("Z" dired-do-compress)
+  ("-" xah-dired-rename-space-to-hyphen)
+  ("_" xah-dired-rename-space-to-underscore)
   ("<return>" dired-find-file)
   ("q" nil)
   ("." nil :color blue))

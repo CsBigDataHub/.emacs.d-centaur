@@ -91,4 +91,82 @@ Add it for all `notdeft-directories'."
   (autoload 'notdeft-global-hydra/body "notdeft-global-hydra" nil t)
   (define-key my-notdeft-global-map [(h)] 'notdeft-global-hydra/body))
 
+(require 'org-web-tools)
+
+(defun my-org-web-tools--html-to-org-with-pandoc (html &optional selector)
+  "Return string of HTML converted to Org with Pandoc.
+When SELECTOR is non-nil, the HTML is filtered using
+`esxml-query' SELECTOR and re-rendered to HTML with
+`org-web-tools--dom-to-html', which see."
+  (when selector
+    (setq html (->> (with-temp-buffer
+                      (insert html)
+                      (libxml-parse-html-region 1 (point-max)))
+                    (esxml-query selector)
+                    ;; MAYBE: Should probably use `shr-dom-print' instead.
+                    (org-web-tools--dom-to-html))))
+  (with-temp-buffer
+    (insert html)
+    (unless (zerop (call-process-region (point-min) (point-max) "pandoc"
+                                        t t nil
+                                        (org-web-tools--pandoc-no-wrap-option)
+                                        "-f" "html+smart" "-t" "org+smart" "--standalone"))
+      ;; TODO: Add error output, see org-protocol-capture-html
+      (error "Pandoc failed"))
+    (org-web-tools--clean-pandoc-output)
+    (buffer-string)))
+
+(defun my-org-web-tools--url-as-readable-org (&optional url)
+  "Return string containing Org entry of URL's web page content.
+Content is processed with `eww-readable' and Pandoc.  Entry will
+be a top-level heading, with article contents below a
+second-level \"Article\" heading, and a timestamp in the
+first-level entry for writing comments."
+  ;; By taking an optional URL, and getting it from the clipboard if
+  ;; none is given, this becomes suitable for use in an org-capture
+  ;; template, like:
+
+  ;; ("wr" "Capture Web site with eww-readable" entry
+  ;;  (file "~/org/articles.org")
+  ;;  "%(org-web-tools--url-as-readable-org)")
+  (-let* ((url (or url (org-web-tools--get-first-url)))
+          (html (org-web-tools--get-url url))
+          (html (org-web-tools--sanitize-html html))
+          ((title . readable) (org-web-tools--eww-readable html))
+          (title (org-web-tools--cleanup-title (or title "")))
+          (converted (my-org-web-tools--html-to-org-with-pandoc readable))
+          (link (org-make-link-string url title))
+          (timestamp (format-time-string (concat "[" (substring (cdr org-time-stamp-formats) 1 -1) "]"))))
+    (with-temp-buffer
+      (org-mode)
+      ;; Insert article text
+      (insert converted)
+      ;; Demote in-article headings
+      ;; MAYBE: Use `org-paste-subtree' instead of demoting headings ourselves.
+      (org-web-tools--demote-headings-below 2)
+      ;; Insert headings at top
+      (goto-char (point-min))
+      (insert
+       "#+TITLE: " title "\n\n"
+       "* " link " :website:" "\n\n"
+       timestamp "\n\n"
+       "** Article" "\n\n")
+      (buffer-string))))
+
+(defun my-notdeft-import-web-page (url &optional ask-dir)
+  "Import the web page at URL into NotDeft.
+Query for the target directory if ASK-DIR is non-nil.
+Interactively, query for a URL, and set ASK-DIR if a prefix
+argument is given. Choose a file name based on any document
+<title>, or generate some unique name."
+  (interactive "sPage URL: \nP")
+  (let* ((s (my-org-web-tools--url-as-readable-org url))
+         (html (org-web-tools--get-url url))
+         (title (org-web-tools--html-title html)
+                ))
+    (notdeft-create-file
+     (and ask-dir 'ask)
+     (and title `(title, title))
+     "org" s)))
+
 (provide 'init-notdeft)
