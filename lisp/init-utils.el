@@ -89,6 +89,12 @@
 ;; Persistent the scratch buffer
 (use-package persistent-scratch
   :diminish
+  :bind (:map persistent-scratch-mode-map
+         ([remap kill-buffer] . (lambda (&rest _)
+                                  (interactive)
+                                  (user-error "Scrach buffer cannot be killed")))
+         ([remap revert-buffer] . persistent-scratch-restore)
+         ([remap revert-this-buffer] . persistent-scratch-restore))
   :hook ((after-init . persistent-scratch-autosave-mode)
          (lisp-interaction-mode . persistent-scratch-mode)))
 
@@ -123,6 +129,11 @@
      :map rg-global-map
      ("R" . counsel-rg)
      ("F" . counsel-fzf))))
+
+;; Dictionary
+(when sys/macp
+  (use-package osx-dictionary
+    :bind (("C-c D" . osx-dictionary-search-pointer))))
 
 ;; Youdao Dictionary
 ;; (use-package youdao-dictionary
@@ -186,7 +197,6 @@
 (use-package olivetti
   :diminish
   :bind ("<f7>" . olivetti-mode)
-  :hook (olivetti-mode . (lambda () (text-scale-set (if olivetti-mode +2 0))))
   :init (setq olivetti-body-width 0.618))
 
 ;; Edit text for browsers with GhostText or AtomicChrome extension
