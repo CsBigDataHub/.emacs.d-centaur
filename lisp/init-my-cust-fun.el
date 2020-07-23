@@ -2975,9 +2975,9 @@ C-u C-u C-u M-x xah-cycle-letter-case -> Force capitalize."
          ;; Capitalize -> UPPER
          (put this-command 'next-state "UPPER")))))
 
-(defun my/upcase ()     (interactive) (xah-cycle-letter-case 4))
-(defun my/downcase ()   (interactive) (xah-cycle-letter-case 16))
-(defun my/capitalize () (interactive) (xah-cycle-letter-case 64))
+(defun my/upcase ()     (interactive) (xah-cycle-letter-case 4) (forward-word))
+(defun my/downcase ()   (interactive) (xah-cycle-letter-case 16) (forward-word))
+(defun my/capitalize () (interactive) (xah-cycle-letter-case 64) (forward-word))
 
 
 ;; remap M-u to `my/upcase'
