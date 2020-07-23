@@ -228,7 +228,26 @@ If Non-nil, use dashboard, otherwise will restore previous session."
     ("#+BEGIN_QUOTE" . ?»)
     ("#+END_QUOTE" . ?«)
     ("#+HEADERS" . ?☰)
-    ("#+RESULTS:" . ?💻))
+    ("#+RESULTS:" . ?💻)
+
+    ("#+archive:" . ?📦)
+    ("#+author:" . ?👤)
+    ("#+creator:" . ?💁)
+    ("#+date:" . ?📆)
+    ("#+description:" . ?⸙)
+    ("#+email:" . ?🖂)
+    ("#+options:" . ?⛭)
+    ("#+setupfile:" . ?⛮)
+    ("#+tags:" . ?🏷)
+    ("#+title:" . ?🕮)
+
+    ("#+begin_src" . ?✎)
+    ("#+end_src" . ?□)
+    ("#+begin_quote" . ?»)
+    ("#+end_quote" . ?«)
+    ("#+headers" . ?☰)
+    ("#+results:" . ?💻)
+    )
   "Alist of symbol prettifications for `org-mode'."
   :group 'centaur
   :type '(alist :key-type string :value-type (choice character sexp)))
