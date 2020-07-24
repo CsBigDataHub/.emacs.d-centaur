@@ -512,25 +512,40 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
             ("C-c n d" . my/toggle-org-roam-directory)
             ("C-c n g" . org-roam-graph))
            :map org-mode-map
-           (("C-c n i" . org-roam-insert)))))
+           (("C-c n i" . org-roam-insert))
+           (("C-c n I" . org-roam-insert-immediate))))
 
-(use-package company-org-roam
-  :config
-  (push 'company-org-roam company-backends))
+  (use-package company-org-roam
+    :config
+    (push 'company-org-roam company-backends))
 
-(use-package org-roam-server
-  :config
-  (setq org-roam-server-host "127.0.0.1"
-        org-roam-server-port 8181
-        org-roam-server-export-inline-images t
-        org-roam-server-authenticate nil
-        org-roam-server-label-truncate t
-        org-roam-server-label-truncate-length 60
-        org-roam-server-label-wrap-length 20))
+  (use-package org-roam-server
+    :functions xwidget-webkit-current-session
+    :hook (org-roam-server-mode . org-roam-server-browse)
+    :init
+    (defun org-roam-server-browse ()
+      (when org-roam-server-mode
+        (let ((url (format "http://%s:%d" org-roam-server-host org-roam-server-port)))
+          (if (featurep 'xwidget-internal)
+              (progn
+                (xwidget-webkit-browse-url url)
+                (let ((buf (xwidget-buffer (xwidget-webkit-current-session))))
+                  (when (buffer-live-p buf)
+                    (and (eq buf (current-buffer)) (quit-window))
+                    (pop-to-buffer buf))))
+            (browse-url url)))))
+    :config
+    (setq org-roam-server-host "127.0.0.1"
+          org-roam-server-port 8181
+          org-roam-server-export-inline-images t
+          org-roam-server-authenticate nil
+          org-roam-server-label-truncate t
+          org-roam-server-label-truncate-length 60
+          org-roam-server-label-wrap-length 20))
 
-(use-package org-special-block-extras
-  :hook (org-mode . org-special-block-extras-mode))
-
+  (use-package org-special-block-extras
+    :hook (org-mode . org-special-block-extras-mode))
+  )
 (provide 'init-org)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
