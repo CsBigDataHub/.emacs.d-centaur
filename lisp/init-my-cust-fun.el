@@ -3227,6 +3227,9 @@ It sets the transient map to all functions of ALIST."
   (setq browse-url-browser-function 'browse-url-chrome
         browse-url-chrome-program "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"))
 
+(when sys/linuxp
+  (setq browse-url-browser-function 'browse-url-chrome
+        browse-url-chrome-program "firefox"))
 ;; NOTES: Leaving this code for here reference.
 ;; code from - http://ergoemacs.org/emacs/emacs_set_default_browser.html
 ;; use browser depending on url

@@ -305,7 +305,10 @@ minibuffer with `exit-minibuffer' (I bind it to C-j in
 
     (defun  my/elfeed-search-browse-background-url ()
       "Open current ` elfeed ' entry (or region entries) in browser without losing focus.
-        http://xenodium.com/open-emacs-elfeed-links-in-background/index.html"
+        http://xenodium.com/open-emacs-elfeed-links-in-background/index.html
+        For Linux - In firefox's about:config page set preference:
+        'browser.tabs.loadDivertedInBackground' to 'true'.
+      "
       (interactive)
       (let ((entries (elfeed-search-selected)))
         (mapc (lambda (entry)

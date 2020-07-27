@@ -193,6 +193,6 @@ decrease this. If you experience stuttering, increase this.")
 
 ( cond ((eq system-type 'darwin) (require 'init-macos)))
 ( cond ((eq system-type 'gnu/linux) (require 'init-linux)))
-( cond ((eq system-type 'gnu/linux) (require 'init-mail)))
+;; ( cond ((eq system-type 'gnu/linux) (require 'init-mail)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
