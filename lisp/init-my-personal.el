@@ -332,8 +332,12 @@ happens within a region if one is selected."
 (use-package groovy-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.g\\(?:ant\\|roovy\\)\\'" . groovy-mode))
-  (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
-  (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . groovy-mode)))
+  ;; (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
+  ;; (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . groovy-mode)))
+  )
+
+(use-package jenkinsfile-mode
+  )
 
 (use-package groovy-imports)
 (use-package flycheck-gradle)
