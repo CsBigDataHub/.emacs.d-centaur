@@ -107,6 +107,7 @@ _C_: correct  _p_: prev error _d_: done checking
     :straight (org-mime :type git :host github :repo "org-mime/org-mime")))
 
 (use-package clipboard2org
-  :straight (clipboard2org :type git :host github :repo "itf/clipboard2org"))
+  :straight (clipboard2org :type git :host github :repo "itf/clipboard2org")
+  :bind ("C-S-y" . clipboard2org))
 
 (provide 'init-straight)
