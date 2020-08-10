@@ -42,6 +42,10 @@
 ;; Inhibit resizing frame
 (setq frame-inhibit-implied-resize t)
 
+;;For gcc emacs
+(setenv "LIBRARY_PATH" "/usr/local/opt/gcc/lib/gcc/10")
+(setq comp-deferred-compilation t)
+
 ;; Faster to disable these here (before they've been initialized)
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
