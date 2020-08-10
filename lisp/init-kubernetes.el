@@ -6,7 +6,10 @@
 
 ;; If you want to pull in the Evil compatibility package.
 (use-package kubernetes-evil
-  :after kubernetes)
+  :after kubernetes-overview)
+
+(with-eval-after-load 'kubernetes-overview
+  (load-library "kubernetes-evil"))
 
 (use-package k8s-mode
   :hook (k8s-mode . yas-minor-mode)
