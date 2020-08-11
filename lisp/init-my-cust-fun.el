@@ -3401,4 +3401,20 @@ are defining or executing a macro."
                (not (string-equal old-location new-location)))
       (delete-file old-location))))
 
+;; FIXME: issue from https://www.reddit.com/r/emacs/comments/flb0vc/wrongtypeargument_stringp_require_info_with_emacs/
+;; FIXME: https://emacs.stackexchange.com/a/5565
+(defun load-history-filename-element (file-regexp)
+  "Get the first elt of `load-history' whose car matches FILE-REGEXP.
+        Return nil if there isn't one."
+  (let* ((loads load-history)
+         (load-elt (and loads (car loads))))
+    (save-match-data
+      (while (and loads
+                  (or (null (car load-elt))
+                      (not (and (stringp (car load-elt)) ; new condition
+                                (string-match file-regexp (car load-elt))))))
+        (setq loads (cdr loads)
+              load-elt (and loads (car loads)))))
+    load-elt))
+
 (provide 'init-my-cust-fun)
