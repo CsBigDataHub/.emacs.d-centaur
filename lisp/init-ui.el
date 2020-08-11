@@ -72,6 +72,7 @@
                (after-load-theme . solaire-mode-swap-bg))
         :init
         (solaire-global-mode 1)
+        (setq solaire-mode-auto-swap-bg t)
         (advice-add #'persp-load-state-from-file
                     :after #'solaire-mode-restore-persp-mode-buffers))
 
