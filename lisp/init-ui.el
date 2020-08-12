@@ -388,6 +388,10 @@
 (when (boundp 'x-gtk-use-system-tooltips)
   (setq x-gtk-use-system-tooltips nil))
 
+;; to fix blank buffer issues
+(when sys/macp
+  (add-to-list 'default-frame-alist '(inhibit-double-buffering . t)))
+
 (provide 'init-ui)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
