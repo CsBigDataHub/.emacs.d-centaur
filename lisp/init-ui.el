@@ -395,6 +395,7 @@
 ;; to fix blank buffer issues
 (when sys/macp
   (add-to-list 'default-frame-alist '(inhibit-double-buffering . t)))
+
 ;; When `centaur-prettify-symbols-alist' is `nil' use font supported ligatures
 (use-package composite
   :ensure nil
@@ -404,7 +405,7 @@
           . (lambda () (setq-local composition-function-table composition-ligature-table))))
   :config
   ;; support ligatures, some toned down to prevent hang
-  (unless emacs/>=27p
+  (when (version<= "27.0" emacs-version)
     (let ((alist
            '((33 . ".\\(?:\\(==\\|[!=]\\)[!=]?\\)")
              (35 . ".\\(?:\\(###?\\|_(\\|[(:=?[_{]\\)[#(:=?[_{]?\\)")
