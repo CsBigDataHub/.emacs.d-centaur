@@ -369,6 +369,14 @@
       window-divider-default-right-width 1)
 (add-hook 'window-setup-hook #'window-divider-mode)
 
+;; Easily adjust the font size in all frames
+(use-package default-text-scale
+  :hook (after-init . default-text-scale-mode)
+  :bind (:map default-text-scale-mode-map
+         ("C-s-=" . default-text-scale-increase)
+         ("C-s--" . default-text-scale-decrease)
+         ("C-s-0" . default-text-scale-reset)))
+
 ;; Use fixed pitch where it's sensible
 (use-package mixed-pitch
   :diminish)
@@ -388,54 +396,49 @@
 (when sys/macp
   (add-to-list 'default-frame-alist '(inhibit-double-buffering . t)))
 ;; When `centaur-prettify-symbols-alist' is `nil' use font supported ligatures
-(if (not (bound-and-true-p centaur-prettify-symbols-alist))
-    (use-package composite
-      :ensure nil
-      :init
-      (defvar composition-ligature-table (make-char-table nil))
-      :hook
-      (((prog-mode conf-mode nxml-mode markdown-mode help-mode)
-        . (lambda () (setq-local composition-function-table composition-ligature-table))))
-      :config
-      ;; support ligatures, some toned down to prevent hang
-      (when (version<= "27.0" emacs-version)
-        (let ((alist
-               '((33 . ".\\(?:\\(==\\|[!=]\\)[!=]?\\)")
-                 (35 . ".\\(?:\\(###?\\|_(\\|[(:=?[_{]\\)[#(:=?[_{]?\\)")
-                 (36 . ".\\(?:\\(>\\)>?\\)")
-                 (37 . ".\\(?:\\(%\\)%?\\)")
-                 (38 . ".\\(?:\\(&\\)&?\\)")
-                 (42 . ".\\(?:\\(\\*\\*\\|[*>]\\)[*>]?\\)")
-                 ;; (42 . ".\\(?:\\(\\*\\*\\|[*/>]\\).?\\)")
-                 (43 . ".\\(?:\\([>]\\)>?\\)")
-                 ;; (43 . ".\\(?:\\(\\+\\+\\|[+>]\\).?\\)")
-                 (45 . ".\\(?:\\(-[->]\\|<<\\|>>\\|[-<>|~]\\)[-<>|~]?\\)")
-                 ;; (46 . ".\\(?:\\(\\.[.<]\\|[-.=]\\)[-.<=]?\\)")
-                 (46 . ".\\(?:\\(\\.<\\|[-=]\\)[-<=]?\\)")
-                 (47 . ".\\(?:\\(//\\|==\\|[=>]\\)[/=>]?\\)")
-                 ;; (47 . ".\\(?:\\(//\\|==\\|[*/=>]\\).?\\)")
-                 (48 . ".\\(?:\\(x[a-fA-F0-9]\\).?\\)")
-                 (58 . ".\\(?:\\(::\\|[:<=>]\\)[:<=>]?\\)")
-                 (59 . ".\\(?:\\(;\\);?\\)")
-                 (60 . ".\\(?:\\(!--\\|\\$>\\|\\*>\\|\\+>\\|-[-<>|]\\|/>\\|<[-<=]\\|=[<>|]\\|==>?\\||>\\||||?\\|~[>~]\\|[$*+/:<=>|~-]\\)[$*+/:<=>|~-]?\\)")
-                 (61 . ".\\(?:\\(!=\\|/=\\|:=\\|<<\\|=[=>]\\|>>\\|[=>]\\)[=<>]?\\)")
-                 (62 . ".\\(?:\\(->\\|=>\\|>[-=>]\\|[-:=>]\\)[-:=>]?\\)")
-                 (63 . ".\\(?:\\([.:=?]\\)[.:=?]?\\)")
-                 (91 . ".\\(?:\\(|\\)[]|]?\\)")
-                 ;; (92 . ".\\(?:\\([\\n]\\)[\\]?\\)")
-                 (94 . ".\\(?:\\(=\\)=?\\)")
-                 (95 . ".\\(?:\\(|_\\|[_]\\)_?\\)")
-                 (119 . ".\\(?:\\(ww\\)w?\\)")
-                 (123 . ".\\(?:\\(|\\)[|}]?\\)")
-                 (124 . ".\\(?:\\(->\\|=>\\||[-=>]\\||||*>\\|[]=>|}-]\\).?\\)")
-                 (126 . ".\\(?:\\(~>\\|[-=>@~]\\)[-=>@~]?\\)"))))
-          (dolist (char-regexp alist)
-            (set-char-table-range composition-ligature-table (car char-regexp)
-                                  `([,(cdr char-regexp) 0 font-shape-gstring]))))
-        (set-char-table-parent composition-ligature-table composition-function-table))
-      )
-  )
-
+(use-package composite
+  :ensure nil
+  :unless centaur-prettify-symbols-alist
+  :init (defvar composition-ligature-table (make-char-table nil))
+  :hook (((prog-mode conf-mode nxml-mode markdown-mode help-mode)
+          . (lambda () (setq-local composition-function-table composition-ligature-table))))
+  :config
+  ;; support ligatures, some toned down to prevent hang
+  (unless emacs/>=27p
+    (let ((alist
+           '((33 . ".\\(?:\\(==\\|[!=]\\)[!=]?\\)")
+             (35 . ".\\(?:\\(###?\\|_(\\|[(:=?[_{]\\)[#(:=?[_{]?\\)")
+             (36 . ".\\(?:\\(>\\)>?\\)")
+             (37 . ".\\(?:\\(%\\)%?\\)")
+             (38 . ".\\(?:\\(&\\)&?\\)")
+             (42 . ".\\(?:\\(\\*\\*\\|[*>]\\)[*>]?\\)")
+             ;; (42 . ".\\(?:\\(\\*\\*\\|[*/>]\\).?\\)")
+             (43 . ".\\(?:\\([>]\\)>?\\)")
+             ;; (43 . ".\\(?:\\(\\+\\+\\|[+>]\\).?\\)")
+             (45 . ".\\(?:\\(-[->]\\|<<\\|>>\\|[-<>|~]\\)[-<>|~]?\\)")
+             ;; (46 . ".\\(?:\\(\\.[.<]\\|[-.=]\\)[-.<=]?\\)")
+             (46 . ".\\(?:\\(\\.<\\|[-=]\\)[-<=]?\\)")
+             (47 . ".\\(?:\\(//\\|==\\|[=>]\\)[/=>]?\\)")
+             ;; (47 . ".\\(?:\\(//\\|==\\|[*/=>]\\).?\\)")
+             (48 . ".\\(?:\\(x[a-fA-F0-9]\\).?\\)")
+             (58 . ".\\(?:\\(::\\|[:<=>]\\)[:<=>]?\\)")
+             (59 . ".\\(?:\\(;\\);?\\)")
+             (60 . ".\\(?:\\(!--\\|\\$>\\|\\*>\\|\\+>\\|-[-<>|]\\|/>\\|<[-<=]\\|=[<>|]\\|==>?\\||>\\||||?\\|~[>~]\\|[$*+/:<=>|~-]\\)[$*+/:<=>|~-]?\\)")
+             (61 . ".\\(?:\\(!=\\|/=\\|:=\\|<<\\|=[=>]\\|>>\\|[=>]\\)[=<>]?\\)")
+             (62 . ".\\(?:\\(->\\|=>\\|>[-=>]\\|[-:=>]\\)[-:=>]?\\)")
+             (63 . ".\\(?:\\([.:=?]\\)[.:=?]?\\)")
+             (91 . ".\\(?:\\(|\\)[]|]?\\)")
+             ;; (92 . ".\\(?:\\([\\n]\\)[\\]?\\)")
+             (94 . ".\\(?:\\(=\\)=?\\)")
+             (95 . ".\\(?:\\(|_\\|[_]\\)_?\\)")
+             (119 . ".\\(?:\\(ww\\)w?\\)")
+             (123 . ".\\(?:\\(|\\)[|}]?\\)")
+             (124 . ".\\(?:\\(->\\|=>\\||[-=>]\\||||*>\\|[]=>|}-]\\).?\\)")
+             (126 . ".\\(?:\\(~>\\|[-=>@~]\\)[-=>@~]?\\)"))))
+      (dolist (char-regexp alist)
+        (set-char-table-range composition-ligature-table (car char-regexp)
+                              `([,(cdr char-regexp) 0 font-shape-gstring]))))
+    (set-char-table-parent composition-ligature-table composition-function-table)))
 
 (provide 'init-ui)
 

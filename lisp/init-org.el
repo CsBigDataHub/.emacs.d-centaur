@@ -520,7 +520,7 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
     (push 'company-org-roam company-backends))
 
   (use-package org-roam-server
-    :functions xwidget-webkit-current-session
+    :functions xwidget-buffer xwidget-webkit-current-session
     :hook (org-roam-server-mode . org-roam-server-browse)
     :init
     (defun org-roam-server-browse ()
