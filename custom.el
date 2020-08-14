@@ -13,10 +13,11 @@
 ;; (setq centaur-package-archives 'emacs-china)   ; Package repo: melpa, melpa-mirror, emacs-china, netease, ustc, tencent or tuna
 (setq centaur-theme 'default)                        ; Color theme: auto, random, default, classic, colorful, dark, light, day or night
 (setq centaur-dashboard t)                    ; Use dashboard at startup or not: t or nil
+(setq centaur-restore-frame-geometry t)      ; Restore the frame's geometry at startup: t or nil
 ;; (setq centaur-lsp 'eglot)                      ; Set LSP client: lsp-mode, eglot or nil
 (setq centaur-lsp-format-on-save-ignore-modes '(json-mode)) ; Ignore format on save for some languages
 ;; (setq centaur-chinese-calendar nil)            ; Use Chinese calendar or not: t or nil
-;; (setq centaur-prettify-symbols-alist nil)      ; Alist of symbol prettifications
+(setq centaur-prettify-symbols-alist nil)      ; Alist of symbol prettifications
 ;; (setq centaur-prettify-org-symbols-alist nil)  ; Alist of symbol prettifications for `org-mode'
 (setq centaur-benchmark-init t)                ; Enable initialization benchmark or not: t or nil
 
