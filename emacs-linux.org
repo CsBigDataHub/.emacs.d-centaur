@@ -53,3 +53,118 @@
   make
   sudo make install
 #+end_src
+
+
+
+
+* [[https://unix.stackexchange.com/a/151046][x11 - CapsLock as modifier key for application keymaps - Unix & Linux Stack Exchange]] :website:
+
+[2020-08-17 Mon 10:36]
+
+** Article
+
+There are a bajillion answers on the internet, most of them confusing.
+
+The key is you need to map 'keycode 66' to your hyper key, remove the mapping of that key from other mod{1,2,4,5}'s (only if present), and then set mod3.
+
+Open ~/.Xmodmap and put the following:
+
+#+BEGIN_EXAMPLE
+   ! Unmap capslock
+  clear Lock
+  keycode 66 = Hyper_L
+
+  ! Leave mod4 as windows key _only_
+  remove mod4 = Hyper_L
+
+  ! Set mod3 to capslock
+  add mod3 = Hyper_L
+#+END_EXAMPLE
+
+Run this
+
+#+BEGIN_EXAMPLE
+   xmodmap ~/.Xmodmap
+#+END_EXAMPLE
+
+If something goes wrong, you can reset your keyboard with:
+
+#+BEGIN_EXAMPLE
+   setxkbmap -layout us
+#+END_EXAMPLE
+
+Likely causes of something exploding are that Hyper_L is mapped someplace else. Fix this by running xmodmap without args to figure out what else is bound to Hyper_L. When you know what you need to remove, chuck a 'remove BINDING = Hyper_L' in your .Xmodmap file.
+
+The .Xmodmap file will be loaded in when you open X11 sessions, you should have this mapping in place next time you login or reboot.
+
+This configuration works for my ubuntu 14.04 setup. If you have a different *nix and this doesn't work, please post what you did to get around it here and I'll incorporate it into the answer.
+
+** [[https://askubuntu.com/a/1197073][keyboard - How do I remap Caps Lock to Hyper Key in Ubuntu 18.04 - Ask Ubuntu]] :website:
+
+[2020-08-17 Mon 10:37]
+
+*** Article
+
+As of a few days ago this is working:
+
+- Run Ubuntu on Wayland
+- Put this in your .bashrc
+
+#+BEGIN_EXAMPLE
+  setxkbmap -option caps:hyper
+  setxkbmap -option caps:none
+#+END_EXAMPLE
+
+*** [[https://www.emacswiki.org/emacs/CapsKey][EmacsWiki: Caps Key]] :website:
+
+[2020-08-17 Mon 10:38]
+
+**** Article
+
+
+***** [[https://www.emacswiki.org/emacs?search=%22CapsKey%22][Caps Key]]
+
+
+This page is about the keyboard key typically labeled *[[https://www.emacswiki.org/emacs?search=%22CapsLock%22][CapsLock]]*. It covers different ways to use the key, including changing its behavior.
+
+****** Contents
+
+ [[#toc6][Using CapsLock as Hyper Modifier]]
+
+****** Redefining as autocomplete/expand
+
+
+It's useful to map the [[https://www.emacswiki.org/emacs/CapsKey][CapsKey]] to dabbrev-expand, for automatic completion/expansion. Here's how:
+
+In ~/.Xmodmap, remap the Caps_Lock key to some suitable key:
+
+#+BEGIN_EXAMPLE
+   ! Caps Lock -> Nabla
+   keycode 66 = nabla
+#+END_EXAMPLE
+
+Then in your ~/.emacs:
+
+#+BEGIN_EXAMPLE
+   ;; Seems emacs23 doesn't understand nabla
+   (when (equal "23" (substring emacs-version 0 2))
+       (global-set-key '[8711] 'dabbrev-expand))
+#+END_EXAMPLE
+
+****** Using CapsLock as Hyper Modifier
+
+
+More modifiers are always good :-)
+
+In ~/.Xmodmap, remap the Caps_Lock key to some suitable key:
+
+#+BEGIN_EXAMPLE
+   ! Caps Lock -> Nabla
+   keycode 66 = nabla
+#+END_EXAMPLE
+
+If you add this to your .emacs you will get an Hyper key in gtk and in an xterm!
+
+#+BEGIN_EXAMPLE
+   (define-key key-translation-map [8711] 'event-apply-hyper-modifier)
+#+END_EXAMPLE

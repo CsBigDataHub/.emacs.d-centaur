@@ -279,3 +279,18 @@ This may take 15-30 seconds to run. After that, =emacsclient= will appear in you
   brew tap d12frosted/emacs-plus
   brew install emacs-plus --with-modern-nuvola-icon --with-xwidgets --without-imagemagick --with-jansson
 #+end_src
+
+* To use keypad keys as modifier keys
+
+- [[https://stackoverflow.com/questions/27418756/is-it-possible-to-make-emacs-interpet-an-fn-key-as-a-modifier-key][emacs modifier events]]
+- [[https://stackoverflow.com/a/24804434][emacs-events-for-modifier-keys]]
+- [[https://emacs.stackexchange.com/a/31308][Emacs treat right Ctrl as Hyper for Mac]]
+
+#+begin_src emacs-lisp
+  (define-key function-key-map (kbd "<kp-1>") 'event-apply-control-modifier)
+  (define-key function-key-map (kbd "<kp-2>") 'event-apply-meta-modifier)
+  (define-key function-key-map (kbd "<kp-3>") 'event-apply-super-modifier)
+  (define-key function-key-map (kbd "<kp-4>") 'event-apply-shift-modifier)
+  (define-key function-key-map (kbd "<kp-5>") 'event-apply-hyper-modifier)
+  (define-key function-key-map (kbd "<kp-6>") 'event-apply-alt-modifier)
+#+end_src
