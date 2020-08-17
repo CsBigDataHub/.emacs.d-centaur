@@ -272,3 +272,10 @@ So that OS-X picks up the change, it is necessary to run =lsregister=, which cau
 #+END_SRC
 
 This may take 15-30 seconds to run. After that, =emacsclient= will appear in your 'Open With' menu the next time you use it; it's worth the effort.
+
+* Build Emacs on macos
+
+#+begin_src sh
+  brew tap d12frosted/emacs-plus
+  brew install emacs-plus --with-modern-nuvola-icon --with-xwidgets --without-imagemagick --with-jansson
+#+end_src
