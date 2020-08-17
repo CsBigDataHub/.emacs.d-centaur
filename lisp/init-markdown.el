@@ -87,8 +87,9 @@ mermaid.initialize({
     (setq markdown-command "multimarkdown"))
 
   ;; Use `which-key' instead
-  (advice-add #'markdown--command-map-prompt :override #'ignore)
-  (advice-add #'markdown--style-map-prompt   :override #'ignore)
+  (with-no-warnings
+    (advice-add #'markdown--command-map-prompt :override #'ignore)
+    (advice-add #'markdown--style-map-prompt   :override #'ignore))
   :config
   ;;mypersonal
   (setq markdown-command
