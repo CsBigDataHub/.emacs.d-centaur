@@ -449,23 +449,23 @@
            (setq lsp-treemacs-theme "centaur-colors")))))
 
    ;; Microsoft python-language-server support - using pyright
-   ;; (use-package lsp-python-ms
-   ;;   :hook (python-mode . (lambda () (require 'lsp-python-ms)))
-   ;;   :init
-   ;;   (when (executable-find "python3")
-   ;;     (when sys/macp
-   ;;       (setq lsp-python-ms-python-executable-cmd "python3"
-   ;;             lsp-python-ms-executable "~/GitRepos/python-language-server/output/bin/Release/osx-x64/publish/Microsoft.Python.LanguageServer"))
-   ;;     (when sys/linuxp
-   ;;       (setq lsp-python-ms-python-executable-cmd "python3"
-   ;;             lsp-python-ms-executable "~/Documents/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"))
-   ;;     )
-   ;; )
+   (use-package lsp-python-ms
+     :hook (python-mode . (lambda () (require 'lsp-python-ms)))
+     :init
+     (when (executable-find "python3")
+       (when sys/macp
+         (setq lsp-python-ms-python-executable-cmd "python3"
+               lsp-python-ms-executable "~/GitRepos/python-language-server/output/bin/Release/osx-x64/publish/Microsoft.Python.LanguageServer"))
+       (when sys/linuxp
+         (setq lsp-python-ms-python-executable-cmd "python3"
+               lsp-python-ms-executable "~/Documents/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"))
+       )
+     )
    ;; Python: pyright
-   (use-package lsp-pyright
-     :hook (python-mode . (lambda () (require 'lsp-pyright)))
-     :init (when (executable-find "python3")
-             (setq lsp-pyright-python-executable-cmd "python3")))
+   ;; (use-package lsp-pyright
+   ;;   :hook (python-mode . (lambda () (require 'lsp-pyright)))
+   ;;   :init (when (executable-find "python3")
+   ;;           (setq lsp-pyright-python-executable-cmd "python3")))
 
    ;; C/C++/Objective-C support
    ;; my-personal
