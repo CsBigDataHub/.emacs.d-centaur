@@ -542,3 +542,116 @@ Can also check for .eln files:
 #+BEGIN_EXAMPLE
   149
 #+END_EXAMPLE
+
+* [[https://vxlabs.com/2018/06/08/python-language-server-with-emacs-and-lsp-mode/][Configuring Emacs, lsp-mode and the python language server. - vxlabs]] :website:
+
+[2020-08-19 Wed 00:23]
+
+** Article
+
+The [[https://langserver.org/][language server protocol]] was proposed by Microsoft as a way for different editors and development environments to share language analysis backends
+
+This post describes how to configure Emacs, [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] and the [[https://github.com/palantir/python-language-server][palantir python-language-server]] for improved code intelligence when working on Python projects. (I'm planning a companion post for Emacs, C++ and the [[https://github.com/cquery-project/cquery][cquery language server]].)
+
+*** Goal
+
+
+Before starting, it is motivating to see what we are working towards.
+
+With a correctly configured setup, Emacs will sport, amongst others, improved completion with interactive documentation, imenu navigation, documentation on hover, and really snazzy find definitions (=M-.=) and find references.
+
+See the following screenshots for some examples:
+
+[[/wp-content/uploads/2018/06/Screen-Shot-2018-06-08-at-13.01.32_2018-06-08_14-29-25.png?resize=660%2C481&ssl=1]]
+
+[[/wp-content/uploads/2018/06/lsp-python-imenu_2018-06-08_14-34-27.png?resize=660%2C477&ssl=1]]
+
+[[/wp-content/uploads/2018/06/lsp-python-docs-on-hover_2018-06-08_14-34-43.png?resize=660%2C477&ssl=1]]
+
+*** Pre-requisites on the Python side
+
+
+Install the =python-language-server= into the virtual environment, or user environment, that you're planning to use.
+
+These days, I tend to use =pipenv=:
+
+ #+BEGIN_EXAMPLE sh
+     cd my_project
+   pipenv install python-language-server [all ]
+ #+END_EXAMPLE
+
+The =[all]= means that it installs all optional providers, e.g. yapf formatting.
+
+*** Pre-requisites on the Emacs side
+
+
+In Emacs, install the required and some optional packages using for example =M-x package-install=:
+
+- =lsp-mode= - the main language server protocol package
+- =lsp-ui= - UI-related LSP extras, such as the sideline info, docs, flycheck, etc.
+- =company-lsp= - company-backend for LSP-based code completion.
+- [[https://github.com/bbatsov/projectile][ =projectile=]] or [[https://github.com/technomancy/find-file-in-project][ =find-file-in-project=]] - we use a single function from here to determine the root directory of a project.
+
+*** Emacs configuration
+
+
+Add the following to your Emacs =init.el=, and don't forget to read the comments.
+
+If you're not yet using [[https://github.com/jwiegley/use-package][=use-package=]] now would be a good time to upgrade.
+
+#+BEGIN_EXAMPLE emacs-lisp
+    ( use-package  lsp-mode
+     :ensure  t
+     :config
+
+     ;; make sure we have lsp-imenu everywhere we have LSP
+     ( require  'lsp-imenu )
+     ( add-hook  'lsp-after-open-hook  'lsp-enable-imenu )
+     ;; get lsp-python-enable defined
+     ;; NB: use either projectile-project-root or ffip-get-project-root-directory
+     ;;     or any other function that can be used to find the root directory of a project
+     ( lsp-define-stdio-client  lsp-python  "python"
+                              #' projectile-project-root
+                              ' ( "pyls" ))
+
+     ;; make sure this is activated when python-mode is activated
+     ;; lsp-python-enable is created by macro above
+     ( add-hook  'python-mode-hook
+               ( lambda  ()
+                 ( lsp-python-enable )))
+
+     ;; lsp extras
+     ( use-package  lsp-ui
+       :ensure  t
+       :config
+       ( setq  lsp-ui-sideline-ignore-duplicate  t )
+       ( add-hook  'lsp-mode-hook  'lsp-ui-mode ))
+
+     ( use-package  company-lsp
+       :config
+       ( push  'company-lsp  company-backends ))
+
+     ;; NB: only required if you prefer flake8 instead of the default
+     ;; send pyls config via lsp-after-initialize-hook -- harmless for
+     ;; other servers due to pyls key, but would prefer only sending this
+     ;; when pyls gets initialised (:initialize function in
+     ;; lsp-define-stdio-client is invoked too early (before server
+     ;; start)) -- cpbotha
+     ( defun  lsp-set-cfg  ()
+       ( let  (( lsp-cfg  ` ( :pyls  ( :configurationSources  ( "flake8" )))))
+         ;; TODO: check lsp--cur-workspace here to decide per server / project
+         ( lsp--set-configuration  lsp-cfg )))
+
+     ( add-hook  'lsp-after-initialize-hook  'lsp-set-cfg ))
+#+END_EXAMPLE
+
+*** Putting it all together
+
+
+Importantly, use [[https://github.com/jorgenschaefer/pyvenv][=pyenv=]] or something similar to switch to the relevant virtualenv before opening the first Python file.
+
+When you open the file, the =pyls= should be automatically started up, and you can edit away with LSP-powered code intelligence.
+
+This often gives better and more detailed results than [[https://github.com/jorgenschaefer/elpy][=elpy=]], probably because pyls uses a mix of static and dynamic (introspection-based) analysis.
+
+Furthermore, the handling of LSP servers in Emacs can be unified, giving the same consistent level of support across a whole range of programming languages.
