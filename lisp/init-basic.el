@@ -123,6 +123,15 @@
 ;;                     exec-path))))
 ;;    ))
 
+;; Environment
+(when (or sys/mac-x-p sys/linux-x-p)
+  (use-package exec-path-from-shell
+    :init
+    (setq exec-path-from-shell-check-startup-files nil
+          exec-path-from-shell-variables '("PATH" "MANPATH")
+          exec-path-from-shell-arguments '("-l"))
+    (exec-path-from-shell-initialize)))
+
 ;; Start server
 (use-package server
   :ensure nil

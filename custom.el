@@ -18,7 +18,7 @@
 (setq centaur-lsp-format-on-save-ignore-modes '(json-mode)) ; Ignore format on save for some languages
 ;; (setq centaur-chinese-calendar nil)            ; Use Chinese calendar or not: t or nil
 ;; (setq centaur-prettify-symbols-alist nil)      ; Alist of symbol prettifications
-;; (setq centaur-prettify-org-symbols-alist nil)  ; Alist of symbol prettifications for `org-mode'
+(setq centaur-prettify-org-symbols-alist nil)  ; Alist of symbol prettifications for `org-mode'
 (setq centaur-benchmark-init t)                ; Enable initialization benchmark or not: t or nil
 
 ;; For Emacs devel
@@ -39,7 +39,7 @@
                                                     (t 120))))
 
   ;; Specify font for all unicode characters
-  (cl-loop for font in '("Apple Color Emoji" "Noto Emoji" "Symbola" "icons-in-terminal" "Apple Symbols" "Symbol")
+  (cl-loop for font in '("Apple Color Emoji" "Symbola" "icons-in-terminal" "Apple Symbols" "Symbol")
            when (font-installed-p font)
            return (set-fontset-font t 'unicode font nil 'prepend))
 

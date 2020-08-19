@@ -66,8 +66,8 @@
      ("ir" go-remove-unused-imports "cleanup"))))
   :config
   ;; Env vars
-  ;;(with-eval-after-load 'exec-path-from-shell
-  ;;  (exec-path-from-shell-copy-envs '("GOPATH" "GO111MODULE" "GOPROXY")))
+  (with-eval-after-load 'exec-path-from-shell
+    (exec-path-from-shell-copy-envs '("GOPATH" "GO111MODULE" "GOPROXY")))
 
   ;; Install or update tools
   (defvar go--tools '("golang.org/x/tools/cmd/goimports"
