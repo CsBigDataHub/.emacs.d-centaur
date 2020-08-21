@@ -13,6 +13,7 @@
 ;; (setq centaur-package-archives 'emacs-china)   ; Package repo: melpa, melpa-mirror, emacs-china, netease, ustc, tencent or tuna
 (setq centaur-theme 'default)                        ; Color theme: auto, random, default, classic, colorful, dark, light, day or night
 (setq centaur-dashboard t)                    ; Use dashboard at startup or not: t or nil
+(setq centaur-restore-frame-geometry t)      ; Restore the frame's geometry at startup: t or nil
 ;; (setq centaur-lsp 'eglot)                      ; Set LSP client: lsp-mode, eglot or nil
 (setq centaur-lsp-format-on-save-ignore-modes '(json-mode)) ; Ignore format on save for some languages
 ;; (setq centaur-chinese-calendar nil)            ; Use Chinese calendar or not: t or nil
@@ -28,7 +29,7 @@
 ;; Fonts
 (when (display-graphic-p)
   ;; Set default font
-  (cl-loop for font in '("JetBrains Mono" "Fira Code" "Source Code Pro" "SF Mono" "Hack"
+  (cl-loop for font in '("JetBrains Mono" "Cascadia Code SemiLight" "Fira Code" "Source Code Pro" "SF Mono" "Hack"
                          "Menlo" "Monaco" "DejaVu Sans Mono" "Consolas")
            when (font-installed-p font)
            return (set-face-attribute 'default nil
@@ -38,7 +39,7 @@
                                                     (t 120))))
 
   ;; Specify font for all unicode characters
-  (cl-loop for font in '("Symbola" "icons-in-terminal" "Apple Symbols" "Symbol")
+  (cl-loop for font in '("Apple Color Emoji" "Symbola" "icons-in-terminal" "Apple Symbols" "Symbol")
            when (font-installed-p font)
            return (set-fontset-font t 'unicode font nil 'prepend))
 
@@ -69,14 +70,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(centaur-package-archives (quote melpa))
- '(centaur-theme (quote default))
- ;; '(circadian-themes
- ;;  (quote
- ;;   (("6:00" . doom-solarized-light)
- ;;    ("19:00" . doom-solarized-dark))))
+ '(centaur-package-archives 'melpa)
+ '(centaur-theme 'default)
  '(doom-themes-treemacs-theme "doom-colors")
- '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:"))
+ '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:")
+ )
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

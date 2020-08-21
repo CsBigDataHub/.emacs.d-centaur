@@ -296,6 +296,18 @@ directory."
   (setq eshell-hist-ignoredups t)
   (setq eshell-save-history-on-exit t))
 
+(use-package pcmpl-git
+  :after pcomplete)
+
+(use-package pcmpl-pip
+  :after pcomplete)
+
+(use-package pcmpl-args
+  :after pcomplete)
+
+(use-package pcmpl-homebrew
+  :after pcomplete)
+
 ;;https://www.reddit.com/r/emacs/comments/gksqhl/emacs_eshell_demo/fqtveuc?utm_source=share&utm_medium=web2x
 ;; (defun eshell/in-term (prog &rest args)
 ;;   (switch-to-buffer

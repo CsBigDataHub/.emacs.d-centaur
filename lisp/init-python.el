@@ -47,8 +47,8 @@
              (string= python-shell-interpreter "python"))
     (setq python-shell-interpreter "python3"))
   ;; Env vars
-  ;;(with-eval-after-load 'exec-path-from-shell
-  ;;  (exec-path-from-shell-copy-env "PYTHONPATH"))
+  (with-eval-after-load 'exec-path-from-shell
+    (exec-path-from-shell-copy-env "PYTHONPATH"))
   ;; Live Coding in Python
   (use-package live-py-mode))
 
@@ -60,20 +60,10 @@
   (venv-initialize-interactive-shells)
   (venv-initialize-eshell)
   (setq venv-location "~/.virtualenvs/")
+  (setq projectile-switch-project-action 'venv-projectile-auto-workon)
+  (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
   )
 
-(use-package auto-virtualenvwrapper
-  :after
-  (:all python virtualenvwrapper)
-  :init
-  (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate))
-
-(use-package pipenv
-  :hook (python-mode . pipenv-mode)
-  :init
-  (setq
-   pipenv-projectile-after-switch-function
-   #'pipenv-projectile-after-switch-extended))
 ;;; my-personal-config end
 
 (provide 'init-python)

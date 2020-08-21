@@ -124,7 +124,9 @@
      ((:title (pretty-hydra-title "LSP UI" 'faicon "rocket")
        :color amaranth :quit-key "q")
       ("Doc"
-       (("d e" (lsp-ui-doc-enable (not lsp-ui-doc-mode))
+       (("d e" (progn
+                 (lsp-ui-doc-enable (not lsp-ui-doc-mode))
+                 (setq lsp-ui-doc-enable (not lsp-ui-doc-enable)))
          "enable" :toggle lsp-ui-doc-mode)
         ("d s" (setq lsp-ui-doc-include-signature (not lsp-ui-doc-include-signature))
          "signature" :toggle lsp-ui-doc-include-signature)
@@ -139,7 +141,9 @@
         ("d w" (setq lsp-ui-doc-alignment 'window)
          "align window" :toggle (eq lsp-ui-doc-alignment 'window)))
        "Sideline"
-       (("s e" (lsp-ui-sideline-enable (not lsp-ui-sideline-mode))
+       (("s e" (progn
+                 (lsp-ui-sideline-enable (not lsp-ui-sideline-mode))
+                 (setq lsp-ui-sideline-enable (not lsp-ui-sideline-enable)))
          "enable" :toggle lsp-ui-sideline-mode)
         ("s h" (setq lsp-ui-sideline-show-hover (not lsp-ui-sideline-show-hover))
          "hover" :toggle lsp-ui-sideline-show-hover)
@@ -448,19 +452,24 @@
 
            (setq lsp-treemacs-theme "centaur-colors")))))
 
-   ;; Microsoft python-language-server support
-   (use-package lsp-python-ms
-     :hook (python-mode . (lambda () (require 'lsp-python-ms)))
-     :init
-     (when (executable-find "python3")
-       (when sys/macp
-         (setq lsp-python-ms-python-executable-cmd "python3"
-               lsp-python-ms-executable "~/GitRepos/python-language-server/output/bin/Release/osx-x64/publish/Microsoft.Python.LanguageServer"))
-       (when sys/linuxp
-         (setq lsp-python-ms-python-executable-cmd "python3"
-               lsp-python-ms-executable "~/Documents/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"))
-       )
-     )
+   ;; Microsoft python-language-server support - using pyright
+   ;; (use-package lsp-python-ms
+   ;;   :hook (python-mode . (lambda () (require 'lsp-python-ms)))
+   ;;   :init
+   ;;   (when (executable-find "python3")
+   ;;     (when sys/macp
+   ;;       (setq lsp-python-ms-python-executable-cmd "python3"
+   ;;             lsp-python-ms-executable "~/GitRepos/python-language-server/output/bin/Release/osx-x64/publish/Microsoft.Python.LanguageServer"))
+   ;;     (when sys/linuxp
+   ;;       (setq lsp-python-ms-python-executable-cmd "python3"
+   ;;             lsp-python-ms-executable "~/Documents/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"))
+   ;;     )
+   ;;   )
+   ;; Python: pyright
+   (use-package lsp-pyright
+     :hook (python-mode . (lambda () (require 'lsp-pyright)))
+     :init (when (executable-find "python3")
+             (setq lsp-pyright-python-executable-cmd "python3")))
 
    ;; C/C++/Objective-C support
    ;; my-personal

@@ -334,6 +334,8 @@ happens within a region if one is selected."
   (add-to-list 'auto-mode-alist '("\\.g\\(?:ant\\|roovy\\)\\'" . groovy-mode))
   ;; (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
   ;; (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . groovy-mode)))
+  (with-eval-after-load 'exec-path-from-shell
+    (exec-path-from-shell-copy-envs '("JAVA_HOME" "GROOVY_HOME")))
   )
 
 (use-package jenkinsfile-mode
@@ -450,6 +452,9 @@ happens within a region if one is selected."
 (use-package mvn)
 
 (use-package skeletor)
+
+(use-package emojify
+  :hook (after-init . global-emojify-mode))
 
 ;; Added this to build pdf tools
 (setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig:/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")

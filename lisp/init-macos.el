@@ -8,6 +8,7 @@
    ))
 (when sys/macp
   (progn
+    (setq mac-right-command-modifier 'hyper) ;; mac right command key as hyper, This is when logitech keyboards are used.
     (setq display-time-day-and-date t)
     (display-time-mode +1)
     )

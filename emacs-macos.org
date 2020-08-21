@@ -272,3 +272,386 @@ So that OS-X picks up the change, it is necessary to run =lsregister=, which cau
 #+END_SRC
 
 This may take 15-30 seconds to run. After that, =emacsclient= will appear in your 'Open With' menu the next time you use it; it's worth the effort.
+
+* Build Emacs on macos
+
+#+begin_src sh
+  brew tap d12frosted/emacs-plus
+  brew install emacs-plus --with-modern-nuvola-icon --with-xwidgets --without-imagemagick --with-jansson
+#+end_src
+
+* To use keypad keys as modifier keys
+
+- [[https://stackoverflow.com/questions/27418756/is-it-possible-to-make-emacs-interpet-an-fn-key-as-a-modifier-key][emacs modifier events]]
+- [[https://stackoverflow.com/a/24804434][emacs-events-for-modifier-keys]]
+- [[https://emacs.stackexchange.com/a/31308][Emacs treat right Ctrl as Hyper for Mac]]
+
+#+begin_src emacs-lisp
+  (define-key function-key-map (kbd "<kp-1>") 'event-apply-control-modifier)
+  (define-key function-key-map (kbd "<kp-2>") 'event-apply-meta-modifier)
+  (define-key function-key-map (kbd "<kp-3>") 'event-apply-super-modifier)
+  (define-key function-key-map (kbd "<kp-4>") 'event-apply-shift-modifier)
+  (define-key function-key-map (kbd "<kp-5>") 'event-apply-hyper-modifier)
+  (define-key function-key-map (kbd "<kp-6>") 'event-apply-alt-modifier)
+#+end_src
+* [[http://xenodium.com/trying-out-gccemacs-on-macos/index.html][Trying out gccemacs on macOS]] :website:
+
+[2020-08-18 Tue 23:35]
+
+** Article
+
+***  16 August 2020 Trying out gccemacs on macOS
+
+
+Been wanting to try Andrea Corallo's [[http://akrl.sdf.org/gccemacs.html][gccemacs]]. Followed [[https://github.com/AllenDang][Allen Dang]]'s handy [[https://gist.github.com/AllenDang/f019593e65572a8e0aefc96058a2d23e][instructions]] to build it on macOS.
+
+Though not had much of a chance to play with the new install, here's what I did to get up and running...
+
+**** Patch gcc homebrew formula
+
+
+Edit /$(brew --prefix)/Library/Taps/homebrew/homebrew-core/Formula/gcc.rb/
+
+#+BEGIN_EXAMPLE
+  $ diff -u $(brew --prefix)/Library/Taps/homebrew/homebrew-core/Formula/gcc.rb $(brew --prefix)/Library/Taps/homebrew/homebrew-core/Formula/gcc.rb.patched
+   ---  $(brew --prefix)/Library/Taps/homebrew/homebrew-core/Formula/gcc.rb          2020-08-16 14:12:13.000000000 +0100
+   +++  $(brew --prefix)/Library/Taps/homebrew/homebrew-core/Formula/gcc.rb.patched  2020-08-07 09:16:42.000000000 +0100
+   @@ -47,7 +47,7 @@
+       #  - Go, currently not supported on macOS
+       #  - BRIG
+       # GCCEMACS
+   -     languages = %w[c c++ objc obj-c++ fortran]
+   +     languages = %w[c c++ objc obj-c++ fortran  jit ]
+
+       osmajor = `uname -r`.split(".").first
+       pkgversion = "Homebrew GCC #{pkg_version} #{build.used_options*" "}".strip
+   @@ -67,6 +67,7 @@
+         --with-system-zlib
+         --with-pkgversion=#{pkgversion}
+         --with-bugurl=https://github.com/Homebrew/homebrew-core/issues
+   +       --enable-host-shared
+       ]
+
+       # Xcode 10 dropped 32-bit support
+#+END_EXAMPLE
+
+**** Install gcc via homebrew
+
+
+#+BEGIN_EXAMPLE
+  brew install gcc --build-from-source --force
+#+END_EXAMPLE
+
+**** Save configure script
+
+
+Create configure-gccemacs.sh
+
+#+BEGIN_EXAMPLE
+   # !/bin/ bash
+
+   set -o nounset
+   set -o errexit
+
+   #  Configures Emacs for building native comp support
+   #  http://akrl.sdf.org/gccemacs.html
+
+   #  Installing under homebrew's opt, but could be anywhere.
+   readonly  GCCEMACS_PREFIX= "$( realpath $(brew --prefix )/opt/gccemacs)"
+
+   readonly  GCC_DIR= "$( realpath $(brew --prefix )/opt/gcc)"
+  [[ -d $ GCC_DIR ]] ||  {  echo  "${GCC_DIR} not found";  exit 1; }
+
+   readonly  SED_DIR= "$( realpath $(brew --prefix )/opt/gnu-sed)"
+  [[ -d $ SED_DIR ]] ||  {  echo  "${SED_DIR} not found";  exit 1; }
+
+   readonly  GCC_INCLUDE_DIR=${ GCC_DIR}/include
+  [[ -d $ GCC_INCLUDE_DIR ]] ||  {  echo  "${GCC_INCLUDE_DIR} not found";  exit 1; }
+
+   readonly  GCC_LIB_DIR=${ GCC_DIR}/lib/gcc/10
+  [[ -d $ GCC_LIB_DIR ]] ||  {  echo  "${GCC_LIB_DIR} not found";  exit 1; }
+
+   export  PATH= "${SED_DIR}/libexec/gnubin:${PATH}"
+   export  CFLAGS= "-I${GCC_INCLUDE_DIR}"
+   export  LDFLAGS= "-L${GCC_LIB_DIR} -I${GCC_INCLUDE_DIR}"
+   export  DYLD_FALLBACK_LIBRARY_PATH= "${GCC_LIB_DIR}"
+
+   echo  "Environment"
+   echo  "-----------"
+   echo PATH: $ PATH
+   echo CFLAGS: $ CFLAGS
+   echo LDFLAGS: $ LDFLAGS
+   echo DYLD_FALLBACK_LIBRARY_PATH: $ DYLD_FALLBACK_LIBRARY_PATH
+   echo  "-----------"
+
+  ./autogen.sh
+
+  ./configure  \
+       --prefix= "${GCCEMACS_PREFIX}"  \
+       --enable-locallisppath= "${GCCEMACS_PREFIX}/opt/gccemacs/site-lisp"  \
+       --with-mailutils  \
+       --with-ns  \
+       --with-imagemagick  \
+       --with-cairo  \
+       --with-modules  \
+       --with-xml2  \
+       --with-gnutls  \
+       --with-json  \
+       --with-rsvg  \
+       --with-nativecomp  \
+       --disable-silent-rules  \
+       --disable-ns-self-contained  \
+       --without-dbus
+#+END_EXAMPLE
+
+Make it executable
+
+#+BEGIN_EXAMPLE
+  chmod  +x configure-gccemacs.sh
+#+END_EXAMPLE
+
+**** Clone Emacs source
+
+
+#+BEGIN_EXAMPLE
+  git clone https://github.com/emacs-mirror/emacs gccemacs
+#+END_EXAMPLE
+
+**** Check out native-comp feature branch
+
+
+#+BEGIN_EXAMPLE
+   cd gccemacs
+  git checkout feature/native-comp
+#+END_EXAMPLE
+
+**** Configure build
+
+
+#+BEGIN_EXAMPLE
+  ../configure-gccemacs.sh
+#+END_EXAMPLE
+
+**** Native lisp compiler found?
+
+
+Verify native lisp compiler is found:
+
+#+BEGIN_EXAMPLE
+  Does Emacs have native lisp compiler?                   yes
+#+END_EXAMPLE
+
+**** Build
+
+
+Build will take a while. Put those cores to use. Find out how many you got with:
+
+#+BEGIN_EXAMPLE
+  sysctl hw.logicalcpu
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+  hw.logicalcpu: 4
+#+END_EXAMPLE
+
+Ok so run:
+
+#+BEGIN_EXAMPLE
+  make -j4  NATIVE_FAST_BOOT=1
+  make install
+#+END_EXAMPLE
+
+This will take *hours* and give your fans a good workout.
+
+**** Symlink Emacs.app/Contents/lisp
+
+
+Without synlinking, opening Emacs.app from finder fails silently, so symlink as follows. Btw, if you changed $GCCEMACS_PREFIX, use that path prefix instead.
+
+#+BEGIN_EXAMPLE
+  ln -s $( brew --prefix)/opt/gccemacs/share/emacs/28.0.50/lisp nextstep/Emacs.app/Contents/
+#+END_EXAMPLE
+
+ps. Without symlink, you won't see an error unless the binary is executed explicitly from the terminal (ie. nextstep/Emacs.app/Contents/MacOS/Emacs), and then you'd see something like
+
+#+BEGIN_EXAMPLE
+  nextstep/Emacs.app/Contents/MacOS/Emacs
+  emacs: dlopen(nextstep/Emacs.app/Contents/MacOS/../lisp/emacs-lisp/eln-x86_64-apple-darwin19.4.0-abff6ce99a055711/lisp-mode.eln, 1): image not found
+#+END_EXAMPLE
+
+**** Remove ~/emacs.d
+
+
+You likely want to start with a clean install, byte-compiling all packages with the latest Emacs version. In any case, rename ~/emacs.d (for backup?) or remove ~/emacs.d.
+
+**** init.el config
+
+
+Ensure /exec-path/ and /LIBRARY_PATH/ both point to locations in $GCCEMACS_PREFIX and finally set /comp-deferred-compilation/. I wrapped mine in /exec-path-from-shell/, setting early in init.el should be enough.
+
+#+BEGIN_EXAMPLE
+  ( use-package  exec-path-from-shell
+     :ensure t
+     :config
+    (exec-path-from-shell-initialize)
+    ( if ( and (fboundp 'native-comp-available-p)
+             (native-comp-available-p))
+        ( progn
+          (message  "Native comp is available")
+          (add-to-list 'exec-path (expand-file-name  "~/homebrew/opt/gccemacs/bin"))
+          (setenv  "LIBRARY_PATH" (concat (getenv  "LIBRARY_PATH")
+                                         ( when (getenv  "LIBRARY_PATH")
+                                            ":")
+                                         (car (file-expand-wildcards
+                                               (expand-file-name  "~/homebrew/opt/gcc/lib/gcc/*")))))
+           ;;  Only set after LIBRARY_PATH can find gcc libraries.
+          ( setq comp-deferred-compilation t))
+      (message  "Native comp is *not* available")))
+#+END_EXAMPLE
+
+**** Launch Emacs.app
+
+
+You're good to go. Open Emacs.app via finder or shell:
+
+#+BEGIN_EXAMPLE
+  open nextstep/Emacs.app
+#+END_EXAMPLE
+
+**** Deferred compilation logs
+
+
+After setting /comp-deferred-compilation/ (in init.el config section), .elc files should be asyncronously compiled. Function definition should be updated to native compiled equivalent.
+
+Look out for an **Async-native-compile-log** buffer. Should have content like:
+
+#+BEGIN_EXAMPLE
+  Compiling .emacs.d/elpa/moody-20200514.1946/moody.el...
+  Compiling .emacs.d/elpa/minions-20200522.1052/minions.el...
+  Compiling .emacs.d/elpa/persistent-scratch-20190922.1046/persistent-scratch.el...
+  Compiling .emacs.d/elpa/which-key-20200721.1927/which-key.el...
+  ...
+#+END_EXAMPLE
+
+Can also check for .eln files:
+
+#+BEGIN_EXAMPLE
+  find ~/.emacs.d -iname *.eln | wc -l
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+  149
+#+END_EXAMPLE
+
+* [[https://vxlabs.com/2018/06/08/python-language-server-with-emacs-and-lsp-mode/][Configuring Emacs, lsp-mode and the python language server. - vxlabs]] :website:
+
+[2020-08-19 Wed 00:23]
+
+** Article
+
+The [[https://langserver.org/][language server protocol]] was proposed by Microsoft as a way for different editors and development environments to share language analysis backends
+
+This post describes how to configure Emacs, [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] and the [[https://github.com/palantir/python-language-server][palantir python-language-server]] for improved code intelligence when working on Python projects. (I'm planning a companion post for Emacs, C++ and the [[https://github.com/cquery-project/cquery][cquery language server]].)
+
+*** Goal
+
+
+Before starting, it is motivating to see what we are working towards.
+
+With a correctly configured setup, Emacs will sport, amongst others, improved completion with interactive documentation, imenu navigation, documentation on hover, and really snazzy find definitions (=M-.=) and find references.
+
+See the following screenshots for some examples:
+
+[[/wp-content/uploads/2018/06/Screen-Shot-2018-06-08-at-13.01.32_2018-06-08_14-29-25.png?resize=660%2C481&ssl=1]]
+
+[[/wp-content/uploads/2018/06/lsp-python-imenu_2018-06-08_14-34-27.png?resize=660%2C477&ssl=1]]
+
+[[/wp-content/uploads/2018/06/lsp-python-docs-on-hover_2018-06-08_14-34-43.png?resize=660%2C477&ssl=1]]
+
+*** Pre-requisites on the Python side
+
+
+Install the =python-language-server= into the virtual environment, or user environment, that you're planning to use.
+
+These days, I tend to use =pipenv=:
+
+ #+BEGIN_EXAMPLE sh
+     cd my_project
+   pipenv install python-language-server [all ]
+ #+END_EXAMPLE
+
+The =[all]= means that it installs all optional providers, e.g. yapf formatting.
+
+*** Pre-requisites on the Emacs side
+
+
+In Emacs, install the required and some optional packages using for example =M-x package-install=:
+
+- =lsp-mode= - the main language server protocol package
+- =lsp-ui= - UI-related LSP extras, such as the sideline info, docs, flycheck, etc.
+- =company-lsp= - company-backend for LSP-based code completion.
+- [[https://github.com/bbatsov/projectile][ =projectile=]] or [[https://github.com/technomancy/find-file-in-project][ =find-file-in-project=]] - we use a single function from here to determine the root directory of a project.
+
+*** Emacs configuration
+
+
+Add the following to your Emacs =init.el=, and don't forget to read the comments.
+
+If you're not yet using [[https://github.com/jwiegley/use-package][=use-package=]] now would be a good time to upgrade.
+
+#+BEGIN_EXAMPLE emacs-lisp
+    ( use-package  lsp-mode
+     :ensure  t
+     :config
+
+     ;; make sure we have lsp-imenu everywhere we have LSP
+     ( require  'lsp-imenu )
+     ( add-hook  'lsp-after-open-hook  'lsp-enable-imenu )
+     ;; get lsp-python-enable defined
+     ;; NB: use either projectile-project-root or ffip-get-project-root-directory
+     ;;     or any other function that can be used to find the root directory of a project
+     ( lsp-define-stdio-client  lsp-python  "python"
+                              #' projectile-project-root
+                              ' ( "pyls" ))
+
+     ;; make sure this is activated when python-mode is activated
+     ;; lsp-python-enable is created by macro above
+     ( add-hook  'python-mode-hook
+               ( lambda  ()
+                 ( lsp-python-enable )))
+
+     ;; lsp extras
+     ( use-package  lsp-ui
+       :ensure  t
+       :config
+       ( setq  lsp-ui-sideline-ignore-duplicate  t )
+       ( add-hook  'lsp-mode-hook  'lsp-ui-mode ))
+
+     ( use-package  company-lsp
+       :config
+       ( push  'company-lsp  company-backends ))
+
+     ;; NB: only required if you prefer flake8 instead of the default
+     ;; send pyls config via lsp-after-initialize-hook -- harmless for
+     ;; other servers due to pyls key, but would prefer only sending this
+     ;; when pyls gets initialised (:initialize function in
+     ;; lsp-define-stdio-client is invoked too early (before server
+     ;; start)) -- cpbotha
+     ( defun  lsp-set-cfg  ()
+       ( let  (( lsp-cfg  ` ( :pyls  ( :configurationSources  ( "flake8" )))))
+         ;; TODO: check lsp--cur-workspace here to decide per server / project
+         ( lsp--set-configuration  lsp-cfg )))
+
+     ( add-hook  'lsp-after-initialize-hook  'lsp-set-cfg ))
+#+END_EXAMPLE
+
+*** Putting it all together
+
+
+Importantly, use [[https://github.com/jorgenschaefer/pyvenv][=pyenv=]] or something similar to switch to the relevant virtualenv before opening the first Python file.
+
+When you open the file, the =pyls= should be automatically started up, and you can edit away with LSP-powered code intelligence.
+
+This often gives better and more detailed results than [[https://github.com/jorgenschaefer/elpy][=elpy=]], probably because pyls uses a mix of static and dynamic (introspection-based) analysis.
+
+Furthermore, the handling of LSP servers in Emacs can be unified, giving the same consistent level of support across a whole range of programming languages.
