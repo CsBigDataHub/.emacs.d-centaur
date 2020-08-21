@@ -168,3 +168,9 @@ If you add this to your .emacs you will get an Hyper key in gtk and in an xterm!
 #+BEGIN_EXAMPLE
    (define-key key-translation-map [8711] 'event-apply-hyper-modifier)
 #+END_EXAMPLE
+
+* To keep focus for firefox tabs
+
+#+begin_example
+  browser.tabs.loadDivertedInBackground
+#+end_example
