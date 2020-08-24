@@ -70,7 +70,8 @@ The key is you need to map 'keycode 66' to your hyper key, remove the mapping of
 Open ~/.Xmodmap and put the following:
 
 #+BEGIN_EXAMPLE
-   ! Unmap capslock
+  clear mod3
+  ! Unmap capslock
   clear Lock
   keycode 66 = Hyper_L
 
