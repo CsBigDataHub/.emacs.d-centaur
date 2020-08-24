@@ -70,7 +70,8 @@ The key is you need to map 'keycode 66' to your hyper key, remove the mapping of
 Open ~/.Xmodmap and put the following:
 
 #+BEGIN_EXAMPLE
-   ! Unmap capslock
+  clear mod3
+  ! Unmap capslock
   clear Lock
   keycode 66 = Hyper_L
 
@@ -168,3 +169,9 @@ If you add this to your .emacs you will get an Hyper key in gtk and in an xterm!
 #+BEGIN_EXAMPLE
    (define-key key-translation-map [8711] 'event-apply-hyper-modifier)
 #+END_EXAMPLE
+
+* To keep focus for firefox tabs
+
+#+begin_example
+  browser.tabs.loadDivertedInBackground
+#+end_example
