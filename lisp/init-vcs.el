@@ -271,7 +271,8 @@
 
 ;;Emacs comes with a version control interface called "VC", see (emacs)Version Control. It is enabled be default, and if you don’t use it in addition to Magit, then you should disable it to keep it from performing unnecessary work:
 
-;;(setq vc-handled-backends nil) ;;had to disable this to get git-gutter working
+;; enable line below if you are seeing `Args out of range' error
+;; (setq vc-handled-backends nil) ;;had to disable this to get git-gutter working
 
 ;;You can also disable its use for Git but keep using it when using another version control system:
 

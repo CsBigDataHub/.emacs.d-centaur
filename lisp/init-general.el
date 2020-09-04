@@ -91,15 +91,18 @@ The prefix map is named 'my-DEF-map'."
  "+" 'vc-update
  "[" 'diff-hl-previous-hunk
  "]" 'diff-hl-next-hunk
+ "A" 'vc-annotate
  "B" 'browse-at-remote
  "D" 'vc-root-diff
  "L" 'vc-print-root-log
  "P" 'vc-push
  "R" 'vc-refresh-state
+ "b" 'magit-blame
+ "c" 'vc-revert
  "d" 'vc-dir
  "h" 'vc-region-history
  "l" 'vc-print-log
- "c" 'vc-revert
+ "p" 'git-messenger:popup-message
  "v" 'vc-next-action
  "SPC" 'diff-hl-mark-hunk
  )
