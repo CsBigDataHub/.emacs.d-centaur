@@ -243,8 +243,8 @@ same directory as the markdown-mode-buffer and insert a link to this file."
               (markdown-toggle-inline-images)
               )))
 
-(when sys/linuxp
-  (setq-default org-download-screenshot-method "flameshot gui --raw > %s"))
+(when (or sys/linux-x-p sys/linuxp)
+  (setq org-download-screenshot-method "flameshot gui --raw > %s"))
 
 (when sys/macp
   (setq-default org-download-screenshot-method "screencapture -i %s"))
@@ -1432,8 +1432,8 @@ Version 2020-02-13"
      ((string-equal system-type "gnu/linux")
       (let (
             (process-connection-type nil)
-            (openFileProgram (if (file-exists-p "/usr/bin/gvfs-open")
-                                 "/usr/bin/gvfs-open"
+            (openFileProgram (if (file-exists-p "/usr/bin/dolphin")
+                                 "/usr/bin/dolphin"
                                "/usr/bin/xdg-open")))
         (start-process "" nil openFileProgram $path))
       ;; (shell-command "xdg-open .") ;; 2013-02-10 this sometimes froze emacs till the folder is closed. eg with nautilus
@@ -3400,6 +3400,14 @@ are defining or executing a macro."
                (file-exists-p new-location)
                (not (string-equal old-location new-location)))
       (delete-file old-location))))
+
+;; https://superuser.com/a/132844
+(defadvice find-file (before make-directory-maybe (filename &optional wildcards) activate)
+  "Create parent directory if not exists while visiting file."
+  (unless (file-exists-p filename)
+    (let ((dir (file-name-directory filename)))
+      (unless (file-exists-p dir)
+        (make-directory dir t)))))
 
 ;; FIXME: issue from https://www.reddit.com/r/emacs/comments/flb0vc/wrongtypeargument_stringp_require_info_with_emacs/
 ;; FIXME: https://emacs.stackexchange.com/a/5565
