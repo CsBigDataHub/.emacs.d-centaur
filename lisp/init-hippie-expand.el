@@ -42,7 +42,7 @@
 
   ;; english-words.txt is the fallback dicitonary
   (if (not ispell-alternate-dictionary)
-      (setq ispell-alternate-dictionary (file-truename "~/.emacs.d/misc/english-words.txt")))
+      (setq ispell-alternate-dictionary (file-truename (expand-file-name "misc/english-words.txt" user-emacs-directory))))
   (let ((lookup-func (if (fboundp 'ispell-lookup-words)
                          'ispell-lookup-words
                        'lookup-words)))
@@ -126,5 +126,41 @@
                                               org-completion-symbols
                                               ora-cap-filesystem
                                               ))
+
+(autoload 'ffap-file-at-point "ffap")
+(defun complete-path-at-point+ ()
+  "Return completion data for UNIX path at point."
+  (let ((fn (ffap-file-at-point))
+        (fap (thing-at-point 'filename)))
+    (when (and (or fn (equal "/" fap))
+               (save-excursion
+                 (search-backward fap (line-beginning-position) t)))
+      (list (match-beginning 0)
+            (match-end 0)
+            #'completion-file-name-table :exclusive 'no))))
+
+(add-hook 'completion-at-point-functions
+          #'complete-path-at-point+
+          'append)
+
+(defvar words (split-string (with-temp-buffer
+                              (insert-file-contents-literally (expand-file-name "misc/english-words.txt" user-emacs-directory))
+                              (buffer-string))
+                            "\n"))
+
+(defun words-completion-at-point ()
+  (let ((bounds (bounds-of-thing-at-point 'word)))
+    (when bounds
+      (list (car bounds)
+            (cdr bounds)
+            words
+            :exclusive 'no
+            :company-docsig #'identity
+            :company-doc-buffer (lambda (cand)
+                                  (company-doc-buffer (format "'%s' is defined in '~/.emacs.d/misc/english-words.txt'" cand)))
+            :company-location (lambda (cand)
+                                (with-current-buffer (find-file-noselect (expand-file-name "misc/english-words.txt" user-emacs-directory))
+                                  (goto-char (point-min))
+                                  (cons (current-buffer) (search-forward cand nil t))))))))
 
 (provide 'init-hippie-expand)
