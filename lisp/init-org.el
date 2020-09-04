@@ -280,7 +280,9 @@ prepended to the element after the #+HEADER: tag."
   :config
   (if (memq window-system '(mac ns))
       (setq org-download-screenshot-method "screencapture -i %s")
-    (setq org-download-screenshot-method "maim -s %s"))
+    ;; (setq org-download-screenshot-method "maim -s %s")
+    (setq org-download-screenshot-method "flameshot gui --raw > %s")
+    )
   (defun my-org-download-method (link)
     "This is a helper function for org-download.
 It creates a folder in the root directory (~/.org/img/) named after the
@@ -301,7 +303,7 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
                                             (file-name-extension filename)))
       ;; Create folder if necessary
       (unless (file-exists-p dirname)
-        (make-directory dirname))
+        (make-directory dirname t))
       (expand-file-name filename-with-timestamp dirname)))
   (setq org-download-method 'my-org-download-method))
 
