@@ -41,7 +41,7 @@
 (setq frame-title-format '("Centaur Emacs - %b")
       icon-title-format frame-title-format)
 
-(when sys/mac-x-p
+(when (and sys/mac-ns-p sys/mac-x-p)
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
   (add-to-list 'default-frame-alist '(ns-appearance . dark))
   (add-hook 'after-load-theme-hook
@@ -96,7 +96,7 @@
   (doom-modeline-minor-modes t)
   (doom-modeline-unicode-fallback t)
   (doom-modeline-mu4e nil)
-  :hook (after-init . doom-modeline-mode)
+  :hook (window-setup . doom-modeline-mode)
   :init
   ;; Prevent flash of unstyled modeline at startup
   (unless after-init-time

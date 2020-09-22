@@ -61,8 +61,9 @@
         company-dabbrev-downcase nil
         company-global-modes '(not erc-mode message-mode help-mode
                                    gud-mode eshell-mode shell-mode)
-        company-frontends '(company-pseudo-tooltip-frontend
-                            company-echo-metadata-frontend))
+        company-backends '((company-capf :with company-yasnippet)
+                           (company-dabbrev-code company-keywords company-files)
+                           company-dabbrev))
 
   (defun my-company-yasnippet ()
     "Hide the current completeions and show snippets."
@@ -83,10 +84,12 @@
       (defun my-company-enbale-yas (&rest _)
         "Enable `yasnippet' in `company'."
         (setq company-backends (mapcar #'company-backend-with-yas company-backends)))
-      ;; Enable in current backends
-      (my-company-enbale-yas)
-      ;; Enable in `lsp-mode'
-      (advice-add #'lsp--auto-configure :after #'my-company-enbale-yas)
+
+      (defun my-lsp-fix-company-capf ()
+        "Remove redundant `comapny-capf'."
+        (setq company-backends
+              (remove 'company-backends (remq 'company-capf company-backends))))
+      (advice-add #'lsp-completion--enable :after #'my-lsp-fix-company-capf)
 
       (defun my-company-yasnippet-disable-inline (fun command &optional arg &rest _ignore)
         "Enable yasnippet but disable it inline."
@@ -118,42 +121,9 @@
       :hook (company-mode . company-box-mode)
       :init (setq company-box-enable-icon centaur-icon
                   company-box-backends-colors nil
-                  company-box-show-single-candidate t
-                  company-box-max-candidates 50
-                  company-box-doc-delay 0.5)
+                  company-box-highlight-prefix t)
       :config
       (with-no-warnings
-        ;;
-        ;; HACK: Display candidates with highlights as VSCode
-        ;;
-        (defun my-company-box--change-line nil
-          (let ((selection company-selection)
-                (common company-prefix))
-            (with-selected-window (get-buffer-window (company-box--get-buffer) t)
-              (company-box--update-line selection common))
-            (company-box--update-scrollbar (company-box--get-frame))))
-        (advice-add #'company-box--change-line :override #'my-company-box--change-line)
-
-        (defun my-company-box--candidate-string (candidate)
-          (concat (and company-prefix (propertize company-prefix 'face 'company-tooltip-common))
-                  (substring (propertize candidate 'face 'company-box-candidate) (length company-prefix) nil)))
-        (advice-add #'company-box--candidate-string :override #'my-company-box--candidate-string)
-
-        ;; FIXME: Delay at the first candidate
-        (defun my-company-box-doc (selection frame)
-          (when company-box-doc-enable
-            (-some-> (frame-parameter frame 'company-box-doc-frame)
-              (make-frame-invisible))
-            (when (timerp company-box-doc--timer)
-              (cancel-timer company-box-doc--timer))
-            (setq company-box-doc--timer
-                  (run-with-timer
-                   company-box-doc-delay nil
-                   (lambda nil
-                     (company-box-doc--show selection frame)
-                     (company-ensure-emulation-alist))))))
-        (advice-add #'company-box-doc :override #'my-company-box-doc)
-
         ;; Prettify icons
         (defun my-company-box-icons--elisp (candidate)
           (when (derived-mode-p 'emacs-lisp-mode)
