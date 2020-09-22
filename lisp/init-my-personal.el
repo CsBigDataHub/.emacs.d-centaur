@@ -406,6 +406,10 @@ happens within a region if one is selected."
 ;;   :init
 ;;   (dimmer-mode t))
 
+(use-package super-save
+  :config
+  (super-save-mode +1))
+
 (use-package adaptive-wrap
   :config
   (adaptive-wrap-prefix-mode))
