@@ -47,7 +47,8 @@
                lsp-rust-server)
      :commands (lsp-enable-which-key-integration
                 lsp-format-buffer
-                lsp-organize-imports)
+                lsp-organize-imports
+                lsp-install-server)
      :diminish
      :hook ((prog-mode . (lambda ()
                            (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode)
@@ -76,7 +77,6 @@
            lsp-modeline-code-actions-enable nil
            lsp-modeline-diagnostics-enable nil
 
-           lsp-enable-file-watchers nil
            lsp-enable-file-watchers nil
            lsp-enable-folding nil
            lsp-enable-semantic-highlighting nil
@@ -115,7 +115,12 @@
          (unless (bound-and-true-p git-timemachine-mode)
            (apply func args)))
        (advice-add #'lsp--init-if-visible :around #'my-lsp--init-if-visible))
-     )
+
+     (defun lsp-update-server ()
+       "Update LSP server."
+       (interactive)
+       ;; Equals to `C-u M-x lsp-install-server'
+       (lsp-install-server t)))
 
    (use-package lsp-ui
      :custom-face
@@ -176,6 +181,7 @@
      :hook (lsp-mode . lsp-ui-mode)
      :init (setq lsp-ui-sideline-show-diagnostics nil
                  lsp-ui-sideline-ignore-duplicate t
+                 lsp-ui-doc-position 'at-point
                  lsp-ui-doc-border (face-foreground 'font-lock-comment-face)
                  lsp-ui-imenu-colors `(,(face-foreground 'font-lock-keyword-face)
                                        ,(face-foreground 'font-lock-string-face)
@@ -189,8 +195,7 @@
      (add-hook 'after-load-theme-hook
                (lambda ()
                  (setq lsp-ui-doc-border (face-foreground 'font-lock-comment-face))
-                 (set-face-background 'lsp-ui-doc-background
-                                      (face-background 'tooltip)))))
+                 (set-face-background 'lsp-ui-doc-background (face-background 'tooltip)))))
 
    ;; --------- Use company-capf instead of company-lsp ---------
    ;; Completion
