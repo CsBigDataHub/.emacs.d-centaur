@@ -67,11 +67,11 @@
         company-dabbrev-char-regexp "\\(\\sw\\|\\s_\\|_\\|-\\)" ;;my-personal-config
         company-dabbrev-downcase nil
         ;; company backend is my-personal-config
-        company-backends '(company-capf
-                           (company-dabbrev-code company-gtags company-etags
-                                                 company-keywords)
-                           company-files
-                           company-dabbrev)
+        ;; company-backends '(company-capf
+        ;;  (company-dabbrev-code company-gtags company-etags
+        ;;                        company-keywords)
+        ;;  company-files
+        ;;  company-dabbrev)
         ;; company backend is my-personal-config
         company-global-modes '(not erc-mode message-mode help-mode
                                    gud-mode eshell-mode shell-mode)
@@ -135,7 +135,8 @@
       :hook (company-mode . company-box-mode)
       :init (setq company-box-enable-icon centaur-icon
                   company-box-backends-colors nil
-                  company-box-highlight-prefix t)
+                  company-box-highlight-prefix t
+                  )
       :config
       (with-no-warnings
         ;; Prettify icons
