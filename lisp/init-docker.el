@@ -1,3 +1,5 @@
+;; init-docker.el --- Initialize docker configurations.	-*- lexical-binding: t -*-
+
 ;; Copyright (C) 2019-2020 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>

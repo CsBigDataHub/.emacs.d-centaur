@@ -557,6 +557,9 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
   ;; TODO: Get config from org-super-agenda/examples.org
   )
 
+(when sys/linuxp
+  (use-package org-mime))
+
 (use-package org-sidebar)
 
 (provide 'init-org)

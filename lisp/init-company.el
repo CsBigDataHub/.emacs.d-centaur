@@ -56,7 +56,7 @@
         company-tooltip-limit 12
         company-idle-delay 0
         company-echo-delay (if (display-graphic-p) nil 0)
-        company-minimum-prefix-length 2
+        company-minimum-prefix-length 1
         company-show-numbers 'left ;;my-personal-config
         company-require-match nil
         company-dabbrev-code-everywhere t ;;my-personal-config
