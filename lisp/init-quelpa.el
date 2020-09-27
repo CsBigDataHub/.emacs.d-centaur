@@ -15,7 +15,7 @@
   (company-box
    :fetcher github
    :repo "sebastiencs/company-box"
-   ;; :commit "d28025fa0c833ce85c4cf3c965581914daebfab0"
+   :commit "7696cebf6b87a80fbd45216fa2e7735e879af2c4"
    )
   :diminish
   :defines company-box-icons-all-the-icons
@@ -72,3 +72,5 @@
             (Template . ,(all-the-icons-material "format_align_left" :height 0.8 :v-adjust -0.15)))
           company-box-icons-alist 'company-box-icons-all-the-icons))
   )
+
+(provide 'init-quelpa)

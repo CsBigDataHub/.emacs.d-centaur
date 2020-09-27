@@ -30,6 +30,8 @@
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'elfeed-search-mode 'emacs)
 (evil-set-initial-state 'elfeed-show-mode 'emacs)
+(evil-set-initial-state 'vc-mode 'emacs)
+(evil-set-initial-state 'helpful-mode 'emacs)
 (evil-set-initial-state 'wgrep-change-to-wgrep-mode 'emacs)
 
 (use-package evil-numbers
