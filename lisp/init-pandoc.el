@@ -9,4 +9,7 @@
   :after ox
   )
 
+(eval-after-load 'org
+  '(require 'ox-pandoc))
+
 (provide 'init-pandoc)
