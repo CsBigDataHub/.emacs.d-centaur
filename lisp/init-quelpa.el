@@ -72,3 +72,5 @@
             (Template . ,(all-the-icons-material "format_align_left" :height 0.8 :v-adjust -0.15)))
           company-box-icons-alist 'company-box-icons-all-the-icons))
   )
+
+(provide 'init-quelpa)

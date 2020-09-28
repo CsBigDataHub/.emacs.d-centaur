@@ -8,8 +8,10 @@
 (use-package kubernetes-evil
   :after kubernetes-overview)
 
-(with-eval-after-load 'kubernetes-overview
-  (load-library "kubernetes-evil"))
+;; (with-eval-after-load 'kubernetes-overview
+;;   (load-library "kubernetes-evil"))
+(eval-after-load 'kubernetes-overview
+  '(require 'kubernetes-evil))
 
 (use-package k8s-mode
   :hook (k8s-mode . yas-minor-mode)
