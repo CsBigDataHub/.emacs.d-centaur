@@ -15,7 +15,7 @@
   (company-box
    :fetcher github
    :repo "sebastiencs/company-box"
-   ;; :commit "d28025fa0c833ce85c4cf3c965581914daebfab0"
+   :commit "adcb52b71f447e27493c4c98ad1d1711639f6e10"
    )
   :diminish
   :defines company-box-icons-all-the-icons
