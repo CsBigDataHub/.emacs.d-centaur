@@ -17,7 +17,6 @@
   )
 
 (my-spc-leader-def
-  "dd" 'dired
   "uu" 'undo-tree-visualize
   "mc" 'my/open-config
   "tt" 'treemacs
@@ -55,6 +54,15 @@ The prefix map is named 'my-DEF-map'."
        :which-key "dashboard-buffer")
  "TAB" '((lambda () (interactive) (switch-to-buffer nil))
          :which-key "other-buffer")
+ )
+
+(general-global-spc-menu-definer
+ "dumb-jump/dired" "d"
+ "d" 'dired
+ "j" 'dired-jump
+ "J" 'dired-jump-other-window
+ "g" 'dumb-jump-go
+ "b" 'dumb-jump-back
  )
 
 (general-global-spc-menu-definer

@@ -339,10 +339,15 @@ happens within a region if one is selected."
   )
 
 (use-package jenkinsfile-mode
-  )
+  :config
+  (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . jenkinsfile-mode))
+  (add-to-list 'auto-mode-alist '("Jenkinsfile" . jenkinsfile-mode)))
 
 (use-package groovy-imports)
 (use-package flycheck-gradle)
+
+(use-package shell-command+
+  :bind ("M-!" . shell-command+))
 
 (setq lsp-server-install-dir (concat user-emacs-directory "lsp/")
       lsp-groovy-server-file (concat lsp-server-install-dir "groovy-language-server/build/libs/groovy-language-server-all.jar")
