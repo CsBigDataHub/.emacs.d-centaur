@@ -31,4 +31,7 @@
 
 (use-package kubel-evil)
 
+(eval-after-load 'kubel
+  '(require 'kubel-evil))
+
 (provide 'init-kubernetes)
