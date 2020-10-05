@@ -106,4 +106,18 @@ _C_: correct  _p_: prev error _d_: done checking
   :straight (clipboard2org :type git :host github :repo "itf/clipboard2org")
   :bind ("C-S-y" . clipboard2org))
 
+(when (image-type-available-p 'svg)
+  (use-package imgur
+    :straight (imgur
+               :type git
+               :host github
+               :repo "myuhe/imgur.el")))
+
+(when (image-type-available-p 'svg)
+  (use-package meme
+    :straight (meme
+               :type git
+               :host github
+               :repo "larsmagne/meme")))
+
 (provide 'init-straight)
