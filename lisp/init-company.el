@@ -136,13 +136,14 @@
       :hook (company-mode . company-box-mode)
       :init (setq company-box-enable-icon centaur-icon
                   company-box-backends-colors nil
+                  company-box-doc-delay 0.3
                   company-box-highlight-prefix t
                   )
       :config
       (with-no-warnings
         ;; Prettify icons
         (defun my-company-box-icons--elisp (candidate)
-          (when (derived-mode-p 'emacs-lisp-mode)
+          (when (or (derived-mode-p 'emacs-lisp-mode) (derived-mode-p 'lisp-mode))
             (let ((sym (intern candidate)))
               (cond ((fboundp sym) 'Function)
                     ((featurep sym) 'Module)
