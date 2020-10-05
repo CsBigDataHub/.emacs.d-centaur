@@ -143,6 +143,8 @@
           #'complete-path-at-point+
           'append)
 
+;; https://emacs.stackexchange.com/questions/15276/how-do-i-write-a-simple-completion-at-point-functions-function
+;; NOTES: could not get this working -start-
 (defvar words (split-string (with-temp-buffer
                               (insert-file-contents-literally (expand-file-name "misc/english-words.txt" user-emacs-directory))
                               (buffer-string))
@@ -162,5 +164,57 @@
                                 (with-current-buffer (find-file-noselect (expand-file-name "misc/english-words.txt" user-emacs-directory))
                                   (goto-char (point-min))
                                   (cons (current-buffer) (search-forward cand nil t))))))))
+
+(add-hook 'completion-at-point-functions #'words-completion-at-point 'append)
+;; NOTES: could not get this working -end-
+
+;; https://emacs.stackexchange.com/questions/54741/using-company-ispell-with-large-text-dictionary
+
+(setq ispell-complete-word-dict
+      (expand-file-name (concat user-emacs-directory "misc/aspell-en-sorted.txt")))
+
+(defun my-generic-ispell-company-complete-setup ()
+  ;; Only apply this locally.
+  (make-local-variable 'company-backends)
+  (setq company-backends (list 'company-ispell))
+
+  (when ispell-complete-word-dict
+    (let*
+        (
+         (has-dict-complete
+          (and ispell-complete-word-dict (file-exists-p ispell-complete-word-dict)))
+         (has-dict-personal
+          (and ispell-personal-dictionary (file-exists-p ispell-personal-dictionary)))
+         (is-dict-outdated
+          (and
+           has-dict-complete has-dict-personal
+           (time-less-p
+            (nth 5 (file-attributes ispell-complete-word-dict))
+            (nth 5 (file-attributes ispell-personal-dictionary))))))
+
+      (when (or (not has-dict-complete) is-dict-outdated)
+        (with-temp-buffer
+
+          ;; Optional: insert personal dictionary, stripping header and inserting a newline.
+          (when has-dict-personal
+            (insert-file-contents ispell-personal-dictionary)
+            (goto-char (point-min))
+            (when (looking-at "personal_ws\-")
+              (delete-region (line-beginning-position) (1+ (line-end-position))))
+            (goto-char (point-max))
+            (unless (eq ?\n (char-after))
+              (insert "\n")))
+
+          (call-process "aspell" nil t nil "-d" "en_US" "dump" "master")
+          ;; Case insensitive sort is important for the lookup.
+          (let ((sort-fold-case t))
+            (sort-lines nil (point-min) (point-max)))
+          (write-region nil nil ispell-complete-word-dict))))))
+
+;; Enable this in appropriate modes.
+
+(add-hook 'org-mode-hook (lambda () (my-generic-ispell-company-complete-setup)))
+;; (add-hook 'rst-mode-hook (lambda () (my-generic-ispell-company-complete-setup)))
+(add-hook 'markdown-mode-hook (lambda () (my-generic-ispell-company-complete-setup)))
 
 (provide 'init-hippie-expand)

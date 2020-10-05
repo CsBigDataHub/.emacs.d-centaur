@@ -36,7 +36,8 @@
 (use-package company
   :diminish
   :defines (company-dabbrev-ignore-case company-dabbrev-downcase)
-  :commands company-cancel
+  :commands (company-cancel
+             company-complete-common)
   :bind (("M-s-÷" . company-complete);;my-personal-config
          ("C-M-i" . company-complete)
          ("M-s-ƒ" . company-files)
