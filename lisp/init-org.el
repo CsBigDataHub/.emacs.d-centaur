@@ -58,7 +58,7 @@ prepended to the element after the #+HEADER: tag."
       (when mod (insert mod) (forward-line))
       (when text (insert text))))
   :pretty-hydra
-  ((:title (pretty-hydra-title "Org Template" 'fileicon "org")
+  ((:title (pretty-hydra-title "Org Template" 'fileicon "org" :face 'all-the-icons-green :height 1.1 :v-adjust 0.0)
     :color blue :quit-key "q")
    ("Basic"
     (("a" (hot-expand "<a") "ascii")
@@ -190,9 +190,6 @@ prepended to the element after the #+HEADER: tag."
 
   (use-package ob-go
     :init (cl-pushnew '(go . t) load-language-list))
-
-  (use-package ob-rust
-    :init (cl-pushnew '(rust . t) load-language-list))
 
   (use-package ob-ipython
     :if (executable-find "jupyter")     ; DO NOT remove
