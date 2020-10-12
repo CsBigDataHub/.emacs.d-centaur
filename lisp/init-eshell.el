@@ -308,6 +308,13 @@ directory."
 (use-package pcmpl-homebrew
   :after pcomplete)
 
+(use-package eshell-syntax-highlighting
+  :after esh-mode
+  :demand t ;; Install if not already installed.
+  :config
+  ;; Enable in all Eshell buffers.
+  (eshell-syntax-highlighting-global-mode +1))
+
 ;;https://www.reddit.com/r/emacs/comments/gksqhl/emacs_eshell_demo/fqtveuc?utm_source=share&utm_medium=web2x
 ;; (defun eshell/in-term (prog &rest args)
 ;;   (switch-to-buffer

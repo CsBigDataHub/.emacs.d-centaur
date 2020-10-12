@@ -268,12 +268,27 @@
   :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
 ;; disable <> auto pairing in electric-pair-mode for org-mode
+
 (add-hook
  'org-mode-hook
  (lambda ()
    (setq-local electric-pair-inhibit-predicate
                `(lambda (c)
                   (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+
+
+;; disable {} auto pairing in electric-pair-mode for web-mode
+;; (add-hook
+;;  'web-mode-hook
+;;  (lambda ()
+;;    (setq-local electric-pair-inhibit-predicate
+;;                `(lambda (c)
+;;                   (if (char-equal c ?{) t (,electric-pair-inhibit-predicate c))))))
+
+
+;; (setq electric-pair-inhibit-predicate
+;;       `(lambda (c)
+;;          (if (char-equal c ?\") t (,electric-pair-inhibit-predicate c))))
 
 ;; Edit multiple regions in the same way simultaneously
 (use-package iedit
