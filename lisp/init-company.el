@@ -124,6 +124,22 @@
             (funcall fun command arg))))
       (advice-add #'company-yasnippet :around #'my-company-yasnippet-disable-inline)))
 
+  ;; my-personal - remove competion on numbers
+  ;; https://emacs.stackexchange.com/questions/9835/how-can-i-prevent-company-mode-completing-numbers
+  ;; https://emacs.stackexchange.com/questions/35345/how-to-turn-off-autocompletion-for-numbers-and-numbers-only-in-company-mode-in
+  ;; https://github.com/company-mode/company-mode/issues/358
+
+  (push (apply-partially #'cl-remove-if
+                         (lambda (c)
+                           (or (string-match-p "[^\x00-\x7F]+" c)
+                               (string-match-p "[0-9]+" c)
+                               (string-match-p "\\`[0-9]+\\'" c)
+                               ;;(if (equal major-mode "org")
+                               ;;    (>= (length c) 15))
+                               )))
+        company-transformers)
+  ;; my-personal - remove competion on numbers - end
+
   ;; Better sorting and filtering
   (use-package company-prescient
     :init (company-prescient-mode 1))
@@ -205,7 +221,37 @@
     (global-company-fuzzy-mode t)))
 
 ;; http://oremacs.com/2017/12/27/company-numbers/
+;; https://github.com/abo-abo/oremacs/blob/github/modes/ora-company.el
+
 (require 'company)
+
+(defun ora-advice-add (&rest args)
+  (when (fboundp 'advice-add)
+    (apply #'advice-add args)))
+
+(defun ora-company-number ()
+  "Forward to `company-complete-number'.
+Unless the number is potentially part of the candidate.
+In that case, insert the number."
+  (interactive)
+  (let* ((k (this-command-keys))
+         (re (concat "^" company-prefix k)))
+    (if (or (cl-find-if (lambda (s) (string-match re s))
+                        company-candidates)
+            (> (string-to-number k)
+               (length company-candidates))
+            (looking-back "[0-9]+\\.[0-9]*" (line-beginning-position)))
+        (self-insert-command 1)
+      (company-complete-number
+       (if (equal k "0")
+           10
+         (string-to-number k))))))
+
+(defun ora--company-good-prefix-p (orig-fn prefix)
+  (unless (and (stringp prefix) (string-match-p "\\`[0-9]+\\'" prefix))
+    (funcall orig-fn prefix)))
+(ora-advice-add 'company--good-prefix-p :around #'ora--company-good-prefix-p)
+
 (let ((map company-active-map))
   (mapc
    (lambda (x)
@@ -216,19 +262,6 @@
                         (company-abort)
                         (self-insert-command 1)))
   (define-key map (kbd "<return>") nil))
-
-(defun ora-company-number ()
-  "Forward to `company-complete-number'.
-
-  Unless the number is potentially part of the candidate.
-  In that case, insert the number."
-  (interactive)
-  (let* ((k (this-command-keys))
-         (re (concat "^" company-prefix k)))
-    (if (cl-find-if (lambda (s) (string-match re s))
-                    company-candidates)
-        (self-insert-command 1)
-      (company-complete-number (string-to-number k)))))
 
 ;;https://github.com/company-mode/company-mode/issues/50
 (defun add-pcomplete-to-capf ()
