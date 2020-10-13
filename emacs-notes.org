@@ -6770,3 +6770,1049 @@ Created: 2015-07-23 Thu 22:36
   ;; )))))
 
 #+end_src
+
+* [[https://jherrlin.github.io/posts/emacs-orgmode-tables/][Emacs Org mode tables | jherrlin]] :website:
+
+[2020-10-13 Tue 14:19]
+
+** Article
+
+[[/tags/emacs/][#emacs]] | [[/tags/gnu/][#GNU]] | [[/tags/org/][#org]] | [[/tags/programming/][#programming]]
+
+*** June 21, 2020
+
+
+*** Intro
+
+
+This is the second post in the serie of how I use Emacs [[https://orgmode.org/][Org mode]] (from now on org) and it will cover usage of [[https://orgmode.org/manual/Tables.html#Tables][org tables]]. Some of the content assumes basic knowledge about org. If you are new to org I can recommend this two videos; [[https://www.youtube.com/watch?v=SzA2YODtgK4][hrs]] and [[https://www.youtube.com/watch?v=fgizHHd7nOo][kitchin]].
+
+Org tables are like spreadsheets with super powers. Tables can be used to keep information organized, as input to source blocks (more about that in the first post, "Emacs Org mode source blocks") or used in calculations.
+
+My main usage of tables is to calculate work time. I sum up the time I should work and the time I have been working and calc the diff.
+
+*** Versions
+
+
+... of Emacs and Org mode.
+
+#+BEGIN_EXAMPLE
+    #+BEGIN_SRC  emacs-lisp
+      ( org-version )
+   #+END_SRC
+
+   #+RESULTS :
+  : 9.3.7
+
+   #+BEGIN_SRC  emacs-lisp
+    ( emacs-version )
+   #+END_SRC
+
+   #+RESULTS :
+  : GNU Emacs 26.3 (build 1, x86_64-pc-linux-gnu, GTK+ Version 3.24.20)
+  :  of 2020-05-19
+#+END_EXAMPLE
+
+*** Emacs config
+
+
+Without config Emacs don't know how to execute source blocks. This following snippet provides Emacs with the ability to understand a set of languages/applications. The set of languages/applications need to be available in the underlying OS. To get a complete list of languages/applications available in org. A complete list can be found here: [[https://code.orgmode.org/bzg/org-mode/src/master/lisp][repo]]. Support for source blocks are available in files prefixed with =ob-=.
+
+#+BEGIN_EXAMPLE
+    ( setq  org-confirm-babel-evaluate  nil )
+
+   ( org-babel-do-load-languages
+    'org-babel-load-languages
+    ' (( emacs-lisp  .  t )
+      ( shell  .  t )
+      ( scheme  .  t )
+      ( python  .  t )
+      ( awk  .  t )
+      ( clojure  .  t )))
+#+END_EXAMPLE
+
+*** Table with a name
+
+
+This example names the table via the =#+NAME:= command. This named table is then used as input to a source block. Here we use =awk= to sum the population in Europe. More about this can be found in the first post, "Emacs Org mode source blocks".
+
+#+BEGIN_EXAMPLE
+    #+NAME : countries
+   | Country name | Area | Population | Region        |
+   |--------------+------+------------+---------------|
+   | USSR         | 8649 |        275 | Asia          |
+   | Canada       | 3852 |         25 | North America |
+   | China        | 3705 |       1032 | Asia          |
+   | USA          | 3615 |        237 | North America |
+   | Brazil       | 3286 |        134 | South America |
+   | India        | 1267 |        746 | Asia          |
+   | Mexico       |  762 |         78 | North America |
+   | France       |  211 |         55 | Europe        |
+   | Japan        |  144 |        120 | Asia          |
+   | Germany      |   96 |         61 | Europe        |
+   | England      |   94 |         56 | Europe        |
+
+   #+BEGIN_SRC  awk  :stdin countries
+      /Europe/  {  sum +=  $ 3  }
+     END  {  print  "Sum of the population in Europe is" ,  sum }
+   #+END_SRC
+
+   #+RESULTS :
+  : Sum of the population in Europe is 172
+#+END_EXAMPLE
+
+Data is taken from the book [[https://ia802309.us.archive.org/25/items/pdfy-MgN0H1joIoDVoIC7/The_AWK_Programming_Language.pdf][The AWK Programming Language]].
+
+*** Calculate sums
+
+
+Just like the previous example this one will do calculations based on data in a table. But this on will use table formulas ( =TBLFM=) to do the calculations. This time the table wont be passed to a programming language outside of Emacs. In the "before" we have some items with amount and cost data. We would like to know the amount * cost for each row and the sum of all "Total" rows.
+
+By putting the pointer on the =TBLFM= formula and use the keyboard sequence =C-c C-c= the calculations will be executed.
+
+Org docs on [[https://orgmode.org/worg/org-tutorials/org-spreadsheet-lisp-formulas.html][table formulas]] and [[https://orgmode.org/org.html#Advanced-features][advanced features]].
+
+#+BEGIN_EXAMPLE
+   Before  =TBLFM= is evaluated
+
+   | Description | Amounts | Cost | Total |
+   |-------------+---------+------+-------|
+   | Item 1      |       5 |   10 |       |
+   | Item 2      |       1 |   55 |       |
+   | Item 3      |      20 |   10 |       |
+   | Item 4      |    1000 |    1 |       |
+   |-------------+---------+------+-------|
+   | Sum:        |         |      |       |
+   #+TBLFM : $4=$2*$3::@>$4=vsum(@<<$4..@>>$4)
+
+  After  =TBLFM= is evaluated
+
+   | Description | Amounts | Cost | Total |
+   |-------------+---------+------+-------|
+   | Item 1      |       5 |   10 |    50 |
+   | Item 2      |       1 |   55 |    55 |
+   | Item 3      |      20 |   10 |   200 |
+   | Item 4      |    1000 |    1 |  1000 |
+   |-------------+---------+------+-------|
+   | Sum:        |         |      |  1305 |
+   #+TBLFM : $4=$2*$3::@>$4=vsum(@<<$4..@>>$4)
+#+END_EXAMPLE
+
+**** Calculate with time
+
+
+This is more or less the same as in previous example but this time we have a =U= in the =TBLFM= and that tells org to calculate time. Org have many different ways of manage time, more about that [[https://orgmode.org/manual/Durations-and-time-values.html][here]].
+
+#+BEGIN_EXAMPLE
+   Before  =TBLFM= is evaluated
+
+   | Task  |  Time |
+   |-------+-------|
+   | Taks1 |  8:00 |
+   | Task2 |  0:30 |
+   | Task3 |  2:00 |
+   |-------+-------|
+   | Total |       |
+   #+TBLFM : @>$2=vsum(@<<$2..@>>$2);U
+
+  After  =TBLFM= is evaluated
+
+   | Task  |  Time |
+   |-------+-------|
+   | Taks1 |  8:00 |
+   | Task2 |  0:30 |
+   | Task3 |  2:00 |
+   |-------+-------|
+   | Total | 10:30 |
+   #+TBLFM : @>$2=vsum(@<<$2..@>>$2);U
+#+END_EXAMPLE
+
+*** Calculate work time
+
+
+This is an example on how I use tables to make sure that I work my hours.
+
+At my current work we have 40 hours a week freely distributed, no 8-17. As I am a person that like routines I often try to do 8-17 but I am not to strict about it. Working some hours in the night or on weekends is normal. I have a setup where I schedule 8 hours of work every weekday (5*8=40). And to keep track that I really do that I use a table together with some Emacs LiSP code and a =TBLFM= formula. If I am sick or on vacation I put "0:00" in "Worked". This tells the LiSP code to not add "8:00" hours in the "Should work" spot. And if I work hours on a weekend that day should not add extra "8:00" to "Should work".
+
+#+BEGIN_EXAMPLE
+    #+BEGIN_SRC  emacs-lisp  :results none
+      ( defun  jh/hours-a-day  ( date  time )
+       ( if  ( string-equal  time  "0:00" )
+           ""
+         ( if  ( or  ( string-match  " Mon"  date )
+                 ( string-match  " Tue"  date )
+                 ( string-match  " Wed"  date )
+                 ( string-match  " Thu"  date )
+                 ( string-match  " Fri"  date ))
+             "8:00"  "" )))
+   #+END_SRC
+#+END_EXAMPLE
+
+The example contains multiple =TBLFM=, eval them one by one from the top to the bottom.
+
+#+BEGIN_EXAMPLE
+    | Day              | Worked | Should work |
+   |------------------+--------+-------------|
+  | [2020-06-20 Sat] |   2:00 |             | # Day off, it's a weekend
+   | [2020-06-19 Fri] |   8:00 |        8:00 |
+   | [2020-06-18 Thu] |   8:00 |        8:00 |
+   | [2020-06-17 Wed] |   7:30 |        8:00 |
+   | [2020-06-16 Tue] |   7:30 |        8:00 |
+  | [2020-06-15 Mon] |   0:00 |             | # Sick or vacation, as it's a weekday
+   |------------------+--------+-------------|
+   | Total            |  33:00 |       32:00 |
+   | Diff             |        |       01:00 |
+   #+TBLFM : @<<$3..@>>>$3='(jh/hours-a-day $1 $2)'
+   #+TBLFM : @>>$2=vsum(@<<$2..@>>>$2);U
+   #+TBLFM : @>>$3=vsum(@<<$3..@>>>$3);U
+   #+TBLFM : @>$3=(@>>$2-@>>$3);U
+#+END_EXAMPLE
+
+*** Logbook and clocktable
+
+
+This example is not about tables but headlines, drawers and clocktable will be part of a bigger example later.
+
+So, org have headlines. A headline is a row that starts with one or more =*=. The number of =*= declares the depth of the sub headline. In this example =Work= is headline, =[2020-06-10 Wed] Deployed server= and =[2020-06-11 Thu] Updated deps= are sub headlines. Here is headline [[https://orgmode.org/manual/Headlines.html][docs]].
+
+Drawers are values associated with a headline. In this case we use =LOGBOOK= drawer and each =LOGBOOK= have one or more =CLOCK= entries. Each =CLOCK= entry is a datetime range.
+
+Clocktable is a report on =CLOCK= entries. It asks for a =scope= and finds clocking information from it. In this case the =scope= is the current buffer. To eval a clocktable, put the pointer on =#+BEGIN:= row and use =C-c C-c=. Here is the doc on [[https://orgmode.org/manual/The-clock-table.html#The-clock-table][clocktable]].
+
+#+BEGIN_EXAMPLE
+    #+BEGIN:  clocktable  :scope file :maxlevel 2
+   # +CAPTION: Clock summary at [2020-06-21 Sun 21:03]
+   | Headline                             | Time    |      |
+   |--------------------------------------+--------- +------|
+   | *Total time*                         | *12:00* |      |
+   |--------------------------------------+---------+------|
+   | Work                                 | 12:00   |      |
+   | \_  [2020-06-11 Thu] Updated deps    |         | 4:00 |
+   | \_  [2020-06-10 Wed] Deployed server |         | 8:00 |
+   #+END:
+
+   *  Work
+   ** [2020-06-11 Thu] Updated deps
+      :LOGBOOK:
+       CLOCK: [2020-06-11 Thu 13:00]--[2020-06-11 Thu 17:00] =>  4:00
+       :END:
+
+   ** [2020-06-10 Wed] Deployed server
+      :LOGBOOK:
+       CLOCK: [2020-06-10 Wed 08:00]--[2020-06-10 Wed 12:00] =>  4:00
+      CLOCK: [2020-06-10 Wed 13:00]--[2020-06-10 Wed 17:00] =>  4:00
+       :END:
+#+END_EXAMPLE
+
+HINT: *Total time* format may differ. Look here: [[https://stackoverflow.com/questions/22720526/set-clock-table-duration-format-for-emacs-org-mode][how to change *Total time* format]].
+
+*** Composed example
+
+
+This example combines many of the features we have gone through. The main idea here is a headline with sub headlines. Each sub headline contains a date and a optional text together with clocking information. This file scope is used by clocktable to generate a report. After the report is generated a formula is executed on the table. This formula is pretty extensive. But the main things is to calculate the "Worked" and "Should work" columns and subtract "Should work" with "Worked" to show how many hours I have left to work.
+
+This example depends on the =jh/hours-a-day= LiSP snippet.
+
+The example below states that I have one more hour to work before I have completed my 40 hours.
+
+#+BEGIN_EXAMPLE
+    *  Timetable
+
+     #+BEGIN:  clocktable  :scope file :compact t :formula "$3='(jh/hours-a-day $1 $2)'::@3$3=vsum(@4$3..@>$3);U::@1$2=string(\"Worked|\")::@1$3=string(\"Should work\")::@2$2=vsum(@4$2..@>$2)-vsum(@4$3..@>$3);U::@2$1=string(\"Hour pool\")"
+     # +CAPTION: Clock summary at [2020-06-21 Sun 21:53]
+     | Headline                                   | Worked | Should work |
+     |--------------------------------------------+-------- +-------------|
+     | Hour pool                                  | -01:00 |             |
+     |--------------------------------------------+--------+-------------|
+     | Work                                       |  39:00 |       40:00 |
+     | \_  [2020-06-13 Sat] Fixed server problems |   3:00 |             |
+     | \_  [2020-06-12 Fri]                       |   4:00 |        8:00 |
+     | \_  [2020-06-11 Thu] Updated deps          |   8:00 |        8:00 |
+     | \_  [2020-06-10 Wed] Deployed server       |   8:00 |        8:00 |
+     | \_  [2020-06-09 Tue] Meetings              |   8:00 |        8:00 |
+     | \_  [2020-06-08 Mon]                       |   8:00 |        8:00 |
+    #+TBLFM: $3='(jh/hours-a-day $1 $2)'::@3$3=vsum(@4$3..@>$3);U::@1$2=string("Worked|")::@1$3=string("Should work")::@2$2=vsum(@4$2..@>$2)-vsum(@4$3..@>$3);U::@2$1=string("Hour pool")
+     #+END:
+
+   *  Work
+   ** [2020-06-13 Sat] Fixed server problems
+      :LOGBOOK:
+       CLOCK: [2020-06-13 Sat 08:00]--[2020-06-13 Sat 11:00] =>  3:00
+       :END:
+
+   ** [2020-06-12 Fri]
+      :LOGBOOK:
+       CLOCK: [2020-06-12 Fri 13:00]--[2020-06-12 Fri 17:00] =>  4:00
+       :END:
+
+   ** [2020-06-11 Thu] Updated deps
+      :LOGBOOK:
+       CLOCK: [2020-06-11 Thu 08:00]--[2020-06-11 Thu 12:00] =>  4:00
+      CLOCK: [2020-06-11 Thu 13:00]--[2020-06-11 Thu 17:00] =>  4:00
+       :END:
+
+   ** [2020-06-10 Wed] Deployed server
+      :LOGBOOK:
+       CLOCK: [2020-06-10 Wed 08:00]--[2020-06-10 Wed 12:00] =>  4:00
+      CLOCK: [2020-06-10 Wed 13:00]--[2020-06-10 Wed 17:00] =>  4:00
+       :END:
+
+   ** [2020-06-09 Tue] Meetings
+      :LOGBOOK:
+       CLOCK: [2020-06-09 Tue 08:00]--[2020-06-09 Tue 12:00] =>  4:00
+      CLOCK: [2020-06-09 Tue 13:00]--[2020-06-09 Tue 17:00] =>  4:00
+       :END:
+
+   ** [2020-06-08 Mon]
+      :LOGBOOK:
+       CLOCK: [2020-06-08 Mon 08:00]--[2020-06-08 Mon 12:00] =>  4:00
+      CLOCK: [2020-06-08 Mon 13:00]--[2020-06-08 Mon 17:00] =>  4:00
+       :END:
+#+END_EXAMPLE
+
+*** Nice things I didn't cover
+
+
+Sub headlines with logbook entries can be created really fast from custom templates. Take a look at [[https://orgmode.org/manual/Capture-templates.html][capture templates]].
+
+Clocking commands can be used on sub headlines to start and stop timing. More info [[https://orgmode.org/manual/Clocking-commands.html][here]].
+
+**** Similar articles:
+
+
+- [[/posts/emacs-orgmode-source-code-blocks/][Emacs Org mode source blocks]]
+- [[/posts/clojure-spec-test-transducers/][Quick overview of Clojure spec, test.check and transducers]]
+- [[/posts/datomic-entity-event-log/][Entity event log in Datomic]]
+
+* [[https://jherrlin.github.io/posts/emacs-orgmode-source-code-blocks/][Emacs Org mode source blocks | jherrlin]] :website:
+
+[2020-10-13 Tue 14:20]
+
+***** Article
+
+[[/tags/emacs/][#emacs]] | [[/tags/gnu/][#GNU]] | [[/tags/org/][#org]] | [[/tags/programming/][#programming]]
+
+****** June 15, 2020
+
+
+****** Post updates
+
+
+- [2020-06-23] New section. "Combine source blocks"
+
+****** Intro
+
+
+It's time to start documenting how I use Emacs [[https://orgmode.org/][Org mode]] (from now on org) and it will contain a serie of posts. This is the first post and it will cover source blocks. Some of the content assumes basic knowledge about org. If you are new to org I can recommend this two videos; [[https://www.youtube.com/watch?v=SzA2YODtgK4][hrs]] and [[https://www.youtube.com/watch?v=fgizHHd7nOo][kitchin]].
+
+One of the features I've been using very frequently is source blocks. The power of evaluating code directly from a block and get the results back into the document is really convenient. While reading [[https://ia802309.us.archive.org/25/items/pdfy-MgN0H1joIoDVoIC7/The_AWK_Programming_Language.pdf][The AWK Programming Language]] I took notes and did all of the =awk= programming withing source blocks. This makes me able to have notes, code and execution results in the same document. And as everything is just text, it's easy to version control!
+
+This is the structure of a source block. Org mode's documentation on source blocks can be found [[https://orgmode.org/manual/Working-with-Source-Code.html#Working-with-Source-Code][here]].
+
+#+BEGIN_EXAMPLE
+    #+BEGIN_SRC
+
+   #+END_SRC
+#+END_EXAMPLE
+
+Header arguments differ for different languages and applications. Look in the documentation for your specific language/application to find out what and how to use it.
+
+****** Versions
+
+
+... of Emacs and Org mode.
+
+#+BEGIN_EXAMPLE
+    #+BEGIN_SRC  emacs-lisp
+      ( org-version )
+   #+END_SRC
+
+   #+RESULTS :
+  : 9.3.7
+
+   #+BEGIN_SRC  emacs-lisp
+    ( emacs-version )
+   #+END_SRC
+
+   #+RESULTS :
+  : GNU Emacs 26.3 (build 1, x86_64-pc-linux-gnu, GTK+ Version 3.24.20)
+  :  of 2020-05-19
+#+END_EXAMPLE
+
+****** Emacs config
+
+
+Without config Emacs don't know how to execute source blocks. This following snippet provides Emacs with the ability to understand a set of languages/applications. The set of languages/applications need to be available in the underlying OS. To get a complete list of languages/applications available in org. A complete list can be found here: [[https://code.orgmode.org/bzg/org-mode/src/master/lisp][repo]]. Support for source blocks are available in files prefixed with =ob-=.
+
+#+BEGIN_EXAMPLE
+    ( setq  org-confirm-babel-evaluate  nil )
+
+   ( org-babel-do-load-languages
+    'org-babel-load-languages
+    ' (( emacs-lisp  .  t )
+      ( shell  .  t )   ; in my case /bin/bash
+      ( scheme  .  t )
+      ( python  .  t )
+      ( ledger  .  t )
+      ( sed  .  t )
+      ( awk  .  t )
+      ( clojure  .  t )))
+#+END_EXAMPLE
+
+****** Bash echo
+
+
+This small example uses bash to evaluate the =echo= command. Evaluation is done by moving the pointer to the source block and press the key sequence =C-c C-c=.
+
+#+BEGIN_EXAMPLE
+   What shell am I using?
+
+   #+BEGIN_SRC  shell
+      echo  $SHELL
+   #+END_SRC
+
+   #+RESULTS :
+  : /bin/bash
+#+END_EXAMPLE
+
+****** Echo input variables
+
+
+Arguments can be passed to source blocks from the document. This example passes 2 =:var=, *ARG1* and *ARG2*. The command get the arguments and uses them in the command.
+
+#+BEGIN_EXAMPLE
+    #+BEGIN_SRC  shell  :var ARG1="FOO" ARG2="BAR"
+      echo  $ARG1  $ARG2
+   #+END_SRC
+
+   #+RESULTS :
+  : FOO BAR
+#+END_EXAMPLE
+
+****** Document variables
+
+
+Lets elaborate on argument to source blocks even further. Org documents can contain variables that holds data. This example contains a org table with the variable name =my-list=. =my-list= is passed as an argument to the Python source block via the variable =lst=. When executed by Python the =lst= data structure is a vector with vectors.
+
+#+BEGIN_EXAMPLE
+    #+NAME : my-list
+   | A | 1 |
+   | B | 2 |
+   | C | 3 |
+
+  my-list is a variable in this org document and can be passed in as data to a
+  source code block.
+
+   #+BEGIN_SRC  python  :results output :var lst=my-list
+      print ( lst )
+   #+END_SRC
+
+  The data structure that will be passed to the source block is a vector or
+  vectors.
+
+   #+RESULTS :
+  : [['A', 1], ['B', 2], ['C', 3]]
+
+  Just like with a normal Python application you can manipulate the data.
+
+   #+BEGIN_SRC  python  :results raw :var lst=my-list
+      return  [[ chr (( ord ( x ) + 1 )),  y + 1 ]  for  x , y  in  lst ]
+   #+END_SRC
+
+   #+RESULTS :
+  [['B', 2], ['C', 3], ['D', 4]]
+#+END_EXAMPLE
+
+****** Result output
+
+
+Results output can be in many different shapes. Raw output, tables, as code and many more. Output results are described with the =:results= switch in the source block header. This post won't go more into details but more information can be found [[https://orgmode.org/manual/Results-of-Evaluation.html][here]].
+
+****** More on document variables
+
+
+This example provides another org document variable. In this case the =text-example= text block. The text in that block is passed as an argument to the =awk= source block. =awk= is a programming language with good features to manipulate text. It can take text from *stdin*. That's exactly what is happening here. Often you see =awk= used in shell commands, similar to this: =cat /etc/passwd | awk -F":" '{ print $1 }'=. Here =awk= gets *stdin* data from the pipe. But in our source block it gets *stdin* data from the org document.
+
+#+BEGIN_EXAMPLE
+    #+NAME : text-example
+   #+BEGIN_EXAMPLE
+    Item1 100
+    Item2 200
+    Item3 50
+   #+END_EXAMPLE
+
+  Sum field nr 2.
+
+   #+BEGIN_SRC  awk  :results table :stdin text-example
+      BEGIN  { OFS = "|" };  {  sum +=  $ 2 };  END  {  print  "Sum" ,  sum }
+   #+END_SRC
+
+   #+RESULTS :
+   | Sum | 350 |
+#+END_EXAMPLE
+
+****** File from file system
+
+
+This example is very similar to the one in [[#headline-4]["Echo input variables"]]. It passed a variable to the source block that tells a file path to =awk=. =awk= is then called with that *:in-file* as an argument.
+
+#+BEGIN_EXAMPLE
+   Get system users that have  =/bin/bash= access.
+
+   #+BEGIN_SRC  awk  :results table :in-file /etc/passwd
+      BEGIN  {  FS = ":" }
+     $ 7  ==  "/bin/bash"  {  print  $ 1 }
+   #+END_SRC
+
+   #+RESULTS :
+   | root |
+   | john |
+#+END_EXAMPLE
+
+****** Combine source blocks
+
+
+It's possible to combine text from different source blocks with the =:noweb yes= header argument. This example shows a ledger that's split up into income and expenses source blocks. They are then combined in the =balance= source block. Ledger is a plaintext accounting tool and can create a balance report from our assets, income and expenses. The =:noweb= header arguments in not something that is specific for ledger.
+
+Docs on =:noweb= header argument can be found [[https://orgmode.org/manual/Noweb-Reference-Syntax.html][here]]. Docs on ledger can be found [[https://www.ledger-cli.org/3.0/doc/ledger3.html#Org-mode-with-Babel][here]].
+
+#+BEGIN_EXAMPLE
+    #+NAME : income
+   #+BEGIN_SRC  ledger
+     2020-06-24 * Sold old computer
+        Assets:Bank:Card                         5000.00
+        Income:Secondhand                       -5000.00
+    2020-06-25 * Salary
+        Assets:Bank:Card                        25000.00
+        Income:Work:Salary                     -25000.00
+   #+END_SRC
+
+   #+NAME : expenses
+   #+BEGIN_SRC  ledger
+     2020-06-23 * Rent
+        Expenses:Rent                            3000.00
+        Assets:Bank:Card                        -3000.00
+    2020-06-24 * Gas
+        Expenses:Cas:Gas                         3000.00
+        Assets:Bank:Card                        -3000.00
+   #+END_SRC
+
+   #+NAME : balance
+   #+BEGIN_SRC  ledger  :noweb yes
+     <>
+    <>
+   #+END_SRC
+
+   #+RESULTS : balance
+  :                24000  Assets:Bank:Card
+  :                 6000  Expenses
+  :                 3000    Cas:Gas
+  :                 3000    Rent
+  :               -30000  Income
+  :                -5000    Secondhand
+  :               -25000    Work:Salary
+  : --------------------
+  :                    0
+#+END_EXAMPLE
+
+****** Combine results and source blocks
+
+
+Now lets use the result from one source block as argument to another. The example requires some files with a =.awk= ending to be present in =/tmp=. We use =bash= to get data about our file system. That result is then feed to =awk= that creates a good looking table. That table is then sent to Python for further processing.
+
+There is nothing different here from the other examples except that in this case we use =#+NAME:= on source blocks instead of a text blocks or a tables. The results from the named source blocks will then be available as input to other source blocks.
+
+#+BEGIN_EXAMPLE
+   List files ending with .awk in  /tmp/ dir.
+
+   #+NAME : ls-output
+   #+BEGIN_SRC  shell  :dir /tmp :results output
+     ls -la *.awk
+   #+END_SRC
+
+   #+RESULTS : ls-output
+  : -rw-r--r-- 1 john users 492 Jun 15 11:46 awk-play.awk
+  : -rw-r--r-- 1 john users 396 Jun 15 13:10 copy-line-on-confirm.awk
+  : -rw-r--r-- 1 john users 412 Jun 15 12:25 filter-google-chromepasswords.awk
+
+  Take only size and filename and return a table.
+
+   #+NAME : ls-output-table
+   #+BEGIN_SRC  awk  :results table :stdin ls-output
+      BEGIN  {  OFS = "|"  };  {  print  $ 5 ,  $ 9 }
+   #+END_SRC
+
+   #+RESULTS : ls-output-table
+   | 492 | awk-play.awk                      |
+   | 396 | copy-line-on-confirm.awk          |
+   | 412 | filter-google-chromepasswords.awk |
+
+  Process the table with Python.
+
+   #+BEGIN_SRC  python  :results output :var table=ls-output-table
+      print ( table )
+     print ( max ( table ))                               # Biggest awk file
+     print ( min ( table ))                               # Smallest awk file
+     print ( sum ([ x  for  x , y  in  table ])  /  1000  ,  "kb" )  # Sum of all awk files
+   #+END_SRC
+
+   #+RESULTS :
+  : [[492, 'awk-play.awk'],
+  :  [396, 'copy-line-on-confirm.awk'],
+  :  [412, 'filter-google-chromepasswords.awk']]
+  : [492, 'awk-play.awk']
+  : [396, 'copy-line-on-confirm.awk']
+  : 1.3 kb
+#+END_EXAMPLE
+
+****** Nice things I didn't cover
+
+
+Org have ways to execute code on remote servers via source blocks. This is awesome and can be used for DevOps. I have used it in cases where an Ansible playbook is overkill. There is a really nice blog post and video about this stuff [[http://howardism.org/Technical/Emacs/literate-devops.html][here]].
+
+Source blocks can also be written to the file system via the header switch =:tangle=. This is also very useful. More info about that can be found [[https://orgmode.org/manual/Extracting-Source-Code.html][here]].
+
+****** Conclusion
+
+
+I think org is truly an amazing piece of software. With very little effort from the user it can provide a very rich and interactive experience with a lot of applications and languages. From the document view everything is just text so version control a org document is very simple.
+
+******* Similar articles:
+
+
+- [[/posts/clojure-spec-test-transducers/][Quick overview of Clojure spec, test.check and transducers]]
+- [[/posts/datomic-entity-event-log/][Entity event log in Datomic]]
+
+* [[https://jherrlin.github.io/posts/emacs-orgmode-source-code-blocks2/][Emacs Orgmode Source Code Blocks 2 | jherrlin]] :website:
+
+[2020-10-13 Tue 14:20]
+
+******** Article
+
+[[/tags/emacs/][#emacs]] | [[/tags/gnu/][#GNU]] | [[/tags/org/][#org]] | [[/tags/programming/][#programming]]
+
+********* July 22, 2020
+
+
+********* Intro
+
+
+This is the third post in a series about Emacs Org mode and the second about source code blocks.
+
+The last post about source code blocks (blocks from now on) covered org document variables, named blocks and combining blocks.
+
+This post will focus on how and where block result output will end up. It won't cover all of the arguments and features as I don't use all of them. If you wanna get the full picture, here is the [[https://orgmode.org/manual/Results-of-Evaluation.html#Results-of-Evaluation][docs]].
+
+********* Versions
+
+
+Since last post a new Emacs version 27.1 have been released! Here are some about the release, [[https://lists.gnu.org/archive/html/emacs-devel/2020-08/msg00237.html][news]].
+
+I haven't covered this type of blocks before. They are called "inline code block" and is very useful when doing one liners that returns a single value. The documentation on inline code blocks can be found [[https://orgmode.org/manual/Structure-of-Code-Blocks.html][here]].
+
+Here are the "inline code blocks" used to show what versions of the software I am currently using.
+
+#+BEGIN_EXAMPLE
+     src_emacs-lisp{emacs-version}  {{{results(=27.1=)}}}
+    src_emacs-lisp{org-version}  {{{results(=9.4=)}}}
+#+END_EXAMPLE
+
+********* Default argument
+
+
+Results from source block evaluation can appear in many different shapes. As list, as source block, as "raw", to file and so on.
+
+This is how it end up if no argument if provided.
+
+#+BEGIN_EXAMPLE
+      #+BEGIN_SRC  shell
+        echo  "Hello Emacs"
+     #+END_SRC
+
+    #+RESULTS:
+    : Hello Emacs
+#+END_EXAMPLE
+
+This is the same as the argument =:results output=.
+
+#+BEGIN_EXAMPLE
+      #+BEGIN_SRC  shell  :results output
+        echo  "Hello Emacs"
+     #+END_SRC
+
+    #+RESULTS:
+    : Hello Emacs
+#+END_EXAMPLE
+
+********* Output code
+
+
+Lets output the result into a new source code block. By default the new block gets the same language as the parent. In this case the language is shell.
+
+#+BEGIN_EXAMPLE
+      #+BEGIN_SRC  shell  :results output code
+        echo  "Hello Emacs"
+     #+END_SRC
+
+    #+RESULTS:
+     #+begin_src  shell
+     Hello Emacs
+     #+end_src
+#+END_EXAMPLE
+
+If the output language is not the same as the parent. =:wrap= can be used to tell what language the result block will get.
+
+#+BEGIN_EXAMPLE
+      #+BEGIN_SRC  shell  :results output code :wrap src text
+        echo  "Hello Emacs"
+     #+END_SRC
+
+    #+RESULTS:
+     #+begin_src  text
+     Hello Emacs
+     #+end_src
+#+END_EXAMPLE
+
+********* Append results
+
+
+Results can be appended into the org document. In this case the block have been evaluated three times. I don't use this very often.
+
+#+BEGIN_EXAMPLE
+      #+BEGIN_SRC  shell  :results output append
+       date + '%Y-%m-%d %H:%M:%S'
+     #+END_SRC
+
+    #+RESULTS:
+    : 2020-08-29 11:52:34
+    : 2020-08-29 11:52:36
+    : 2020-08-29 11:52:38
+#+END_EXAMPLE
+
+********* Table
+
+
+Results can end up in nicely formatted org tables
+
+#+BEGIN_EXAMPLE
+      #+BEGIN_SRC  shell  :results table
+       ps -a
+     #+END_SRC
+
+    #+RESULTS:
+     |     PID | TTY   |     TIME | CMD      |
+     |    5456 | tty1  | 00:00:00 | swaybg   |
+     |    5468 | tty1  | 00:00:49 | swaybar  |
+     |    5479 | tty1  | 00:01:12 | sh       |
+     |    5937 | tty1  | 00:07:14 | Xwayland |
+     | 1279652 | pts/0 | 00:00:03 | hugo     |
+#+END_EXAMPLE
+
+Or what about a nice looking NetworkManager table.
+
+#+BEGIN_EXAMPLE
+      #+BEGIN_SRC  shell
+       nmcli -g name,type,device con  | awk  'BEGIN{FS=":"; OFS="\t"};{print $1, $2, $3}'
+     #+END_SRC
+
+    #+RESULTS:
+     | iPhone             | 802-11-wireless | wlp0s20f3     |
+     | integrity_vpn      | wireguard       | integrity_vpn |
+#+END_EXAMPLE
+
+********* File
+
+
+Results can be written to a file. In the results area a org link to the file containing the results is provided.
+
+#+BEGIN_EXAMPLE
+      #+BEGIN_SRC  shell  :results file :file script.sh
+      echo  "#!/bin/bash"
+     echo  "echo Hey"
+     #+END_SRC
+
+    #+RESULTS:
+    [[ file:script.sh]]
+#+END_EXAMPLE
+
+Here is a larger case. Write the results to a file. The filename should be =script.sh= and be written in folder =/tmp=. The file should also have execute permissions for all three user types. This =:file-mode= argument came in Org version 9.4.
+
+#+BEGIN_EXAMPLE
+     #+HEADER: :results file
+    #+HEADER: :file script.sh
+    #+HEADER: :output-dir /tmp
+    #+HEADER: :file-mode (identity #o777)
+     #+BEGIN_SRC  emacs-lisp
+        "#!/bin/bash\necho Hello World"
+     #+END_SRC
+
+    #+RESULTS:
+    [[ file:/tmp/script.sh]]
+#+END_EXAMPLE
+
+Let's look on the attributes of the =script.sh= file.
+
+#+BEGIN_EXAMPLE
+      #+BEGIN_SRC  shell  :results output code :dir /tmp
+       ls -la  | grep script.sh
+     #+END_SRC
+
+    #+RESULTS:
+     #+begin_src  shell
+     -r-xr-xr-x   1 nils users    28 Aug  29 11:59 script.sh
+     #+end_src
+#+END_EXAMPLE
+
+********* Pass result on
+
+
+Result data from one source block can be passed to another in the same execution. You don't need to run =C-c C-c= two times and have results stored in variables. In the example on bash block generates a string and numbers from 1 to 20. Those two lines are then passed on to the =attr_wrap= named source block. This block takes data from the previous block and append two more lines. One with a string and the other with numbers from 20 to 30.
+
+#+BEGIN_EXAMPLE
+     #+NAME: attr_wrap
+     #+BEGIN_SRC  shell  :var data="" :results raw
+        echo -n  " $data "
+       echo  "... and this appends this"
+       echo  {20..30 }
+     #+END_SRC
+
+    Evaluate the block below, the upper block will be called
+    automatically.
+
+    #+HEADER: :post attr_wrap(data= *this*)
+    #+HEADER: :file /tmp/a.txt
+    #+HEADER: :results output code
+     #+BEGIN_SRC  shell
+        echo  "This blocks generates this data"
+       echo  {01..10 }
+     #+END_SRC
+
+    #+RESULTS:
+     #+begin_src  shell
+     This blocks generates this data
+     01  02  03  04  05  06  07  08  09  10
+    ... and this appends this
+     20  21  22  23  24  25  26  27  28  29  30
+     #+end_src
+#+END_EXAMPLE
+
+********* Tangle
+
+
+This is a sidestep from source code block results, but it's related. Text within a source code block can be written to a file. Using the =(org-babel-tangle)= function. =(org-babel-tangle)= will look through all of the document and find all of the source code blocks with =:tangle= arguments and write all of them to the local file system.
+
+This example writes some text from a source code block to a file.
+
+#+BEGIN_EXAMPLE
+      #+BEGIN_SRC  text  :tangle /tmp/hey-from-org.txt
+       This is some text
+     #+END_SRC
+
+     #+BEGIN_SRC  shell  :results output code
+       cat /tmp/hey-from-org.txt
+     #+END_SRC
+
+    #+RESULTS:
+     #+begin_src  shell
+     This is some text
+     #+end_src
+#+END_EXAMPLE
+
+********* Tangled file permissions
+
+
+Just lite =:file-mode= we have =:tangle-mode= to set file permissions when writing a file to the file system. This example is a small bash script written to the file system and set to be executable for all users.
+
+#+BEGIN_EXAMPLE
+     #+HEADER: :tangle /tmp/hey-org-mode.sh
+    #+HEADER: :tangle-mode (identity #o777)
+     #+BEGIN_SRC  shell
+        #!/bin/bash
+       echo  "Hello World"
+     #+END_SRC
+
+    Lets check what permissions the file got after tangled.
+
+     #+BEGIN_SRC  shell  :results output code
+       ls -la /tmp  | grep hey-org-mode.sh
+     #+END_SRC
+
+    The file got  *read*,  *write* and  *execute* for everyone. That's what
+    we told in the  =:tange-mode= header.
+
+    #+RESULTS:
+     #+begin_src  shell
+       -rwxrwxrwx   1 john users       31 Jul  22 11:40 hey-org-mode.sh
+     #+end_src
+#+END_EXAMPLE
+
+********* Bigger example
+
+
+This example combines many of the features. And in the end it generates a nicely formatted system report with a org structure.
+
+Lets start by specifying the commands to run in the report.
+
+#+BEGIN_EXAMPLE
+     #+NAME: report-commands
+     | Disk usage    | df -h      |
+     | Memory usage  | free -h    |
+     | Network       | nmcli conn |
+     | System time   | date       |
+     | System uptime | uptime     |
+     | System kernel | uname -a   |
+#+END_EXAMPLE
+
+Run the table into a =awk= source code block to format it into a bash script. The result is written to a file and execute permissions are set on the file.
+
+#+BEGIN_EXAMPLE
+     #+HEADER: :stdin report-commands
+    #+HEADER: :results file
+    #+HEADER: :file /tmp/system-report.sh
+    #+HEADER: :file-mode (identity #o744)"
+     #+BEGIN_SRC  awk
+        BEGIN  {
+           FS = "\t"
+           print  "#!/bin/bash\n"
+           print  "echo \"#+TITLE: $1\""
+           print  "echo \"#+DATE: $(date +'%m-%d-%Y %H:%M:%S')\""
+           print  "echo \"#+STARTUP: overview\""
+           print  "echo \"\""
+       }
+       {
+           printf ( "echo \"* %s\"\n" ,  $ 1 )
+           printf ( "echo \"\"\n" )
+           printf ( "echo \"#+BEGIN_SRC shell\"\n" )
+           printf ( "echo \"%s\"\n" ,  $ 2 )
+           printf ( "echo \"#+END_SRC\"\n" )
+           printf ( "echo \"\"\n" )
+           printf ( "echo \"#+RESULTS:\"\n" )
+           printf ( "echo \"#+BEGIN_SRC text\"\n" )
+           printf ( "echo \"$(%s)\"\n" ,  $ 2 )
+           printf ( "echo \"#+END_SRC\"\n" )
+           printf ( "echo \"\"\n" )
+       }
+     #+END_SRC
+
+    #+RESULTS:
+    [[ file:/tmp/system-report.sh]]
+#+END_EXAMPLE
+
+The output of the =system-report.sh= will be pretty flat and will not look nice even in org. Lets format it with some level of indentation depending on context. This source block is only responsible for formatting and cant do anything on it's own.
+
+#+BEGIN_EXAMPLE
+     #+NAME: org_format
+    #+HEADER: :var data=""
+    #+HEADER: :results raw
+     #+BEGIN_SRC  shell
+        echo -n  " $data "  \
+            | awk  '$1~/BEGIN_SRC|RESULTS/,$1~/END_SRC/ { print "   ", $0; next }; { print }'  \
+            | awk  '$1~/^#+/ {gsub(/^[ \t]+/, "  ", $0) ; print; next}; { print }'
+     #+END_SRC
+#+END_EXAMPLE
+
+Let run the script and pass it though the format source code block.
+
+#+BEGIN_EXAMPLE
+     #+HEADER: :dir /tmp
+    #+HEADER: :post org_format(data= *this*)
+    #+HEADER: :results output code
+    #+HEADER: :wrap src org
+     #+BEGIN_SRC  shell
+       ./system-report.sh  "Daily system report"
+     #+END_SRC
+#+END_EXAMPLE
+
+And voila, here is the result! The report is well formatted and looks very good.
+
+#+BEGIN_EXAMPLE
+     #+TITLE: Daily system report
+    #+DATE: 10-11-2020 21:06:41
+    #+STARTUP: overview
+
+     * Disk usage
+
+       #+BEGIN_SRC  shell
+         df -h
+       #+END_SRC
+
+      #+RESULTS:
+       #+BEGIN_SRC  text
+         Filesystem             Size  Used Avail Use% Mounted on
+        dev                     16G     0   16G   0% /dev
+        run                     16G  1.2M   16G   1% /run
+        /dev/mapper/cryptroot  468G   27G  418G   6% /
+        tmpfs                   16G  187M   16G   2% /dev/shm
+        tmpfs                  4.0M     0  4.0M   0% /sys/fs/cgroup
+        tmpfs                   16G  2.4M   16G   1% /tmp
+        tmpfs                  3.2G  8.7M  3.1G   1% /run/user/1000
+       #+END_SRC
+
+     * Memory usage
+
+       #+BEGIN_SRC  shell
+         free -h
+       #+END_SRC
+
+      #+RESULTS:
+       #+BEGIN_SRC  text
+         total        used        free      shared  buff/cache   available
+        Mem:           31Gi       1.7Gi        25Gi       621Mi       3.8Gi        28Gi
+        Swap:            0B          0B          0B
+       #+END_SRC
+
+     * Network
+
+       #+BEGIN_SRC  shell
+         nmcli conn
+       #+END_SRC
+
+      #+RESULTS:
+       #+BEGIN_SRC  text
+         NAME                UUID                                  TYPE       DEVICE
+        iPhone              22f467bf-5d07-41d1-a394-a7b778c4ceb2  wifi       wlp0s20f3
+        integrity_vpn       da1a14fe-ba3e-4251-bc98-03d604ec4fe0  wireguard  integrity_vpn
+       #+END_SRC
+
+     * System time
+
+       #+BEGIN_SRC  shell
+         date
+       #+END_SRC
+
+      #+RESULTS:
+       #+BEGIN_SRC  text
+         Sun Oct 11 09:06:42 PM CEST 2020
+       #+END_SRC
+
+     * System uptime
+
+       #+BEGIN_SRC  shell
+         uptime
+       #+END_SRC
+
+      #+RESULTS:
+       #+BEGIN_SRC  text
+         21:06:42 up 1 day,  2:26,  1 user,  load average: 0.56, 0.63, 0.58
+       #+END_SRC
+
+     * System kernel
+
+       #+BEGIN_SRC  shell
+         uname -a
+       #+END_SRC
+
+      #+RESULTS:
+       #+BEGIN_SRC  text
+         Linux arch 5.8.14-arch1-1 #1 SMP PREEMPT Wed, 07 Oct 2020 23:59:46 +0000 x86_64 GNU/Linux
+       #+END_SRC
+#+END_EXAMPLE
+
+********** Similar articles:
+
+
+- [[/posts/emacs-orgmode-tables/][Emacs Org mode tables]]
+- [[/posts/emacs-orgmode-source-code-blocks/][Emacs Org mode source blocks]]
+- [[/posts/learn-awk/][Learn AWK with Emacs]]
+- [[/posts/emacs-mu4e/][Mail in Emacs with mu4e and mbsync]]
+- [[/posts/emacs-gnupg-and-pass/][Emacs, GnuPG and Pass]]
