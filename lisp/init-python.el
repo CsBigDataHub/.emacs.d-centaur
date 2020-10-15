@@ -64,6 +64,11 @@
   (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
   )
 
+(use-package blacken
+  :after (python)
+  :init
+  (add-hook 'python-mode-hook #'blacken-mode))
+
 ;;; my-personal-config end
 
 (provide 'init-python)
