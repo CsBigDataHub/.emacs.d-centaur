@@ -42,7 +42,7 @@
 
   ;; english-words.txt is the fallback dicitonary
   (if (not ispell-alternate-dictionary)
-      (setq ispell-alternate-dictionary (file-truename (expand-file-name "misc/english-words.txt" user-emacs-directory))))
+      (setq ispell-alternate-dictionary (file-truename (expand-file-name (concat user-emacs-directory "misc/aspell-en-sorted.txt")))))
   (let ((lookup-func (if (fboundp 'ispell-lookup-words)
                          'ispell-lookup-words
                        'lookup-words)))
@@ -146,7 +146,7 @@
 ;; https://emacs.stackexchange.com/questions/15276/how-do-i-write-a-simple-completion-at-point-functions-function
 ;; NOTES: could not get this working -start-
 (defvar words (split-string (with-temp-buffer
-                              (insert-file-contents-literally (expand-file-name "misc/english-words.txt" user-emacs-directory))
+                              (insert-file-contents-literally (expand-file-name (concat user-emacs-directory "misc/aspell-en-sorted.txt")))
                               (buffer-string))
                             "\n"))
 
@@ -159,9 +159,9 @@
             :exclusive 'no
             :company-docsig #'identity
             :company-doc-buffer (lambda (cand)
-                                  (company-doc-buffer (format "'%s' is defined in '~/.emacs.d/misc/english-words.txt'" cand)))
+                                  (company-doc-buffer (format "'%s' is defined in '~/.emacs.d/misc/apsell-en-sorted.txt'" cand)))
             :company-location (lambda (cand)
-                                (with-current-buffer (find-file-noselect (expand-file-name "misc/english-words.txt" user-emacs-directory))
+                                (with-current-buffer (find-file-noselect (expand-file-name (concat user-emacs-directory "misc/aspell-en-sorted.txt")))
                                   (goto-char (point-min))
                                   (cons (current-buffer) (search-forward cand nil t))))))))
 

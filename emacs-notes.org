@@ -6733,6 +6733,7 @@ Created: 2015-07-23 Thu 22:36
   workon $projectName #switch to project
   mkvirtualenv $name #make virtual env for a project
   mkvirtualenv --python=`pyenv which python` $name #This will set python verion using pyenv
+  mkvirtualenv --python=`pyenv which python3` $(basename `pwd`)
   mktempenv # makes temp env
   rmvirtualenv $name #remove virtual env
   setvirtualenvproject #This will tie the project directory to virtualenv. This is typically entered in a active virtualenv
