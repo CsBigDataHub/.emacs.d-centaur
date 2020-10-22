@@ -154,6 +154,7 @@ decrease this. If you experience stuttering, increase this.")
 (require 'init-flycheck)
 (require 'init-projectile)
 (require 'init-lsp)
+(require 'init-lsp-hydra)
 
 (require 'init-prog)
 (require 'init-elisp)
