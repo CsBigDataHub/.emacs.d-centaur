@@ -145,27 +145,27 @@
 
 ;; https://emacs.stackexchange.com/questions/15276/how-do-i-write-a-simple-completion-at-point-functions-function
 ;; NOTES: could not get this working -start-
-(defvar words (split-string (with-temp-buffer
-                              (insert-file-contents-literally (expand-file-name (concat user-emacs-directory "misc/aspell-en-sorted.txt")))
-                              (buffer-string))
-                            "\n"))
+;; (defvar words (split-string (with-temp-buffer
+;;                               (insert-file-contents-literally (expand-file-name (concat user-emacs-directory "misc/aspell-en-sorted.txt")))
+;;                               (buffer-string))
+;;                             "\n"))
 
-(defun words-completion-at-point ()
-  (let ((bounds (bounds-of-thing-at-point 'word)))
-    (when bounds
-      (list (car bounds)
-            (cdr bounds)
-            words
-            :exclusive 'no
-            :company-docsig #'identity
-            :company-doc-buffer (lambda (cand)
-                                  (company-doc-buffer (format "'%s' is defined in '~/.emacs.d/misc/apsell-en-sorted.txt'" cand)))
-            :company-location (lambda (cand)
-                                (with-current-buffer (find-file-noselect (expand-file-name (concat user-emacs-directory "misc/aspell-en-sorted.txt")))
-                                  (goto-char (point-min))
-                                  (cons (current-buffer) (search-forward cand nil t))))))))
+;; (defun words-completion-at-point ()
+;;   (let ((bounds (bounds-of-thing-at-point 'word)))
+;;     (when bounds
+;;       (list (car bounds)
+;;             (cdr bounds)
+;;             words
+;;             :exclusive 'no
+;;             :company-docsig #'identity
+;;             :company-doc-buffer (lambda (cand)
+;;                                   (company-doc-buffer (format "'%s' is defined in '~/.emacs.d/misc/apsell-en-sorted.txt'" cand)))
+;;             :company-location (lambda (cand)
+;;                                 (with-current-buffer (find-file-noselect (expand-file-name (concat user-emacs-directory "misc/aspell-en-sorted.txt")))
+;;                                   (goto-char (point-min))
+;;                                   (cons (current-buffer) (search-forward cand nil t))))))))
 
-(add-hook 'completion-at-point-functions #'words-completion-at-point 'append)
+;; (add-hook 'completion-at-point-functions #'words-completion-at-point 'append)
 ;; NOTES: could not get this working -end-
 
 ;; https://emacs.stackexchange.com/questions/54741/using-company-ispell-with-large-text-dictionary
