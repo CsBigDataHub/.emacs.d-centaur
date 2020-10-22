@@ -1758,6 +1758,34 @@ Version 2018-12-23"
      (t (error "logic error 09535" )))
     (dired-sort-other $arg )))
 
+
+(defun directory-is-empty-p (directory-name)
+  "check if directory is empty"
+  (null (directory-files directory-name nil
+                         directory-files-no-dot-files-regexp t)))
+
+(defun dired-mark-empty-dirs ()
+  "Mark Empty Folders in Dired"
+  (interactive)
+  (when (equal major-mode 'dired-mode)
+    (let ((curr-dir))
+      (save-excursion
+        (dired-go-to-first)
+
+        (while (not (eobp))
+          (setq curr-dir (dired-file-name-at-point))
+          (cond ((or (null curr-dir)
+                     (string= curr-dir ".")
+                     (string= curr-dir ".."))
+                 ;; do nothing here
+                 )
+                ((file-directory-p curr-dir)
+                 (when (directory-is-empty-p curr-dir)
+                   (dired-mark 1)
+                   (dired-previous-line 1))))
+          (dired-next-line 1))))))
+
+
 ;;Hydra for Dired
 (defhydra my/hydra-dired (:hint nil :color pink)
   "

@@ -6746,6 +6746,7 @@ Created: 2015-07-23 Thu 22:36
      pipenv install -r requirements.txt
      pipenv install -d --skip-lock pylint black # to install developer packages
      pipenv install -d --skip-lock pylint black pigar mypy
+     pipenv run pipenv_to_requirements
    #+end_example
 
 3. Using Pyright in LSP mode
