@@ -227,6 +227,8 @@
 (use-package comment-dwim-2
   :bind ([remap comment-dwim] . comment-dwim-2)) ;
 
+(define-key org-mode-map (kbd "M-;") 'org-comment-dwim-2)
+
 ;; Drag stuff (lines, words, region, etc...) around
 (use-package drag-stuff
   :diminish
