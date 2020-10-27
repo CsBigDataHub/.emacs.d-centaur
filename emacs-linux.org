@@ -175,3 +175,81 @@ If you add this to your .emacs you will get an Hyper key in gtk and in an xterm!
 #+begin_example
   browser.tabs.loadDivertedInBackground
 #+end_example
+
+* [[https://askubuntu.com/a/1271886][Scanner of Epson ET-2750 doesn't work - "sane_start: Invalid argument" - Kubuntu 20.04 - Ask Ubuntu]] :website:
+
+[2020-10-27 Tue 18:37]
+
+** Article
+
+*** Preface
+
+
+- Kubuntu 20.04
+- Epson ET-3750, so not exactly your model. I faced the same problems, though.
+- The TL;DR solution can be found in the Epilogue below.
+- All the experiments were done over WiFi, the device was never connected via USB.
+
+*** XSane
+
+
+1. I was very biased to get XSane to work: I did the logo some 20 years ago.
+2. For me, the error you describe goes away, when I do a preview scan first. /This is my answer to your original question./ But if you, like me, tried to get the thing to scan under Linux, be my guest for the odyssey in the rest of this post. I imagine that it'll be very similar to your printer/scanner.
+3. BXSane usually crashes with a segfault while writing the results (using PNG target format). It /did/ work once, but I've had many crashes.
+4. Scanning without saving worked at 300DPI but never at 600DPI or higher. I didn't try all resolutions. At 600DPI I get the same error message (invalid argument, ungültiges Argument) after the scan finishes.
+
+Then I installed Epsons imagescan packages (available at [[http://support.epson.net/linux/en/imagescanv3.php]]). I had to configure a suitable =/etc/imagescan/imagescan.conf= by adding the correct IP to the default file and uncommenting the relevant lines.
+
+After that, another scanner is found by XSane. The label depends on what you enter into the aforementioned conf file.
+
+With this backend, XSane even allows using the document feeder (ADF) as input, not only the flatbed. But it doesn't let me select the resolution at all. And the multi-page interface of XSane is ...uh... sub-optimal.
+
+*** Skanlite
+
+
+After all that, I tried the program Skanlite.
+
+- Works @300 DPI with the escl connection, throws invalid argument at 600DPI
+- Works with imagescan scanner at resolutions up to 600DPI, also with ADF.
+- Doesn't support PDF, let alone multi-page PDF. It saves all pages to separate files.
+
+*** SimpleScan
+
+
+- SimpleScan also detects the out-of-the-box escl scanner and the imagescan-backed scanner.
+- ADF works almost fine with imagescan backend and produces a multi-page PDF. I can select different resolutions here. The scans are a bit on the bluish side of things, though.
+- It pretends to be able to do ADF via the escl connection, too. But that never works. Generally speaking, it never seems to grey out any options, regardless whether they work or not.
+- I scans well at 300DPI with the escl connection.
+- SimpleScan has almost no image quality correction settings, like the other tools provide.
+- Apparently only PDF is supported as an output format.
+- During my testing the ADF functionality with the imagescan connection stopped working. Crossing my fingers it will work again in the future.
+
+*** ImageScan
+
+
+- The scanning tool from Epson only finds the one scanner that is configured in =/etc/imagescan/imagescan.conf=
+- It allows selection of input from flatbed and ADF
+- ADF scan produced a multi-page PDF
+- This was the only program that I could get to scan at more than 300DPI. At 1200DPI it produced a ca 200MB PNG file.
+
+*** Scanner's Scan to Computer
+
+
+I have no clue what the ET-3750 expects from a computer to be able to "scan to it". I tried some unprotected Samba shares but to no avail. Maybe USB would work?
+
+*** Conclusion
+
+
+- Every solution sucks in some way or the other
+- I'll go with SimpleScan + imagescan-backend or imagescan program whenever I want to scan several pages from the ADF. Of course, this requires that the ADF thing works again in SimpleScan.
+- I'll likely go with Skanlite and either the imagescan or escl backend for 1 page scans from the flatbed.
+- (UPDATE) Also, let's wait for the next version of SANE which ships support for ET-2650 and ET-3750, hopefully covering your ET-2750 as well. See [[https://sane-project.gitlab.io/website/lists/sane-mfgs-cvs.html]]
+
+*** Epilogue
+
+
+- I installed the latest release from SANE using the PPA of one of the SANE maintainers: [[https://launchpad.net/%7Erolfbensch/+archive/ubuntu/sane-release][https://launchpad.net/~rolfbensch/+archive/ubuntu/sane-release]]
+- After that everything just works with the eSCL backend. High resolution scans, ADF, multi-page scans.
+- You can use XSane, Skanlite, SimpleScan, depending on frontend features.
+- I'll eventually purge the Epson packages.
+- Kudos and a huge thank you to the SANE maintainers.
