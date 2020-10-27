@@ -270,9 +270,9 @@
       "Toggle `counsel-rg' and `swiper'/`swiper-isearch' with the current input."
       (interactive)
       (ivy-quit-and-run
-       (if (memq (ivy-state-caller ivy-last) '(swiper swiper-isearch))
-           (my-ivy-switch-to-counsel-rg)
-         (my-ivy-switch-to-swiper-isearch))))
+        (if (memq (ivy-state-caller ivy-last) '(swiper swiper-isearch))
+            (my-ivy-switch-to-counsel-rg)
+          (my-ivy-switch-to-swiper-isearch))))
     (bind-key "<C-return>" #'my-swiper-toggle-counsel-rg swiper-map)
     (bind-key "<C-return>" #'my-swiper-toggle-counsel-rg counsel-ag-map)
 
@@ -281,7 +281,7 @@
         "Toggle `rg-dwim' with the current input."
         (interactive)
         (ivy-quit-and-run
-         (rg-dwim default-directory)))
+          (rg-dwim default-directory)))
       (bind-key "<M-return>" #'my-swiper-toggle-rg-dwim swiper-map)
       (bind-key "<M-return>" #'my-swiper-toggle-rg-dwim counsel-ag-map))
 
@@ -289,16 +289,16 @@
       "Toggle `swiper' and `swiper-isearch' with the current input."
       (interactive)
       (ivy-quit-and-run
-       (if (eq (ivy-state-caller ivy-last) 'swiper-isearch)
-           (swiper ivy-text)
-         (swiper-isearch ivy-text))))
+        (if (eq (ivy-state-caller ivy-last) 'swiper-isearch)
+            (swiper ivy-text)
+          (swiper-isearch ivy-text))))
     (bind-key "<s-return>" #'my-swiper-toggle-swiper-isearch swiper-map)
 
     (defun my-counsel-find-file-toggle-fzf ()
       "Toggle `counsel-fzf' with the current `counsel-find-file' input."
       (interactive)
       (ivy-quit-and-run
-       (counsel-fzf (or ivy-text "") default-directory)))
+        (counsel-fzf (or ivy-text "") default-directory)))
     (bind-key "<C-return>" #'my-counsel-find-file-toggle-fzf counsel-find-file-map)
 
     (defun my-swiper-toggle-rg-dwim ()
@@ -312,9 +312,9 @@
       "Toggle `swiper' and `swiper-isearch' with the current input."
       (interactive)
       (ivy-quit-and-run
-       (if (eq (ivy-state-caller ivy-last) 'swiper-isearch)
-           (my-ivy-switch-to-swiper)
-         (my-ivy-switch-to-swiper-isearch))))
+        (if (eq (ivy-state-caller ivy-last) 'swiper-isearch)
+            (my-ivy-switch-to-swiper)
+          (my-ivy-switch-to-swiper-isearch))))
     (bind-key "<s-return>" #'my-swiper-toggle-swiper-isearch swiper-map)
 
     ;; More actions
@@ -451,67 +451,68 @@ This is for use in `ivy-re-builders-alist'."
    (sys/macp
     (use-package counsel-osx-app
       :bind (:map counsel-mode-map
-                  ("s-<f6>" . counsel-osx-app)))))
+             ("s-<f6>" . counsel-osx-app)))))
 
   ;; Display world clock using Ivy
   (use-package counsel-world-clock
     :bind (:map counsel-mode-map
-                ("C-c c k" . counsel-world-clock)))
+           ("C-c c k" . counsel-world-clock)))
 
   ;; Tramp ivy interface
   (use-package counsel-tramp
     :bind (:map counsel-mode-map
-                ("C-c c T" . counsel-tramp)))
+           ("C-c c T" . counsel-tramp)))
 
   ;; Support pinyin in Ivy
   ;; Input prefix ':' to match pinyin
   ;; Refer to  https://github.com/abo-abo/swiper/issues/919 and
   ;; https://github.com/pengpengxp/swiper/wiki/ivy-support-chinese-pinyin
-  (use-package pinyinlib
-    :commands pinyinlib-build-regexp-string
-    :init
-    (with-no-warnings
-      (defun ivy--regex-pinyin (str)
-        "The regex builder wrapper to support pinyin."
-        (or (pinyin-to-utf8 str)
-            (and (fboundp 'ivy-prescient-non-fuzzy)
-                 (ivy-prescient-non-fuzzy str))
-            (ivy--regex-plus str)))
+  ;; (use-package pinyinlib
+  ;;   :commands pinyinlib-build-regexp-string
+  ;;   :init
+  ;;   (with-no-warnings
+  ;;     (defun ivy--regex-pinyin (str)
+  ;;       "The regex builder wrapper to support pinyin."
+  ;;       (or (pinyin-to-utf8 str)
+  ;;           (and (fboundp 'ivy-prescient-non-fuzzy)
+  ;;                (ivy-prescient-non-fuzzy str))
+  ;;           (ivy--regex-plus str)))
 
-      (defun my-pinyinlib-build-regexp-string (str)
-        "Build a pinyin regexp sequence from STR."
-        (cond ((equal str ".*") ".*")
-              (t (pinyinlib-build-regexp-string str t))))
+  ;;     (defun my-pinyinlib-build-regexp-string (str)
+  ;;       "Build a pinyin regexp sequence from STR."
+  ;;       (cond ((equal str ".*") ".*")
+  ;;             (t (pinyinlib-build-regexp-string str t))))
 
-      (defun my-pinyin-regexp-helper (str)
-        "Construct pinyin regexp for STR."
-        (cond ((equal str " ") ".*")
-              ((equal str "") nil)
-              (t str)))
+  ;;     (defun my-pinyin-regexp-helper (str)
+  ;;       "Construct pinyin regexp for STR."
+  ;;       (cond ((equal str " ") ".*")
+  ;;             ((equal str "") nil)
+  ;;             (t str)))
 
-      (defun pinyin-to-utf8 (str)
-        "Convert STR to UTF-8."
-        (cond ((equal 0 (length str)) nil)
-              ((equal (substring str 0 1) "!")
-               (mapconcat
-                #'my-pinyinlib-build-regexp-string
-                (remove nil (mapcar
-                             #'my-pinyin-regexp-helper
-                             (split-string
-                              (replace-regexp-in-string "!" "" str )
-                              "")))
-                ""))
-              (t nil)))
+  ;;     (defun pinyin-to-utf8 (str)
+  ;;       "Convert STR to UTF-8."
+  ;;       (cond ((equal 0 (length str)) nil)
+  ;;             ((equal (substring str 0 1) "!")
+  ;;              (mapconcat
+  ;;               #'my-pinyinlib-build-regexp-string
+  ;;               (remove nil (mapcar
+  ;;                            #'my-pinyin-regexp-helper
+  ;;                            (split-string
+  ;;                             (replace-regexp-in-string "!" "" str )
+  ;;                             "")))
+  ;;               ""))
+  ;;             (t nil)))
 
-      (mapcar
-       (lambda (item)
-         (let ((key (car item))
-               (value (cdr item)))
-           (when (member value '(ivy-prescient-non-fuzzy
-                                 ivy--regex-plus))
-             (setf (alist-get key ivy-re-builders-alist)
-                   #'ivy--regex-pinyin))))
-       ivy-re-builders-alist))))
+  ;;     (mapcar
+  ;;      (lambda (item)
+  ;;        (let ((key (car item))
+  ;;              (value (cdr item)))
+  ;;          (when (member value '(ivy-prescient-non-fuzzy
+  ;;                                ivy--regex-plus))
+  ;;            (setf (alist-get key ivy-re-builders-alist)
+  ;;                  #'ivy--regex-pinyin))))
+  ;;      ivy-re-builders-alist)))
+  )
 
 ;; Better experience with icons
 ;; Enable it before`ivy-rich-mode' for better performance

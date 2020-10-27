@@ -463,7 +463,11 @@ happens within a region if one is selected."
 (use-package skeletor)
 
 (use-package emojify
-  :hook (after-init . global-emojify-mode))
+  :hook
+  ;; (after-init . global-emojify-mode)
+  (org-mode . emojify-mode)
+  (markdown-mode . emojify-mode)
+  )
 
 (use-package savekill)
 

@@ -265,6 +265,7 @@
                                ("https://itsfoss.com/feed" itsfoss)
                                ("https://fossbytes.com/feed" fossbytes)
                                ("https://www.omgubuntu.co.uk/feed" omgubuntu)
+                               ("https://trstringer.com/feed" trstringer)
                                ))
     :config
     (push elfeed-db-directory recentf-exclude)
