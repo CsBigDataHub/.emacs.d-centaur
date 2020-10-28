@@ -168,9 +168,9 @@
               (when highlight-p
                 (pdf-view-display-image
                  (pdf-view-create-image
-                     (pdf-cache-renderpage-highlight
-                      page (car size)
-                      `("white" "steel blue" 0.35 ,@edges))
+                   (pdf-cache-renderpage-highlight
+                    page (car size)
+                    `("white" "steel blue" 0.35 ,@edges))
                    :map (pdf-view-apply-hotspot-functions
                          window page size)
                    :width (car size))))
@@ -179,11 +179,11 @@
       (advice-add #'pdf-annot-show-annotation :override #'my-pdf-annot-show-annotation))
 
     ;; Recover last viewed position
-    (when emacs/>=26p
-      (use-package pdf-view-restore
-        :hook (pdf-view-mode . pdf-view-restore-mode)
-        :init (setq pdf-view-restore-filename
-                    (locate-user-emacs-file ".pdf-view-restore"))))))
+    (use-package saveplace-pdf-view
+      :commands (saveplace-pdf-view-find-file-advice saveplace-pdf-view-to-alist-advice)
+      :init
+      (advice-add 'save-place-find-file-hook :around #'saveplace-pdf-view-find-file-advice)
+      (advice-add 'save-place-to-alist :around #'saveplace-pdf-view-to-alist-advice))))
 
 ;; Epub reader
 (use-package nov
@@ -268,6 +268,7 @@
                                ("https://trstringer.com/feed" trstringer)
                                ))
     :config
+    ;; Ignore db directory in recentf
     (push elfeed-db-directory recentf-exclude)
     (setq elfeed-show-unique-buffers t)
     (defalias 'elfeed-toggle-star
@@ -335,9 +336,45 @@ minibuffer with `exit-minibuffer' (I bind it to C-j in
               entries)
         (unless (or elfeed-search-remain-on-entry (use-region-p))
           (forward-line))))
+    ;; Use xwidget if possible
+    (with-no-warnings
+      (defun my-elfeed-show-visit (&optional use-generic-p)
+        "Visit the current entry in your browser using `browse-url'.
+If there is a prefix argument, visit the current entry in the
+browser defined by `browse-url-generic-program'."
+        (interactive "P")
+        (let ((link (elfeed-entry-link elfeed-show-entry)))
+          (when link
+            (message "Sent to browser: %s" link)
+            (cond
+             ((featurep 'xwidget-internal)
+              (centaur-webkit-browse-url link))
+             (use-generic-p
+              (browse-url-generic link))
+             (t (browse-url link))))))
+      (advice-add #'elfeed-show-visit :override #'my-elfeed-show-visit)
+
+      (defun my-elfeed-search-browse-url (&optional use-generic-p)
+        "Visit the current entry in your browser using `browse-url'.
+If there is a prefix argument, visit the current entry in the
+browser defined by `browse-url-generic-program'."
+        (interactive "P")
+        (let ((entries (elfeed-search-selected)))
+          (cl-loop for entry in entries
+                   do (elfeed-untag entry 'unread)
+                   when (elfeed-entry-link entry)
+                   do (cond
+                       ((featurep 'xwidget-internal)
+                        (centaur-webkit-browse-url it t))
+                       (use-generic-p
+                        (browse-url-generic it))
+                       (t (browse-url it))))
+          (mapc #'elfeed-search-update-entry entries)
+          (unless (or elfeed-search-remain-on-entry (use-region-p))
+            (forward-line))))
+      (advice-add #'elfeed-search-browse-url :override #'my-elfeed-search-browse-url))
     )
   )
-
 
 ;; Another Atom/RSS reader
 (use-package newsticker

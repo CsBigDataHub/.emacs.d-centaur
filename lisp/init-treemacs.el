@@ -55,9 +55,6 @@
     (setq treemacs-collapse-dirs           (if treemacs-python-executable 3 0)
           treemacs-sorting                 'alphabetic-asc
           treemacs-follow-after-init       t
-          treemacs-is-never-other-window   t
-          treemacs-silent-filewatch        t
-          treemacs-silent-refresh          t
           treemacs-width                   30
           treemacs-no-png-images           (not centaur-icon))
     :config
@@ -70,7 +67,6 @@
       (`(t . _)
        (treemacs-git-mode 'simple)))
 
-    ;; Projectile integration
     (use-package treemacs-projectile
       :after projectile
       :bind (:map projectile-command-map
@@ -87,8 +83,9 @@
 
     (use-package treemacs-persp
       :after persp-mode
-      :commands treemacs-set-scope-type
-      :init (treemacs-set-scope-type 'Frames))))
+      :demand t
+      :functions treemacs-set-scope-type
+      :config (treemacs-set-scope-type 'Perspectives))))
 
 ;; my-personal
 
