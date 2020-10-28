@@ -123,6 +123,7 @@ decrease this. If you experience stuttering, increase this.")
 (require 'init-basic)
 (require 'init-hydra)
 
+(require 'init-org)
 (require 'init-ui)
 (require 'init-edit)
 (require 'init-ivy)
@@ -143,7 +144,6 @@ decrease this. If you experience stuttering, increase this.")
 (require 'init-shell)
 
 (require 'init-markdown)
-(require 'init-org)
 (require 'init-reader)
 
 (require 'init-docker)
