@@ -35,30 +35,10 @@
 
 (use-package org
   :ensure nil
+  :commands (org-dynamic-block-define)
   :custom-face (org-ellipsis ((t (:foreground nil))))
-  :preface
-  (defun hot-expand (str &optional mod)
-    "Expand org template.
-
-STR is a structure template string recognised by org like <s. MOD is a
-string with additional parameters to add the begin line of the
-structure element. HEADER string includes more parameters that are
-prepended to the element after the #+HEADER: tag."
-    (let (text)
-      (when (region-active-p)
-        (setq text (buffer-substring (region-beginning) (region-end)))
-        (delete-region (region-beginning) (region-end)))
-      (insert str)
-      (if (fboundp 'org-try-structure-completion)
-          (org-try-structure-completion) ; < org 9
-        (progn
-          ;; New template expansion since org 9
-          (require 'org-tempo nil t)
-          (org-tempo-complete-tag)))
-      (when mod (insert mod) (forward-line))
-      (when text (insert text))))
   :pretty-hydra
-  ((:title (pretty-hydra-title "Org Template" 'fileicon "org")
+  ((:title (pretty-hydra-title "Org Template" 'fileicon "org" :face 'all-the-icons-green :height 1.1 :v-adjust 0.0)
     :color blue :quit-key "q")
    ("Basic"
     (("a" (hot-expand "<a") "ascii")
@@ -101,7 +81,8 @@ prepended to the element after the #+HEADER: tag."
                   (if (or (region-active-p) (looking-back "^\s*" 1))
                       (org-hydra/body)
                     (self-insert-command 1)))))
-  :hook ((org-mode . (lambda ()
+  :hook (((org-babel-after-execute org-mode) . org-redisplay-inline-images) ; display image
+         (org-mode . (lambda ()
                        "Beautify org symbols."
                        (setq prettify-symbols-alist centaur-prettify-org-symbols-alist)
                        (prettify-symbols-mode 1)))
@@ -112,6 +93,28 @@ prepended to the element after the #+HEADER: tag."
                               (make-variable-buffer-local 'show-paren-mode)
                               (setq show-paren-mode nil))))
   :config
+  ;; For hydra
+  (defun hot-expand (str &optional mod)
+    "Expand org template.
+
+STR is a structure template string recognised by org like <s. MOD is a
+string with additional parameters to add the begin line of the
+structure element. HEADER string includes more parameters that are
+prepended to the element after the #+HEADER: tag."
+    (let (text)
+      (when (region-active-p)
+        (setq text (buffer-substring (region-beginning) (region-end)))
+        (delete-region (region-beginning) (region-end)))
+      (insert str)
+      (if (fboundp 'org-try-structure-completion)
+          (org-try-structure-completion) ; < org 9
+        (progn
+          ;; New template expansion since org 9
+          (require 'org-tempo nil t)
+          (org-tempo-complete-tag)))
+      (when mod (insert mod) (forward-line))
+      (when text (insert text))))
+
   ;; To speed up startup, don't put to init section
   (setq org-agenda-files `(,centaur-org-directory)
         org-todo-keywords
@@ -190,13 +193,11 @@ prepended to the element after the #+HEADER: tag."
   (use-package ob-go
     :init (cl-pushnew '(go . t) load-language-list))
 
-  (use-package ob-rust
-    :init (cl-pushnew '(rust . t) load-language-list))
-
   (use-package ob-ipython
     :if (executable-find "jupyter")     ; DO NOT remove
     :init (cl-pushnew '(ipython . t) load-language-list))
 
+  ;; Use mermadi-cli: npm install -g @mermaid-js/mermaid-cli
   (use-package ob-mermaid
     :init (cl-pushnew '(mermaid . t) load-language-list))
 
@@ -256,7 +257,7 @@ prepended to the element after the #+HEADER: tag."
     :bind (:map org-agenda-mode-map
            ("P" . org-pomodoro))))
 
-;; org-roam
+;; Roam
 (when (and emacs/>=26p (executable-find "cc"))
   (use-package org-roam
     :diminish
@@ -268,7 +269,10 @@ prepended to the element after the #+HEADER: tag."
             ("C-c n g" . org-roam-graph))
            :map org-mode-map
            (("C-c n i" . org-roam-insert))
-           (("C-c n I" . org-roam-insert-immediate))))
+           (("C-c n I" . org-roam-insert-immediate)))
+    :config
+    (unless (file-exists-p org-roam-directory)
+      (make-directory org-roam-directory)))
 
   (use-package org-roam-server
     :functions xwidget-buffer xwidget-webkit-current-session
@@ -278,12 +282,7 @@ prepended to the element after the #+HEADER: tag."
       (when org-roam-server-mode
         (let ((url (format "http://%s:%d" org-roam-server-host org-roam-server-port)))
           (if (featurep 'xwidget-internal)
-              (progn
-                (xwidget-webkit-browse-url url)
-                (let ((buf (xwidget-buffer (xwidget-webkit-current-session))))
-                  (when (buffer-live-p buf)
-                    (and (eq buf (current-buffer)) (quit-window))
-                    (pop-to-buffer buf))))
+              (centaur-webkit-browse-url url t)
             (browse-url url)))))))
 
 (provide 'init-org)

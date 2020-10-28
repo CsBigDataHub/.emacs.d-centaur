@@ -1,4 +1,4 @@
-;;; init-mini.el --- Centaur Emacs minimal configurations.	-*- lexical-binding: t no-byte-compile: t; -*-
+;;; init-mini.el --- Centaur Emacs minimal configurations.	-*- lexical-binding: t no-byte-compile: t -*-
 
 ;; Copyright (C) 2018-2020 Vincent Zhang
 
@@ -27,7 +27,7 @@
 
 ;;; Commentary:
 ;;
-;; Centaur Emacs minimal configurations for debugging purpose.
+;; Minimal configurations for debugging purpose.
 ;;
 
 ;;; Code:
@@ -135,7 +135,7 @@
   (setq w32-lwindow-modifier 'super     ; Left Windows key
         w32-apps-modifier 'hyper)       ; Menu/App key
   (w32-register-hot-key [s-t]))
- ((and (eq system-type 'darwin) (eq window-system 'mac))
+ ((eq window-system 'mac)
   ;; Compatible with Emacs Mac port
   (setq mac-option-modifier 'meta
         mac-command-modifier 'super)
