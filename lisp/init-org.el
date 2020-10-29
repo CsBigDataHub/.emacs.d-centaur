@@ -389,6 +389,13 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 ;;            "* TODO %?\n  %i\n  %a" :prepend t)
 ;;           )))
 
+
+;; https://github.com/sprig/org-capture-extension/issues/72
+(defun transform-square-brackets-to-round-ones(string-to-transform)
+  "Transforms [ into ( and ] into ), other chars left unchanged."
+  (concat
+   (mapcar #'(lambda (c) (if (equal c ?[) ?\( (if (equal c ?]) ?\) c))) string-to-transform)))
+
 (when sys/macp
   (setq org-capture-templates
         (doct `(
@@ -427,6 +434,22 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
                  :prepend t
                  :empty-lines-after 2
                  :headline "Notes"
+                 )
+                ("🌎 Protocol-Capture"
+                 :keys "p"
+                 :file "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/protocol-capture.org"
+                 :template "* %^{Title}\nSource: [[%:link][%(transform-square-brackets-to-round-ones \"%:description\")]]\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?"
+                 :prepend t
+                 :empty-lines-after 2
+                 :headline "Protocol-Capture"
+                 )
+                ("🔗 Protocol-Link"
+                 :keys "L"
+                 :file "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/protocol-link.org"
+                 :template "* %? [[%:link][%:description]] \nCaptured On: %U"
+                 :prepend t
+                 :empty-lines-after 2
+                 :headline "Protocol-Link"
                  )
                 )
               )))

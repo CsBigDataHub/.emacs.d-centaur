@@ -296,6 +296,8 @@
 
 ;;(use-package gitignore-templates)
 
+(setq vc-follow-symlinks nil)
+
 ;; my-personal
 
 
