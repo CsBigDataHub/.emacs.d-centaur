@@ -42,7 +42,7 @@
 
   ;; english-words.txt is the fallback dicitonary
   (if (not ispell-alternate-dictionary)
-      (setq ispell-alternate-dictionary (file-truename (expand-file-name (concat user-emacs-directory "misc/aspell-en-sorted.txt")))))
+      (setq ispell-alternate-dictionary (file-truename (expand-file-name (concat user-emacs-directory "misc/english-words.txt")))))
   (let ((lookup-func (if (fboundp 'ispell-lookup-words)
                          'ispell-lookup-words
                        'lookup-words)))
@@ -170,51 +170,112 @@
 
 ;; https://emacs.stackexchange.com/questions/54741/using-company-ispell-with-large-text-dictionary
 
-(setq ispell-complete-word-dict
-      (expand-file-name (concat user-emacs-directory "misc/aspell-en-sorted.txt")))
+;; (setq ispell-complete-word-dict
+;;       (expand-file-name (concat user-emacs-directory "misc/english-words.txt")))
 
-(defun my-generic-ispell-company-complete-setup ()
-  ;; Only apply this locally.
-  (make-local-variable 'company-backends)
-  (setq company-backends (list 'company-ispell))
+;; (defun my-generic-ispell-company-complete-setup ()
+;;   ;; Only apply this locally.
+;;   (make-local-variable 'company-backends)
+;;   (setq company-backends (list 'company-ispell))
 
-  (when ispell-complete-word-dict
-    (let*
-        (
-         (has-dict-complete
-          (and ispell-complete-word-dict (file-exists-p ispell-complete-word-dict)))
-         (has-dict-personal
-          (and ispell-personal-dictionary (file-exists-p ispell-personal-dictionary)))
-         (is-dict-outdated
-          (and
-           has-dict-complete has-dict-personal
-           (time-less-p
-            (nth 5 (file-attributes ispell-complete-word-dict))
-            (nth 5 (file-attributes ispell-personal-dictionary))))))
+;;   (when ispell-complete-word-dict
+;;     (let*
+;;         (
+;;          (has-dict-complete
+;;           (and ispell-complete-word-dict (file-exists-p ispell-complete-word-dict)))
+;;          (has-dict-personal
+;;           (and ispell-personal-dictionary (file-exists-p ispell-personal-dictionary)))
+;;          (is-dict-outdated
+;;           (and
+;;            has-dict-complete has-dict-personal
+;;            (time-less-p
+;;             (nth 5 (file-attributes ispell-complete-word-dict))
+;;             (nth 5 (file-attributes ispell-personal-dictionary))))))
 
-      (when (or (not has-dict-complete) is-dict-outdated)
-        (with-temp-buffer
+;;       (when (or (not has-dict-complete) is-dict-outdated)
+;;         (with-temp-buffer
 
-          ;; Optional: insert personal dictionary, stripping header and inserting a newline.
-          (when has-dict-personal
-            (insert-file-contents ispell-personal-dictionary)
-            (goto-char (point-min))
-            (when (looking-at "personal_ws\-")
-              (delete-region (line-beginning-position) (1+ (line-end-position))))
-            (goto-char (point-max))
-            (unless (eq ?\n (char-after))
-              (insert "\n")))
+;;           ;; Optional: insert personal dictionary, stripping header and inserting a newline.
+;;           (when has-dict-personal
+;;             (insert-file-contents ispell-personal-dictionary)
+;;             (goto-char (point-min))
+;;             (when (looking-at "personal_ws\-")
+;;               (delete-region (line-beginning-position) (1+ (line-end-position))))
+;;             (goto-char (point-max))
+;;             (unless (eq ?\n (char-after))
+;;               (insert "\n")))
 
-          (call-process "aspell" nil t nil "-d" "en_US" "dump" "master")
-          ;; Case insensitive sort is important for the lookup.
-          (let ((sort-fold-case t))
-            (sort-lines nil (point-min) (point-max)))
-          (write-region nil nil ispell-complete-word-dict))))))
+;;           ;; (call-process "aspell" nil t nil "-d" "en_US" "dump" "master")
+;;           ;; Case insensitive sort is important for the lookup.
+;;           ;; (let ((sort-fold-case t))
+;;           ;;   (sort-lines nil (point-min) (point-max)))
+;;           (write-region nil nil ispell-complete-word-dict))))))
 
 ;; Enable this in appropriate modes.
 
-(add-hook 'org-mode-hook (lambda () (my-generic-ispell-company-complete-setup)))
+;; (add-hook 'org-mode-hook (lambda () (my-generic-ispell-company-complete-setup)))
 ;; (add-hook 'rst-mode-hook (lambda () (my-generic-ispell-company-complete-setup)))
-(add-hook 'markdown-mode-hook (lambda () (my-generic-ispell-company-complete-setup)))
+;; (add-hook 'markdown-mode-hook (lambda () (my-generic-ispell-company-complete-setup)))
+
+;; https://emacs.stackexchange.com/questions/42508/how-to-use-an-ispell-dictionary-in-company-mode/42526#42526
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+
+(defun text-mode-hook-setup ()
+  ;; make `company-backends' local is critcal
+  ;; or else, you will have completion in every major mode, that's very annoying!
+  (make-local-variable 'company-backends)
+
+  ;; company-ispell is the plugin to complete words
+  (add-to-list 'company-backends 'company-ispell)
+
+  ;; OPTIONAL, if `company-ispell-dictionary' is nil, `ispell-complete-word-dict' is used
+  ;;  but I prefer hard code the dictionary path. That's more portable.
+  (setq company-ispell-dictionary (file-truename "~/.emacs.d/misc/english-words.txt"))
+  ;; (setq company-ispell-dictionary (file-truename "~/.emacs.d/misc/apsell-en-sorted.txt"))
+  )
+
+(add-hook 'text-mode-hook 'text-mode-hook-setup)
+
+;; https://endlessparentheses.com/ispell-and-org-mode.html
+(defun endless/org-ispell ()
+  "Configure `ispell-skip-region-alist' for `org-mode'."
+  (make-local-variable 'ispell-skip-region-alist)
+  (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
+  (add-to-list 'ispell-skip-region-alist '("~" "~"))
+  (add-to-list 'ispell-skip-region-alist '("=" "="))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+begin_src" . "^#\\+end_src"))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+begin_example" . "^#\\+end_example"))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXAMPLE" . "^#\\+END_EXAMPLE"))
+  (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+  (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+  )
+(add-hook 'org-mode-hook #'endless/org-ispell)
+
+;; https://emacs.stackexchange.com/questions/54754/how-to-change-the-company-complete-backend-based-on-the-current-syntaxG
+(defun my-in-comment-p (pos)
+  "Check whether the code at POS is comment by comparing font face."
+  (let* ((fontfaces (get-text-property pos 'face)))
+    (if (not (listp fontfaces))
+        (setq fontfaces (list fontfaces)))
+    (delq nil
+          (mapcar #'(lambda (f)
+                      ;; learn this trick from flyspell
+                      (or (eq f 'font-lock-comment-face)
+                          (eq f 'font-lock-comment-delimiter-face)))
+                  fontfaces))))
+
+(eval-after-load 'company-ispell
+  '(progn
+     ;; use company-ispell in comment when coding
+     (defadvice company-ispell-available (around company-ispell-available-hack activate)
+       (cond
+        ((and (derived-mode-p 'prog-mode)
+              (or (not (company-in-string-or-comment)) ; respect advice in `company-in-string-or-comment'
+                  (not (my-in-comment-p (point))))) ; auto-complete in comment only
+         (setq ad-return-value nil))
+        (t
+         ad-do-it)))))
 
 (provide 'init-hippie-expand)
