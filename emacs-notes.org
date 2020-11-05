@@ -8100,8 +8100,7 @@ This is the old mode (suggested by @hb9 on GitHub: [[https://github.com/hvesalai
   ;;; ob-scala.el ends here
 #+END_EXAMPLE
 
-
-**** [[https://xpressrazor.wordpress.com/2020/11/04/java-programming-in-emacs/][Java Programming in Emacs | xpressrazor]] :website:
+* [[https://xpressrazor.wordpress.com/2020/11/04/java-programming-in-emacs/][Java Programming in Emacs | xpressrazor]] :website:
 
 [2020-11-05 Thu 08:36]
 
