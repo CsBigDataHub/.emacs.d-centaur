@@ -27,7 +27,9 @@
 
 (use-package kubernetes-helm)
 
-(use-package kubel)
+(use-package kubel
+  :config
+  (setq kubel-use-namespace-list 'on))
 
 (use-package kubel-evil)
 
