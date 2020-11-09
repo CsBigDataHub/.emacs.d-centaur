@@ -8116,8 +8116,6 @@ In this tutorial, I will go through setting up *Emacs* for *Java development.* T
 [[file:images/emacs-notes/image-142020-11-05_08-38-05_.png]]
 
 
-
-
 ****** Installation
 
 
@@ -8352,3 +8350,99 @@ This tutorial should get you to a comfortable position where you can explore mor
 1. [[https://github.com/emacs-lsp/lsp-java]]
 2. [[https://github.com/emacs-lsp/lsp-ui]]
 3. [[https://emacs-lsp.github.io/lsp-mode/page/performance/]]
+
+* [[https://endlessparentheses.com/a-quick-guide-to-directory-local-variables.html][A quick guide to directory-local (or project-specific) variables in Emacs · Endless Parentheses]] :website:
+
+[2020-11-09 Mon 11:06]
+
+**** Article
+
+***** A quick guide to directory-local (or project-specific) variables
+
+
+05 Jul 2016, by [[https://github.com/Malabarba][Artur Malabarba]].
+
+One of the questions we get most often about CIDER is “can I configure X on a per-project basis?”. Occasionally, you find someone suggesting (or even implementing) some sophisticated configurable variable trying to account for multiple simultaneous use-cases. Fortunately that's one effort we don't need to make. Emacs already has that built-in in the form of directory-local variables (dir-local for short).
+
+As the name implies, dir-local variable values (can) apply to all files inside a given directory (also applying recursively to its sub-directories), though you can also restrict them by major-mode or by subdirectory. To configure it:
+
+1. Invoke M-x [[https://doc.endlessparentheses.com/Fun/add-dir-local-variable][=add-dir-local-variable=]].
+2. This will prompt you for a major-mode, then a variable name, and finally a variable value.
+3. Finally, it will drop you in a (newly-created) file called =.dir-locals.el= in the current directory. Just save this file and you're done!
+
+By doing this, you have configured the given variable to always have the provided value anywhere inside the *current directory*, so make sure you're at the root of your project when you call the command. If you use [[https://github.com/bbatsov/projectile][Projectile]], there's the =projectile-edit-dir-locals= command for doing just that.
+
+Also worth noting:
+
+- If you type =nil= for the major-mode, it applies to all major-modes.
+- There is (of course) tab-completion in the variable-name prompt.
+- If you answer =eval= for the variable name, it will prompt you for a lisp expression, instead of a value. This expression will be saved and will be evaluated every time a file is visited.
+- After doing this, call [[https://doc.endlessparentheses.com/Fun/revert-buffer][=revert-buffer=]] on any previously-open files to apply the new value.
+
+****** Update 21 Jul 2016
+
+
+It's worth mentioning that Joel McCracken posted [[http://joelmccracken.github.io/entries/project-local-variables-in-projectile-with-dirlocals/][a similar quick guide]] a few years ago. Some of the information is the same, but some is complementary, so you might want to have a look.
+
+* [[http://joelmccracken.github.io/entries/project-local-variables-in-projectile-with-dirlocals/][Project Local Variables in Projectile with Dirlocals]] :website:
+
+[2020-11-09 Mon 11:07]
+
+******* Article
+
+******** Project Local Variables in Projectile with Dirlocals
+
+
+Nov 28, 2013
+
+When working on a project in Emacs, sometimes it is extremely useful to set emacs variables on a project-global level.
+
+In fact, there is currently an [[https://github.com/bbatsov/projectile/issues/139][open ticket]] for the the very excellent [[https://github.com/bbatsov/projectile][Projectile]] project requesting this feature.
+
+I have personally been using Emacs' per-directory local variable facilities to emulate this behavior for some time. The [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Directory-Variables.html][emacs documentation is found here]], but lets explain it based upon this use case.
+
+To create custom variables specific to your project, create a =.dir-locals.el= file that sits in the root of the project. This file would sit beside the =Projectile= file, for example.
+
+Inside this file contains a very specially crafted lisp expression that defines the variables we want. I'm just going to quote the manual here, because I can't think of a better way to describe it:
+
+#+BEGIN_QUOTE
+  The =.dir-locals.el= file should hold a specially-constructed list, which maps major mode names (symbols) to alists (*note Association Lists: (elisp)Association Lists.). Each alist entry consists of a variable name and the directory-local value to assign to that variable, when the specified major mode is enabled. Instead of a mode name, you can specify `nil', which means that the alist applies to any mode; or you can specify a subdirectory name (a string), in which case the alist applies to all files in that subdirectory.
+
+  Here's an example of a `.dir-locals.el' file:
+
+  #+BEGIN_EXAMPLE
+      ((nil . ((indent-tabs-mode . t)
+              (fill-column . 80)))
+      (c-mode . ((c-file-style . "BSD")
+                 (subdirs . nil)))
+      ("src/imported"
+       . ((nil . ((change-log-default-name
+                   . "ChangeLog.local"))))))
+  #+END_EXAMPLE
+
+  This sets =indent-tabs-mode= and =fill-column= for any file in the directory tree, and the indentation style for any C source file. The special =subdirs= element is not a variable, but a special keyword which indicates that the C mode settings are only to be applied in the current directory, not in any subdirectories. Finally, it specifies a different =ChangeLog= file name for any file in the =src/imported= subdirectory.
+#+END_QUOTE
+
+On second thought, the manual example is pretty exhaustive. Lets simplify: In order to specify a variable global to the whole project, use this form:
+
+#+BEGIN_EXAMPLE
+   ((nil . ((my-project-global-variable . "the value"))))
+#+END_EXAMPLE
+
+Nice and simple.
+
+A nuance here is that the “values” are not actually evaluated whenever the variable is set for a buffer in a project. What if we require evaluation? What if we want, for example, to ensure an elisp function exists whenever working in a project?
+
+For this, we can use the =eval= special form:
+
+#+BEGIN_EXAMPLE
+   ((nil . ((eval . (defun my-project-function ()
+                     ;; your code here
+                     )))))
+#+END_EXAMPLE
+
+Safety is clearly a big concern here. What if we open a file in a project that has a maliciously crafted =.dir-locals.el= file? Well, Emacs has still got our back: By default, it will ask you if you wish to allow these variables to take effect. It also saves that setting for the future so it doesn't need to keep asking you forever. You can find out more [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Safe-File-Variables.html][in the documentation here]].
+
+Using =.dirlocals.el= with Projectile has worked very well for me, and solves a big class of problems.
+
+Please enable JavaScript to view the [[https://disqus.com/?ref_noscript][comments powered by Disqus.]]
