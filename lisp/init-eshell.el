@@ -294,6 +294,7 @@ directory."
          )
   :config
   (setq eshell-hist-ignoredups t)
+  (setq eshell-history-size 10000)
   (setq eshell-save-history-on-exit t))
 
 (use-package pcmpl-git
@@ -339,6 +340,14 @@ directory."
 ;;   (my-nuke-ansi-escapes eshell-last-output-start eshell-last-output-end))
 
 ;; ( add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
+
+;; Save command history when commands are entered
+(add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
+
+(add-hook 'eshell-post-command-hook
+          '(lambda () (setenv "TERM" "dumb")))
+
+(setenv "PAGER" "cat")
 ;;; my-personal ends here
 
 (provide 'init-eshell)
