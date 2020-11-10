@@ -299,6 +299,27 @@
 
 (setq vc-follow-symlinks nil)
 
+(eval-after-load "vc-hooks"
+  '(define-key vc-prefix-map (kbd "M-=") 'vc-ediff))
+
+;; https://lgfang.github.io/mynotes/emacs/emacs-vc.html
+(defun my-log-view-ediff (beg end)
+  "Similar to lgfang-log-view-diff, uses ediff and much slower."
+  (interactive
+   (if (log-view-get-marked) (log-view-get-marked)
+     (list (log-view-current-tag (point))
+           (log-view-current-tag (point)))))
+  (when (string-equal beg end)
+    (save-excursion
+      (goto-char (point))               ;not marked
+      (log-view-msg-next)
+      (setq beg (log-view-current-tag))))
+
+  (ediff-load-version-control)
+  (funcall (intern (format "ediff-%S-internal" ediff-version-control-package))
+           beg end nil))
+(eval-after-load "log-view"
+  '(define-key log-view-mode-map (kbd "=") 'my-log-view-ediff))
 ;; my-personal
 
 

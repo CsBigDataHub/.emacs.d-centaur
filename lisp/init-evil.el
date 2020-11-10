@@ -23,6 +23,7 @@
 (with-eval-after-load 'evil
   (defalias #'forward-evil-word #'forward-evil-symbol))
 
+;; Diable evil-mode in few modes
 (evil-set-initial-state 'ibuffer-mode 'emacs)
 (cond ((eq system-type 'gnu/linux) (evil-set-initial-state 'mu4e-main-mode 'emacs)))
 (cond ((eq system-type 'gnu/linux) (evil-set-initial-state 'mu4e-headers-mode 'emacs)))
@@ -31,6 +32,9 @@
 (evil-set-initial-state 'elfeed-search-mode 'emacs)
 (evil-set-initial-state 'elfeed-show-mode 'emacs)
 (evil-set-initial-state 'vc-mode 'emacs)
+(evil-set-initial-state 'diff-mode 'emacs)
+(evil-set-initial-state 'vc-git-command 'emacs)
+(evil-set-initial-state 'Log-Edit 'emacs)
 (evil-set-initial-state 'helpful-mode 'emacs)
 (evil-set-initial-state 'wgrep-change-to-wgrep-mode 'emacs)
 
