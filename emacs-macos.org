@@ -686,7 +686,7 @@ There are two AppleScript files, one for inserting a link into the current buffe
 ******* Insertion
 
 
-#+BEGIN_EXAMPLE applescript
+#+BEGIN_EXAMPLE apples
    tell application "Microsoft Outlook"
     set theMessages to selected objects
     repeat with theMessage in theMessages
@@ -701,7 +701,7 @@ There are two AppleScript files, one for inserting a link into the current buffe
 ******* Capture
 
 
-#+BEGIN_EXAMPLE
+#+BEGIN_EXAMPLE apples
    tell application "Microsoft Outlook"
     set theMessages to selected objects
     repeat with theMessage in theMessages
