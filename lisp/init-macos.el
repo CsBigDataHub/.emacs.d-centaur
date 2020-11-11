@@ -17,6 +17,7 @@
     ;;              "/Applications/Xcode.app/Contents/Developer/usr/share/man")
     ;; (add-to-list 'woman-manpath
     ;;              "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/man")
+    (use-package ob-applescript)
     )
   )
 (provide 'init-macos)

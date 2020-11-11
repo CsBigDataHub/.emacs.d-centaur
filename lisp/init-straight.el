@@ -119,5 +119,13 @@ _C_: correct  _p_: prev error _d_: done checking
                :type git
                :host github
                :repo "larsmagne/meme")))
+(when sys/macp
+  (use-package apples-mode
+    :straight (apples-mode
+               :type git
+               :host github
+               :repo "rprimus/apples-mode")
+    :config
+    (add-to-list 'auto-mode-alist '("\\.\\(applescri\\|sc\\)pt\\'" . apples-mode))))
 
 (provide 'init-straight)

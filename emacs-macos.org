@@ -655,3 +655,160 @@ When you open the file, the =pyls= should be automatically started up, and you c
 This often gives better and more detailed results than [[https://github.com/jorgenschaefer/elpy][=elpy=]], probably because pyls uses a mix of static and dynamic (introspection-based) analysis.
 
 Furthermore, the handling of LSP servers in Emacs can be unified, giving the same consistent level of support across a whole range of programming languages.
+
+* [[https://faximili.me/post/outlook-org-macos/][Outlook Org-mode integration on MacOS | Faximilie]] :website:
+
+[2020-11-11 Wed 10:51]
+
+**** Article
+
+***** Motivation
+
+
+So a lot of my notes and tasks will require me to reference outlook items, either emails or meetings.
+
+There aren't any real solutions for Achieving this on MacOS at the moment, and the Windows solutions are not too great.
+
+So I decided to create this unholy abomination. I'm sorry.
+
+***** Components
+
+
+So there's a few moving parts to this, but overall it's mainly leverging *AppleScript*, *Karabiner* and *Emacs* to provide this functionality.
+
+****** AppleScript
+
+
+Let's start with the MacOS Native automation tools, this is how we'll get the ID of the Outlook item, which we will need later when searching for it.
+
+There are two AppleScript files, one for inserting a link into the current buffer, and another for using a capture template. Both are almost identical, but one evals some Elisp to ensure we insert at the right point and file.
+
+******* Insertion
+
+
+#+BEGIN_EXAMPLE applescript
+   tell application "Microsoft Outlook"
+    set theMessages to selected objects
+    repeat with theMessage in theMessages
+      set toOpen to id of theMessage
+    end repeat
+  end tell
+
+  tell application "Emacs" to activate
+  do shell script "/usr/local/bin/emacsclient --eval '(with-current-buffer (window-buffer) (org-insert-link nil \"outlook:" & toOpen & "\" (read-string \"Link Name:\")))'"
+#+END_EXAMPLE
+
+******* Capture
+
+
+#+BEGIN_EXAMPLE
+   tell application "Microsoft Outlook"
+    set theMessages to selected objects
+    repeat with theMessage in theMessages
+      set toOpen to id of theMessage
+    end repeat
+  end tell
+
+  tell application "Emacs" to activate
+  do shell script "/usr/local/bin/emacsclient \"org-protocol://capture?template=o&url=" & toOpen & "\""
+#+END_EXAMPLE
+
+****** Karabiner
+
+
+Karabiner provides a very nice way of running a shell script from a keybind, and even supports filtering to the correct window. Thus this keybind will only trigger when Outlook is focused.
+
+Command+L will insert and Command+Shift+L will capture
+
+#+BEGIN_EXAMPLE
+   {
+      "title": "Outlook-Emacs",
+      "rules": [
+          {
+              "description": "Meta-L to copy outlook item to orgmode",
+              "manipulators": [
+                  {
+                      "type": "basic",
+                      "from": {
+                          "key_code": "l",
+                          "modifiers": {
+                              "mandatory": ["left_command"],
+                              "optional": ["caps_lock"]
+                          }
+                      },
+                      "to": [
+                          {
+                              "shell_command": "osascript ~/Documents/Store_Selected_OutlookItem_As_Orgmode_Link.scpt"
+                          }
+                      ],
+                      "conditions": [
+                          {
+                              "type": "frontmost_application_if",
+                              "bundle_identifiers": ["^com\\.microsoft\\.Outlook$"]
+                          }
+                      ]
+                  }
+              ]
+          },
+          {
+              "description": "Meta-L to copy outlook item to orgmode",
+              "manipulators": [
+                  {
+                      "type": "basic",
+                      "from": {
+                          "key_code": "l",
+                          "modifiers": {
+                              "mandatory": ["left_command", "left_shift"],
+                              "optional": ["caps_lock"]
+                          }
+                      },
+                      "to": [
+                          {
+                              "shell_command": "osascript ~/Documents/Capture_Selected_OutlookItem_As_Orgmode_Link.scpt"
+                          }
+                      ],
+                      "conditions": [
+                          {
+                              "type": "frontmost_application_if",
+                              "bundle_identifiers": ["^com\\.microsoft\\.Outlook$"]
+                          }
+                      ]
+                  }
+              ]
+          }
+      ]
+  }
+#+END_EXAMPLE
+
+****** Emacs
+
+
+There are two parts of this for Emacs, the Capture template, and the custom hyperlink
+
+******* Custom Link
+
+
+I just dump this into my startup config, but you could make an =ol-outlook.el= if you wanted to make it less platform specific.
+
+This relies on MDFind which is the macos spotlight CLI, it will find it, then open it in outlook.
+
+#+BEGIN_EXAMPLE
+   (require 'ol)
+
+  (org-add-link-type "outlook" 'org-outlook-open)
+
+  (defun org-outlook-open (id _)
+    "Open the outlook item matching that ID"
+    (shell-command (format "mdfind \"com_microsoft_outlook_recordID == '%s'\" -0 | xargs -0 open " id)))
+#+END_EXAMPLE
+
+******* Capture template
+
+
+Ideally this should be customized more for your setup, but this is what I use.
+
+#+BEGIN_EXAMPLE
+   (add-to-list 'org-capture-templates '("o" "Outlook item to capture" entry
+             (file+headline "~/Documents/Notes/inbox.org" "Tasks")
+             "* TODO [[outlook:%:link][%^{Item name|Email}]]" :clock-in t :clock-resume t))
+#+END_EXAMPLE
