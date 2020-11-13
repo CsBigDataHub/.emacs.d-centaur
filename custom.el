@@ -74,7 +74,8 @@
  '(centaur-theme 'default)
  '(doom-themes-treemacs-theme "doom-colors")
  '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:")
- )
+ '(safe-local-variable-values
+   '((magit-todos-exclude-globs "*.elc" "elpa/**" "straight/**" "*.md" "*.org"))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
