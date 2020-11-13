@@ -75,14 +75,14 @@
     (setq magit-bury-buffer-function #'my-magit-kill-buffers))
 
   ;; Access Git forges from Magit
-  (when (executable-find "cc")
-    (use-package forge
-      :demand
-      :init (setq forge-topic-list-columns
-                  '(("#" 5 t (:right-align t) number nil)
-                    ("Title" 60 t nil title  nil)
-                    ("State" 6 t nil state nil)
-                    ("Updated" 10 t nill updated nil)))))
+  ;; (when (executable-find "cc")
+  ;;   (use-package forge
+  ;;     :demand
+  ;;     :init (setq forge-topic-list-columns
+  ;;                 '(("#" 5 t (:right-align t) number nil)
+  ;;                   ("Title" 60 t nil title  nil)
+  ;;                   ("State" 6 t nil state nil)
+  ;;                   ("Updated" 10 t nill updated nil)))))
 
   ;; Show TODOs in magit
   (when emacs/>=25.2p

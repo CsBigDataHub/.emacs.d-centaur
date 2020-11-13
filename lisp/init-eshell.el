@@ -51,7 +51,7 @@
                          (eshell/alias "lt" "ls -ltFh")))
   :config
   (with-eval-after-load 'exec-path-from-shell
-    (exec-path-from-shell-copy-envs '("GOPATH" "GO111MODULE" "GOPROXY" "GRADLE_HOME" "GROOVY_HOME" "JAVA_HOME" "MAVEN_HOME" "SBT_HOME" "SCALA_HOME")))
+    (exec-path-from-shell-copy-envs '("GOPATH" "GO111MODULE" "GOPROXY" "GRADLE_HOME" "GROOVY_HOME" "JAVA_HOME" "MAVEN_HOME" "SBT_HOME" "SCALA_HOME" "WORKON_HOME" "PYENV_ROOT")))
   (setq eshell-visual-commands '("ssh" "less" "top" "man")
         ;; eshell-visual-subcommands '(("git" "log" "l" "diff" "show"))
         eshell-visual-options '(("git" "commit" "log"))
