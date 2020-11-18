@@ -812,3 +812,106 @@ Ideally this should be customized more for your setup, but this is what I use.
              (file+headline "~/Documents/Notes/inbox.org" "Tasks")
              "* TODO [[outlook:%:link][%^{Item name|Email}]]" :clock-in t :clock-resume t))
 #+END_EXAMPLE
+
+** [[https://takeonrules.com/2020/11/11/synchronizing-osx-terminal-and-emacs-dark-light-appearance/][Synchronizing OSX, Terminal, and Emacs Dark/Light Appearance // Take on Rules]] :website:
+
+[2020-11-18 Wed 10:08]
+
+******** Article
+
+********* Synchronizing OSX, Terminal, and Emacs Dark/Light Appearance
+
+********** Composing Shell, Applescript, and Emacs Eval
+
+By [[https://takeonrules.com/][Jeremy Friesen]] on 2020-11-11
+
+:: [[https://takeonrules.com/tags/emacs][# emacs ]]
+
+  [[https://takeonrules.com/tags/osx][# osx]]   [[https://takeonrules.com/tags/programming][# programming]]
+
+Throughout the day, I find myself toggling between Light and Dark modes. This evening I wrote up a shell script to keep OS X ^{[[https://takeonrules.com/more/glossary/#abbr-dfn-OSX][📖]]} , Emacs ^{[[https://takeonrules.com/more/glossary/#abbr-dfn-EMACS][📖]]} , and my Terminal synchronized.
+
+I named the script [[https://github.com/jeremyf/dotzshrc/blob/3bdf352e3aa9933a519bf56a15e09e98ec38bc26/bin/dark][=dark=]]. Now, from the command-line, I can type dark to switch between Light and Dark mode.
+
+Below is a copy of that script:
+
+#+BEGIN_EXAMPLE
+   #!/bin/sh
+
+  # This script toggles the Operating System, Terminal, and Emacs
+  # themes.  It uses the state of the Operating System to determine
+  # if the terminal and Emacs should be "dark" or "light".
+
+  # First, tell OS-x to toggle dark mode.
+  osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to not dark mode'
+
+  # Second, determine what is the newly set appearance.
+  appearance=`defaults read -g AppleInterfaceStyle 2>/dev/null`
+  if [ -z "$appearance" ]
+  then
+    # No value for AppleInterfaceStyle, so the OS has us in light
+    # mode, proceed accordingly.
+    sh $HOME/.config/base16-shell/scripts/base16-google-light.sh
+    editor --eval "(disable-theme 'modus-vivendi)" \
+      --eval "(modus-operandi-theme-load)" 1> /dev/null
+  else
+    # AppleInterfaceStyle is set, and that means we're now in "Dark"
+    # mode.
+    sh $HOME/.config/base16-shell/scripts/base16-google-dark.sh
+    editor --eval "(disable-theme 'modus-operandi)" \
+      --eval "(modus-vivendi-theme-load)" 1> /dev/null
+  fi
+#+END_EXAMPLE
+
+Nothing fancy.
+
+/*Nov 11, 2020 update:*/
+
+********** Emacs Configuration
+
+Later on this evening, I started tinkering to see about Emacs synchronizing with the Dark/Light mode of OS X .
+
+#+BEGIN_EXAMPLE
+   (defun jnf-dark ()
+    "Toggle system-wide Dark or Light setting."
+    (interactive)
+    (shell-command "osascript -e 'tell application \"System Events\" to tell appearance preferences to set dark mode to not dark mode'")
+    (jnf-emacs-theme-by-osx-appearance))
+
+
+  (defun jnf-emacs-theme-by-osx-appearance ()
+    "Set theme based on OSX apperance state."
+    (if (equal "Dark" (substring
+                        (shell-command-to-string
+                          "defaults read -g AppleInterfaceStyle") 0 4))
+    (progn
+      (disable-theme 'modus-operandi)
+      (modus-vivendi-theme-load))
+    (progn
+      (disable-theme 'modus-vivendi)
+      (modus-operandi-theme-load))))
+
+  ;; Load the appropriate Emacs theme based on OSX appearance
+  (jnf-emacs-theme-by-osx-appearance)
+#+END_EXAMPLE
+
+I added this to my [[https://github.com/jeremyf/dotzshrc/blob/74eef7298fbc5441165340345497d685ffff2a25/emacs/jnf-display.el#L65-L95][one of the files I load for Emacs]].
+
+Web Mentions
+
+Others mentions of [[https://takeonrules.com/2020/11/11/synchronizing-osx-terminal-and-emacs-dark-light-appearance/][this post]]:
+
+- [[https://twitter.com/OSRBlogosphere/status/1326719780167020546][twitter.com]] by [[https://twitter.com/OSRBlogosphere][OSRBlogosphere]]
+
+********** Related Posts
+
+
+- [[https://takeonrules.com/2020/10/30/reducing-duplication-in-my-emacs-config/][Reducing Duplication in my Emacs Config]]
+- [[https://takeonrules.com/2020/10/24/visual-changes-to-take-on-rules/][Visual Changes to Take on Rules]]
+- [[https://takeonrules.com/2020/10/18/why-i-chose-emacs-as-my-new-text-editor/][Why I Chose Emacs as My New Text Editor]]
+- [[https://takeonrules.com/2020/11/09/using-emacs-while-running-online-games/][Using Emacs While Running Online Games]]
+- [[https://takeonrules.com/2020/05/25/principles-of-my-text-editor/][Principles of My Text Editor]]
+
+********** License(s)
+
+/Synchronizing OSX, Terminal, and Emacs Dark/Light Appearance/ by [[https://takeonrules.com/about/][Jeremy Friesen]] is licensed under a [[https://creativecommons.org/licenses/by-nc-nd/4.0/][Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License]]. Based on a work at [[https://takeonrules.com/2020/11/11/synchronizing-osx-terminal-and-emacs-dark-light-appearance/]]. Permissions beyond the scope of this license may be available at [[https://takeonrules.com/more_permissions/]].
