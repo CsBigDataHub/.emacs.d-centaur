@@ -269,6 +269,11 @@ In that case, insert the number."
 
 (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
 
+(use-package company-dict
+  :config
+  (setq company-dict-dir (concat user-emacs-directory "misc/dict"))
+  (add-to-list 'company-backends 'company-dict))
+
 ;;my-personal-config
 
 (provide 'init-company)
