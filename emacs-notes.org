@@ -8444,3 +8444,7 @@ For this, we can use the =eval= special form:
 Safety is clearly a big concern here. What if we open a file in a project that has a maliciously crafted =.dir-locals.el= file? Well, Emacs has still got our back: By default, it will ask you if you wish to allow these variables to take effect. It also saves that setting for the future so it doesn't need to keep asking you forever. You can find out more [[http://www.gnu.org/software/emacs/manual/html_node/emacs/Safe-File-Variables.html][in the documentation here]].
 
 Using =.dirlocals.el= with Projectile has worked very well for me, and solves a big class of problems.
+
+* Static site geneartor with org-mode
+
+- [[https://etienne.depar.is/fronde/][fronde]]
