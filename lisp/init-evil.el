@@ -99,6 +99,8 @@
 ;; to replace with `xref-find-definitions'
 (add-hook 'evil-mode-hook (lambda()
                             (local-unset-key (kbd "M-."))))
+
+;; https://blog.meain.io/2020/emacs-highlight-yanked/
 (defun my/evil-yank-advice (orig-fn beg end &rest args)
   (pulse-momentary-highlight-region beg end)
   (apply orig-fn beg end args))
