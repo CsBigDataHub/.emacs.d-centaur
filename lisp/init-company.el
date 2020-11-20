@@ -41,6 +41,10 @@
   :bind (("M-s-÷" . company-complete);;my-personal-config
          ("C-M-i" . company-complete)
          ("M-s-ƒ" . company-files)
+         ("M-s-i" . company-complete);;my-personal-config
+         ("M-s-k" . company-keywords)
+         ("M-s-p" . company-dabbrev)
+         ("M-s-f" . company-files)
          :map company-mode-map
          ("<backtab>" . company-yasnippet)
          :map company-active-map
@@ -67,18 +71,25 @@
         company-dabbrev-ignore-case t ;;my-personal-config - changed to t
         company-dabbrev-char-regexp "\\(\\sw\\|\\s_\\|_\\|-\\)" ;;my-personal-config
         company-dabbrev-downcase nil
-        ;; company backend is my-personal-config
-        ;; company-backends '(company-capf
-        ;;  (company-dabbrev-code company-gtags company-etags
-        ;;                        company-keywords)
-        ;;  company-files
-        ;;  company-dabbrev)
-        ;; company backend is my-personal-config
         company-global-modes '(not erc-mode message-mode help-mode
                                    gud-mode eshell-mode shell-mode)
-        company-backends '((company-capf :with company-yasnippet)
-                           (company-dabbrev-code company-keywords company-files)
-                           company-dabbrev))
+        ;; company-backends '((company-capf :with company-yasnippet)
+        ;;                    (company-dabbrev-code company-keywords company-files)
+        ;;                    company-dabbrev)
+        ;; https://github.com/jcs-elpa/company-fuzzy/issues/14
+        company-backends
+        (append
+         ;; --- Internal ---
+         '(company-capf :with company-yasnippet)
+         '(company-semantic)
+         '(company-keywords)    ; Put infront of `company-dabbrev'
+         '(company-abbrev company-dabbrev company-dabbrev-code)
+         '(company-files)
+         ;; '(company-etags company-gtags)
+         ;; '(company-yasnippet)
+         ;; --- External ---
+         '(company-emoji))
+        )
 
   (defun my-company-yasnippet ()
     "Hide the current completeions and show snippets."
@@ -212,7 +223,7 @@
       :hook (global-company-mode . company-quickhelp-mode)
       :init (setq company-quickhelp-delay 0.5))))
 
-;;my-personal-config
+;; my-personal-config
 (use-package company-fuzzy
   :init
   (setq company-fuzzy-sorting-backend 'flx)

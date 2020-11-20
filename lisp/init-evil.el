@@ -99,5 +99,10 @@
 ;; to replace with `xref-find-definitions'
 (add-hook 'evil-mode-hook (lambda()
                             (local-unset-key (kbd "M-."))))
+(defun my/evil-yank-advice (orig-fn beg end &rest args)
+  (pulse-momentary-highlight-region beg end)
+  (apply orig-fn beg end args))
+
+(advice-add 'evil-yank :around 'my/evil-yank-advice)
 
 (provide 'init-evil)
