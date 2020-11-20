@@ -37,6 +37,8 @@
 (evil-set-initial-state 'Log-Edit 'emacs)
 (evil-set-initial-state 'helpful-mode 'emacs)
 (evil-set-initial-state 'wgrep-change-to-wgrep-mode 'emacs)
+(evil-set-initial-state 'view-mode 'emacs)
+(add-to-list 'evil-insert-state-modes 'view-mode)
 
 (use-package evil-numbers
   )
@@ -64,12 +66,20 @@
 (use-package evil-goggles
   :config
   (evil-goggles-mode)
+  (setq evil-goggles-pulse nil)
+  (setq evil-goggles-duration 0.400) ;; default is 0.200
 
   ;; optionally use diff-mode's faces; as a result, deleted text
   ;; will be highlighed with `diff-removed` face which is typically
   ;; some red color (as defined by the color theme)
   ;; other faces such as `diff-added` will be used for other actions
-  (evil-goggles-use-diff-faces)
+  ;; (evil-goggles-use-diff-faces)
+  (custom-set-faces
+   '(evil-goggles-default-face ((t (:inherit 'highlight)))) ;; default is to inherit 'region
+   ;; run `M-x list-faces-display` in a fresh emacs to get a list of faces on your emacs
+   '(evil-goggles-delete-face ((t (:inherit 'menu))))
+   '(evil-goggles-paste-face ((t (:inherit 'custom-saved))))
+   '(evil-goggles-yank-face ((t (:inherit 'custom-invalid)))))
   )
 
 ;; https://github.com/Somelauw/evil-org-mode/blob/master/doc/keythemes.org
