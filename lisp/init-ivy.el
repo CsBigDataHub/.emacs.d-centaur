@@ -106,8 +106,14 @@
          ("M-s" . swiper-isearch-toggle)
          ("M-%" . swiper-query-replace)
 
+         :map swiper-isearch-map
+         ("M-n" . ivy-next-history-element)
+         ("M-p" . ivy-previous-history-element)
+
          :map isearch-mode-map
-         ("M-s" . swiper-isearch-toggle))
+         ("M-s" . swiper-isearch-toggle)
+         ("M-n" . ivy-next-history-element)
+         ("M-p" . ivy-previous-history-element))
   :hook ((after-init . ivy-mode)
          (ivy-mode . counsel-mode))
   :init
