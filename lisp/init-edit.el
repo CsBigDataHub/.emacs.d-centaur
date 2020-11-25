@@ -150,7 +150,9 @@
 ;; Replace zap-to-char functionaity with the more powerful zop-to-char
 (use-package zop-to-char
   :bind (("M-s-z" . zop-up-to-char)
-         ("M-s-ω" . zop-to-char)))
+         ("M-s-ω" . zop-to-char)
+         ("M-s-Z" . zop-to-char)
+         ))
 
 ;; my-personal
 
@@ -393,6 +395,52 @@
     :bind (:map flyspell-mode-map
            ([remap flyspell-correct-word-before-point] . flyspell-correct-wrapper))
     :init (setq flyspell-correct-interface #'flyspell-correct-ivy)))
+
+;;lang-tools
+(use-package langtool
+  :config
+  (when sys/macp
+    (progn
+      ;; place the language-tool directory in $HOME
+      (setq langtool-language-tool-jar
+            "/usr/local/Cellar/languagetool/4.9.1/libexec/languagetool-commandline.jar")
+      (setq langtool-java-bin "/Users/ckoneru/.sdkman/candidates/java/8.0.232.j9-adpt/bin/java")
+      (setq langtool-bin "/usr/local/bin/languagetool")
+      (setq langtool-default-language "en-US")
+      (setq langtool-java-user-arguments '("-Dfile.encoding=UTF-8"))
+      (setq langtool-mother-tongue "en")
+      )
+    )
+  (when sys/linuxp
+    (progn
+      ;; place the language-tool directory in $HOME
+      (setq langtool-language-tool-jar
+            "/usr/share/java/languagetool/languagetool-commandline.jar")
+      (setq langtool-java-bin "/home/mypc/.sdkman/candidates/java/current/bin/java")
+      (setq langtool-bin "/usr/bin/languagetool")
+      (setq langtool-java-classpath
+            "/usr/bin/languagetool:/usr/share/java/languagetool/*")
+      (setq langtool-default-language "en-US")
+      (setq langtool-java-user-arguments '("-Dfile.encoing=UTF-8"))
+      (setq langtool-mother-tongue "en")
+      )
+    )
+  )
+
+;; hyra for langtool check
+(defhydra hydra-langtool (:color pink
+                          :hint nil)
+  "
+_c_: check    _n_: next error
+_C_: correct  _p_: prev error _d_: done checking
+"
+  ("n"  langtool-goto-next-error)
+  ("p"  langtool-goto-previous-error)
+  ("c"  langtool-check)
+  ("C"  langtool-correct-buffer)
+  ("d"  langtool-check-done :color blue)
+  ("q" nil "quit" :color blue))
+(bind-key "C-c h l t" 'hydra-langtool/body)
 
 ;; Hungry deletion
 (use-package hungry-delete
