@@ -8448,3 +8448,225 @@ Using =.dirlocals.el= with Projectile has worked very well for me, and solves a 
 * Static site geneartor with org-mode
 
 - [[https://etienne.depar.is/fronde/][fronde]]
+
+
+* [[https://titan-c.gitlab.io/org-cv/][Org CV]] :website:
+
+[2020-12-03 Thu 09:54]
+
+** Article
+
+--------------
+
+*** Goal: Export backend for CV
+
+This project exports an org-mode file with reasonably structured items into a latex file, which compiles into a nice CV. In the same spirit the org-mode file may export to markdown so that it can be used for a web based CV.
+
+- Online documentation in [[https://titan-c.gitlab.io/org-cv/]]
+- Development happens in the gitlab repository: [[https://gitlab.com/Titan-C/org-cv]]
+- There is a mirror in github for backup: [[https://github.com/Titan-C/org-cv]]
+
+This project dog feeds itself and produces the examples on this documentation page directly.
+
+--------------
+
+*** Installation
+
+This project is not on MELPA so you have to do a manual installation. First clone this git repository.
+
+#+begin_example
+   git clone https://gitlab.com/Titan-C/org-cv.git
+#+end_example
+
+There are various modules to perform the export. As of now =ox-moderncv=, =ox-altacv=, =ox-hugocv=. Choose any or all that you prefer for install. I use =use-package= to manage the installation for example of =ox-moderncv=.
+
+#+begin_example
+   (use-package ox-moderncv
+      :load-path "path_to_repository/org-cv/"
+      :init (require 'ox-moderncv))
+#+end_example
+
+--------------
+
+*** Basic Org file
+
+The basic structure of an org file containing your CV is shown next.
+
+**** Personal contact information
+
+=TITLE=, =AUTHOR= and =EMAIL= are standard org options. But on =TITLE= you put your foreseen job.
+
+| Field    | Description                                        |
+|----------+----------------------------------------------------|
+| TITLE    | Desired job                                        |
+| AUTHOR   | Who are you?                                       |
+| EMAIL    | Your contact email                                 |
+| ADDRESS  | Mailing address, this can span over multiple lines |
+| HOMEPAGE | URL of your website                                |
+| MOBILE   | Mobile phone                                       |
+| GITHUB   | GitHub user                                        |
+| GITLAB   | GitLab user                                        |
+| LINKEDIN | Linkedin username                                  |
+| PHOTO    | path to photo file                                 |
+
+#+begin_example
+   #+TITLE: My dream job
+  #+AUTHOR: John Doe
+  #+email: john@doe.lost
+
+  #+ADDRESS: My Awesome crib
+  #+ADDRESS: Fantastic city -- Planet Earth
+  #+MOBILE: (+9) 87654321
+  #+HOMEPAGE: example.com
+  #+GITHUB: Titan-C
+  #+GITLAB: Titan-C
+  #+LINKEDIN: oscar-najera
+  #+PHOTO: smile.png
+#+end_example
+
+You can use org-modes hierarchical structure to describe your CV. To make a specific subtree an item describing an experience point (Job you have, degree you pursued, etc.) you use the org properties drawer and with the =:CV_ENV: cventry= property. You should also include the =FROM= and =TO= properties defining the span of the event, as =LOCATION= and =EMPLOYER=.
+
+#+begin_example
+   * Employement
+  ** One job
+  :PROPERTIES:
+  :CV_ENV: cventry
+  :FROM:     <2014-09-01>
+  :TO:     <2017-12-07>
+  :LOCATION: a city, a country
+  :EMPLOYER: The employer
+  :END:
+
+  I write about awesome stuff I do.
+  ** Other job
+  :PROPERTIES:
+  :CV_ENV: cventry
+  :FROM:     <2013-09-01>
+  :TO:     <2014-08-07>
+  :LOCATION: my city, your country
+  :EMPLOYER: The other employer
+  :END:
+
+  I write about awesome stuff I do.
+
+  * Other stuff I do
+  - I work a lot
+  - I sleep a lot
+  - I eat a lot
+#+end_example
+
+--------------
+
+*** Latex Exporter
+
+**** Using modern-cv
+
+[[https://www.ctan.org/tex-archive/macros/latex/contrib/moderncv][moderncv]] is a standard \(\LaTeX\) package that you can find in many of your latex distributions. I maintain a fork of it, to work with my use case at [[https://github.com/Titan-C/moderncv.git]] Feel free to use any or even your personal fork for your desired use case.
+
+To configure the export for moderncv you need the addition options in your org file.
+
+#+begin_example
+   # CV theme - options include: 'casual' (default), 'classic', 'oldstyle' and 'banking'
+  #+CVSTYLE: banking
+  # CV color - options include: 'blue' (default), 'orange', 'green', 'red', 'purple', 'grey' and 'black'
+  #+CVCOLOR: green
+#+end_example
+
+When exporting you can call the following function to get the latex file.
+
+#+begin_example
+   (org-export-to-file 'moderncv "moderncv.tex")
+  (org-latex-compile "moderncv.tex")
+#+end_example
+
+Alternative text - include a link [[file:moderncv.org.pdf][to the PDF!]]
+
+**** Using alta-cv
+
+[[https://github.com/liantze/AltaCV][AltaCV]] is another project to generate a CV, you will need to install it yourself. I maintain a fork too at [[https://github.com/Titan-C/AltaCV.git]] because I need extra features and I encourage to use this fork on the =sections= branch.
+
+The style of this CV is more involved and you need some configuration in your org file to get it to work. First define the margins, the large margin to the right is to allow for a second column.
+
+#+begin_example
+   #+LATEX_HEADER: \geometry{left=1cm,right=9cm,marginparwidth=6.8cm,marginparsep=1.2cm,top=1.25cm,bottom=1.25cm}
+#+end_example
+
+Content on the right column has the same structure of a org file, but you need to enclose it in the =\marginpar{}= command as shown next.
+
+#+begin_example
+   #+latex: \marginpar{
+#+end_example
+
+#+begin_example
+   * Main Interests
+  - Free/Libre and Open Source Software (FLOSS)
+  - Free food
+  - Free beer
+
+  * Programming
+  - Python
+  - C/C++
+  - EmacsLisp
+  - Bash
+  - JavaScript
+  - PHP
+
+  * Languages
+
+  - *English*  Fluent
+  - *German*   Fluent
+  - *Spanish*  Native
+  - *French*   Intermediate
+#+end_example
+
+#+begin_example
+   #+latex: }
+#+end_example
+
+When exporting you can call the following function to get the latex file.
+
+#+begin_example
+   (org-export-to-file 'altacv "altacv.tex")
+  (org-latex-compile "altacv.tex")
+#+end_example
+
+Alternative text - include a link [[file:altacv.org.pdf][to the PDF!]]
+
+--------------
+
+*** Markdown Hugo Exporter
+
+If your target is not a PDF file but a website, this exporter extends the [[https://ox-hugo.scripter.co/][ox-hugo]] exporter backend. So be sure to install that too.
+
+To export, there is nothing fancy to keep track of, but as an example I exclude some tags during export.
+
+#+begin_example
+   (let ((org-export-exclude-tags '("noexport" "latexonly")))
+       (org-export-to-file 'hugocv "hugocv.md"))
+#+end_example
+
+You are responsible for styling your website.
+
+--------------
+
+*** License
+
+
+#+begin_quote
+  org-cv Copyright © 2018-2020 Óscar Nájera
+
+  This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#+end_quote
+
+--------------
+
+*** Tips
+
+If you have found this project useful. Please consider giving back. You can kindly tip me for this project
+
+- Stellar :: GDPTOFND6HSE5AVHPRXOCJFOA6NPFB65JAEWKTN23EBUGBB2AU4PLIBD
+- liberapay :: [[https://liberapay.com/Titan-C/][Titan-C]]
+
+[[https://www.paypal.com/en_DE/i/scr/pixel.gif]]
