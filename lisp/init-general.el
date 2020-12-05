@@ -23,6 +23,8 @@
   "te" 'treemacs-display-current-project-exclusively
   ".." 'imenu
   "C-a" 'mark-whole-buffer
+  "P" 'projectile-command-map
+  "p" 'persp-key-map
   "SPC" 'counsel-M-x)
 
 (defmacro general-global-spc-menu-definer (def infix-key &rest body)

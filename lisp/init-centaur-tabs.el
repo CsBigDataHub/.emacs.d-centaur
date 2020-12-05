@@ -1,3 +1,4 @@
+;;;init-centaur-tabs.el --- Initialize key-bindings for init-centaur-tabs.	-*- lexical-binding: t -*-
 
 (use-package centaur-tabs
   :demand

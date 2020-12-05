@@ -364,7 +364,13 @@
     (ivy-add-actions
      'counsel-find-file
      '(("g" my-ivy-switch-to-counsel-git "git")
-       ("z" my-ivy-switch-to-counsel-fzf "fzf")))
+       ("z" my-ivy-switch-to-counsel-fzf "fzf")
+       ("F" (lambda (x) (with-ivy-window (insert (file-relative-name x))))
+        "insert relative file name")
+       ("B" (lambda (x)
+              (with-ivy-window
+                (insert (file-name-nondirectory (replace-regexp-in-string "/\\'" "" x)))))
+        "insert file name without any directory information")))
 
     (ivy-add-actions
      'counsel-git
