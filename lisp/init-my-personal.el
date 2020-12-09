@@ -204,7 +204,28 @@ happens within a region if one is selected."
 
 (use-package counsel-fd
   :bind (("C-c c d d" . counsel-fd-dired-jump)
-         ("C-c c d f" . counsel-fd-file-jump)))
+         ("C-c c d f" . counsel-fd-file-jump))
+  :config
+  (ivy-set-actions
+   'counsel-fd-file-jump
+   `(("d" ,(lambda (x)
+             (dired (or (file-name-directory x) default-directory)))
+      "open in dired")))
+  )
+
+(use-package openwith
+  :config
+  (setq openwith-associations
+        (cond
+         ((string-equal system-type "darwin")
+          '(("\\.\\(dmg\\|doc\\|docs\\|xls\\|xlsx\\)$"
+             "open" (file))
+            ("\\.\\(mp4\\|mp3\\|webm\\|avi\\|flv\\|mov\\)$"
+             "open" ("-a" "VLC" file))))
+         ((string-equal system-type "gnu/linux")
+          '(("\\.\\(mp4\\|mkv\\|m4v\\|mp3\\|webm\\|avi\\|flv\\|mov\\)$"
+             "xdg-open" (file))))))
+  (openwith-mode +1))
 
 (use-package gcmh
   :config
