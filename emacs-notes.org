@@ -8670,3 +8670,5 @@ If you have found this project useful. Please consider giving back. You can kind
 - liberapay :: [[https://liberapay.com/Titan-C/][Titan-C]]
 
 [[https://www.paypal.com/en_DE/i/scr/pixel.gif]]
+
+* https://thibaultmarin.github.io/blog/posts/2016-11-13-Personal_website_in_org.html
