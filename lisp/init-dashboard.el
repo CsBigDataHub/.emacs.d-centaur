@@ -99,7 +99,7 @@
                                     (registers . "database"))
 
           dashboard-set-footer t
-          dashboard-footer (format "Powered by Vincent Zhang, %s" (format-time-string "%Y"))
+          dashboard-footer (format "Powered by Chetan Koneru, %s" (format-time-string "%Y"))
           dashboard-footer-icon (cond ((icons-displayable-p)
                                        (all-the-icons-faicon "heart"
                                                              :height 1.1

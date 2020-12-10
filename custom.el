@@ -4,7 +4,9 @@
 ;;;       Put your own configurations in custom-post.el to override default configurations.
 ;;; Code:
 
-(setq centaur-logo nil)                         ; Logo file or nil (official logo)
+(setq centaur-logo (expand-file-name
+                    (if (display-graphic-p) "emacs-head-color.png" "gnu-head.png")
+                    user-emacs-directory))                         ; Logo file or nil (official logo)
 (setq centaur-full-name "Chetan Koneru")           ; User full name
 (setq centaur-mail-address "kchetan.hadoop@gmail.com")   ; Email address
 ;; (setq centaur-proxy "127.0.0.1:1080")          ; Network proxy
