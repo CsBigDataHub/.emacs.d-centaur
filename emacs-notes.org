@@ -8645,28 +8645,5 @@ To export, there is nothing fancy to keep track of, but as an example I exclude 
        (org-export-to-file 'hugocv "hugocv.md"))
 #+end_example
 
-You are responsible for styling your website.
 
---------------
-
-*** License
-
-
-#+begin_quote
-  org-cv Copyright © 2018-2020 Óscar Nájera
-
-  This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-#+end_quote
-
---------------
-
-*** Tips
-
-If you have found this project useful. Please consider giving back. You can kindly tip me for this project
-
-- Stellar :: GDPTOFND6HSE5AVHPRXOCJFOA6NPFB65JAEWKTN23EBUGBB2AU4PLIBD
-- liberapay :: [[https://liberapay.com/Titan-C/][Titan-C]]
-
-[[https://www.paypal.com/en_DE/i/scr/pixel.gif]]
+* https://thibaultmarin.github.io/blog/posts/2016-11-13-Personal_website_in_org.html

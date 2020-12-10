@@ -78,12 +78,7 @@
  '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:")
  '(safe-local-variable-values
    '((add-to-list 'browse-at-remote-remote-type-domains
-                  '(("bitbucket.org" . "bitbucket")
-                    ("github.com" . "github")
-                    ("gitlab.com" . "gitlab")
-                    ("git.savannah.gnu.org" . "gnu")
-                    ("gist.github.com" . "gist")
-                    ("git.sr.ht" . "sourcehut")))
+                  '("github.com" . "github"))
      (magit-todos-exclude-globs "*.elc" "elpa/**" "straight/**" "*.md" "*.org"))))
 
 (custom-set-faces
