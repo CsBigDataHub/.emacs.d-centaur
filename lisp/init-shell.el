@@ -147,6 +147,11 @@ not appropriate in some cases like terminals."
                     (t '("terminal" "*terminal*"
                          (lambda () (term shell-pop-term-shell)))))))
 
+(use-package flymake-shellcheck
+  :commands flymake-shellcheck-load
+  :init
+  (add-hook 'sh-mode-hook 'flymake-shellcheck-load))
+
 (provide 'init-shell)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -3482,4 +3482,15 @@ are defining or executing a macro."
 (bind-keys*
  ("M-m i i" . my/insert-file-name))
 
+
+(defun my/org-get-outline-path()
+  "put the current outline path into kill ring"
+  (interactive)
+  (unless (org-before-first-heading-p)
+    (kill-new
+     (concat
+      (mapconcat #'identity (org-get-outline-path) " --> ")
+      " --> "
+      (substring-no-properties (org-get-heading t t))))))
+
 (provide 'init-my-cust-fun)
