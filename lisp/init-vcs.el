@@ -38,11 +38,10 @@
          ("\\MERGE_MSG\\'" . text-mode))
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch)
-         ("C-c M-g" . magit-file-popup)
+         ("C-c M-g" . magit-file-dispatch)
          (:map magit-status-mode-map
           ("q" . magit-quit-session)
-          )
-         ("C-c M-g" . magit-file-popup))
+          ))
   :init (setq magit-diff-refine-hunk t)
   :config
   (setq-default magit-diff-refine-hunk 'all)

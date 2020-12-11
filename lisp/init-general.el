@@ -154,6 +154,8 @@ The prefix map is named 'my-DEF-map'."
 (general-global-spc-menu-definer
  "magit" "g"
  "g" 'magit-status
+ "G" 'magit-dispatch
+ "f" 'magit-file-dispatch
  "i" 'magit-init
  "c" 'magit-clone
  "t" 'magit-todos-list
