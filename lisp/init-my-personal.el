@@ -105,9 +105,9 @@
   :commands hl-highlight-mode
   )
 
-(use-package ws-butler
-  :hook ((text-mode prog-mode) . ws-butler-mode)
-  :config (setq ws-butler-keep-whitespace-before-point nil))
+;; (use-package ws-butler
+;;   :hook ((text-mode prog-mode) . ws-butler-mode)
+;;   :config (setq ws-butler-keep-whitespace-before-point nil))
 
 (use-package visual-regexp
   :bind (:map mode-specific-map
@@ -179,28 +179,6 @@ happens within a region if one is selected."
 (use-package sort-words)
 
 (use-package package-lint)
-
-(use-package isolate
-  :demand
-  :config
-  (progn
-    (defun activate-mark-hook@set-transient-map ()
-      (unless (progn
-                (derived-mode-p 'mu4e-headers-mode)
-                (derived-mode-p 'magit-mode))
-        (set-transient-map
-         (let ((map (make-sparse-keymap)))
-           (define-key map "a" #'isolate-quick-add)
-           (define-key map "A" #'isolate-long-add)
-           (define-key map "d" #'isolate-quick-delete)
-           (define-key map "D" #'isolate-long-delete)
-           (define-key map "c" #'isolate-quick-change)
-           (define-key map "C" #'isolate-long-change)
-           map)
-         #'region-active-p)))
-
-    (add-hook 'activate-mark-hook #'activate-mark-hook@set-transient-map)
-    ))
 
 (use-package counsel-fd
   :bind (("C-c c d d" . counsel-fd-dired-jump)
