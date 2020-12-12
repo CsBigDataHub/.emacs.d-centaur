@@ -1,3 +1,5 @@
+;; init-no-littering.el --- Initialize no-littering configurations.	-*- lexical-binding: t -*-
+
 (use-package no-littering               ; Keep .emacs.d clean
   :config (progn
             (require 'recentf)
