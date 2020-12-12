@@ -1,3 +1,4 @@
+;; init-evil.el --- Initialize evil configurations.	-*- lexical-binding: t -*-
 
 (use-package evil
   :init
@@ -15,9 +16,46 @@
   (global-evil-matchit-mode 1))
 
 ;; Exactly like tpopes vim-surround but replacing with isolate which give more features
-;;(use-package evil-surround
-;;  :init
-;;  (global-evil-surround-mode))
+(use-package evil-surround
+  :general
+  (:states '(visual)
+   "s" 'evil-surround-region
+   "S" 'evil-substitute)
+  :init
+  (global-evil-surround-mode)
+  :config
+  (add-hook 'emacs-lisp-mode-hook (lambda ()
+                                    (push '(?` . ("`" . "'")) evil-surround-pairs-alist)))
+  )
+
+(use-package embrace
+  :commands embrace-commander
+  :hook ((LaTeX-mode . embrace-LaTeX-mode-hook)
+         (org-mode . embrace-org-mode-hook)
+         (emacs-lisp-mode-hook . embrace-emacs-lisp-mode-hook)
+         (ruby-mode . embrace-ruby-mode-hook))
+  :init
+  (setq embrace-semantic-units-alist '((?w . er/mark-word)
+                                       (?s . er/mark-symbol)
+                                       (?S . er/mark-symbol-with-prefix)
+                                       (?a . er/mark-text-sentence)
+                                       (?A . er/mark-text-paragraph)
+                                       (?n . er/mark-next-accessor)
+                                       (?m . er/mark-method-call)
+                                       (?Q . er/mark-inside-quotes)
+                                       (?q . er/mark-outside-quotes)
+                                       (?P . er/mark-inside-pairs)
+                                       (?p . er/mark-outside-pairs)
+                                       (?c . er/mark-comment)
+                                       (?u . er/mark-url)
+                                       (?e . er/mark-email)
+                                       (?d . er/mark-defun))))
+
+
+(use-package evil-embrace
+  :after evil-surround
+  :config
+  (evil-embrace-enable-evil-surround-integration))
 
 ;; Treat underscores '_' part of the words
 (with-eval-after-load 'evil
