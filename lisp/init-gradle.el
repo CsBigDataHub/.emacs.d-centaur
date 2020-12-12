@@ -1,3 +1,4 @@
+;; init-gradle.el --- Initialize gradle configurations.	-*- lexical-binding: t -*-
 
 (use-package gradle-mode
   :config
