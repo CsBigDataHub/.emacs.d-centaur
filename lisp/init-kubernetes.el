@@ -1,3 +1,5 @@
+;; init-kubernetes.el --- Initialize kubernetes configurations.	-*- lexical-binding: t -*-
+
 (use-package kubernetes
   :commands (kubernetes-overview)
   :config
