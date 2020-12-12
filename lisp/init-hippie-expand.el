@@ -1,3 +1,5 @@
+;;init-hippie-expand.el --- Initialize hippie-exp configurations.	-*- lexical-binding: t -*-
+
 (use-package dabbrev
   :commands (dabbrev-expand dabbrev-completion)
   :config
