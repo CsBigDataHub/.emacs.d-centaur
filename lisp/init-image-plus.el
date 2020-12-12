@@ -1,3 +1,5 @@
+;;init-image-plus.el --- Initialize image+ configurations.	-*- lexical-binding: t -*-
+
 (use-package image+
   :init
   (add-hook 'image-mode-hook
