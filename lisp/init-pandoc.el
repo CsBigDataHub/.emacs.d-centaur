@@ -1,3 +1,4 @@
+;;init-pandoc.el --- Initialize pandoc configurations.	-*- lexical-binding: t -*-
 
 (use-package pandoc-mode
   :hook
