@@ -3086,6 +3086,23 @@ C-u C-u C-u M-x xah-cycle-letter-case -> Force capitalize."
 ;; remap M-c to `my/capitalize'
 (global-set-key [remap capitalize-word] 'my/capitalize)
 
+(defun my-string-inflection-cycle-auto ()
+  "switching by major-mode"
+  (interactive)
+  (cond
+   ;; for emacs-lisp-mode
+   ((eq major-mode 'emacs-lisp-mode)
+    (string-inflection-all-cycle))
+   ;; for python
+   ((eq major-mode 'python-mode)
+    (string-inflection-python-style-cycle))
+   ;; for java
+   ((eq major-mode 'java-mode)
+    (string-inflection-java-style-cycle))
+   (t
+    ;; default
+    (string-inflection-ruby-style-cycle))))
+
 (bind-key "C-c h h c" (defhydra hydra-change-case (:color blue
                                                    :hint nil)
                         "
@@ -3095,7 +3112,7 @@ _c_apitalize     _C_ camel→snake→kebab      _U_PCASE        _d_owncase      
                         ("U"     my/upcase)
                         ("u"     my/upcase)
                         ("d"     my/downcase)
-                        ("C"     string-inflection-all-cycle :color red)
+                        ("C"     my-string-inflection-cycle-auto :color red)
                         ("<SPC>" xah-cycle-letter-case :color red)
                         ("q"     nil "cancel" :color blue)))
 
