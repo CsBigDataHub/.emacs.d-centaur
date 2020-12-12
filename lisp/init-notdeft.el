@@ -1,3 +1,5 @@
+;;init-notdeft.el --- Initialize notdeft configurations.	-*- lexical-binding: t -*-
+
 (add-to-list 'load-path "~/.emacs.d/lisp/notdeft/")
 
 (require 'notdeft-autoloads)
