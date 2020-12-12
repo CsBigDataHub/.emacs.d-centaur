@@ -232,6 +232,9 @@
           (("*Gofmt Errors*" "*Go Test*") :select t :size 0.3 :align 'below :autoclose t)
           ("*How Do You*" :select t :size 0.5 :align 'below :autoclose t)
 
+          (("*Org Agenda*" " *Agenda Commands*" " *Org todo*" "*Org Dashboard*" "*Org Select*") :select t :size 0.1 :align 'below :autoclose t)
+          (("\\*Capture\\*" "^CAPTURE-.*\\.org*") :regexp t :select t :size 0.3 :align 'below :autoclose t)
+
           ("*ert*" :size 15 :align 'below :autoclose t)
           (overseer-buffer-mode :size 15 :align 'below :autoclose t)
 
