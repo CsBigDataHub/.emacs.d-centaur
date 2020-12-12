@@ -1,6 +1,8 @@
 ;; init-engine.el --- Initialize engine configurations.	-*- lexical-binding: t -*-
 (use-package engine-mode
   :config
+  (which-key-add-key-based-replacements
+    "C-x /" "engine-mode")
   ;; enable engine-mode globally
   (engine-mode t)
 
