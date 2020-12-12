@@ -114,7 +114,7 @@
 (use-package bmx-mode
   :after company
   :diminish
-  :hook (bmx-mode . bmx-mode-setup-defaults))
+  :hook (after-init . bmx-mode-setup-defaults))
 
 ;; Fish shell
 (use-package fish-mode
