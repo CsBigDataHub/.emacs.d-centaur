@@ -8647,3 +8647,635 @@ To export, there is nothing fancy to keep track of, but as an example I exclude 
 
 
 * https://thibaultmarin.github.io/blog/posts/2016-11-13-Personal_website_in_org.html
+
+
+* [[https://karthinks.com/software/batteries-included-with-emacs/][Batteries included with Emacs | Karthinks]] :website:
+
+[2020-12-12 Sat 09:33]
+
+** Article
+
+Emacs has a reputation for being borderline unusable out of the box, of being bloated but somehow surprisingly bare.
+
+This is largely a discoverability problem ^{[[#fn:1][1]]}. The solution the Internet has settled on seems to be “Emacs distributions” like Doom, Spacemacs or Prelude that glue together dozens (sometimes hundreds) of addons to deliver a batteries included, finely tuned and user-friendly experience from first launch. While it's not for me, this does work great  ^{[[#fn:2][2]]}, and many of these packages will probably make their way into the default Emacs experience in due time.
+
+But while modern features like built-in LSP support, faster syntax highlighting (through tree-sitter) and ligature support are still being debated in the development mailing list, the long running, slow moving train of Emacs has picked up many interesting passengers.
+
+Emacs as shipped does a lot more than meets the eye, and external package functionality often partially replicates built in behavior.
+
+Here is a list of useful features in emacs I use regularly that I don't see mentioned or recommended often online. Guidelines I used to populate this list:
+
+- No packages, *stock Emacs only*.
+- No steep learning curves. *Learn each feature in under two minutes or bust*.
+- *No gimmicks*. No doctor, tetris, snake, dunnet, zone or butterfly.
+- *Just the deltas*. No commonly mentioned packages like flymake, doc-view, outline-minor-mode or eww/w3m. Nothing that Emacs brings up automatically or a nonspecific Google search gets you.
+- Assume a modern Emacs, 26.3+.
+
+The list is written in the language of Emacs' conventions. If you're new to Emacs, here's some extra cognitive load for you:
+
+| Emacs jargon  | Modern parlance                    |
+|---------------+------------------------------------|
+| =M-x=         | Alt + x                            |
+| =C-x=         | Ctrl + x                           |
+| Frame         | Emacs window                       |
+| Window        | split/pane                         |
+| Buffer        | Contiguous chunk of text/data      |
+| Point         | Cursor position in a buffer        |
+| Active Region | Text selection                     |
+| Region        | Text selection (not highlighted)   |
+| Face          | Font, color and display properties |
+
+OK? Let's go.
+
+--------------
+
+*** Artist mode ( =M-x artist-mode=)
+
+Turn Emacs into an Ascii art based paint program. Draw (poly-)lines, rectangles and ellipses. Fill or spray.
+
+Your browser does not support the video tag.
+
+I'm not much of an (ascii) artist, but I do use =artist-mode= to draw boxes when writing documentation or READMEs.
+
+--------------
+
+*** Pulse ( =pulse.el=)
+
+The included pulse library provides functions to flash a region of text. The most useful general application is to flash the line the cursor is on as a navigational aid or accessibility feature.
+
+Your browser does not support the video tag.
+
+As is the annoying case with many things Emacs though, it provides all the ingredients and lights the flame but leaves the cooking to you. Here's a simple recipe:
+
+#+BEGIN_EXAMPLE
+   ( defun  pulse-line ( &rest  _)
+         "Pulse the current line."
+        ( pulse-momentary-highlight-one-line ( point)))
+
+  ( dolist ( command  '( scroll-up-command  scroll-down-command
+                      recenter-top-bottom  other-window))
+    ( advice-add  command  :after  #' pulse-line))
+#+END_EXAMPLE
+
+Modify as needed. There's more than one external package ( [[https://github.com/Malabarba/beacon][beacon]]) that does this and more, but =pulse= is just fine.
+
+--------------
+
+*** Undo in region ( =C-/=)
+
+Limit your undoing to the active region:
+
+[[https://karthinks.com/img/undo-in-region-demo.gif]]
+
+#+DOWNLOADED: https://karthinks.com/img/undo-in-region-demo.gif @ 2020-12-12 09:40:32
+[[file:images/emacs-notes/undo-in-region-demo2020-12-12_09-40-32_.gif]]
+
+
+There's nothing to set up or run here. This is the default behavior of undo in Emacs.
+
+--------------
+
+*** Follow mode ( =M-x follow-mode=)
+
+Most monitors are much wider than they are tall. Most text files are much longer than they are wide. That's a problem.
+
+=follow-mode= shows a contiguous buffer paginated across multiple windows. The cursor flows from one window to the next.
+
+[[https://karthinks.com/img/follow-mode-demo.gif]]
+
+#+DOWNLOADED: https://karthinks.com/img/follow-mode-demo.gif @ 2020-12-12 09:40:43
+[[file:images/emacs-notes/follow-mode-demo2020-12-12_09-40-43_.gif]]
+
+
+--------------
+
+*** Selective display ( =C-x $=)
+
+If you code with rigid indentation, you can get a quick overview of your document with =set-selective-display=. No mucking around with folding, =outline-= or =hs-minor-mode= regexps.
+
+[[https://karthinks.com/img/set-selective-display-demo.gif]]
+
+#+DOWNLOADED: https://karthinks.com/img/set-selective-display-demo.gif @ 2020-12-12 09:41:17
+[[file:images/emacs-notes/set-selective-display-demo2020-12-12_09-41-17_.gif]]
+
+
+Call the command with the prefix argument set to the column to hide. Call without a prefix argument to disable.
+
+--------------
+
+*** Pretty symbols ( =M-x prettify-symbols-mode=)
+
+This one's mainly for LaTeX users. Display unicode versions of math operators, greek symbols and more. =M-x prettify-symbols-mode= in a TeX buffer.
+
+#+CAPTION: Figure 1: Before and after enabling =prettify-symbols-mode=
+[[https://karthinks.com/img/prettify-symbols-test.png]]
+
+#+DOWNLOADED: https://karthinks.com/img/prettify-symbols-test.png @ 2020-12-12 09:41:46
+[[file:images/emacs-notes/prettify-symbols-test2020-12-12_09-41-46_.png]]
+
+
+The equivalent in =org-mode= is =M-x org-toggle-pretty-entities=. Other major modes will have to define the replacements explicitly to get this behavior. Example with Python:
+
+#+BEGIN_EXAMPLE
+   ( add-hook
+    'python-mode-hook
+   ( lambda ()
+     ( mapc ( lambda ( pair) ( push  pair  prettify-symbols-alist))
+            '( ;; Syntax
+             ( "def"  .       #x2131)
+             ( "not"  .       #x2757)
+             ( "in"  .        #x2208)
+             ( "not in"  .    #x2209)
+             ( "return"  .    #x27fc)
+             ( "yield"  .     #x27fb)
+             ( "for"  .       #x2200)
+              ;; Base Types
+             ( "int"  .       #x2124)
+             ( "float"  .     #x211d)
+             ( "str"  .       #x1d54a)
+             ( "True"  .      #x1d54b)
+             ( "False"  .     #x1d53d)
+              ;; Mypy
+             ( "Dict"  .      #x1d507)
+             ( "List"  .      #x2112)
+             ( "Tuple"  .     #x2a02)
+             ( "Set"  .       #x2126)
+             ( "Iterable"  .  #x1d50a)
+             ( "Any"  .       #x2754)
+             ( "Union"  .     #x22c3)))))
+#+END_EXAMPLE
+
+[[https://karthinks.com/img/prettify-symbols-python-before.png]]
+
+#+DOWNLOADED: https://karthinks.com/img/prettify-symbols-python-before.png @ 2020-12-12 09:42:41
+[[file:images/emacs-notes/prettify-symbols-python-before2020-12-12_09-42-41_.png]]
+
+
+#+CAPTION: Figure 2: A =python-mode= buffer before and after enabling =prettify-symbols-mode=
+[[https://karthinks.com/img/prettify-symbols-python-after.png]]
+
+#+DOWNLOADED: https://karthinks.com/img/prettify-symbols-python-after.png @ 2020-12-12 09:42:45
+[[file:images/emacs-notes/prettify-symbols-python-after2020-12-12_09-42-45_.png]]
+
+
+--------------
+
+*** View mode ( =M-x view-mode=)
+
+Provide pager-like keybindings. Makes navigating read-only buffers a breeze. Move down and up with =SPC= and =delete= (backspace) or =S-SPC=, half a page down and up with =d= and =u=, and isearch with =s=.
+
+This is my preferred way to read code or documents as I can avoid chorded commands. Note that =evil-mode= doesn't help here either, since paging is bound to =C-u/d/f/b=.
+
++To that end I just hook this into =read-only-mode=.+ Prolific emacser [[https://old.reddit.com/r/emacs/comments/jwhr6g/batteries%5Fincluded%5Fwith%5Femacs/gct12vp/][Omar Antolin Camarena]] points out a built-in way to use =view-mode= in all read-only buffers, including ones you set read-only with =C-x C-q=:
+
+#+BEGIN_EXAMPLE
+   ( setq  view-read-only  t)
+#+END_EXAMPLE
+
+This is my favorite feature of the bunch, considering how much time I spend in Emacs reading things.
+
+--------------
+
+*** Cycle-spacing ( =M-SPC=)
+
+The =cycle-spacing= command is more versatile than it appears. By default, it cycles between deleting all whitespace around cursor but one, deleting all whitespace and restoring whitespace. But with a negative argument, it deletes all blank lines around the cursor. (Calling it with a negative argument is fast: Hold down Meta and hit minus and space in sequence.)
+
+Put together, it's doing the job of (almost) three older commands: =just-one-space=, =delete-horizontal-space= and =delete-blank-lines= ^{[[#fn:3][3]]} This opens up the bindings =C-x C-o= and =M-\= for more useful functions.
+
+--------------
+
+*** Indirect buffers ( =M-x make-indirect-buffer=)
+
+One buffer. Two windows. Two states.
+
+This one's for outline/org users. Do you want to see an overview of your document /and/ the section you're working on? =M-x make-indirect-buffer= or =M-x clone-indirect-buffer=
+
+Here I clone an org buffer and narrow the original to get a makeshift TOC:
+[[https://karthinks.com/img/indirect-buffer-demo.gif]]
+
+#+DOWNLOADED: https://karthinks.com/img/indirect-buffer-demo.gif @ 2020-12-12 09:43:03
+[[file:images/emacs-notes/indirect-buffer-demo2020-12-12_09-43-03_.gif]]
+
+
+At this point we're a few lines of elisp away from writing a =toc-minor-mode= for org files!
+
+But the possibilities are much larger, because as the manual puts it:
+
+#+BEGIN_QUOTE
+  The text of the indirect buffer is always identical to the text of its base buffer; changes made by editing either one are visible immediately in the other. But in all other respects, the indirect buffer and its base buffer are completely separate. They can have different names, different values of point, different narrowing, different markers, different major modes, and different local variables.
+#+END_QUOTE
+
+--------------
+
+*** Html-fontify ( =M-x htmlfontify-buffer=)
+
+Reproduce the look of your emacs buffer as a html file with CSS. This is either extremely useful or useless to you!
+
+[[/share/htmlfontify-demo.html][Here]] is the html-fontified version of the source file of this write-up.
+
+--------------
+
+*** DWIM commands (upcase, downcase and more ^{[[#fn:4][4]]})
+
+Modern versions of Emacs provide Do-What-I-Mean versions of various editing commands: They act on the region when the region is active, and on an appropriate semantic unit otherwise. Replace =upcase-word= and =downcase-word= with =upcase-dwim= and =downcase-dwim= respectively, and you can safely eject the bindings for =upcase-region= and =downcase-region=. ^{[[#fn:5][5]]}
+
+#+BEGIN_EXAMPLE
+   ( global-set-key ( kbd  "M-u")  'upcase-dwim)
+  ( global-set-key ( kbd  "M-l")  'downcase-dwim)
+  ( global-set-key ( kbd  "M-c")  'capitalize-dwim)
+#+END_EXAMPLE
+
+DWIM is standard behavior for emacs commands even when it doesn't say that in the name. =count-words=, =query-replace=, the list goes on. Check to see if your frequently used commands DWYM.
+
+--------------
+
+*** Unit conversion in calc ( =M-x calc=)
+
+It's =u c=. And ='= (quote) for algebraic entry:
+[[https://karthinks.com/img/calc-units-demo.gif]]
+
+#+DOWNLOADED: https://karthinks.com/img/calc-units-demo.gif @ 2020-12-12 09:43:59
+[[file:images/emacs-notes/calc-units-demo2020-12-12_09-43-59_.gif]]
+
+
+=calc= does a lot more with units. You can simplify, define new unit conversions and more. Hit =u ?= to see your options.
+
+--------------
+
+*** Symbolic computation in calc ( =M-x calc=)
+
+We're skirting the “ *learn each feature in under two minutes or bust*” rule with this one, as it deserves its own write-up, or a perusal of the manual. The general interaction paradigm is simple, though.
+
+Let's find a Taylor expansion of the integral of the error function:
+[[https://karthinks.com/img/calc-symbolic-demo.gif]]
+
+#+DOWNLOADED: https://karthinks.com/img/calc-symbolic-demo.gif @ 2020-12-12 09:46:36
+[[file:images/emacs-notes/calc-symbolic-demo2020-12-12_09-46-36_.gif]]
+
+
+Access algebraic routines (root finding, symbolic manipulation) in calc under the =a= prefix. Indefinite integration is =a i=, differentiation is =a d=, solving algebraic equations is =a S= and so on. (Hit =a ?=)
+
+--------------
+
+*** Scroll lock mode ( =scrollock=)
+
+What it says on the tin. Move the buffer instead of the cursor when navigating. Just press the scroll lock key or =M-x scroll-lock-mode=.
+
+--------------
+
+*** Tabs ( =M-x tab-bar-mode=)
+
+These are mentioned often, but rarely recommended. Most Emacs users find the idea of tabs in Emacs to be redundant, but will happily recommend window configuration registers, which provide similar functionality.
+
+Tabs work great to separate projects, or work and email buffers. In principle this is equivalent to popping up a new frame and letting the window manager handle the separation, but on stacking window managers I find tabs to be much preferable.
+
+Since there's never one way to do something in Emacs, a secondary =tab-line-mode= is available that adds tabs to each window instead of frame.
+
+--------------
+
+*** Next time:
+
+
+- =icomplete= and =fido=: Incremental completion systems
+- =completion-styles=: Supercharge completion in the minibuffer
+- =re-builder= and =rx=: Visual regular expressions
+- =orgtbl-mode=: Easy table formatting everywhere
+- =strokes-mode=: Control emacs with mouse gestures
+
+... and more.
+
+--------------
+
+1.
+
+   <<fn:1>>
+   Coupled with some antiquated defaults. I'm not holding my breath here. [[#fnref:1][↩︎]]
+
+2.
+
+   <<fn:2>>
+   And no wonder, a staggering amount of work has gone into Doom/Spacemacs etc. Tens of thousands of man hours. [[#fnref:2][↩︎]]
+
+3.
+
+   <<fn:3>>
+   Not quite, since =delete-blank-lines= will leave one newline untouched. [[#fnref:3][↩︎]]
+
+4.
+
+   <<fn:4>>
+   There is of course also =capitalize-dwim=. Many thanks to Zachary Kanfer, the author of all three DWIM commands, for reminding me of its existence! [[#fnref:4][↩︎]]
+
+5.
+
+   <<fn:5>>
+   Unless you like working with inactive regions. In which case you're probably an Emacs greybeard and you don't need this write-up! [[#fnref:5][↩︎]]
+
+* [[https://karthinks.com/software/more-batteries-included-with-emacs/][More batteries included with emacs | Karthinks]] :website:
+
+[2020-12-12 Sat 09:33]
+
+** Article
+
+Continuing from [[https://karthinks.com/software/batteries-included-with-emacs/][last time]], here are a dozen more tricks Emacs has up its sleeve that it's shy about telling you. We continue to chip away at Emacs' discoverability problem, one demo at a time.
+
+Same rules as before:
+
+- No packages, *stock Emacs only*
+
+- No steep learning curves. *Learn each feature in under five minutes or bust*. (Up from two minutes last time.)
+
+- *No gimmicks*. No doctor, tetris, snake, dunnet...
+
+- *Just the deltas*. No commonly mentioned packages like flymake, doc-view, outline-minor-mode, gnus or eww. Nothing that Emacs brings up automatically or a nonspecific Google search gets you.
+
+- Assume a modern Emacs, 26.3+.
+
+  Also, if you're new to Emacs:
+
+  | Emacs jargon  | Modern parlance                    |
+  |---------------+------------------------------------|
+  | =M-x=           | Alt + x                            |
+  | =C-x=           | Ctrl + x                           |
+  | Frame         | Emacs window                       |
+  | Window        | split/pane                         |
+  | Buffer        | Contiguous chunk of text/data      |
+  | Point         | Cursor position in buffer          |
+  | Active Region | Text selection                     |
+  | Region        | Text selection (not highlighted)   |
+  | Face          | Font, color and display properties |
+
+(Sorry.)
+
+Okay? Let's go:
+
+*** Strokes ( =M-x strokes-help=)
+
+Control Emacs with mouse gestures:
+
+[[https://karthinks.com/img/strokes-mode-demo.mp4]]
+
+
+Why are you using Emacs with a mouse, you ask.
+
+In this demo I used gestures to handle window management:
+[[https://karthinks.com/img/strokes-list.png]]
+
+#+DOWNLOADED: https://karthinks.com/img/strokes-list.png @ 2020-12-12 09:47:50
+[[file:images/emacs-notes/strokes-list2020-12-12_09-47-50_.png]]
+
+
+This is because I lack imagination. Consider: You can bind /any/ gesture to /any/ Emacs command.
+
+The real utility of this feature is when you find yourself going back and forth between different interaction paradigms, like a web browser and Emacs, requiring frequent context switching between full keyboard and keyboard/mouse based interaction.
+
+Want to =org-capture= or =org-roam-insert= something from your browser? Want to quickly recompile a TeX document while you're busy mousing through the corresponding PDF? Need to tweak some markup in your document while you work on graphics in Inkscape? [[http://xenodium.com/emacs-clone-git-repo-from-clipboard/][Clone a repository you found online]]? =strokes-mode=.
+
+The second use case for Strokes is to control Emacs during reading-centric activities, like email or RSS. Star or delete messages, pause or skip music tracks (with some elisp around =playerctl=), navigate info nodes, or cycle through Elfeed searches.
+
+=M-x strokes-help= will get you started. As with most things Emacs, there's more to the library than meets the eye, like support for multi-part strokes you can use to edit documents in Chinese. The buffer showing the gesture being traced is for demo purposes only, you can customize =strokes-use-strokes-buffer=:
+
+#+BEGIN_EXAMPLE
+   ( global-set-key ( kbd  "")  'strokes-do-stroke)  ; Draw strokes with RMB
+  ( setq  strokes-use-strokes-buffer  nil)  ; Don't draw strokes to the screen
+#+END_EXAMPLE
+
+--------------
+
+*** Minibuffer completion styles ( =C-h v completion-styles=)
+
+The default minibuffer experience is annoying enough to send anyone into the arms of =ido=, =ivy= or =helm=. But Emacs does a lot better in the tab-completions department than it lets on. The minibuffer can match by substrings, regexps, initials and even (as of Emacs 27+) fuzzily, and it can do all of them at once if you don't mind a giant pile of matches.
+
+You can do worse than
+
+#+BEGIN_EXAMPLE
+   ( setq  completion-styles  '( initials  partial-completion  flex))  ; > Emacs 27.1
+  ( setq  completion-cycle-threshold  10)
+#+END_EXAMPLE
+
+Now =M-x ohba= tab-expands to =org-hide-block-all=, =M-x qrr= to =query-replace-regexp= and so on, allowing you to tab-cycle between up to ten completions. Use tab to match file names fuzzily and expand short paths ( =~/.l/sh/g=) to long ones ( =~/.local/share/git=).
+
+Stretching the five minute rule a bit: You probably want different matching rules for different categories, though. Flex matching on extended commands ( =M-x=) can dump hundreds of irrelevant matches on short input, for instance. You can customize =completion-category-overrides= to set the matching style by the category being completed.
+
+Finally, note that completion styles dictate how a candidate pool is found. Incremental completion systems like =ido= specify how found candidates are displayed and chosen. These are orthogonal functions, so any set of completion styles should work with any completion system. Unfortunately this isn't the case, because =ivy= and =helm= are off doing their own thing. Emacs' built in completion styles do work with =icomplete=, =ido= and possibly =selectrum= though.
+
+--------------
+
+*** Fake Ido ( =M-x fido-mode=)
+
+Improves the other half of the default minibuffer experience: interacting with selection candidates. Navigating to, from and inside the default completions buffer takes too many key presses. =fido-mode= brings =ido= like selection to every command in Emacs that uses =completing-read=, which is most of them.
+
+Of course, =ido= is also built in, but you know all about it. It also takes some effort to get ido to work with every command. =fido-mode= is set-and-forget, but it's Emacs 27+ only.
+
+--------------
+
+*** Easier rectangle editing ( =M-x cua-selection-mode=)
+
+Your browser does not support the video tag.
+
+The default rectangle commands in Emacs ( =C-x r= map) leave a little to be desired in terms of interactivity. Emacs has fully featured rectangle editing, but it's presented in an odd sort of way, as a subfeature of Common User Access. It's pretty nifty:
+
+Your browser does not support the video tag.
+
+Start or clear a rectangle selection with =C-=. Cycle through rectangle corners with ==. Yes, you'll need to rebind it if you use Org or ESS.
+
+It's a very handy feature, but note that =cua-selection-mode= does /not/ mesh well with undo. If you use =undo-tree=, it can lock up trying to undo a =cua-selection= edit.
+
+--------------
+
+*** speedbar ( =M-x speedbar=)
+
+A file explorer and much, much more in Emacs. If you need the Neotree or dired-sidebar package to do anything in Emacs, check out speedbar.
+
+Speedbar pops up a side frame that looks like a file browser, which it is. But it also integrates with =imenu= to show you headings/tags inside files, and with =vc= to show you the status of your files:
+
+#+CAPTION: Figure 1: Speedbar showing tags and VC status
+[[https://karthinks.com/img/speedbar-tags-demo.png]]
+
+#+DOWNLOADED: https://karthinks.com/img/speedbar-tags-demo.png @ 2020-12-12 09:49:53
+[[file:images/emacs-notes/speedbar-tags-demo2020-12-12_09-49-53_.png]]
+
+
+#+CAPTION: Figure 2: Speedbar showing headings in an org file
+[[https://karthinks.com/img/speedbar-org-demo.png]]
+
+#+DOWNLOADED: https://karthinks.com/img/speedbar-org-demo.png @ 2020-12-12 09:49:56
+[[file:images/emacs-notes/speedbar-org-demo2020-12-12_09-49-56_.png]]
+
+
+You can act on files with (frustratingly, /almost/ dired-like) keybindings. Most commands run from speedbar will be run in the associated buffer.
+
+It tracks the active buffer to show you appropriate hierarchical information. Here I moved point into =info= and =latex-mode= buffers:
+
+[[https://karthinks.com/img/speedbar-info-demo.png]]
+
+#+DOWNLOADED: https://karthinks.com/img/speedbar-info-demo.png @ 2020-12-12 09:50:20
+[[file:images/emacs-notes/speedbar-info-demo2020-12-12_09-50-20_.png]]
+
+
+[[https://karthinks.com/img/speedbar-latex-demo.png]]
+
+#+DOWNLOADED: https://karthinks.com/img/speedbar-latex-demo.png @ 2020-12-12 09:50:23
+[[file:images/emacs-notes/speedbar-latex-demo2020-12-12_09-50-23_.png]]
+
+
+Perhaps you'd like a list of your buffers instead. Switch between buffer and file view with =b= / =f=. (You can expand a buffer entry for tag/headings.)
+
+[[https://karthinks.com/img/speedbar-buffers-demo.png]]
+
+#+DOWNLOADED: https://karthinks.com/img/speedbar-buffers-demo.png @ 2020-12-12 09:50:26
+[[file:images/emacs-notes/speedbar-buffers-demo2020-12-12_09-50-26_.png]]
+
+
+--------------
+
+*** Orgtbl minor mode ( =M-x orgtbl-mode=)
+
+Org-mode is its own thing, a full fledged notetaking, publishing, literate-programming, task tracking application with a growing ecosystem that's parallel to Emacs'. ^{[[#fn:1][1]]}
+
+But it does provide a handy tool that's useful in any mode: Making tables. If you're one of the dozen Emacs users who haven't hopped on the Org train, this one's for you.
+
+With =orgtbl-mode=, you can make tables by starting a line with the pipe character and hitting tab to make a field--like you would in =org-mode=--but *without getting in the way of your major mode*. You can just leave it on and get on with your work.
+
+Your browser does not support the video tag.
+
+Here I table some parameters in matlab-mode as a comment, but even more lazily than prescribed above by calling =orgtbl-create-or-convert-from-region= ( =C-c |=) on some data.
+
+With some work, you can export the table in place to html or LaTeX, but setting this up would break the five minute rule. You can also use the table as a spreadsheet, which is beyond me.
+
+--------------
+
+*** Regexp builder ( =M-x re-builder=)
+
+[[https://karthinks.com/img/re-builder-demo.png]]
+
+#+DOWNLOADED: https://karthinks.com/img/re-builder-demo.png @ 2020-12-12 09:50:43
+[[file:images/emacs-notes/re-builder-demo2020-12-12_09-50-43_.png]]
+
+Emacs' regular expressions syntax can be idiosyncratic if you're used to [[https://www.pcre.org/][PCRE]]. Are unescaped parens matched literally or do they act as capture groups? Does + need to be escaped to match multiple occurrences of a character? How do I match whitespace again? ^{[[#fn:2][2]]}
+
+I can never remember. For regularly confused users like me there is =re-builder=. Build your regular expressions interactively, one character at a time. Save it to the kill ring for later use. This is a godsend when testing regexes for non-interactive use, like when writing elisp helpers.
+
+A cleaner approach to regular expressions in Emacs, as most package maintainers will tell you, is to use the =rx= library instead. =rx= translates regular expressions in sexp form to a regexp string:
+
+#+BEGIN_EXAMPLE
+   ( rx ( and  "("
+           ( or  "use-package"  "require")
+           ( +  space)
+           ( group ( syntax  symbol))))
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+   (\(?:\(?:requir\|use-packag\)e\)[[:space:]]+\(\s_\)
+#+END_EXAMPLE
+
+--------------
+
+*** Future history ( =M-n= in prompts)
+
+=M-p= and =M-n= cycle through history items in minibuffer prompts. So what happens when you press =M-n= when you're at a blank prompt?
+
+Emacs tries to Do What You Mean. If the cursor is over a file name, for instance, =M-n= at the find-file prompt inserts the file path at point into the minibuffer. From the manual:
+
+#+BEGIN_QUOTE
+  The “future history” for file names includes several possible alternatives you may find useful, such as the file name or the URL at point in the current buffer. The defaults put into the “future history” in this case are controlled by the functions mentioned in the value of the option file-name-at-point-functions.
+#+END_QUOTE
+
+Like the DWIM behavior of Emacs commands on regions, many utilities account for =future-history=. You can usually drag whatever relevant object point is at into the minibuffer prompt with =M-n=.
+
+--------------
+
+*** Transpose regions ( =M-x transpose-region=)
+
+Lurking in the bevy of transposition commands in Emacs is =transpose-region=, which does what it says on the tin ^{[[#fn:3][3]]}:
+
+Your browser does not support the video tag.
+
+Exchange any two non-overlapping regions in a buffer. You'll need to assign a keybinding though.
+
+#+BEGIN_EXAMPLE
+   ( global-set-key ( kbd  "C-x C-M-t")  'transpose-regions)
+#+END_EXAMPLE
+
+Also of note: =transpose-paragraphs=, which sounds like a text-mode utility but works pretty well on adjacent blocks of code.
+
+--------------
+
+*** View mode, again ( =M-x view-mode=)
+
+View-mode got an airing [[https://karthinks.com/software/batteries-included-with-emacs/#view-mode--m-x-view-mode][the last time around]] but I like it so much I will repeat myself. *Turn Emacs into a pager.*
+
+By default, pressing =v= in dired will open a file in view-mode. You can dismiss the window and buffer with =q=, so regular buffers can essentially function as info or help buffers do with =View=. You can scroll or isearch without pressing any modifier keys, and all advanced navigation commands (like xref) are still available, so this is the perfect way to explore a code repository.
+
+--------------
+
+*** Newsticker ( =M-x newsticker-treeview=)
+
+AKA I'm not brave enough to use GNUS!
+[[https://karthinks.com/img/newsticker-demo.png]]
+
+#+DOWNLOADED: https://karthinks.com/img/newsticker-demo.png @ 2020-12-12 09:51:09
+[[file:images/emacs-notes/newsticker-demo2020-12-12_09-51-09_.png]]
+
+
+Yes, Emacs has a traditionally styled RSS reader built in. You can organize feeds by folders, peruse with one button, the usual. This is the only feature in this list I no longer use, because Elfeed's design syncs with my brain much better. That said, Newsticker is excellent for following high volume feeds like subreddits since it doesn't maintain a database:
+
+#+BEGIN_QUOTE
+  You can mark [an item] as “old” when you have read it or -- if you want to keep it -- you can mark it as “immortal”. You can do that manually and you can define filters which do that automatically, see below. When a headline has vanished from the feed it is automatically marked as “obsolete” unless it has the status “immortal”. “Obsolete” headlines get removed automatically after a certain time.
+#+END_QUOTE
+
+Another advantage over GNUS is that it needs very little configuration ^{[[#fn:4][4]]}. I used it for a while and never read the info page. =newsticker-add-url= to add a source (atom/RSS feed), =newsticker-treeview= to browse.
+
+--------------
+
+*** Semantic and Semantic decorators ( =M-x semantic-decoration-mode=)
+
+Get Emacs to decorate your python code:
+[[https://karthinks.com/img/semantic-decorators-demo.png]]
+
+#+DOWNLOADED: https://karthinks.com/img/semantic-decorators-demo.png @ 2020-12-12 09:51:20
+[[file:images/emacs-notes/semantic-decorators-demo2020-12-12_09-51-20_.png]]
+
+
+Doing this is like pointing a firehose at a matchstick: Semantic is [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html#sec5][part of CEDET]], a large collection of (mostly) built-in tools to try to turn Emacs into a full-fledged IDE. It... doesn't work great on a code base of serious size or import, but it's good at analyzing exploratory code/small utilities.
+
+CEDET is written as plumbing, and unless you're writing a package you probably shouldn't need to do anything beyond turning on/off minor modes to use it.
+
+Ultimately Semantic is inadequate on account of the XY problem. LSP handles everything it's supposed to do and does it better, but Semantic is built-in and there if you just want some code-awareness in your Emacs.
+
+--------------
+
+*** Next Time
+
+This was my attempt at covering built-in features of Emacs I use regularly that I don't see being talked about much. There are many more, like =project=, =flymake= and =outline-minor-mode= that have received a surge of interest in recent times ^{[[#fn:5][5]]}. There are also features I know of that aren't talked about much, like =ede-mode=, =2C-two-columns=, =skeleton= and =tempo=. I don't bring these up since I don't have any experience with them.
+
+So this concludes my list.
+
+Something entirely different next time: Typing equations in Emacs faster than you can write on paper.
+
+--------------
+
+1.
+
+   <<fn:1>>
+   I hear the next major version will make you pancakes. [[#fnref:1][↩︎]]
+
+2.
+
+   <<fn:2>>
+   Matched literally, no and “\s-” respectively. [[#fnref:2][↩︎]]
+
+3.
+
+   <<fn:3>>
+   Vim users might be familiar with the popular =exchange= ( =evil-exchange=) plugin that exchanges regions of text. [[#fnref:3][↩︎]]
+
+4.
+
+   <<fn:4>>
+   Which doesn't mean it's not there. Let's say I resisted the urge to customize Newsticker because I didn't want to waste time while I was busy wasting time. [[#fnref:4][↩︎]]
+
+5.
+
+   <<fn:5>>
+   Interest from developers and from users. Don't you love that the distinction is fuzzy in Emacs land? [[#fnref:5][↩︎]]
