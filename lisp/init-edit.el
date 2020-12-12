@@ -281,6 +281,13 @@
                   (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
 
+(add-hook
+ 'emacs-lisp-mode-hook
+ (lambda ()
+   (setq-local electric-pair-inhibit-predicate
+               `(lambda (c)
+                  (if (char-equal c ?\') t (,electric-pair-inhibit-predicate c))))))
+
 ;; disable {} auto pairing in electric-pair-mode for web-mode
 ;; (add-hook
 ;;  'web-mode-hook
