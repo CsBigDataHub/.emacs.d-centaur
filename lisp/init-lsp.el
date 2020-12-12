@@ -498,10 +498,10 @@
    ;; my-personal
 
    ;; Swift/C/C++/Objective-C
-   (when sys/macp
-     (use-package lsp-sourcekit
-       :init (setq lsp-sourcekit-executable
-                   "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp")))
+   ;; (when sys/macp
+   ;;   (use-package lsp-sourcekit
+   ;;     :init (setq lsp-sourcekit-executable
+   ;;                 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp")))
 
    ;; Julia support
    ;; my-personal
