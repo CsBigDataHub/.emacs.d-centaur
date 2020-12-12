@@ -1,3 +1,5 @@
+;;init-eyebrowse.el --- Initialize eyebrowse configurations.	-*- lexical-binding: t -*-
+
 (use-package eyebrowse
   :demand
   :config
