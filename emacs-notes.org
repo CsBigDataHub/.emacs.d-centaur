@@ -8946,31 +8946,6 @@ Since there's never one way to do something in Emacs, a secondary =tab-line-mode
 
 --------------
 
-1.
-
-   <<fn:1>>
-   Coupled with some antiquated defaults. I'm not holding my breath here. [[#fnref:1][↩︎]]
-
-2.
-
-   <<fn:2>>
-   And no wonder, a staggering amount of work has gone into Doom/Spacemacs etc. Tens of thousands of man hours. [[#fnref:2][↩︎]]
-
-3.
-
-   <<fn:3>>
-   Not quite, since =delete-blank-lines= will leave one newline untouched. [[#fnref:3][↩︎]]
-
-4.
-
-   <<fn:4>>
-   There is of course also =capitalize-dwim=. Many thanks to Zachary Kanfer, the author of all three DWIM commands, for reminding me of its existence! [[#fnref:4][↩︎]]
-
-5.
-
-   <<fn:5>>
-   Unless you like working with inactive regions. In which case you're probably an Emacs greybeard and you don't need this write-up! [[#fnref:5][↩︎]]
-
 * [[https://karthinks.com/software/more-batteries-included-with-emacs/][More batteries included with emacs | Karthinks]] :website:
 
 [2020-12-12 Sat 09:33]
@@ -9254,28 +9229,3 @@ So this concludes my list.
 Something entirely different next time: Typing equations in Emacs faster than you can write on paper.
 
 --------------
-
-1.
-
-   <<fn:1>>
-   I hear the next major version will make you pancakes. [[#fnref:1][↩︎]]
-
-2.
-
-   <<fn:2>>
-   Matched literally, no and “\s-” respectively. [[#fnref:2][↩︎]]
-
-3.
-
-   <<fn:3>>
-   Vim users might be familiar with the popular =exchange= ( =evil-exchange=) plugin that exchanges regions of text. [[#fnref:3][↩︎]]
-
-4.
-
-   <<fn:4>>
-   Which doesn't mean it's not there. Let's say I resisted the urge to customize Newsticker because I didn't want to waste time while I was busy wasting time. [[#fnref:4][↩︎]]
-
-5.
-
-   <<fn:5>>
-   Interest from developers and from users. Don't you love that the distinction is fuzzy in Emacs land? [[#fnref:5][↩︎]]
