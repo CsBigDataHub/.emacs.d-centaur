@@ -1,3 +1,4 @@
+;;init-smartparens.el --- Initialize smartparens configurations.	-*- lexical-binding: t -*-
 
 (use-package smartparens
   :demand t
@@ -40,5 +41,22 @@
   (show-smartparens-global-mode)
   (which-key-add-key-based-replacements
     "M-m m" "move prefix"))
+
+;;https://github.com/Fuco1/smartparens/issues/286
+(sp-with-modes sp--lisp-modes
+  ;; disable ', it's the quote character!
+  (sp-local-pair "'" nil :actions nil)
+  ;; also only use the pseudo-quote inside strings where it serve as
+  ;; hyperlink.
+  (sp-local-pair "`" "'" :when '(sp-in-string-p sp-in-comment-p))
+  (sp-local-pair "`" nil
+                 :skip-match (lambda (ms mb me)
+                               (cond
+                                ((equal ms "'")
+                                 (or (sp--org-skip-markup ms mb me)
+                                     (not (sp-point-in-string-or-comment))))
+                                (t (not (sp-point-in-string-or-comment)))))))
+
+(sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
 
 (provide 'init-smartparens)
