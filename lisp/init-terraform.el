@@ -1,3 +1,6 @@
+;;init-terraform.el --- Initialize terraform configurations.	-*- lexical-binding: t -*-
+
+
 (use-package terraform-mode
   :mode "\\.tf$"
   :config
