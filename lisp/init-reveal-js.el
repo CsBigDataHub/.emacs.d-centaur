@@ -1,3 +1,4 @@
+;;init-reveal-js.el --- Initialize ox-reveal configurations.	-*- lexical-binding: t -*-
 
 (use-package ox-reveal)
 
