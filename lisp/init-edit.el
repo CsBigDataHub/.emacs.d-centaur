@@ -537,6 +537,7 @@ _C_: correct  _p_: prev error _d_: done checking
          ("C-`" . hs-toggle-hiding)))
 
 ;; Flexible text folding
+;; https://github.com/gregsexton/origami.el/wiki/Origami---Evil-Operator-Example - for evil configuration.
 (use-package origami
   :pretty-hydra
   ((:title (pretty-hydra-title "Origami" 'octicon "fold" :height 1.1 :v-adjust -0.05)
