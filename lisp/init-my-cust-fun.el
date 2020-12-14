@@ -3346,7 +3346,7 @@ It sets the transient map to all functions of ALIST."
 (when sys/linuxp
   (setq browse-url-browser-function 'browse-url-chrome
         browse-url-chrome-program "firefox"))
-;; NOTES: Leaving this code for here reference.
+;; NOTES: Leaving this code here for reference.
 ;; code from - http://ergoemacs.org/emacs/emacs_set_default_browser.html
 ;; use browser depending on url
 ;; ( setq
