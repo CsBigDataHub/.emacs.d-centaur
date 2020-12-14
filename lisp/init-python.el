@@ -118,26 +118,25 @@
   )
 
 (defun pyenv-init()
-  (setq global-pyenv (replace-regexp-in-string "\n" "" (shell-command-to-string "pyenv global")))
-  (message (concat "Setting pyenv version to " global-pyenv))
-  (pyenv-mode-set global-pyenv)
-  (defvar pyenv-current-version nil global-pyenv))
+  "Initialize pyenv's current version to the global one."
+  (let ((global-pyenv (replace-regexp-in-string "\n" "" (shell-command-to-string "pyenv global"))))
+    (message (concat "Setting pyenv version to " global-pyenv))
+    (pyenv-mode-set global-pyenv)
+    (setq pyenv-current-version global-pyenv)))
+
+;; NOTES: This hook is breaking doom-mode-line at init if `pyenv global systems`
+;; (add-hook 'after-init-hook 'pyenv-init)
 
 (defun pyenv-activate-current-project ()
   "Automatically activates pyenv version if .python-version file exists."
   (interactive)
-  (f-traverse-upwards
-   (lambda (path)
-     (message path)
-     (let ((pyenv-version-path (f-expand ".python-version" path)))
-       (if (f-exists? pyenv-version-path)
-           (progn
-             (setq pyenv-current-version (s-trim (f-read-text pyenv-version-path 'utf-8)))
-             (pyenv-mode-set pyenv-current-version)
-             (pyvenv-workon pyenv-current-version)
-             (message (concat "Setting virtualenv to " pyenv-current-version))))))))
+  (let ((python-version-directory (locate-dominating-file (buffer-file-name) ".python-version")))
+    (if python-version-directory
+        (let* ((pyenv-version-path (f-expand ".python-version" python-version-directory))
+               (pyenv-current-version (s-trim (f-read-text pyenv-version-path 'utf-8))))
+          (pyenv-mode-set pyenv-current-version)
+          (message (concat "Setting virtualenv to " pyenv-current-version))))))
 
-(add-hook 'after-init-hook 'pyenv-init)
 (add-hook 'projectile-after-switch-project-hook 'pyenv-activate-current-project)
 
 
