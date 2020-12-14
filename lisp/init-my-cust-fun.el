@@ -590,7 +590,7 @@ same directory as the markdown-mode-buffer and insert a link to this file."
       ((and closest-behind (not closest-ahead)) closest-behind)
       ((> (- closest-ahead (point)) (- (point) closest-behind)) closest-behind)
       ((> (- (point) closest-behind) (- closest-ahead (point))) closest-ahead)
-      :else closest-ahead))))
+      (t closest-ahead)))))
 
 (defun my/split-below-and-move ()
   (interactive)

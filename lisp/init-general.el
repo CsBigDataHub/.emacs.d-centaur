@@ -172,6 +172,7 @@ The prefix map is named 'my-DEF-map'."
 
 (general-global-spc-menu-definer
  "run" "r"
+ "e" 'embrace-commander
  "rr" 'quickrun
  "rc" 'quickrun-compile-only
  )
