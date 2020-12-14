@@ -60,6 +60,7 @@
   (calendar-mode . centaur-tabs-local-mode)
   (org-agenda-mode . centaur-tabs-local-mode)
   (helpful-mode . centaur-tabs-local-mode)
+  (company-box-mode . centaur-tabs-local-mode)
   :bind
   ("s-<left>" . centaur-tabs-backward)
   ("s-<right>" . centaur-tabs-forward)
