@@ -62,8 +62,8 @@
 
 (major-mode-hydra-define+ go-mode nil
   ("Quick Action"
-   (("ia" go-import-add "add")
-    ("ir" go-remove-unused-imports "cleanup")))
+   (("Ia" go-import-add "add")
+    ("Ir" go-remove-unused-imports "cleanup")))
   )
 
 (major-mode-hydra-define+ java-mode nil
