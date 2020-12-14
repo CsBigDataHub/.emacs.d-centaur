@@ -10,6 +10,7 @@
   (progn
     (setq mac-right-command-modifier 'hyper) ;; mac right command key as hyper, This is when logitech keyboards are used.
     (setq display-time-day-and-date t)
+    (setq locate-command "mdfind")
     (display-time-mode +1)
     ;; (add-to-list 'woman-manpath
     ;;              "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/share/man")
