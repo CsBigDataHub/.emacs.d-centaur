@@ -164,7 +164,6 @@
       :init (setq company-box-enable-icon centaur-icon
                   company-box-backends-colors nil
                   company-box-doc-delay 0.3
-                  company-box-highlight-prefix t
                   )
       :config
       (with-no-warnings
