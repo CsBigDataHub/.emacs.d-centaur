@@ -17,6 +17,7 @@
 
 ;; Exactly like tpopes vim-surround but replacing with isolate which give more features
 (use-package evil-surround
+  :after general
   :general
   (:states '(visual)
    "s" 'evil-surround-region
