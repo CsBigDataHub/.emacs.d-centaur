@@ -391,7 +391,7 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 (defun transform-square-brackets-to-round-ones(string-to-transform)
   "Transforms [ into ( and ] into ), other chars left unchanged."
   (concat
-   (mapcar #'(lambda (c) (if (equal c ?[) ?\( (if (equal c ?]) ?\) c))) string-to-transform)))
+   (mapcar #'(lambda (c) (if (equal c ?\[) ?\( (if (equal c ?\]) ?\) c))) string-to-transform)))
 
 (when sys/macp
   (setq org-capture-templates
