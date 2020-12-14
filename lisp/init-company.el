@@ -80,13 +80,13 @@
         company-backends
         (append
          ;; --- Internal ---
-         '(company-capf :with company-yasnippet)
+         '(company-capf)
          '(company-semantic)
          '(company-keywords)    ; Put infront of `company-dabbrev'
          '(company-abbrev company-dabbrev company-dabbrev-code)
          '(company-files)
          ;; '(company-etags company-gtags)
-         ;; '(company-yasnippet)
+         '(company-yasnippet)
          ;; --- External ---
          '(company-emoji))
         )
