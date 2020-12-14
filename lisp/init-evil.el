@@ -54,6 +54,15 @@
   :config
   (evil-embrace-enable-evil-surround-integration))
 
+(defun activate-mark-hook@set-transient-map ()
+  (set-transient-map
+   (let ((map (make-sparse-keymap)))
+     (define-key map "a" #'embrace-commander)
+     map)
+   #'region-active-p))
+
+(add-hook 'activate-mark-hook #'activate-mark-hook@set-transient-map)
+
 ;; Treat underscores '_' part of the words
 (with-eval-after-load 'evil
   (defalias #'forward-evil-word #'forward-evil-symbol))
@@ -72,6 +81,7 @@
 (evil-set-initial-state 'Log-Edit 'emacs)
 (evil-set-initial-state 'helpful-mode 'emacs)
 (evil-set-initial-state 'wgrep-change-to-wgrep-mode 'emacs)
+(evil-set-initial-state 'flycheck-error-list-mode 'emacs)
 (evil-set-initial-state 'view-mode 'emacs)
 (add-to-list 'evil-insert-state-modes 'view-mode)
 
