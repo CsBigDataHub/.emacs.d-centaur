@@ -87,14 +87,10 @@
       :config (treemacs-set-scope-type 'Perspectives))))
 
 ;; my-personal
-
-(use-package treemacs-persp
-  :after treemacs persp-mode
-  :config (treemacs-set-scope-type 'Perspectives))
-
 (use-package treemacs-evil
-  :after treemacs
+  :after (treemacs evil)
   :demand t
+  :command (treemacs)
   )
 ;; my-personal
 
