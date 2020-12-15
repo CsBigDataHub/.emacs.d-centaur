@@ -42,13 +42,12 @@
                treemacs-git-mode)
     :bind (([f8]        . treemacs)
            ("M-0"       . treemacs-select-window)
-           ("C-x 1"     . treemacs-delete-other-windows)
-           ("C-x t 1"   . treemacs-delete-other-windows)
-           ("C-x t t"   . treemacs)
-           ("C-x t e"   . treemacs-display-current-project-exclusively)
-           ("C-x t b"   . treemacs-bookmark)
-           ("C-x t C-t" . treemacs-find-file)
-           ("C-x t M-t" . treemacs-find-tag)
+           ("C-c t 1"   . treemacs-delete-other-windows)
+           ("C-c t t"   . treemacs)
+           ("C-c t e"   . treemacs-display-current-project-exclusively)
+           ("C-c t b"   . treemacs-bookmark)
+           ("C-c t C-t" . treemacs-find-file)
+           ("C-c t M-t" . treemacs-find-tag)
            :map treemacs-mode-map
            ([mouse-1]   . treemacs-single-click-expand-action))
     :config
@@ -94,7 +93,8 @@
   :config (treemacs-set-scope-type 'Perspectives))
 
 (use-package treemacs-evil
-  :after treemacs evil
+  :after treemacs
+  :demand t
   )
 ;; my-personal
 
