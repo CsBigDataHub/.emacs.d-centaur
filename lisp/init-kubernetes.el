@@ -8,12 +8,13 @@
 
 ;; If you want to pull in the Evil compatibility package.
 (use-package kubernetes-evil
-  :after kubernetes-overview)
+  :after kubernetes-overview
+  :demand t)
 
 ;; (with-eval-after-load 'kubernetes-overview
 ;;   (load-library "kubernetes-evil"))
-(eval-after-load 'kubernetes-overview
-  '(require 'kubernetes-evil))
+;; (eval-after-load 'kubernetes-overview
+;;   '(require 'kubernetes-evil))
 
 (use-package k8s-mode
   :hook (k8s-mode . yas-minor-mode)
@@ -33,9 +34,11 @@
   :config
   (setq kubel-use-namespace-list 'on))
 
-(use-package kubel-evil)
+(use-package kubel-evil
+  :after kubel
+  :demand t)
 
-(eval-after-load 'kubel
-  '(require 'kubel-evil))
+;; (eval-after-load 'kubel
+;;   '(require 'kubel-evil))
 
 (provide 'init-kubernetes)
