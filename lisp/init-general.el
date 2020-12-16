@@ -19,8 +19,6 @@
 (my-spc-leader-def
   "uu" 'undo-tree-visualize
   "mc" 'my/open-config
-  "tt" 'treemacs
-  "te" 'treemacs-display-current-project-exclusively
   ".." 'imenu
   "C-a" 'mark-whole-buffer
   "P" 'projectile-command-map
@@ -83,6 +81,24 @@ The prefix map is named 'my-DEF-map'."
  )
 
 (general-global-spc-menu-definer
+ "tab-bar/treemacs" "t"
+ "2" 'tab-new
+ "1" 'tab-close-other
+ "0" 'tab-close
+ "o" 'tab-next
+ "m" 'tab-move
+ "r" 'tab-rename
+ "\r" 'tab-bar-select-tab-by-name
+ "b" 'switch-to-buffer-other-tab
+ "f" 'find-file-other-tab
+ "\C-f" 'find-file-other-tab
+ "T" 'prot-tab-tab-bar-toggle
+ "s" 'prot-tab-select-tab-dwim
+ "t" 'treemacs
+ "e" 'treemacs-display-current-project-exclusively
+ )
+
+(general-global-spc-menu-definer
  "org-roam-map" "n"
  "nn" 'notdeft
  "nh" 'notdeft-mode-hydra/body
@@ -126,19 +142,6 @@ The prefix map is named 'my-DEF-map'."
  "2" 'my/split-below-and-move
  "3" 'my/split-right-and-move
  "t" 'transpose-frame
- "w1" 'eyebrowse-switch-to-window-config-0
- "w1" 'eyebrowse-switch-to-window-config-1
- "w2" 'eyebrowse-switch-to-window-config-2
- "w3" 'eyebrowse-switch-to-window-config-3
- "w4" 'eyebrowse-switch-to-window-config-4
- "w5" 'eyebrowse-switch-to-window-config-5
- "w6" 'eyebrowse-switch-to-window-config-6
- "w7" 'eyebrowse-switch-to-window-config-7
- "w8" 'eyebrowse-switch-to-window-config-8
- "w9" 'eyebrowse-switch-to-window-config-9
- "w." 'eyebrowse-last-window-config
- "w," 'eyebrowse-switch-to-window-config
- "w;" 'eyebrowse-rename-window-config
  )
 
 (general-global-spc-menu-definer
