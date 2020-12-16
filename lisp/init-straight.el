@@ -49,7 +49,13 @@
     :straight (yasnippet-snippets :type git :host github :repo "CsBigDataHub/yasnippet-snippets")))
 
 (use-package ivy-yasnippet
-  :straight (ivy-yasnippet :type git :host github :repo "CsBigDataHub/ivy-yasnippet"))
+  :straight (ivy-yasnippet :type git :host github :repo "mkcms/ivy-yasnippet"))
+
+(which-key-add-key-based-replacements
+  "M-m y" "yas-prefix")
+
+(bind-keys*
+ ("M-m y y" . ivy-yasnippet))
 
 (use-package auto-yasnippet
   :straight (auto-yasnippet :type git :host github :repo "abo-abo/auto-yasnippet"))

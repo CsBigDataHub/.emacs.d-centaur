@@ -3127,12 +3127,6 @@ It sets the transient map to all functions of ALIST."
 (global-set-key (kbd "C-M-?") 'complete-symbol)
 (global-set-key (kbd "M-.") 'xref-find-definitions)
 
-(which-key-add-key-based-replacements
-  "M-m y" "yas-prefix")
-
-(bind-keys*
- ("M-m y y" . ivy-yasnippet))
-
 ;;;
 
 ;; https://emacsredux.com/blog/2013/07/24/highlight-comment-annotations/

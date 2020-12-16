@@ -446,9 +446,9 @@ This is for use in `ivy-re-builders-alist'."
     :hook (counsel-mode . counsel-projectile-mode)
     :init (setq counsel-projectile-grep-initial-input '(ivy-thing-at-point)))
 
-  ;; Integrate yasnippet
-  (use-package ivy-yasnippet
-    :bind ("C-c C-y" . ivy-yasnippet))
+  ;; Integrate yasnippet - MOVED TO init-straight.el
+  ;; (use-package ivy-yasnippet
+  ;;   :bind ("C-c C-y" . ivy-yasnippet))
 
   ;; Select from xref candidates with Ivy
   (use-package ivy-xref
