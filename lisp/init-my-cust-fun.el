@@ -41,30 +41,18 @@
 ;;----------------------------------------------------------------------------
 ;; Rename the current file
 ;;----------------------------------------------------------------------------
-(defun my/rename-this-file-and-buffer (new-name)
-  "Renames both current buffer and file it's visiting to NEW-NAME."
-  (interactive "sNew name: ")
-  (let ((name (buffer-name))
-        (filename (buffer-file-name)))
-    (unless filename
-      (error "Buffer '%s' is not visiting a file!" name))
-    (progn
-      (when (file-exists-p filename)
-        (rename-file filename new-name 1))
-      (set-visited-file-name new-name)
-      (rename-buffer new-name))))
-
-;;----------------------------------------------------------------------------
-;; Browse current HTML file
-;;----------------------------------------------------------------------------
-(defun mybrowse-current-file ()
-  "Open the current file as a URL using `browse-url'."
-  (interactive)
-  (let ((file-name (buffer-file-name)))
-    (if (and (fboundp 'tramp-tramp-file-p)
-             (tramp-tramp-file-p file-name))
-        (error "Cannot open tramp file")
-      (browse-url (concat "file://" file-name)))))
+;; (defun my/rename-this-file-and-buffer (new-name)
+;;   "Renames both current buffer and file it's visiting to NEW-NAME."
+;;   (interactive "sNew name: ")
+;;   (let ((name (buffer-name))
+;;         (filename (buffer-file-name)))
+;;     (unless filename
+;;       (error "Buffer '%s' is not visiting a file!" name))
+;;     (progn
+;;       (when (file-exists-p filename)
+;;         (rename-file filename new-name 1))
+;;       (set-visited-file-name new-name)
+;;       (rename-buffer new-name))))
 
 (defun my/dos2unix (buffer)
   "Convert BUFFER from DOS file format to UNIX."
@@ -131,37 +119,37 @@
           (t
            (error-message-string "Fail to get path name.")))))
 
-(defun my/upcase-backward-word (arg)
-  (interactive "p")
-  (upcase-word (- arg)))
+;; (defun my/upcase-backward-word (arg)
+;;   (interactive "p")
+;;   (upcase-word (- arg)))
 
-(defun my/downcase-backward-word (arg)
-  (interactive "p")
-  (downcase-word (- arg)))
+;; (defun my/downcase-backward-word (arg)
+;;   (interactive "p")
+;;   (downcase-word (- arg)))
 
-(defun my/capitalize-backward-word (arg)
-  (interactive "p")
-  (capitalize-word (- arg)))
+;; (defun my/capitalize-backward-word (arg)
+;;   (interactive "p")
+;;   (capitalize-word (- arg)))
 
 ;;(global-set-key (kbd "C-M-u")	 'upcase-backward-word)
 ;;(global-set-key (kbd "C-M-l")	 'downcase-backward-word)
 ;;(global-set-key (kbd "M-c")	 'capitalize-backward-word)
 
-(defun my/kill-word-at-point ()
-  (interactive)
-  (let ((char (char-to-string (char-after (point)))))
-    (cond
-     ((string= " " char) (delete-horizontal-space))
-     ((string-match "[\t\n -@\[-`{-~],.、。" char) (kill-word 1))
-     (t (forward-char) (backward-word) (kill-word 1)))))
+;; (defun my/kill-word-at-point ()
+;;   (interactive)
+;;   (let ((char (char-to-string (char-after (point)))))
+;;     (cond
+;;      ((string= " " char) (delete-horizontal-space))
+;;      ((string-match "[\t\n -@\[-`{-~],.、。" char) (kill-word 1))
+;;      (t (forward-char) (backward-word) (kill-word 1)))))
 
 ;;(global-set-key (kbd "M-d")  'kill-word-at-point)
 
-(defun my/backward-kill-word-or-region (&optional arg)
-  (interactive "p")
-  (if (region-active-p)
-      (call-interactively #'kill-region)
-    (backward-kill-word arg)))
+;; (defun my/backward-kill-word-or-region (&optional arg)
+;;   (interactive "p")
+;;   (if (region-active-p)
+;;       (call-interactively #'kill-region)
+;;     (backward-kill-word arg)))
 
 ;;(global-set-key (kbd "C-w")  'backward-kill-word-or-region)
 
@@ -249,28 +237,28 @@ same directory as the markdown-mode-buffer and insert a link to this file."
 (when sys/macp
   (setq-default org-download-screenshot-method "screencapture -i %s"))
 
-(defun my/xah-search-current-word ()
-  "Call `isearch' on current word or text selection."
-  ;;“word” here is A to Z, a to z, and hyphen 「-」 and underline 「_」, independent of syntax table.
-  ;;URL `http://ergoemacs.org/emacs/modernization_isearch.html'
-  ;;Version 2015-04-09"
-  (interactive)
-  (let ( $p1 $p2 )
-    (if (use-region-p)
-        (progn
-          (setq $p1 (region-beginning))
-          (setq $p2 (region-end)))
-      (save-excursion
-        (skip-chars-backward "-_A-Za-z0-9")
-        (setq $p1 (point))
-        (right-char)
-        (skip-chars-forward "-_A-Za-z0-9")
-        (setq $p2 (point))))
-    (setq mark-active nil)
-    (when (< $p1 (point))
-      (goto-char $p1))
-    (isearch-mode t)
-    (isearch-yank-string (buffer-substring-no-properties $p1 $p2))))
+;; (defun my/xah-search-current-word ()
+;;   "Call `isearch' on current word or text selection."
+;;   ;;“word” here is A to Z, a to z, and hyphen 「-」 and underline 「_」, independent of syntax table.
+;;   ;;URL `http://ergoemacs.org/emacs/modernization_isearch.html'
+;;   ;;Version 2015-04-09"
+;;   (interactive)
+;;   (let ( $p1 $p2 )
+;;     (if (use-region-p)
+;;         (progn
+;;           (setq $p1 (region-beginning))
+;;           (setq $p2 (region-end)))
+;;       (save-excursion
+;;         (skip-chars-backward "-_A-Za-z0-9")
+;;         (setq $p1 (point))
+;;         (right-char)
+;;         (skip-chars-forward "-_A-Za-z0-9")
+;;         (setq $p2 (point))))
+;;     (setq mark-active nil)
+;;     (when (< $p1 (point))
+;;       (goto-char $p1))
+;;     (isearch-mode t)
+;;     (isearch-yank-string (buffer-substring-no-properties $p1 $p2))))
 
 ;;(global-set-key (kbd "<f8>") 'my/xah-search-current-word)
 
@@ -493,22 +481,22 @@ same directory as the markdown-mode-buffer and insert a link to this file."
 
 
 
-(defun my/move-line-down ()
-  (interactive)
-  (let ((col (current-column)))
-    (save-excursion
-      (forward-line)
-      (transpose-lines 1))
-    (forward-line)
-    (move-to-column col)))
+;; (defun my/move-line-down ()
+;;   (interactive)
+;;   (let ((col (current-column)))
+;;     (save-excursion
+;;       (forward-line)
+;;       (transpose-lines 1))
+;;     (forward-line)
+;;     (move-to-column col)))
 
-(defun my/move-line-up ()
-  (interactive)
-  (let ((col (current-column)))
-    (save-excursion
-      (forward-line)
-      (transpose-lines -1))
-    (move-to-column col)))
+;; (defun my/move-line-up ()
+;;   (interactive)
+;;   (let ((col (current-column)))
+;;     (save-excursion
+;;       (forward-line)
+;;       (transpose-lines -1))
+;;     (move-to-column col)))
 
 ;;(global-set-key (kbd "<C-S-down>") 'my/move-line-down)
 ;;(global-set-key (kbd "<C-S-up>") 'my/move-line-up)
@@ -541,29 +529,25 @@ same directory as the markdown-mode-buffer and insert a link to this file."
 ;; (define-key endless/toggle-map "n" #'my/narrow-or-widen-dwim)
 ;; This line actually replaces Emacs' entire narrowing keymap, that's
 ;; how much I like this command. Only copy it if that's what you want.
-(define-key ctl-x-map "n" #'my/narrow-or-widen-dwim)
+(global-set-key (kbd "C-x n N") 'my/narrow-or-widen-dwim)
 
 
-(defun my/clean-buffer-formatting ()
-  "Indent and clean up the buffer"
-  (interactive)
-  (indent-region (point-min) (point-max))
-  (whitespace-cleanup))
+;; (defun my/clean-buffer-formatting ()
+;;   "Indent and clean up the buffer"
+;;   (interactive)
+;;   (indent-region (point-min) (point-max))
+;;   (whitespace-cleanup))
 
-(global-set-key "\C-cn" 'my/clean-buffer-formatting)
+;; (global-set-key "\C-cn" 'my/clean-buffer-formatting)
 
 ;; by default,
 ;; highlight trailing whitespace
 ;; and show form-feed chars as horizontal rules
 
-(defun my/general-formatting-hooks ()
-  (setq show-trailing-whitespace 't)
-  (turn-on 'form-feed))
-
 (defun fixup-json ()
   "Re-indent json buffers with broken literal strings. Needs jsonpp installed (available using homebrew)"
   (interactive)
-  (shell-command-on-region (point-min) (point-max) "sed -e ':a' -e 'N' -e '$!ba' -e 's/\\n/ /g'|jsonpp"  nil t))
+  (shell-command-on-region (point-min) (point-max) "sed -e ':a' -e 'N' -e '$!ba' -e 's/\\n/ /g' | jsonpp"  nil t))
 
 ;;(defun my/text-formatting-hooks ()
 ;;  (turn-on 'auto-fill)) ; turn on automatic hard line wraps
@@ -612,6 +596,7 @@ same directory as the markdown-mode-buffer and insert a link to this file."
   (other-window 1)
   (scroll-up-command)
   (other-window 1))
+
 (defun my/other-window-up ()
   "Scrolls up in adjoining window"
   (interactive)
@@ -734,21 +719,6 @@ point reaches the beginning or end of the buffer, stop there."
 (bind-keys*
  ("C-c h w" . my/hydra-of-windows/body))
 
-(defhydra my/hydra-bookmarks (:color blue
-                              :hint nil)
-  "
- _s_: set  _l_: list  _b_: save   _j_: jump   _d_: delete   _q_: quit
-  "
-  ("s" bookmark-set)
-  ("l" list-bookmarks)
-  ("b" bookmark-save)
-  ("j" bookmark-jump)
-  ("d" bookmark-delete)
-  ("q" nil :color blue))
-
-(bind-keys*
- ("C-c h B" . my/hydra-bookmarks/body))
-
 (defun my/incs (s &optional num)
   (let* ((inc (or num 1))
          (new-number (number-to-string (+ inc (string-to-number s))))
@@ -771,16 +741,6 @@ point reaches the beginning or end of the buffer, stop there."
 (defun my/subtract-number-at-point (arg)
   (interactive "p")
   (my/change-number-at-point (- arg)))
-
-(defun my/remove-mark ()
-  "Deactivate the region"
-  (interactive)
-  (if (region-active-p)
-      (deactivate-mark)))
-
-(bind-keys*
- ("M-m E" . my/remove-mark))
-
 
 (defun my/align-whitespace (start end)
   "Align columns by whitespace"
@@ -824,18 +784,6 @@ point reaches the beginning or end of the buffer, stop there."
   (align-regexp start end
                 "\\(\\s-*\\):" 1 0 t))
 
-(defun counsel-goto-recent-directory ()
-  "Open recent directory with dired"
-  (interactive)
-  (unless recentf-mode (recentf-mode 1))
-  (let ((collection
-         (delete-dups
-          (append (mapcar 'file-name-directory recentf-list)
-                  ;; fasd history
-                  (if (executable-find "fasd")
-                      (split-string (shell-command-to-string "fasd -ld") "\n" t))))))
-    (ivy-read "directories:" collection :action 'dired)))
-
 (bind-keys*
  ("M-m g A SPC" . my/align-whitespace)
  ("M-m g A &"   . my/align-ampersand)
@@ -851,6 +799,18 @@ point reaches the beginning or end of the buffer, stop there."
 
 (which-key-add-key-based-replacements
   "M-m g A" "align-prefix")
+
+(defun counsel-goto-recent-directory ()
+  "Open recent directory with dired"
+  (interactive)
+  (unless recentf-mode (recentf-mode 1))
+  (let ((collection
+         (delete-dups
+          (append (mapcar 'file-name-directory recentf-list)
+                  ;; fasd history
+                  (if (executable-find "fasd")
+                      (split-string (shell-command-to-string "fasd -ld") "\n" t))))))
+    (ivy-read "directories:" collection :action 'dired)))
 
 (defun my/sk/insert-date (prefix)
   "Insert the current date. With prefix-argument, write out the day and month name."
@@ -965,27 +925,6 @@ region-end is used."
 (bind-keys*
  ("M-m g d" . my/duplicate-line-or-region))
 
-
-(defun my/open-line-above (args)
-  "Insert a new line above the current one or open a new line above for editing"
-  (interactive "P")
-  (if (equal args '(4))
-      (save-excursion
-        (unless (bolp)
-          (beginning-of-line))
-        (newline)
-        (indent-according-to-mode))
-    (unless (bolp)
-      (beginning-of-line))
-    (newline)
-    (forward-line -1)
-    (indent-according-to-mode)
-    (modalka-mode 0)))
-
-;;(bind-keys*
-;; ("M-o o" . my/open-line-above))
-
-
 (defun my/join-line ()
   "Join the current line with the next line"
   (interactive)
@@ -1013,48 +952,48 @@ region-end is used."
  ("M-m i l" . my/select-inside-line)
  ("M-m a l" . my/select-around-line))
 
-(defun my/move-text-internal (arg)
-  (cond
-   ((and mark-active transient-mark-mode)
-    (if (> (point) (mark))
-        (exchange-point-and-mark))
-    (let ((column (current-column))
-          (text (delete-and-extract-region (point) (mark))))
-      (forward-line arg)
-      (move-to-column column t)
-      (set-mark (point))
-      (insert text)
-      (exchange-point-and-mark)
-      (setq deactivate-mark nil)))
-   (t
-    (let ((column (current-column)))
-      (beginning-of-line)
-      (when (or (> arg 0) (not (bobp)))
-        (forward-line)
-        (when (or (< arg 0) (not (eobp)))
-          (transpose-lines arg)
-          (when (and (eval-when-compile
-                       '(and (>= emacs-major-version 24)
-                             (>= emacs-minor-version 3)))
-                     (< arg 0))
-            (forward-line -1)))
-        (forward-line -1))
-      (move-to-column column t)))))
+;; (defun my/move-text-internal (arg)
+;;   (cond
+;;    ((and mark-active transient-mark-mode)
+;;     (if (> (point) (mark))
+;;         (exchange-point-and-mark))
+;;     (let ((column (current-column))
+;;           (text (delete-and-extract-region (point) (mark))))
+;;       (forward-line arg)
+;;       (move-to-column column t)
+;;       (set-mark (point))
+;;       (insert text)
+;;       (exchange-point-and-mark)
+;;       (setq deactivate-mark nil)))
+;;    (t
+;;     (let ((column (current-column)))
+;;       (beginning-of-line)
+;;       (when (or (> arg 0) (not (bobp)))
+;;         (forward-line)
+;;         (when (or (< arg 0) (not (eobp)))
+;;           (transpose-lines arg)
+;;           (when (and (eval-when-compile
+;;                        '(and (>= emacs-major-version 24)
+;;                              (>= emacs-minor-version 3)))
+;;                      (< arg 0))
+;;             (forward-line -1)))
+;;         (forward-line -1))
+;;       (move-to-column column t)))))
 
-(defun my/move-text-down (arg)
-  "Move region (transient-mark-mode active) or current line
-  arg lines down."
-  (interactive "*p")
-  (my/move-text-internal arg))
-(defun my/move-text-up (arg)
-  "Move region (transient-mark-mode active) or current line
-  arg lines up."
-  (interactive "*p")
-  (my/move-text-internal (- arg)))
+;; (defun my/move-text-down (arg)
+;;   "Move region (transient-mark-mode active) or current line
+;;   arg lines down."
+;;   (interactive "*p")
+;;   (my/move-text-internal arg))
+;; (defun my/move-text-up (arg)
+;;   "Move region (transient-mark-mode active) or current line
+;;   arg lines up."
+;;   (interactive "*p")
+;;   (my/move-text-internal (- arg)))
 
-(bind-keys*
- ("M-m [ e" . my/move-text-up)
- ("M-m ] e" . my/move-text-down))
+;; (bind-keys*
+;;  ("M-m [ e" . my/move-text-up)
+;;  ("M-m ] e" . my/move-text-down))
 
 (defun my/replace-snake-case-with-camel-case (arg)
   "Change snake case to camel case"
@@ -1084,33 +1023,6 @@ region-end is used."
 
 (bind-keys*
  ("M-m g _" . my/snakeify-current-word))
-
-(defun my/smarter-move-beginning-of-line (arg)
-  "Move point back to indentation of beginning of line.
-
-Move point to the first non-whitespace character on this line.
-If point is already there, move to the beginning of the line.
-Effectively toggle between the first non-whitespace character and
-the beginning of the line.
-
-If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-point reaches the beginning or end of the buffer, stop there."
-  (interactive "^p")
-  (setq arg (or arg 1))
-
-  ;; Move lines first
-  (when (/= arg 1)
-    (let ((line-move-visual nil))
-      (forward-line (1- arg))))
-
-  (let ((orig-point (point)))
-    (back-to-indentation)
-    (when (= orig-point (point))
-      (move-beginning-of-line 1))))
-
-;; remap C-a to `smarter-move-beginning-of-line'
-(global-set-key [remap move-beginning-of-line]
-                'my/smarter-move-beginning-of-line)
 
 (defun xah-change-file-line-ending-style (@files @style)
   "Change current file or dired marked file's newline convention.
@@ -2337,26 +2249,6 @@ _vr_ reset      ^^                       ^^                 ^^
 (bind-keys*
  ("C-c h o A" . hydra-org-agenda/body))
 
-(defun my/insert-unicode (unicode-name)
-  "Same as C-x 8 enter UNICODE-NAME."
-  (insert-char (gethash unicode-name (ucs-names))))
-
-(global-set-key
- (kbd "C-c h 9")
- (defhydra hydra-unicode (:hint nil)
-   "
-        Unicode  _e_ €  _s_ ZERO WIDTH SPACE
-                 _f_ ♀  _o_ °   _m_ µ
-                 _r_ ♂  _a_ →
-        "
-   ("e" (my/insert-unicode "EURO SIGN"))
-   ("r" (my/insert-unicode "MALE SIGN"))
-   ("f" (my/insert-unicode "FEMALE SIGN"))
-   ("s" (my/insert-unicode "ZERO WIDTH SPACE"))
-   ("o" (my/insert-unicode "DEGREE SIGN"))
-   ("a" (my/insert-unicode "RIGHTWARDS ARROW"))
-   ("m" (my/insert-unicode "MICRO SIGN"))))
-
 (defhydra hydra-window ()
   "
 Movement^^        ^Split^         ^Switch^		^Resize^
@@ -2421,33 +2313,6 @@ _SPC_ cancel	_o_nly this     _d_elete
 (bind-keys*
  ("C-c h w" . hydra-window/body))
 
-(defhydra hydra-lsp (:exit t :hint nil)
-  "
- Buffer^^               Server^^                   Symbol
--------------------------------------------------------------------------------------
- [_f_] format           [_M-r_] restart            [_d_] declaration  [_i_] implementation  [_o_] documentation
- [_m_] imenu            [_S_]   shutdown           [_D_] definition   [_t_] type            [_r_] rename
- [_x_] execute action   [_M-s_] describe session   [_R_] references   [_s_] signature"
-  ("d" lsp-find-declaration)
-  ("D" lsp-ui-peek-find-definitions)
-  ("R" lsp-ui-peek-find-references)
-  ("i" lsp-ui-peek-find-implementation)
-  ("t" lsp-find-type-definition)
-  ("s" lsp-signature-help)
-  ("o" lsp-describe-thing-at-point)
-  ("r" lsp-rename)
-
-  ("f" lsp-format-buffer)
-  ("m" lsp-ui-imenu)
-  ("x" lsp-execute-code-action)
-
-  ("M-s" lsp-describe-session)
-  ("M-r" lsp-restart-workspace)
-  ("S" lsp-shutdown-workspace))
-
-(bind-keys*
- ("C-c h l l" . hydra-lsp/body))
-
 (defun my/package-upgrade-all ()
   "Upgrade all packages automatically without showing *Packages* buffer."
   (interactive)
@@ -2477,13 +2342,6 @@ _SPC_ cancel	_o_nly this     _d_elete
                 (package-install package-desc)
                 (package-delete  old-package)))))
       (message "All packages are up to date"))))
-
-
-
-(defun my/align-to-equals (begin end)
-  "Align region to equal signs"
-  (interactive "r")
-  (align-regexp begin end "\\(\\s-*\\)=" 1 1 ))
 
 (defun eshell/clear ()
   "Clear the eshell buffer."
@@ -2533,54 +2391,6 @@ _SPC_ cancel	_o_nly this     _d_elete
         (progn (kill-new url)
                (message "%s" url))
       (user-error "There is not current remote URL in path. Is this buffer part of a Git repo?"))))
-
-(defun get-point (symbol &optional arg)
-  "get the point"
-  (funcall symbol arg)
-  (point))
-
-(defun copy-thing (begin-of-thing end-of-thing &optional arg)
-  "Copy thing between beg & end into kill ring."
-  (save-excursion
-    (let ((beg (get-point begin-of-thing 1))
-          (end (get-point end-of-thing arg)))
-      (copy-region-as-kill beg end))))
-
-(defun paste-to-mark (&optional arg)
-  "Paste things to mark, or to the prompt in shell-mode."
-  (unless (eq arg 1)
-    (if (string= "shell-mode" major-mode)
-        (comint-next-prompt 25535)
-      (goto-char (mark)))
-    (yank)))
-
-(defun copy-word (&optional arg)
-  "Copy words at point into kill-ring"
-  (interactive "P")
-  (copy-thing 'backward-word 'forward-word arg)
-  ;;(paste-to-mark arg)
-  )
-
-(global-set-key (kbd "C-c w") (quote copy-word))
-
-(defun copy-backward-word ()
-  "copy word before point - rocky @ stackexchange"
-  (interactive "")
-  (save-excursion
-    (let ((end (point))
-          (beg (get-point 'backward-word 1)))
-      (copy-region-as-kill beg end))))
-
-(global-set-key (kbd "C-c l") (quote copy-line))
-
-(defun copy-paragraph (&optional arg)
-  "Copy paragraphes at point"
-  (interactive "P")
-  (copy-thing 'backward-paragraph 'forward-paragraph arg)
-  (paste-to-mark arg)
-  )
-
-(global-set-key (kbd "C-c P")(quote copy-paragraph))
 
 
 (defhydra my/nav-mode (:foreign-keys run)
@@ -2658,44 +2468,6 @@ _n_ next-line          _S-SPC_ scroll-down-command              _d_ kill-buffer
 
 (bind-keys*
  ("C-c h n n" . my/nav-mode/body))
-
-(defhydra my/hydra-coolmoves-text-motions (:color amaranth :hint nil :foreign-keys nil)
-  "
-    ^
-	^Motions^
-	-------------------------
-	_l_: line ↓      _w_: word →
-	_L_: line ↑      _W_: word ←
-	_p_: par  ↓      _c_: char →
-	_P_: par  ↑      _C_: char ←
-	_s_: sentence →  _x_: sexp →
-	_S_: sentence ←  _X_: sexp ←
-
-    "
-
-  ("<escape>" nil)
-  ("u" nil)
-
-  ("l" cool-moves/line-forward)
-  ("L" cool-moves/line-backward)
-
-  ("p" cool-moves/paragraph-forward)
-  ("P" cool-moves/paragraph-backward)
-
-  ("w" cool-moves/word-forward)
-  ("W" cool-moves/word-backwards)
-
-  ("c" cool-moves/character-forward)
-  ("C" cool-moves/character-backward)
-
-  ("s" cool-moves/sentence-forward)
-  ("S" cool-moves/sentence-backward)
-
-  ("x" cool-moves/sexp-forward)
-  ("X" cool-moves/sexp-backward))
-
-(bind-keys*
- ("C-c h n c" . my/hydra-coolmoves-text-motions/body))
 
 (defhydra hydra-ediff (:color blue :hint nil)
   "
@@ -3016,16 +2788,6 @@ Version 2018-07-03"
       (set-selective-display
        (if selective-display nil (or col 1))))))
 
-(defun duplicate-line ()
-  (interactive)
-  (let ((col (current-column)))
-    (move-beginning-of-line 1)
-    (kill-line)
-    (yank)
-    (newline)
-    (yank)
-    (move-to-column col)))
-
 (defun xah-cycle-letter-case (arg)
   "Cycle the letter case of the selected region or the current word.
 Cycles from 'lower' -> 'Capitalize' -> 'UPPER' -> 'lower' -> ..
@@ -3287,10 +3049,6 @@ It sets the transient map to all functions of ALIST."
 
 
 ;;; My repeat commands
-
-;;; Dired copy or move to split window suggestions
-;;https://emacs.stackexchange.com/questions/5603/how-to-quickly-copy-move-file-in-emacs-dired
-(setq dired-dwim-target t)
 
 ;; calendar times
 (setq calendar-time-zone -360)
