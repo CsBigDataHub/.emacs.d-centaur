@@ -43,6 +43,9 @@
   ;; Always delete and copy recursively
   (setq dired-recursive-deletes 'always
         dired-recursive-copies 'always)
+;;; Dired copy or move to split window suggestions
+  ;;https://emacs.stackexchange.com/questions/5603/how-to-quickly-copy-move-file-in-emacs-dired
+  (setq dired-dwim-target t)
 
   (when sys/macp
     ;; Suppress the warning: `ls does not support --dired'.
