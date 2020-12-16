@@ -90,7 +90,7 @@
 (use-package treemacs-evil
   :after (treemacs evil)
   :demand t
-  :command (treemacs)
+  :commands (treemacs)
   )
 ;; my-personal
 

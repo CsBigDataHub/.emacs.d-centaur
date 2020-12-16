@@ -10,7 +10,7 @@
 (use-package kubernetes-evil
   :after (kubernetes-overview evil)
   :demand t
-  :command (kubernetes-overview))
+  :commands (kubernetes-overview))
 
 ;; (with-eval-after-load 'kubernetes-overview
 ;;   (load-library "kubernetes-evil"))
@@ -38,7 +38,7 @@
 (use-package kubel-evil
   :after (kubel evil)
   :demand t
-  :command (kubel))
+  :commands (kubel))
 
 ;; (eval-after-load 'kubel
 ;;   '(require 'kubel-evil))
