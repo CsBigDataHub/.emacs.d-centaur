@@ -1,3 +1,7 @@
+;; init-bm.el --- Initialize bookmark configurations.	-*- lexical-binding: t -*-
+
+(use-package burly)
+
 (use-package bm
   :demand t
 
@@ -54,32 +58,32 @@
   ;;        ("H-b b" . bm-toggle))
 
 
-  (bind-key "C-c h b"
-            (defhydra hydra-bm (:color pink
-                                :hint nil
-                                :body-pre (when (not (use-region-p))
-                                            (push-mark)))
-              "
-Bookmark  _n_ext (_N_ in lifo order)            _b_ toggle bookmark        _l_ bm list                                            _s_ toggle persistence
-          _p_revious (_P_ in lifo order)        _a_nnotate               _x_/_X_ remove all bm from current/all buffer(s)
-          show _A_nnotation                     _M_ toggle bookmark       _L_ bm list all
-"
-              ("b"   bm-toggle)
-              ("M"   bm-toggle :color blue)
-              ("a"   bm-bookmark-annotate :color blue)
-              ("A"   bm-bookmark-show-annotation)
-              ("n"   bm-common-next)
-              ("N"   bm-lifo-next)
-              ("l"   bm-show)
-              ("L"   bm-show-all)
-              ("p"   bm-common-previous)
-              ("P"   bm-lifo-previous)
-              ("s"   bm-toggle-buffer-persistence)
-              ("x"   bm-remove-all-current-buffer :color blue)
-              ("X"   bm-remove-all-all-buffers :color blue)
-              ("r"   pop-to-mark-command :color blue)
-              ("RET" nil "cancel" :color blue)
-              ("q"   nil "cancel" :color blue)))
+  :pretty-hydra
+  ((:title (pretty-hydra-title "bookmarks" 'faicon "bookmark" :height 1.1 :v-adjust -0.1)
+    :foreign-keys warn :quit-key "q")
+   ("toggle"
+    (("b"   bm-toggle "bm toggle")
+     ("a"   bm-bookmark-annotate "bm annotate")
+     ("A"   bm-bookmark-show-annotation "bm show annotation"))
+    "navigation"
+    (("n"   bm-common-next "bm next")
+     ("N"   bm-lifo-next "bm next in lifo order")
+     ("l"   bm-show "bm list bookmark")
+     ("L"   bm-show-all "bm list all booksmarks")
+     ("p"   bm-common-previous "bm previous")
+     ("P"   bm-lifo-previous "bm previous in lifo order"))
+    "remove"
+    (("x"   bm-remove-all-current-buffer "bm remove all bookmarks in current buffer")
+     ("X"   bm-remove-all-all-buffers "bm remove all bookmarks"))
+    "burly"
+    (("f" burly-bookmark-frames "bookmark frame config")
+     ("w" burly-bookmark-windows "bookmark window config")
+     ("o" burly-open-bookmark "open burly bookmarks")
+     ("s" bookmark-set "set bookmark")
+     ("m" list-bookmarks )
+     ("S" bookmark-save)
+     ("j" bookmark-jump)
+     ("d" bookmark-delete))))
+  :bind (("C-c h b" . bm-hydra/body))
   )
-
 (provide 'init-bm)
