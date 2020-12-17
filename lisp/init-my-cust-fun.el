@@ -685,39 +685,22 @@ point reaches the beginning or end of the buffer, stop there."
                  'maximized)
            'fullboth)))))
 
-(defhydra my/hydra-of-windows (:color red
-                               :hint nil)
-  "
- ^Move^           ^Size^      ^Change^                    ^Split^           ^Text^
- ^^^^^^^^^^^------------------------------------------------------------------------------
- ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^   _u_: winner-undo _o_: rotate  _v_: vertical     _+_: zoom in
- _h_ ^+^ _l_   _H_ ^+^ _L_   _r_: winner-redo              _s_: horizontal   _-_: zoom out
- ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^   _c_: close                    _z_: zoom         _q_: quit
-"
-  ("h" windmove-left)
-  ("j" windmove-down)
-  ("k" windmove-up)
-  ("l" windmove-right)
-  ("H" shrink-window-horizontally)
-  ("K" shrink-window)
-  ("J" enlarge-window)
-  ("L" enlarge-window-horizontally)
-  ("v" my/split-right-and-move)
-  ("s" my/split-below-and-move)
-  ("c" delete-window)
-  ("f" my/toggle-frame-fullscreen-non-native :color blue)
-  ("o" my/rotate-windows)
-  ("z" delete-other-windows)
-  ("u" (progn
-         (winner-undo)
-         (setq this-command 'winner-undo)))
-  ("r" winner-redo)
-  ("+" text-scale-increase)
-  ("-" text-scale-decrease)
-  ("q" nil :color blue))
-
-(bind-keys*
- ("C-c h w" . my/hydra-of-windows/body))
+(pretty-hydra-define+ ace-window-hydra()
+  (
+   "Split Windows"
+   (("V" my/split-right-and-move "my/split-right-and-move")
+    ("H" my/split-below-and-move "my/split-below-and-move")
+    ("F" my/toggle-frame-fullscreen-non-native "my-fullscreen")
+    ("o" my/rotate-windows "rotate-windows")
+    ("X" delete-other-windows "delete-other-windows"))
+   "winner"
+   (("U" (progn
+           (winner-undo)
+           (setq this-command 'winner-undo)) "winner-undo")
+    ("R" winner-redo "winner-redo")
+    ("Z" zoom-window-zoom "zoom-window-zoom"))
+   )
+  )
 
 (defun my/incs (s &optional num)
   (let* ((inc (or num 1))
