@@ -2,15 +2,15 @@
 ;;----------------------------------------------------------------------------
 ;; Delete the current file
 ;;----------------------------------------------------------------------------
-(defun my/delete-this-file ()
-  "Delete the current file, and kill the buffer."
-  (interactive)
-  (unless (buffer-file-name)
-    (error "No file is currently being edited"))
-  (when (yes-or-no-p (format "Really delete '%s'?"
-                             (file-name-nondirectory buffer-file-name)))
-    (delete-file (buffer-file-name))
-    (kill-this-buffer)))
+;; (defun my/delete-this-file ()
+;;   "Delete the current file, and kill the buffer."
+;;   (interactive)
+;;   (unless (buffer-file-name)
+;;     (error "No file is currently being edited"))
+;;   (when (yes-or-no-p (format "Really delete '%s'?"
+;;                              (file-name-nondirectory buffer-file-name)))
+;;     (delete-file (buffer-file-name))
+;;     (kill-this-buffer)))
 
 ;; Diff last two kills
 (defun diff-last-two-kills ()
@@ -783,6 +783,21 @@ point reaches the beginning or end of the buffer, stop there."
 (which-key-add-key-based-replacements
   "M-m g A" "align-prefix")
 
+(pretty-hydra-define align-hydra (:title (pretty-hydra-title "Align your code" 'faicon "align-justify" :v-adjust -0.1)
+                                  :color amaranth :quit-key "q")
+  ("Align"
+   (
+    ("SPC" my/align-whitespace "Align at <SPC>")
+    ("&" my/align-ampersand "Align at &")
+    ("," my/align-comma "Align at ,")
+    ("\"" my/align-quote-space "Align at \"")
+    ("." my/align-dot "Align at .")
+    ("=" my/align-equals "Align at =")
+    (":" my/align-colon "Align at :")
+    ("A" align-regexp "Align at A")
+    ))
+  )
+
 (defun counsel-goto-recent-directory ()
   "Open recent directory with dired"
   (interactive)
@@ -795,17 +810,17 @@ point reaches the beginning or end of the buffer, stop there."
                       (split-string (shell-command-to-string "fasd -ld") "\n" t))))))
     (ivy-read "directories:" collection :action 'dired)))
 
-(defun my/sk/insert-date (prefix)
-  "Insert the current date. With prefix-argument, write out the day and month name."
-  (interactive "P")
-  (let ((format (cond
-                 ((not prefix) "%Y-%m-%d")
-                 ((equal prefix '(4)) "%A, %d %B %Y")
-                 ((equal prefix '(16)) "%Y-%m-%d %H:%M:%S"))))
-    (insert (format-time-string format))))
+;; (defun my/sk/insert-date (prefix)
+;;   "Insert the current date. With prefix-argument, write out the day and month name."
+;;   (interactive "P")
+;;   (let ((format (cond
+;;                  ((not prefix) "%Y-%m-%d")
+;;                  ((equal prefix '(4)) "%A, %d %B %Y")
+;;                  ((equal prefix '(16)) "%Y-%m-%d %H:%M:%S"))))
+;;     (insert (format-time-string format))))
 
-(bind-keys*
- ("M-m g D" . my/sk/insert-date))
+;; (bind-keys*
+;;  ("M-m g D" . my/sk/insert-date))
 
 
 (defun my/delete-current-buffer-file ()
@@ -825,13 +840,13 @@ point reaches the beginning or end of the buffer, stop there."
  ("M-m g K" . my/delete-current-buffer-file))
 
 
-(defun my/copy-current-file-path ()
-  "Add current file path to kill ring. Limits the filename to project root if possible."
-  (interactive)
-  (kill-new buffer-file-name))
+;; (defun my/copy-current-file-path ()
+;;   "Add current file path to kill ring. Limits the filename to project root if possible."
+;;   (interactive)
+;;   (kill-new buffer-file-name))
 
-(bind-keys*
- ("M-m g y" . my/copy-current-file-path))
+;; (bind-keys*
+;;  ("M-m g y" . my/copy-current-file-path))
 
 ;; Transpose words forward
 (defun my/transpose-words-forward ()
@@ -3242,26 +3257,26 @@ are defining or executing a macro."
                                     )
                         :caller 'my-counsel-company)))))))
 
-(defun move-file (new-location)
-  "Write this file to NEW-LOCATION, and delete the old one."
-  (interactive (list (expand-file-name
-                      (if buffer-file-name
-                          (read-file-name "Move file to: ")
-                        (read-file-name "Move file to: "
-                                        default-directory
-                                        (expand-file-name (file-name-nondirectory (buffer-name))
-                                                          default-directory))))))
-  (when (file-exists-p new-location)
-    (delete-file new-location))
-  (let ((old-location (expand-file-name (buffer-file-name))))
-    (message "old file is %s and new file is %s"
-             old-location
-             new-location)
-    (write-file new-location t)
-    (when (and old-location
-               (file-exists-p new-location)
-               (not (string-equal old-location new-location)))
-      (delete-file old-location))))
+;; (defun move-file (new-location)
+;;   "Write this file to NEW-LOCATION, and delete the old one."
+;;   (interactive (list (expand-file-name
+;;                       (if buffer-file-name
+;;                           (read-file-name "Move file to: ")
+;;                         (read-file-name "Move file to: "
+;;                                         default-directory
+;;                                         (expand-file-name (file-name-nondirectory (buffer-name))
+;;                                                           default-directory))))))
+;;   (when (file-exists-p new-location)
+;;     (delete-file new-location))
+;;   (let ((old-location (expand-file-name (buffer-file-name))))
+;;     (message "old file is %s and new file is %s"
+;;              old-location
+;;              new-location)
+;;     (write-file new-location t)
+;;     (when (and old-location
+;;                (file-exists-p new-location)
+;;                (not (string-equal old-location new-location)))
+;;       (delete-file old-location))))
 
 ;; https://superuser.com/a/132844
 (defadvice find-file (before make-directory-maybe (filename &optional wildcards) activate)
@@ -3325,5 +3340,37 @@ are defining or executing a macro."
       (mapconcat #'identity (org-get-outline-path) " --> ")
       " --> "
       (substring-no-properties (org-get-heading t t))))))
+
+(pretty-hydra-define my-hydra (:title (pretty-hydra-title "my custom functions" 'faicon "product-hunt" :v-adjust -0.1)
+                               :color amaranth :quit-key "q")
+  ("📁 File"
+   (("df" my/delete-current-buffer-file "Delete current file")
+    ("d2u" my/dos2unix "dos2unix")
+    ("mbf" my/move-buffer-file "move file")
+    ("rcb" my/rename-current-buffer-file "rename buffer and file")
+    ("oc" my/open-config "open config")
+    ("ifn" my/insert-file-name "insert file name")
+    )
+   "© Copy"
+   (("cfp" my/put-current-path-to-clipboard "copy file name with path")
+    ("cfn" my/put-current-filename-to-clipboard "copy file name")
+    ("cml" copy-lines-matching-re "copy lines regex")
+    )
+   "🧪 Misc."
+   (("dlk" diff-last-two-kills "diff last to kills")
+    ("id" my/xah-insert-date-time "insert date")
+    ("jl" my/join-line "join lines")
+    ("flk" flush-kill-lines "flush-lines and save kills")
+    ("sp" my-sort-paragraphs "Sort-paragraphs")
+    ("obc" occur-mode-clean-buffer "clean occur buffer")
+    ("up" my/package-upgrade-all "Upgrade all packages"))
+   "␣ Open"
+   (("oo" xah-open-in-external-app "Open in external app")
+    ("of" xah-open-file-at-cursor "open in finder")
+    ("ov" xah-open-in-vscode "open in vscode")
+    ("ot" xah-open-in-terminal "open in terminal")
+    )
+   )
+  )
 
 (provide 'init-my-cust-fun)
