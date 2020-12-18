@@ -67,7 +67,7 @@
 (with-eval-after-load 'evil
   (defalias #'forward-evil-word #'forward-evil-symbol))
 
-;; Diable evil-mode in few modes
+;; Disable evil-mode in few modes
 (evil-set-initial-state 'ibuffer-mode 'emacs)
 (cond ((eq system-type 'gnu/linux) (evil-set-initial-state 'mu4e-main-mode 'emacs)))
 (cond ((eq system-type 'gnu/linux) (evil-set-initial-state 'mu4e-headers-mode 'emacs)))

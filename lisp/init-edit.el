@@ -396,6 +396,9 @@
               ispell-program-name "aspell"
               ispell-extra-args '("--sug-mode=ultra" "--lang=en_US" "--run-together"))
   :config
+  (use-package flyspell-correct
+    :after flyspell
+    :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
   ;; Correcting words with flyspell via Ivy
   (use-package flyspell-correct-ivy
     :after ivy

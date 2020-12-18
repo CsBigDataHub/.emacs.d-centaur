@@ -87,7 +87,7 @@
            lsp-enable-indentation nil
            lsp-enable-snippet t
            lsp-enable-xref t
-           lsp-enable-completion-at-point t
+           lsp-completion-enable t
            lsp-enable-imenu t
            lsp-enable-on-type-formatting nil
            lsp-enable-symbol-highlighting nil)

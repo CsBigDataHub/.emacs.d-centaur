@@ -172,7 +172,7 @@
   (let ((file (ffap-file-at-point)))
     (if file
         (progn
-          (end-of-buffer)
+          (goto-char (point-max))
           (insert (concat "cat " file))
           (eshell-send-input))
       (user-error "No file at point"))))
@@ -238,11 +238,11 @@ directory."
         (eshell))
       (display-buffer eshell-buffer-name t)
       (switch-to-buffer-other-window eshell-buffer-name)
-      (end-of-buffer)
+      (goto-char (point-max))
       (eshell-kill-input)
       (insert command)
       (eshell-send-input)
-      (end-of-buffer)
+      (goto-char (point-max))
       (switch-to-buffer-other-window buf)
       )))
 

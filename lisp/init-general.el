@@ -182,6 +182,7 @@ The prefix map is named 'my-DEF-map'."
 
 (general-global-spc-menu-definer
  "Hydra" "h"
+ "f" 'hydra-flycheck/body
  "h" 'my-hydra/body
  "b" 'bm-hydra/body
  "M" 'my/hydra-macro/body
