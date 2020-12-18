@@ -1,17 +1,4 @@
 ;;; -*- lexical-binding: t; -*-
-;;----------------------------------------------------------------------------
-;; Delete the current file
-;;----------------------------------------------------------------------------
-;; (defun my/delete-this-file ()
-;;   "Delete the current file, and kill the buffer."
-;;   (interactive)
-;;   (unless (buffer-file-name)
-;;     (error "No file is currently being edited"))
-;;   (when (yes-or-no-p (format "Really delete '%s'?"
-;;                              (file-name-nondirectory buffer-file-name)))
-;;     (delete-file (buffer-file-name))
-;;     (kill-this-buffer)))
-
 ;; Diff last two kills
 (defun diff-last-two-kills ()
   "Write the last two kills to temporary files and diff them."
@@ -37,28 +24,6 @@
 (defadvice capitalize-word (before capitalize-word-advice activate)
   (unless (looking-back "\\b")
     (backward-word)))
-
-;;----------------------------------------------------------------------------
-;; Rename the current file
-;;----------------------------------------------------------------------------
-;; (defun my/rename-this-file-and-buffer (new-name)
-;;   "Renames both current buffer and file it's visiting to NEW-NAME."
-;;   (interactive "sNew name: ")
-;;   (let ((name (buffer-name))
-;;         (filename (buffer-file-name)))
-;;     (unless filename
-;;       (error "Buffer '%s' is not visiting a file!" name))
-;;     (progn
-;;       (when (file-exists-p filename)
-;;         (rename-file filename new-name 1))
-;;       (set-visited-file-name new-name)
-;;       (rename-buffer new-name))))
-
-(defun my/dos2unix (buffer)
-  "Convert BUFFER from DOS file format to UNIX."
-  (interactive "*b")
-  (shell-command (format "dos2unix %s" (file-truename buffer))))
-
 
 ;; Never understood why Emacs doesn't have this function, either.
 ;;
@@ -118,40 +83,6 @@
            (message "This directory path is on the clipboard!"))
           (t
            (error-message-string "Fail to get path name.")))))
-
-;; (defun my/upcase-backward-word (arg)
-;;   (interactive "p")
-;;   (upcase-word (- arg)))
-
-;; (defun my/downcase-backward-word (arg)
-;;   (interactive "p")
-;;   (downcase-word (- arg)))
-
-;; (defun my/capitalize-backward-word (arg)
-;;   (interactive "p")
-;;   (capitalize-word (- arg)))
-
-;;(global-set-key (kbd "C-M-u")	 'upcase-backward-word)
-;;(global-set-key (kbd "C-M-l")	 'downcase-backward-word)
-;;(global-set-key (kbd "M-c")	 'capitalize-backward-word)
-
-;; (defun my/kill-word-at-point ()
-;;   (interactive)
-;;   (let ((char (char-to-string (char-after (point)))))
-;;     (cond
-;;      ((string= " " char) (delete-horizontal-space))
-;;      ((string-match "[\t\n -@\[-`{-~],.、。" char) (kill-word 1))
-;;      (t (forward-char) (backward-word) (kill-word 1)))))
-
-;;(global-set-key (kbd "M-d")  'kill-word-at-point)
-
-;; (defun my/backward-kill-word-or-region (&optional arg)
-;;   (interactive "p")
-;;   (if (region-active-p)
-;;       (call-interactively #'kill-region)
-;;     (backward-kill-word arg)))
-
-;;(global-set-key (kbd "C-w")  'backward-kill-word-or-region)
 
 (defun my/kill-whitespace ()
   "Kill the whitespace between two non-whitespace characters"
@@ -236,31 +167,6 @@ same directory as the markdown-mode-buffer and insert a link to this file."
 
 (when sys/macp
   (setq-default org-download-screenshot-method "screencapture -i %s"))
-
-;; (defun my/xah-search-current-word ()
-;;   "Call `isearch' on current word or text selection."
-;;   ;;“word” here is A to Z, a to z, and hyphen 「-」 and underline 「_」, independent of syntax table.
-;;   ;;URL `http://ergoemacs.org/emacs/modernization_isearch.html'
-;;   ;;Version 2015-04-09"
-;;   (interactive)
-;;   (let ( $p1 $p2 )
-;;     (if (use-region-p)
-;;         (progn
-;;           (setq $p1 (region-beginning))
-;;           (setq $p2 (region-end)))
-;;       (save-excursion
-;;         (skip-chars-backward "-_A-Za-z0-9")
-;;         (setq $p1 (point))
-;;         (right-char)
-;;         (skip-chars-forward "-_A-Za-z0-9")
-;;         (setq $p2 (point))))
-;;     (setq mark-active nil)
-;;     (when (< $p1 (point))
-;;       (goto-char $p1))
-;;     (isearch-mode t)
-;;     (isearch-yank-string (buffer-substring-no-properties $p1 $p2))))
-
-;;(global-set-key (kbd "<f8>") 'my/xah-search-current-word)
 
 (require 'ido)
 (defun my/xah-insert-date-time ()
@@ -356,17 +262,6 @@ same directory as the markdown-mode-buffer and insert a link to this file."
         (yank)))))
 
 (global-set-key (kbd "C-y") 'my/xah-paste-or-paste-previous)
-
-;;In emacs, the following commands lets you delete whitespaces around cursor.
-;;
-;;    delete-blank-lines 【Ctrl+x Ctrl+o】
-;;    just-one-space 【Alt+Space】
-;;    delete-indentation 【Alt+^】
-;;    delete-horizontal-space 【Alt+\】
-;;    fixup-whitespace
-;;    cycle-spacing (emacs 24.4)
-;;
-;;Here's a command xah-shrink-whitespaces that combine most of them into one.
 
 (defun my/xah-delete-blank-lines ()
   "Delete all newline around cursor.
@@ -479,28 +374,6 @@ same directory as the markdown-mode-buffer and insert a link to this file."
 (bind-keys*
  ("M-m g R" . my/rename-current-buffer-file))
 
-
-
-;; (defun my/move-line-down ()
-;;   (interactive)
-;;   (let ((col (current-column)))
-;;     (save-excursion
-;;       (forward-line)
-;;       (transpose-lines 1))
-;;     (forward-line)
-;;     (move-to-column col)))
-
-;; (defun my/move-line-up ()
-;;   (interactive)
-;;   (let ((col (current-column)))
-;;     (save-excursion
-;;       (forward-line)
-;;       (transpose-lines -1))
-;;     (move-to-column col)))
-
-;;(global-set-key (kbd "<C-S-down>") 'my/move-line-down)
-;;(global-set-key (kbd "<C-S-up>") 'my/move-line-up)
-
 ;;if you're windened, narrow to the region, if you're narrowed, widen;
 ;;bound to C-x n
 (defun my/narrow-or-widen-dwim (p)
@@ -531,29 +404,10 @@ same directory as the markdown-mode-buffer and insert a link to this file."
 ;; how much I like this command. Only copy it if that's what you want.
 (global-set-key (kbd "C-x n N") 'my/narrow-or-widen-dwim)
 
-
-;; (defun my/clean-buffer-formatting ()
-;;   "Indent and clean up the buffer"
-;;   (interactive)
-;;   (indent-region (point-min) (point-max))
-;;   (whitespace-cleanup))
-
-;; (global-set-key "\C-cn" 'my/clean-buffer-formatting)
-
-;; by default,
-;; highlight trailing whitespace
-;; and show form-feed chars as horizontal rules
-
 (defun fixup-json ()
   "Re-indent json buffers with broken literal strings. Needs jsonpp installed (available using homebrew)"
   (interactive)
   (shell-command-on-region (point-min) (point-max) "sed -e ':a' -e 'N' -e '$!ba' -e 's/\\n/ /g' | jsonpp"  nil t))
-
-;;(defun my/text-formatting-hooks ()
-;;  (turn-on 'auto-fill)) ; turn on automatic hard line wraps
-;;
-;;(add-hook 'text-mode-hook
-;;          'my/text-formatting-hooks)
 
 
 (defun my/open-config ()
@@ -810,19 +664,6 @@ point reaches the beginning or end of the buffer, stop there."
                       (split-string (shell-command-to-string "fasd -ld") "\n" t))))))
     (ivy-read "directories:" collection :action 'dired)))
 
-;; (defun my/sk/insert-date (prefix)
-;;   "Insert the current date. With prefix-argument, write out the day and month name."
-;;   (interactive "P")
-;;   (let ((format (cond
-;;                  ((not prefix) "%Y-%m-%d")
-;;                  ((equal prefix '(4)) "%A, %d %B %Y")
-;;                  ((equal prefix '(16)) "%Y-%m-%d %H:%M:%S"))))
-;;     (insert (format-time-string format))))
-
-;; (bind-keys*
-;;  ("M-m g D" . my/sk/insert-date))
-
-
 (defun my/delete-current-buffer-file ()
   "Removes file connected to current buffer and kills buffer."
   (interactive)
@@ -838,15 +679,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (bind-keys*
  ("M-m g K" . my/delete-current-buffer-file))
-
-
-;; (defun my/copy-current-file-path ()
-;;   "Add current file path to kill ring. Limits the filename to project root if possible."
-;;   (interactive)
-;;   (kill-new buffer-file-name))
-
-;; (bind-keys*
-;;  ("M-m g y" . my/copy-current-file-path))
 
 ;; Transpose words forward
 (defun my/transpose-words-forward ()
@@ -926,7 +758,7 @@ region-end is used."
 (defun my/join-line ()
   "Join the current line with the next line"
   (interactive)
-  (next-line)
+  (forward-line)
   (delete-indentation))
 
 (bind-keys
@@ -943,55 +775,12 @@ region-end is used."
   "Select line including the newline character"
   (interactive)
   (my/select-inside-line)
-  (next-line 1)
+  (forward-line 1)
   (my/smarter-move-beginning-of-line 1))
 
 (bind-keys*
  ("M-m i l" . my/select-inside-line)
  ("M-m a l" . my/select-around-line))
-
-;; (defun my/move-text-internal (arg)
-;;   (cond
-;;    ((and mark-active transient-mark-mode)
-;;     (if (> (point) (mark))
-;;         (exchange-point-and-mark))
-;;     (let ((column (current-column))
-;;           (text (delete-and-extract-region (point) (mark))))
-;;       (forward-line arg)
-;;       (move-to-column column t)
-;;       (set-mark (point))
-;;       (insert text)
-;;       (exchange-point-and-mark)
-;;       (setq deactivate-mark nil)))
-;;    (t
-;;     (let ((column (current-column)))
-;;       (beginning-of-line)
-;;       (when (or (> arg 0) (not (bobp)))
-;;         (forward-line)
-;;         (when (or (< arg 0) (not (eobp)))
-;;           (transpose-lines arg)
-;;           (when (and (eval-when-compile
-;;                        '(and (>= emacs-major-version 24)
-;;                              (>= emacs-minor-version 3)))
-;;                      (< arg 0))
-;;             (forward-line -1)))
-;;         (forward-line -1))
-;;       (move-to-column column t)))))
-
-;; (defun my/move-text-down (arg)
-;;   "Move region (transient-mark-mode active) or current line
-;;   arg lines down."
-;;   (interactive "*p")
-;;   (my/move-text-internal arg))
-;; (defun my/move-text-up (arg)
-;;   "Move region (transient-mark-mode active) or current line
-;;   arg lines up."
-;;   (interactive "*p")
-;;   (my/move-text-internal (- arg)))
-
-;; (bind-keys*
-;;  ("M-m [ e" . my/move-text-up)
-;;  ("M-m ] e" . my/move-text-down))
 
 (defun my/replace-snake-case-with-camel-case (arg)
   "Change snake case to camel case"
@@ -1017,7 +806,7 @@ region-end is used."
          (end (region-end))
          (current-word (buffer-substring-no-properties beg end))
          (snakified (snake-case current-word)))
-    (replace-string current-word snakified nil beg end)))
+    (replace-match current-word snakified nil beg end)))
 
 (bind-keys*
  ("M-m g _" . my/snakeify-current-word))
@@ -1767,92 +1556,69 @@ Version 2018-12-23"
 
 
 ;;Hydra for Dired
-(defhydra my/hydra-dired (:hint nil :color pink)
-  "
-_+_ mkdir          _v_iew                       _m_ark             _(_ details          _i_nsert-subdir               _w_dired
-_P_eep             _n_ filter                   _@_ mark regex     _<_ subtree-cycle    _>_ subtree-toggle
-_C_opy             _O_ view other               _U_nmark all       _)_ omit-mode        _d_ ztree-dired-diff-toggle   C-x C-q : edit
-_D_elete           _o_pen other                 _u_nmark           _l_ redisplay        _w_ kill-subdir               C-c C-c : commit
-_R_ename-or-move   _M_ chmod                    _t_oggle           _g_ revert buf       _e_ ediff                     C-c ESC : abort
-_Y_ rel symlink    _G_ chgrp                    _E_xtension mark   _s_ort               ___ rename-file-with-_
-_S_ymlink          _fc_ copy-file-name          _F_ind marked      _._ toggle hydra     _-_ rename-file-with--
-_r_sync            _fp_ copy-file-name-path     _I_ Git Info       ^ ^                  _?_ summary
-_z_ compress-to    _A_ find regexp              _<return>_ Dired-find-file
-_Z_ compress       _Q_ repl regexp              ^        ^
+(pretty-hydra-define my/hydra-dired (:title (pretty-hydra-title "DIRED" 'faicon "folder-open-o" :v-adjust -0.1)
+                                     :foreign-keys run :color amaranth :quit-key "q")
 
-T - tag prefix
-"
-  ;;("\\" dired-do-ispell)
-  ("n" dired-narrow)
-  ("(" dired-hide-details-mode)
-  (")" dired-omit-mode)
-  ("+" dired-create-directory)
-  ;;("=" diredp-ediff)         ;; smart diff
-  ("?" dired-summary)
-  ;;("$" diredp-hide-subdir-nomove)
-  ("A" dired-do-find-regexp)
-  ("C" dired-do-copy)        ;; Copy all marked files
-  ("D" dired-do-delete)
-  ("E" dired-mark-extension)
-  (">" dired-subtree-toggle)
-  ("<" dired-subtree-cycle)
-  ("e" ora-ediff-files)
-  ("d" ztree-dired-diff-toggle)
-  ("F" dired-do-find-marked-files)
-  ("G" dired-do-chgrp)
-  ("g" revert-buffer)        ;; read all directories again (refresh)
-  ("i" dired-maybe-insert-subdir)
-  ("I" dired-git-info-mode)
-  ("l" dired-do-redisplay)   ;; relist the marked or singel directory
-  ("M" dired-do-chmod)
-  ("m" dired-mark)
-  ("O" dired-display-file)
-  ("o" dired-find-file-other-window)
-  ("P" peep-dired)
-  ("@" dired-mark-files-regexp)
-  ("Q" dired-do-find-regexp-and-replace)
-  ("R" dired-do-rename)
-  ("r" dired-rsync)
-  ("S" dired-do-symlink)
-  ("s" xah-dired-sort)
-  ("t" dired-toggle-marks)
-  ("U" dired-unmark-all-marks)
-  ("u" dired-unmark)
-  ("v" dired-view-file)      ;; q to exit, s to search, = gets line #
-  ("w" dired-kill-subdir)
-  ("fc" dired-copy-filename-as-kill)
-  ("fp" dired-copy-file-path-as-kill)
-  ("Y" dired-do-relsymlink)
-  ("z" dired-do-compress-to)
-  ("Z" dired-do-compress)
-  ("-" xah-dired-rename-space-to-hyphen)
-  ("_" xah-dired-rename-space-to-underscore)
-  ("<return>" dired-find-file)
-  ("q" nil)
-  ("." nil :color blue))
+  ("Actions"
+   (("g" revert-buffer "refresh")        ;; read all directories again (refresh)
+    ("l" dired-do-redisplay "redisplay")   ;; relist the marked or singel directory
+    ("C" dired-do-copy "copy")
+    ("D" dired-do-delete "delete")
+    ("G" dired-do-chgrp "chgrp")
+    ("M" dired-do-chmod "chmod")
+    ("+" dired-create-directory "mkdir")
+    ("R" dired-do-rename "mv")
+    ("r" dired-rsync "rsync")
+    ("S" dired-do-symlink "symlink")
+    ("Y" dired-do-relsymlink "rel-symlink")
+    ("z" dired-do-compress-to "compress-to")
+    ("Z" dired-do-compress "compress")
+    ("-" xah-dired-rename-space-to-hyphen "SPC to -")
+    ("_" xah-dired-rename-space-to-underscore "SPC to _")
+    ("P" peep-dired "peep")
+    ("<return>" dired-find-file "find file"))
+   "File Actions"
+   (("O" dired-display-file "view other")
+    ("o" dired-find-file-other-window "open other window")
+    ("v" dired-view-file "view")      ;; q to exit, s to search, = gets line #
+    ("i" dired-maybe-insert-subdir "insert subdir")
+    ("w" dired-kill-subdir "delete subdir")
+    )
+   "Filter/Sort"
+   (("n" dired-narrow "filter")
+    ("A" dired-do-find-regexp "find regex")
+    ("(" dired-hide-details-mode "details")
+    (")" dired-omit-mode "omit")
+    ("s" xah-dired-sort "sort")
+    ("Q" dired-do-find-regexp-and-replace "replace regex")
+    )
+   "Clipboard"
+   (("fc" dired-copy-filename-as-kill "copy name")
+    ("fp" dired-copy-file-path-as-kill "copy path"))
+   "diff"
+   (("e" ora-ediff-files "diff marked")
+    ("d" ztree-dired-diff-toggle "diff panes")
+    )
+   "Info"
+   (("?" dired-summary "info")
+    ("I" dired-git-info-mode "git info")
+    (">" dired-subtree-toggle "tree")
+    ("<" dired-subtree-cycle "tree cycle")
+    )
+   "Mark"
+   (("E" dired-mark-extension "mark exten.")
+    ("m" dired-mark "mark")
+    ("@" dired-mark-files-regexp "mark regex")
+    ("F" dired-do-find-marked-files "open marked files")
+    ("t" dired-toggle-marks "toggle marks")
+    ("U" dired-unmark-all-marks "unmark all")
+    ("u" dired-unmark "unmark")
+    )
+   ))
 
 ;;(define-key dired-mode-map "." 'my/hydra-dired/body)
 
-;; Avy hydra
-(defhydra my/hydra-avy (:exit t :hint nil)
-  "
- Line^^       Region^^        Goto
-----------------------------------------------------------
- [_y_] yank   [_Y_] yank      [_c_] timed char  [_C_] char
- [_m_] move   [_M_] move      [_w_] word        [_W_] any word
- [_k_] kill   [_K_] kill      [_l_] line        [_L_] end of line"
-  ("c" avy-goto-char-timer)
-  ("C" avy-goto-char)
-  ("w" avy-goto-word-1)
-  ("W" avy-goto-word-0)
-  ("l" avy-goto-line)
-  ("L" avy-goto-end-of-line)
-  ("m" avy-move-line)
-  ("M" avy-move-region)
-  ("k" avy-kill-whole-line)
-  ("K" avy-kill-region)
-  ("y" avy-copy-line)
-  ("Y" avy-copy-region))
+
 
 
 (defhydra my/hydra-ibuffer-main (:color pink :hint nil)
@@ -1948,7 +1714,7 @@ T - tag prefix
 ;;(define-key ibuffer-mode-map "." 'my/hydra-ibuffer-main/body)
 (add-hook 'ibuffer-hook #'my/hydra-ibuffer-main/body)
 
-(defhydra my/hydra-markdown-mode (:hint nil)
+(defhydra my/hydra-markdown-mode (:hint nil :foreign-keys run)
   "
 Formatting        C-c C-s    _s_: bold          _e_: italic     _b_: blockquote   _p_: pre-formatted    _c_: code
 
@@ -1958,11 +1724,9 @@ Lists             C-c C-x    _m_: insert item
 
 Demote/Promote    C-c C-x    _l_: promote       _r_: demote     _u_: move up      _d_: move down
 
-Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote     _W_: wiki-link      _R_: reference
+Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote     _W_: wiki-link        _q_: quit
 
 "
-
-
   ("s" markdown-insert-bold)
   ("e" markdown-insert-italic)
   ("b" markdown-insert-blockquote :color blue)
@@ -1986,61 +1750,11 @@ Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote   
   ("U" markdown-insert-uri :color blue)
   ("F" markdown-insert-footnote :color blue)
   ("W" markdown-insert-wiki-link :color blue)
-  ("R" markdown-insert-reference-link-dwim :color blue)
+  ("q" nil :color blue)
   )
 
 
-;;(define-key markdown-mode-map (kbd "<f9>") 'my/hydra-markdown-mode/body)
-
-(defhydra my/hydra-projectile-other-window (:color teal)
-  "projectile-other-window"
-  ("f"  projectile-find-file-other-window        "file")
-  ("g"  projectile-find-file-dwim-other-window   "file dwim")
-  ("d"  projectile-find-dir-other-window         "dir")
-  ("b"  projectile-switch-to-buffer-other-window "buffer")
-  ("q"  nil                                      "cancel" :color blue))
-
-(defhydra my/hydra-projectile (:color teal
-                               :hint nil)
-  "
-     PROJECTILE: %(projectile-project-root)
-
-     Find File            Search/Tags          Buffers                Cache
-------------------------------------------------------------------------------------------
-_s-f_: file            _a_: ag                _i_: Ibuffer           _c_: cache clear
- _ff_: file dwim       _g_: update gtags      _b_: switch to buffer  _x_: remove known project
- _fd_: file curr dir   _o_: multi-occur     _s-k_: Kill all buffers  _X_: cleanup non-existing
-  _r_: recent file                                               ^^^^_z_: cache current
-  _d_: dir
-
-"
-  ("a"   projectile-ag)
-  ("b"   projectile-switch-to-buffer)
-  ("c"   projectile-invalidate-cache)
-  ("d"   projectile-find-dir)
-  ("s-f" projectile-find-file)
-  ("ff"  projectile-find-file-dwim)
-  ("fd"  projectile-find-file-in-directory)
-  ("g"   ggtags-update-tags)
-  ("s-g" ggtags-update-tags)
-  ("i"   projectile-ibuffer)
-  ("K"   projectile-kill-buffers)
-  ("s-k" projectile-kill-buffers)
-  ("m"   projectile-multi-occur)
-  ("o"   projectile-multi-occur)
-  ("s-p" projectile-switch-project "switch project")
-  ("p"   projectile-switch-project)
-  ("s"   projectile-switch-project)
-  ("r"   projectile-recentf)
-  ("x"   projectile-remove-known-project)
-  ("X"   projectile-cleanup-known-projects)
-  ("z"   projectile-cache-current-file)
-  ("`"   my/hydra-projectile-other-window/body "other window")
-  ("q"   nil "cancel" :color blue))
-
-
-(bind-keys*
- ("C-c h P" . my/hydra-projectile))
+;; (define-key markdown-mode-map (kbd "M-<f9>") 'my/hydra-markdown-mode/body)
 
 (defhydra my/hydra-smartparens (:hint nil)
   "
@@ -2094,49 +1808,20 @@ _s-f_: file            _a_: ag                _i_: Ibuffer           _c_: cache 
   ("q" nil)
   ("g" nil))
 
-(defhydra my/hydra-rectangle (:body-pre (rectangle-mark-mode 1)
-                              :color pink
-                              :hint nil
-                              :post (deactivate-mark))
-  "
-  ^_k_^       _w_ copy      _o_pen       _N_umber-lines            |\\     -,,,--,,_
-_h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..  \-;;,_
-  ^_j_^       _d_ kill      _c_lear      _r_eset-region-mark      |,4-  ) )_   .;.(  `'-'
-^^^^          _u_ndo        _g_ quit     ^ ^                     '---''(./..)-'(_\_)
-"
-  ("k" rectangle-previous-line)
-  ("j" rectangle-next-line)
-  ("h" rectangle-backward-char)
-  ("l" rectangle-forward-char)
-  ("d" kill-rectangle)                    ;; C-x r k
-  ("y" yank-rectangle)                    ;; C-x r y
-  ("w" copy-rectangle-as-kill)            ;; C-x r M-w
-  ("o" open-rectangle)                    ;; C-x r o
-  ("t" string-rectangle)                  ;; C-x r t
-  ("c" clear-rectangle)                   ;; C-x r c
-  ("e" rectangle-exchange-point-and-mark) ;; C-x C-x
-  ("N" rectangle-number-lines)            ;; C-x r N
-  ("r" (if (region-active-p)
-           (deactivate-mark)
-         (rectangle-mark-mode 1)))
-  ("u" undo nil)
-  ("g" nil))      ;; ok
-
-(bind-keys*
- ("C-c h r" . my/hydra-rectangle/body))
+(define-key emacs-lisp-mode-map (kbd "M-<f9>") 'my/hydra-smartparens/body)
 
 (defhydra my/hydra-macro (:hint nil :color pink :pre
                           (when defining-kbd-macro
                             (kmacro-end-macro 1)))
   "
-         ^Create-Cycle^                          ^Basic^           ^Insert^        ^Save^         ^Edit^
+         ^Create-Cycle^                          ^Basic^           ^Insert^              ^Save^         ^Edit^
 ╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-            ^[_i_] cycle-ring-previous^          [_e_] execute    [_n_] insert    [_b_] name      [_'_] previous
-             ^^↑^^                               [_d_] delete     [_t_] set       [_K_] key       [_,_] last
- [_j_] start ←   → [_l_] end                     [_o_] edit       [_a_] add       [_x_] register  [_V_] view
-             ^^↓^^                               [_r_] region     [_f_] format    [_B_] defun
+            ^[_i_] cycle-ring-previous^          [_e_] execute    [_n_] insert counter   [_b_] name      [_'_] previous
+             ^^↑^^                               [_d_] delete     [_t_] set counter      [_K_] key       [_,_] last
+ [_j_] start ←   → [_l_] end                     [_o_] edit       [_a_] add counter      [_x_] register  [_V_] view
+             ^^↓^^                               [_r_] region     [_f_] set format       [_B_] defun
             ^[_k_] cycle-ring-next^              [_m_] step
-            ^^   ^^                              [_s_] swap                                       [_q_] quit
+            ^^   ^^                              [_s_] swap                                              [_q_] quit
 "
   ("j" kmacro-start-macro :color blue)
   ("l" kmacro-end-or-call-macro-repeat :color red)
@@ -2162,7 +1847,7 @@ _h_   _l_     _y_ank        _t_ype       _e_xchange-point          /,`.-'`'   ..
   ("q" nil :color blue))
 
 (bind-keys*
- ("C-c h M" . my/hydra-of-macros/body))
+ ("C-c h M" . my/hydra-macro/body))
 
 ;; Hydra for org agenda (graciously taken from Spacemacs)
 (defhydra hydra-org-agenda (:pre (setq which-key-inhibit t)
@@ -2176,13 +1861,13 @@ Org agenda (_q_uit)
 _ci_ in      _SPC_ in other window      _ds_ schedule      _gr_ reload
 _co_ out     _TAB_ & go to location     _dd_ set deadline  _._  go to today
 _cq_ cancel  _RET_ & del other windows  _dt_ timestamp     _gd_ go to date
-_cj_ jump    _o_   link                 _+_  do later      ^^
+_cj_ jump                               _+_  do later      ^^
 ^^           ^^                         _-_  do earlier    ^^
 ^^           ^^                         ^^                 ^^
 ^View^          ^Filter^                 ^Headline^         ^Toggle mode^
 ^----^--------  ^------^---------------  ^--------^-------  ^-----------^----
 _vd_ day        _ft_ by tag              _ht_ set status    _tf_ follow
-_vw_ week       _fr_ refine by tag       _hk_ kill          _tl_ log
+_vw_ week                                _hk_ kill          _tl_ log
 _vt_ fortnight  _fc_ by category         _hr_ refile        _ta_ archive trees
 _vm_ month      _fh_ by top headline     _hA_ archive       _tA_ archive files
 _vy_ year       _fx_ by regexp           _h:_ set tags      _tr_ clock report
@@ -2199,7 +1884,6 @@ _vr_ reset      ^^                       ^^                 ^^
   ("h:" org-agenda-set-tags)
   ("ht" org-agenda-todo)
   ;; Visit entry
-  ("o"   link-hint-open-link :exit t)
   ("<tab>" org-agenda-goto :exit t)
   ("TAB" org-agenda-goto :exit t)
   ("SPC" org-agenda-show-and-scroll-up)
@@ -2230,7 +1914,6 @@ _vr_ reset      ^^                       ^^                 ^^
   ("fc" org-agenda-filter-by-category)
   ("fx" org-agenda-filter-by-regexp)
   ("ft" org-agenda-filter-by-tag)
-  ("fr" org-agenda-filter-by-tag-refine)
   ("fh" org-agenda-filter-by-top-headline)
   ("fd" org-agenda-filter-remove-all)
   ;; Clock
@@ -2246,70 +1929,6 @@ _vr_ reset      ^^                       ^^                 ^^
 
 (bind-keys*
  ("C-c h o A" . hydra-org-agenda/body))
-
-(defhydra hydra-window ()
-  "
-Movement^^        ^Split^         ^Switch^		^Resize^
-----------------------------------------------------------------
-_h_ ←           _v_ertical      _b_uffer		_q_ X←
-_j_ ↓           _x_ horizontal	_f_ind files	_w_ X↓
-_k_ ↑           _z_ undo        _a_ce 1		_e_ X↑
-_l_ →           _Z_ reset       _s_wap		_r_ X→
-_F_ollow		_D_lt Other     _S_ave		max_i_mize
-_SPC_ cancel	_o_nly this     _d_elete
-"
-  ("h" windmove-left )
-  ("j" windmove-down )
-  ("k" windmove-up )
-  ("l" windmove-right )
-  ("q" hydra-move-splitter-left)
-  ("w" hydra-move-splitter-down)
-  ("e" hydra-move-splitter-up)
-  ("r" hydra-move-splitter-right)
-  ("b" ivy-switch-buffer)
-  ("f" counsel-find-files)
-  ("F" follow-mode)
-  ("a" (lambda ()
-         (interactive)
-         (ace-window 1)
-         (add-hook 'ace-window-end-once-hook
-                   'hydra-window/body))
-   )
-  ("v" (lambda ()
-         (interactive)
-         (split-window-right)
-         (windmove-right))
-   )
-  ("x" (lambda ()
-         (interactive)
-         (split-window-below)
-         (windmove-down))
-   )
-  ("s" (lambda ()
-         (interactive)
-         (ace-window 4)
-         (add-hook 'ace-window-end-once-hook
-                   'hydra-window/body)))
-  ("S" save-buffer)
-  ("d" delete-window)
-  ("D" (lambda ()
-         (interactive)
-         (ace-window 16)
-         (add-hook 'ace-window-end-once-hook
-                   'hydra-window/body))
-   )
-  ("o" delete-other-windows)
-  ("i" ace-maximize-window)
-  ("z" (progn
-         (winner-undo)
-         (setq this-command 'winner-undo))
-   )
-  ("Z" winner-redo)
-  ("SPC" nil)
-  )
-
-(bind-keys*
- ("C-c h w" . hydra-window/body))
 
 (defun my/package-upgrade-all ()
   "Upgrade all packages automatically without showing *Packages* buffer."
@@ -2391,154 +2010,26 @@ _SPC_ cancel	_o_nly this     _d_elete
       (user-error "There is not current remote URL in path. Is this buffer part of a Git repo?"))))
 
 
-(defhydra my/nav-mode (:foreign-keys run)
-  "
-_a_ beginning-of-line  _e_     View-scroll-half-page-forward    _j_ next-line          _<_ beginning-of-buffer
-_l_ forward-char       _u_     View-scroll-half-page-backward   _p_ previous-line      _>_ end-of-buffer
-_h_ backward-char      _SPC_   scroll-up-command                _k_ previous-line      _._ end-of-buffer
-_n_ next-line          _S-SPC_ scroll-down-command              _d_ kill-buffer
- "
-  ("C-h" hl-line-mode)
-  ("t" toggle-truncate-lines)
-  ("a" beginning-of-line)
-  ("l" forward-char)
-  ("h" backward-char)
-  ("n" next-line)
-  ("j" next-line)
-  ("p" previous-line)
-  ("k" previous-line)
-  ("e" View-scroll-half-page-forward)
-  ("u" View-scroll-half-page-backward)
-  ("SPC" scroll-up-command)
-  ("S-SPC" scroll-down-command)
-  ("<" beginning-of-buffer)
-  (">" end-of-buffer)
-  ("." end-of-buffer)
-  ("C-'" nil)
-  ("d" (when (y-or-n-p "Kill buffer?")
-         (kill-this-buffer))
-   :exit t)
-  ("/" isearch-forward-regexp :exit t)
-  ("?" isearch-backward-regexp :exit t)
-  ("i" nil :exit t)
-  ("q" nil :exit t))
-
-(bind-keys*
- ("C-c h n n" . my/nav-mode/body))
-
-(defhydra my/indent-tools-hydra (:color red :hint nil)
-  "
- ^Indent^         | ^Navigation^        | ^Actions^
-------------------+---------------------+-----------
- _._ indent       | _j_ v               | _K_ kill
- _,_ de-indent    | _k_ ʌ               | _i_ imenu
- _l_ end of level | _n_ next sibling    | _C_ Copy…
- _E_ end of fn    | _p_ previous sibling| _c_ comment
- _P_ paragraph    | _u_ up parent       | _U_ uncomment (paragraph)
- _SPC_ space      | _d_ down child      | _f_ fold
- ___ undo         | _e_ end of tree     | _q_ quit
-"
-
-  ("." indent-tools-indent)
-  ("," indent-tools-demote)
-  ("E" indent-tools-indent-end-of-defun)
-  ("c" indent-tools-comment)
-  ("U" indent-tools-uncomment)
-  ("P" indent-tools-indent-paragraph)
-  ("l" indent-tools-indent-end-of-level)
-  ("K" indent-tools-kill-tree)
-  ("C" indent-tools-copy-hydra/body :color blue)
-  ("s" indent-tools-select)
-  ("e" indent-tools-goto-end-of-tree)
-  ("u" indent-tools-goto-parent)
-  ("d" indent-tools-goto-child)
-  ("S" indent-tools-select-end-of-tree)
-  ("n" indent-tools-goto-next-sibling)
-  ("p" indent-tools-goto-previous-sibling)
-  ("i" counsel-imenu)
-  ("j" forward-line)
-  ("k" previous-line)
-  ("SPC" indent-tools-indent-space)
-  ("_" undo-tree-undo)
-  ("L" recenter-top-bottom)
-  ("f" yafolding-toggle-element)
-  ("q" nil))
-
-(bind-keys*
- ("C-c h n n" . my/nav-mode/body))
-
-(defhydra hydra-ediff (:color blue :hint nil)
-  "
-ediff
-^Buffers           Files                 VC                   Ediff regions
---------------------------------------------------------------------------------
-_b_uffers           _f_iles (_=_)        _r_evisions            _l_inewise
-_B_uffers (3-way)   _F_iles (3-way)                             _w_ordwise
-                  _c_urrent file
-
-_q_ quit
-"
-  ("b" ediff-buffers)
-  ("B" ediff-buffers3)
-  ("=" ediff-files)
-  ("f" ediff-files)
-  ("F" ediff-files3)
-  ("c" ediff-current-file)
-  ("r" ediff-revision)
-  ("l" ediff-regions-linewise)
-  ("w" ediff-regions-wordwise)
-  ("q" nil))
-
-(global-set-key (kbd "C-c h d") 'hydra-ediff/body)
-
-(defhydra my/hydra-highlight-symbol (:color blue)
-  ("h" highlight-symbol-at-point)
-  ("n" highlight-symbol-next)
-  ("p" highlight-symbol-prev)
-  ("q" highlight-symbol-query-replace)
-  ("r" highlight-symbol-remove-all))
-
-(global-set-key (kbd "C-c h h s") 'my/hydra-highlight-symbol/body)
-
-
-(defhydra hydra-hide-show (:idle 1.0)
-  "
-Hide^^            ^Show^            ^Toggle^    ^Navigation^
-----------------------------------------------------------------
-_h_ hide all      _s_ show all      _t_oggle    _n_ext line
-_d_ hide block    _a_ show block              _p_revious line
-_l_ hide level
-
-_q_ cancel
-"
-  ("s" hs-show-all)
-  ("h" hs-hide-all)
-  ("a" hs-show-block)
-  ("d" hs-hide-block)
-  ("t" hs-toggle-hiding)
-  ("l" hs-hide-level)
-  ("n" forward-line)
-  ("p" (forward-line -1))
-  ("q" nil :color blue)
-  )
-
-(global-set-key (kbd "C-c h @") 'hydra-hide-show/body)
 
 (global-set-key (kbd "C-c h t")
-                (defhydra hydra-transpose (:color red)
-                  "Transpose"
-                  ("c" transpose-chars "characters")
-                  ("w" transpose-words "words")
-                  ("o" org-transpose-words "Org mode words")
-                  ("l" transpose-lines "lines")
-                  ("s" transpose-sentences "sentences")
-                  ("e" org-transpose-elements "Org mode elements")
-                  ("p" transpose-paragraphs "paragraphs")
-                  ("t" org-table-transpose-table-at-point "Org mode table")
-                  ("q" nil "cancel" :color blue)))
+                (pretty-hydra-define hydra-transpose (:title (pretty-hydra-title "Transpose" 'faicon "exchange" :v-adjust -0.1)
+                                                      :foreign-keys run :color amaranth :quit-key "q")
+                  (
+                   "Transpose"
+                   (("c" transpose-chars "characters")
+                    ("w" transpose-words "words")
+                    ("o" org-transpose-words "Org mode words")
+                    ("l" transpose-lines "lines")
+                    ("s" transpose-sentences "sentences")
+                    ("p" transpose-paragraphs "paragraphs")
+                    ("r" transpose-regions "regions")
+                    ("m" transpose-mark "mark")
+                    ("t" org-table-transpose-table-at-point "Org mode table"))
+                   )))
 
 (defhydra hydra-flycheck
-  (:pre (progn (setq hydra-lv t) (flycheck-list-errors))
+  (:foreign-keys run
+   :pre (progn (setq hydra-lv t) (flycheck-list-errors))
    :post (progn (setq hydra-lv nil) (quit-windows-on "*Flycheck errors*"))
    :hint nil)
   "Errors"
@@ -2890,7 +2381,7 @@ _j_: goto mark      _V_: scroll up       _w_: ace-window    _._: -> buffer _,_: 
 _s_: -> sentence    _PA_: -> paragraph    _g_: -> page       _>_: end-of-buffer
 _S_: <- sentence    _PB_: <- paragraph    _G_: <- page       _<_: beginning-of-buffer
  "
-  ("n" next-line)
+  ("n" forward-line)
   ("p" previous-line)
   ("f" forward-char)
   ("b" backward-char)
@@ -3000,7 +2491,7 @@ unadorned lines."
         (set-buffer (get-buffer "*Occur*"))
         (fundamental-mode)
         (goto-char (point-min))
-        (toggle-read-only 0)
+        (read-only-mode 0)
         (set-text-properties (point-min) (point-max) nil)
         (if (looking-at (rx bol (one-or-more digit)
                             (or " lines matching \""
@@ -3257,27 +2748,6 @@ are defining or executing a macro."
                                     )
                         :caller 'my-counsel-company)))))))
 
-;; (defun move-file (new-location)
-;;   "Write this file to NEW-LOCATION, and delete the old one."
-;;   (interactive (list (expand-file-name
-;;                       (if buffer-file-name
-;;                           (read-file-name "Move file to: ")
-;;                         (read-file-name "Move file to: "
-;;                                         default-directory
-;;                                         (expand-file-name (file-name-nondirectory (buffer-name))
-;;                                                           default-directory))))))
-;;   (when (file-exists-p new-location)
-;;     (delete-file new-location))
-;;   (let ((old-location (expand-file-name (buffer-file-name))))
-;;     (message "old file is %s and new file is %s"
-;;              old-location
-;;              new-location)
-;;     (write-file new-location t)
-;;     (when (and old-location
-;;                (file-exists-p new-location)
-;;                (not (string-equal old-location new-location)))
-;;       (delete-file old-location))))
-
 ;; https://superuser.com/a/132844
 (defadvice find-file (before make-directory-maybe (filename &optional wildcards) activate)
   "Create parent directory if not exists while visiting file."
@@ -3341,8 +2811,34 @@ are defining or executing a macro."
       " --> "
       (substring-no-properties (org-get-heading t t))))))
 
+;; https://emacs.stackexchange.com/questions/47200/copy-paste-text-among-split-window-buffers
+(defun my-copy-to-next-window (b e)
+  "Copy text in the region to next window."
+  (interactive "r")
+  (pcase (window-list)
+    (`(,w0 ,w1)
+     (with-selected-window w1
+       (insert-buffer-substring (window-buffer w0) b e)))
+    (t (user-error "Only works with 2 windows"))))
+
+;; https://emacs.stackexchange.com/questions/3743/how-to-move-region-to-other-window
+(defun my-move-region-to-other-window (start end)
+  "Move selected text to other window"
+  (interactive "r")
+  (if (use-region-p)
+      (let ((count (count-words-region start end)))
+        (save-excursion
+          (kill-region start end)
+          (other-window 1)
+          (goto-char (point-max))
+          (yank)
+          (newline))
+        (other-window -1)
+        (message "Moved %s words" count))
+    (message "No region selected")))
+
 (pretty-hydra-define my-hydra (:title (pretty-hydra-title "my custom functions" 'faicon "product-hunt" :v-adjust -0.1)
-                               :color amaranth :quit-key "q")
+                               :foreign-keys run :color amaranth :quit-key "q")
   ("📁 File"
    (("df" my/delete-current-buffer-file "Delete current file")
     ("d2u" my/dos2unix "dos2unix")
@@ -3355,6 +2851,8 @@ are defining or executing a macro."
    (("cfp" my/put-current-path-to-clipboard "copy file name with path")
     ("cfn" my/put-current-filename-to-clipboard "copy file name")
     ("cml" copy-lines-matching-re "copy lines regex")
+    ("cob" my-copy-to-next-window "copy text to other window")
+    ("mob" my-move-region-to-other-window "move text other window")
     )
    "🧪 Misc."
    (("dlk" diff-last-two-kills "diff last to kills")

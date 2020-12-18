@@ -180,4 +180,13 @@ The prefix map is named 'my-DEF-map'."
  "rc" 'quickrun-compile-only
  )
 
+(general-global-spc-menu-definer
+ "Hydra" "h"
+ "h" 'my-hydra/body
+ "b" 'bm-hydra/body
+ "M" 'my/hydra-macro/body
+ "m" 'my/hydra-multiple-cursors/body
+ "w" 'ace-window-hydra/body
+ "t" 'hydra-transpose/body)
+
 (provide 'init-general)

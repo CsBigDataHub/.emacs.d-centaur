@@ -36,6 +36,9 @@
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          )
+  :bind (:map markdown-mode-map
+         ("M-<f9>" . my/hydra-markdown-mode/body)
+         )
   :init
   (setq markdown-enable-wiki-links t
         markdown-italic-underscore t
