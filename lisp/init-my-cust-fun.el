@@ -1558,7 +1558,6 @@ Version 2018-12-23"
 ;;Hydra for Dired
 (pretty-hydra-define my/hydra-dired (:title (pretty-hydra-title "DIRED" 'faicon "folder-open-o" :v-adjust -0.1)
                                      :foreign-keys run :color amaranth :quit-key "q")
-
   ("Actions"
    (("g" revert-buffer "refresh")        ;; read all directories again (refresh)
     ("l" dired-do-redisplay "redisplay")   ;; relist the marked or singel directory
@@ -1568,15 +1567,18 @@ Version 2018-12-23"
     ("M" dired-do-chmod "chmod")
     ("+" dired-create-directory "mkdir")
     ("R" dired-do-rename "mv")
-    ("r" dired-rsync "rsync")
-    ("S" dired-do-symlink "symlink")
-    ("Y" dired-do-relsymlink "rel-symlink")
     ("z" dired-do-compress-to "compress-to")
     ("Z" dired-do-compress "compress")
     ("-" xah-dired-rename-space-to-hyphen "SPC to -")
     ("_" xah-dired-rename-space-to-underscore "SPC to _")
     ("P" peep-dired "peep")
     ("<return>" dired-find-file "find file"))
+   "Rsync/Symlink"
+   (("y" ora-dired-rsync "Copy big file")
+    ("r" dired-rsync "rsync")
+    ("S" dired-do-symlink "symlink")
+    ("Y" dired-do-relsymlink "rel-symlink")
+    )
    "File Actions"
    (("O" dired-display-file "view other")
     ("o" dired-find-file-other-window "open other window")
