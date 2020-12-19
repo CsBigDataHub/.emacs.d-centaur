@@ -6,10 +6,10 @@
 (use-package quelpa-use-package
   :after
   (quelpa)
+  :demand t
   :config
   (quelpa-use-package-activate-advice))
 
-(require 'quelpa-use-package)
 
 ;; my-personal-config
 (use-package company-fuzzy
