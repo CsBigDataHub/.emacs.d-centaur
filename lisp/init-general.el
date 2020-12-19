@@ -78,6 +78,7 @@ The prefix map is named 'my-DEF-map'."
  "r" 'counsel-recentf
  "g" 'counsel-git
  "l" 'counsel-locate
+ "1" 'flycheck-list-errors
  )
 
 (general-global-spc-menu-definer
@@ -182,7 +183,6 @@ The prefix map is named 'my-DEF-map'."
 
 (general-global-spc-menu-definer
  "Hydra" "h"
- "f" 'hydra-flycheck/body
  "h" 'my-hydra/body
  "b" 'bm-hydra/body
  "M" 'my/hydra-macro/body
