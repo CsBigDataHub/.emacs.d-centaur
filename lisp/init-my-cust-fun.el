@@ -1577,36 +1577,31 @@ Version 2018-12-23"
    (("y" ora-dired-rsync "Copy big file")
     ("r" dired-rsync "rsync")
     ("S" dired-do-symlink "symlink")
-    ("Y" dired-do-relsymlink "rel-symlink")
-    )
+    ("Y" dired-do-relsymlink "rel-symlink"))
    "File Actions"
    (("O" dired-display-file "view other")
     ("o" dired-find-file-other-window "open other window")
     ("v" dired-view-file "view")      ;; q to exit, s to search, = gets line #
     ("i" dired-maybe-insert-subdir "insert subdir")
-    ("w" dired-kill-subdir "delete subdir")
-    )
+    ("w" dired-kill-subdir "delete subdir"))
    "Filter/Sort"
    (("n" dired-narrow "filter")
     ("A" dired-do-find-regexp "find regex")
     ("(" dired-hide-details-mode "details")
     (")" dired-omit-mode "omit")
     ("s" xah-dired-sort "sort")
-    ("Q" dired-do-find-regexp-and-replace "replace regex")
-    )
+    ("Q" dired-do-find-regexp-and-replace "replace regex"))
    "Clipboard"
    (("fc" dired-copy-filename-as-kill "copy name")
     ("fp" dired-copy-file-path-as-kill "copy path"))
    "diff"
-   (("e" ora-ediff-files "diff marked")
-    ("d" ztree-dired-diff-toggle "diff panes")
-    )
+   (("e" ora-ediff-files "ediff marked")
+    ("d" ztree-dired-diff-toggle "zdiff panes"))
    "Info"
    (("?" dired-summary "info")
     ("I" dired-git-info-mode "git info")
     (">" dired-subtree-toggle "tree")
-    ("<" dired-subtree-cycle "tree cycle")
-    )
+    ("<" dired-subtree-cycle "tree cycle"))
    "Mark"
    (("E" dired-mark-extension "mark exten.")
     ("m" dired-mark "mark")
@@ -1615,7 +1610,7 @@ Version 2018-12-23"
     ("t" dired-toggle-marks "toggle marks")
     ("U" dired-unmark-all-marks "unmark all")
     ("u" dired-unmark "unmark")
-    )
+    ("0" dired-mark-empty-dirs "mark empty dirs"))
    ))
 
 ;;(define-key dired-mode-map "." 'my/hydra-dired/body)
