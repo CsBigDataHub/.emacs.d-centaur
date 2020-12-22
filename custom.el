@@ -1,4 +1,4 @@
-;;; custom.el --- user customization file    -*- no-byte-compile: t -*-
+;;; custom.el --- user customization file    -*- lexical-binding: t no-byte-compile: t -*-
 ;;; Commentary:
 ;;;       Add or change the configurations in custom.el, then restart Emacs.
 ;;;       Put your own configurations in custom-post.el to override default configurations.
@@ -59,8 +59,22 @@
 ;;       smtpmail-smtp-server "smtp.gmail.com"
 ;;       smtpmail-smtp-service 587)
 
+;; Calendar
+;; Set location , then press `S' can show the time of sunrise and sunset
+;; (setq calendar-location-name "Chengdu"
+;;       calendar-latitude 30.67
+;;       calendar-longitude 104.07)
+
+
 ;; Misc.
-(setq confirm-kill-emacs 'y-or-n-p)
+(require 'solar)
+
+(setq confirm-kill-emacs 'y-or-n-p
+      visible-bell t
+      calendar-latitude 45.018280
+      calendar-longitude -93.473892
+      calendar-standard-time-zone-name "CST"
+      calendar-daylight-time-zone-name "CDT")
 
 ;; Display on the specified monitor
 ;; (when (and (> (length (display-monitor-attributes-list)) 1)
