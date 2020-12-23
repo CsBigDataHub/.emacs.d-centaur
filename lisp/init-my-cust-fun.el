@@ -2854,4 +2854,31 @@ are defining or executing a macro."
    )
   )
 
+(pretty-hydra-define my-org-hydra (:title (pretty-hydra-title "Org-Mode" 'fileicon "org" :face 'all-the-icons-green :height 1.1 :v-adjust 0.0)
+                                   :foreign-keys run :color amaranth :quit-key "q")
+  ("basic navigation"
+   (("i" org-cycle)
+    ("I" org-shifttab)
+    ("h" org-up-element)
+    ("l" org-down-element)
+    ("j" org-forward-element)
+    ("k" org-backward-element))
+   "navigating links"
+   (("n" org-next-link)
+    ("p" org-previous-link)
+    ("o" org-open-at-point))
+   "navigation blocks"
+   (("N" org-next-block)
+    ("P" org-previous-block))
+   "updates"
+   (("." org-ctrl-c-ctrl-c)
+    ("*" org-ctrl-c-star)
+    ("-" org-ctrl-c-minus))
+   "change todo state"
+   (("H" org-shiftleft)
+    ("L" org-shiftright)
+    ("J" org-shiftdown)
+    ("K" org-shiftup)
+    ("t" org-todo))))
+
 (provide 'init-my-cust-fun)

@@ -78,6 +78,7 @@
          ("C-c b" . org-switchb)
          ("C-c x" . org-capture)
          :map org-mode-map
+         ("s-?" . my-org-hydra/body)
          ("<" . (lambda ()
                   "Insert org template."
                   (interactive)
