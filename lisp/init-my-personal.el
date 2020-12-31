@@ -109,46 +109,46 @@
 ;;   :hook ((text-mode prog-mode) . ws-butler-mode)
 ;;   :config (setq ws-butler-keep-whitespace-before-point nil))
 
-(use-package visual-regexp
-  :bind (:map mode-specific-map
-         :prefix-map visual-regexp-prefix-map
-         :prefix "r"
-         ("r" . vr/query-replace)
-         ("R" . vr/replace)
-         ))
+;; (use-package visual-regexp
+;;   :bind (:map mode-specific-map
+;;          :prefix-map visual-regexp-prefix-map
+;;          :prefix "r"
+;;          ("r" . vr/query-replace)
+;;          ("R" . vr/replace)
+;;          ))
 
-(use-package visual-regexp-steroids
-  :after visual-regexp
-  )
+;; (use-package visual-regexp-steroids
+;;   :after visual-regexp
+;;   )
 
 ;;; Query exchange
 ;; Inspired from http://www.emacswiki.org/emacs/QueryExchange and definition of
 ;; `query-replace-regexp' from replace.el
-(defun query-exchange (string-1 string-2 &optional delimited start end)
-  "Exchange string-1 and string-2 interactively.
-The user is prompted at each instance like query-replace. Exchanging
-happens within a region if one is selected."
-  (interactive
-   (let ((common
-          (query-replace-read-args
-           (concat "Query replace"
-                   (if current-prefix-arg " word" "")
-                   " regexp"
-                   (if (and transient-mark-mode mark-active) " in region" ""))
-           t)))
-     (list (nth 0 common) (nth 1 common) (nth 2 common)
-           ;; These are done separately here
-           ;; so that command-history will record these expressions
-           ;; rather than the values they had this time.
-           (if (and transient-mark-mode mark-active)
-               (region-beginning))
-           (if (and transient-mark-mode mark-active)
-               (region-end)))))
-  (perform-replace
-   (concat "\\(" string-1 "\\)\\|" string-2)
-   '(replace-eval-replacement replace-quote
-                              (if (match-string 1) string-2 string-1))
-   t t delimited nil nil start end))
+;; (defun query-exchange (string-1 string-2 &optional delimited start end)
+;;   "Exchange string-1 and string-2 interactively.
+;; The user is prompted at each instance like query-replace. Exchanging
+;; happens within a region if one is selected."
+;;   (interactive
+;;    (let ((common
+;;           (query-replace-read-args
+;;            (concat "Query replace"
+;;                    (if current-prefix-arg " word" "")
+;;                    " regexp"
+;;                    (if (and transient-mark-mode mark-active) " in region" ""))
+;;            t)))
+;;      (list (nth 0 common) (nth 1 common) (nth 2 common)
+;;            ;; These are done separately here
+;;            ;; so that command-history will record these expressions
+;;            ;; rather than the values they had this time.
+;;            (if (and transient-mark-mode mark-active)
+;;                (region-beginning))
+;;            (if (and transient-mark-mode mark-active)
+;;                (region-end)))))
+;;   (perform-replace
+;;    (concat "\\(" string-1 "\\)\\|" string-2)
+;;    '(replace-eval-replacement replace-quote
+;;                               (if (match-string 1) string-2 string-1))
+;;    t t delimited nil nil start end))
 
 (use-package color-identifiers-mode
   :hook ((after-init . global-color-identifiers-mode)))
@@ -160,10 +160,10 @@ happens within a region if one is selected."
 (use-package highlight-numbers
   :hook '(after-init-hook prog-mode-hook text-mode-hook org-mode-hook))
 
-(use-package mmm-mode
-  :commands mmm-mode
-  :config
-  (require 'mmm-auto))
+;; (use-package mmm-mode
+;;   :commands mmm-mode
+;;   :config
+;;   (require 'mmm-auto))
 
 (use-package persistent-scratch
   :config
@@ -210,13 +210,13 @@ happens within a region if one is selected."
   (gcmh-mode 1)
   )
 
-(use-package region-convert
-  :bind
-  ("C-c C" . region-convert)
-  )
+;; (use-package region-convert
+;;   :bind
+;;   ("C-c C" . region-convert)
+;;   )
 
 ;;M-x swap-regions [select the first region] C-M-c [select the second region] C-M-c
-(use-package swap-regions)
+;; (use-package swap-regions)
 
 (use-package highlight-symbol
   :bind
@@ -317,12 +317,13 @@ happens within a region if one is selected."
   )
 
 (add-to-list 'golden-ratio-extra-commands 'ace-window)
+(add-to-list 'golden-ratio-extra-commands 'evil-window-next)
 
-(use-package loccur
-  :bind
-  (("M-s M-l" . loccur-current)
-   ("M-s M-L" . loccur)
-   ("M-s C-l" . loccur-previous-match)))
+;; (use-package loccur
+;;   :bind
+;;   (("M-s M-l" . loccur-current)
+;;    ("M-s M-L" . loccur)
+;;    ("M-s C-l" . loccur-previous-match)))
 
 ;;(setq inhibit-startup-message t)
 ;;(add-to-list 'default-frame-alist '(fullscreen . maximized))
