@@ -59,7 +59,6 @@ flycheck_*.el*
 games/
 ido.*
 image-dired/
-images/
 irony/
 librime/
 magithub/
