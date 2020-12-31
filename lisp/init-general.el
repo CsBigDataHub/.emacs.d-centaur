@@ -78,6 +78,7 @@ The prefix map is named 'my-DEF-map'."
  "r" 'counsel-recentf
  "g" 'counsel-git
  "l" 'counsel-locate
+ "1" 'flycheck-list-errors
  )
 
 (general-global-spc-menu-definer

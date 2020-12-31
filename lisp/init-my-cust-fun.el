@@ -1558,7 +1558,6 @@ Version 2018-12-23"
 ;;Hydra for Dired
 (pretty-hydra-define my/hydra-dired (:title (pretty-hydra-title "DIRED" 'faicon "folder-open-o" :v-adjust -0.1)
                                      :foreign-keys run :color amaranth :quit-key "q")
-
   ("Actions"
    (("g" revert-buffer "refresh")        ;; read all directories again (refresh)
     ("l" dired-do-redisplay "redisplay")   ;; relist the marked or singel directory
@@ -1568,43 +1567,41 @@ Version 2018-12-23"
     ("M" dired-do-chmod "chmod")
     ("+" dired-create-directory "mkdir")
     ("R" dired-do-rename "mv")
-    ("r" dired-rsync "rsync")
-    ("S" dired-do-symlink "symlink")
-    ("Y" dired-do-relsymlink "rel-symlink")
     ("z" dired-do-compress-to "compress-to")
     ("Z" dired-do-compress "compress")
     ("-" xah-dired-rename-space-to-hyphen "SPC to -")
     ("_" xah-dired-rename-space-to-underscore "SPC to _")
     ("P" peep-dired "peep")
     ("<return>" dired-find-file "find file"))
+   "Rsync/Symlink"
+   (("y" ora-dired-rsync "Copy big file")
+    ("r" dired-rsync "rsync")
+    ("S" dired-do-symlink "symlink")
+    ("Y" dired-do-relsymlink "rel-symlink"))
    "File Actions"
    (("O" dired-display-file "view other")
     ("o" dired-find-file-other-window "open other window")
     ("v" dired-view-file "view")      ;; q to exit, s to search, = gets line #
     ("i" dired-maybe-insert-subdir "insert subdir")
-    ("w" dired-kill-subdir "delete subdir")
-    )
+    ("w" dired-kill-subdir "delete subdir"))
    "Filter/Sort"
    (("n" dired-narrow "filter")
     ("A" dired-do-find-regexp "find regex")
     ("(" dired-hide-details-mode "details")
     (")" dired-omit-mode "omit")
     ("s" xah-dired-sort "sort")
-    ("Q" dired-do-find-regexp-and-replace "replace regex")
-    )
+    ("Q" dired-do-find-regexp-and-replace "replace regex"))
    "Clipboard"
    (("fc" dired-copy-filename-as-kill "copy name")
     ("fp" dired-copy-file-path-as-kill "copy path"))
    "diff"
-   (("e" ora-ediff-files "diff marked")
-    ("d" ztree-dired-diff-toggle "diff panes")
-    )
+   (("e" ora-ediff-files "ediff marked")
+    ("d" ztree-dired-diff-toggle "zdiff panes"))
    "Info"
    (("?" dired-summary "info")
     ("I" dired-git-info-mode "git info")
     (">" dired-subtree-toggle "tree")
-    ("<" dired-subtree-cycle "tree cycle")
-    )
+    ("<" dired-subtree-cycle "tree cycle"))
    "Mark"
    (("E" dired-mark-extension "mark exten.")
     ("m" dired-mark "mark")
@@ -1613,7 +1610,7 @@ Version 2018-12-23"
     ("t" dired-toggle-marks "toggle marks")
     ("U" dired-unmark-all-marks "unmark all")
     ("u" dired-unmark "unmark")
-    )
+    ("0" dired-mark-empty-dirs "mark empty dirs"))
    ))
 
 ;;(define-key dired-mode-map "." 'my/hydra-dired/body)
@@ -2026,20 +2023,6 @@ _vr_ reset      ^^                       ^^                 ^^
                     ("m" transpose-mark "mark")
                     ("t" org-table-transpose-table-at-point "Org mode table"))
                    )))
-
-(defhydra hydra-flycheck
-  (:foreign-keys run
-   :pre (progn (setq hydra-lv t) (flycheck-list-errors))
-   :post (progn (setq hydra-lv nil) (quit-windows-on "*Flycheck errors*"))
-   :hint nil)
-  "Errors"
-  ("f"  flycheck-error-list-set-filter                            "Filter")
-  ("j"  flycheck-next-error                                       "Next")
-  ("k"  flycheck-previous-error                                   "Previous")
-  ("gg" flycheck-first-error                                      "First")
-  ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
-  ("q"  nil))
-
 
 (require 'iimage)
 (autoload 'iimage-mode "iimage" "Support Inline image minor mode." t)
@@ -2870,5 +2853,32 @@ are defining or executing a macro."
     )
    )
   )
+
+(pretty-hydra-define my-org-hydra (:title (pretty-hydra-title "Org-Mode" 'fileicon "org" :face 'all-the-icons-green :height 1.1 :v-adjust 0.0)
+                                   :foreign-keys run :color amaranth :quit-key "q")
+  ("basic navigation"
+   (("i" org-cycle)
+    ("I" org-shifttab)
+    ("h" org-up-element)
+    ("l" org-down-element)
+    ("j" org-forward-element)
+    ("k" org-backward-element))
+   "navigating links"
+   (("n" org-next-link)
+    ("p" org-previous-link)
+    ("o" org-open-at-point))
+   "navigation blocks"
+   (("N" org-next-block)
+    ("P" org-previous-block))
+   "updates"
+   (("." org-ctrl-c-ctrl-c)
+    ("*" org-ctrl-c-star)
+    ("-" org-ctrl-c-minus))
+   "change todo state"
+   (("H" org-shiftleft)
+    ("L" org-shiftright)
+    ("J" org-shiftdown)
+    ("K" org-shiftup)
+    ("t" org-todo))))
 
 (provide 'init-my-cust-fun)

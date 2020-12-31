@@ -71,7 +71,9 @@
                (minibuffer-setup . solaire-mode-in-minibuffer))
         :init
         (solaire-global-mode 1)
-        (advice-add #'persp-load-state-from-file :after #'solaire-mode-restore-persp-mode-buffers))
+        (advice-add #'persp-load-state-from-file :after #'solaire-mode-restore-persp-mode-buffers)
+        :config
+        (setq solaire-mode-remap-line-numbers t))
 
       (use-package doom-themes
         :custom-face
@@ -80,11 +82,16 @@
         (doom-themes-treemacs-theme "doom-colors")
         :init (centaur-load-theme centaur-theme t)
         :config
+        ;; Global settings (defaults)
+        (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+              doom-themes-enable-italic t) ; if nil, italics is universally disabled
         ;; Enable flashing mode-line on errors
         (doom-themes-visual-bell-config)
 
         ;; Enable customized theme
-        (doom-themes-treemacs-config)))
+        (doom-themes-treemacs-config)
+        ;; Corrects (and improves) org-mode's native fontification.
+        (doom-themes-org-config)))
   (progn
     (warn "The current theme may not be compatible!")
     (centaur-load-theme centaur-theme t)))

@@ -78,6 +78,7 @@
          ("C-c b" . org-switchb)
          ("C-c x" . org-capture)
          :map org-mode-map
+         ("s-?" . my-org-hydra/body)
          ("<" . (lambda ()
                   "Insert org template."
                   (interactive)
@@ -560,9 +561,9 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
           org-roam-server-port 8181
           org-roam-server-export-inline-images t
           org-roam-server-authenticate nil
-          org-roam-server-label-truncate t
-          org-roam-server-label-truncate-length 60
-          org-roam-server-label-wrap-length 20))
+          org-roam-server-network-label-truncate t
+          org-roam-server-network-label-truncate-length 60
+          org-roam-server-network-label-wrap-length 20))
 
   (use-package org-special-block-extras
     :hook (org-mode . org-special-block-extras-mode))

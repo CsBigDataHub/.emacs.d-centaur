@@ -67,7 +67,7 @@
 (with-eval-after-load 'evil
   (defalias #'forward-evil-word #'forward-evil-symbol))
 
-;; Diable evil-mode in few modes
+;; Disable evil-mode in few modes
 (evil-set-initial-state 'ibuffer-mode 'emacs)
 (cond ((eq system-type 'gnu/linux) (evil-set-initial-state 'mu4e-main-mode 'emacs)))
 (cond ((eq system-type 'gnu/linux) (evil-set-initial-state 'mu4e-headers-mode 'emacs)))
@@ -84,6 +84,7 @@
 (evil-set-initial-state 'flycheck-error-list-mode 'emacs)
 (evil-set-initial-state 'view-mode 'emacs)
 (add-to-list 'evil-insert-state-modes 'view-mode)
+(evil-set-initial-state 'calendar-mode 'emacs)
 
 (use-package evil-numbers
   )
@@ -128,15 +129,13 @@
   )
 
 ;; https://github.com/Somelauw/evil-org-mode/blob/master/doc/keythemes.org
-(use-package evil-org
-  :after org
-  :config
-  (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook
-            (lambda ()
-              (evil-org-set-key-theme)))
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+;; NOTES: do not need this using hydra
+;; (use-package evil-org
+;;   :after org
+;;   :hook (org-mode . (lambda () evil-org-mode))
+;;   :config
+;;   (require 'evil-org-agenda)
+;;   (evil-org-agenda-set-keys))
 
 (use-package evil-mc
   :config

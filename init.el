@@ -170,7 +170,7 @@ decrease this. If you experience stuttering, increase this.")
 ;;my-personal
 (require 'init-bm)
 (require 'init-centaur-tabs)
-(require 'init-deadgrep)
+;; (require 'init-deadgrep)
 (require 'init-emacro)
 (require 'init-window-conf)
 (require 'init-evil)

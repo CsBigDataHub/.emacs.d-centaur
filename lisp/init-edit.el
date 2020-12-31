@@ -321,6 +321,7 @@
 
 ;; Multiple cursors
 (use-package multiple-cursors
+  :demand t ;;;; mc/num-cursors is not autoloaded
   :preface
   ;; preface is my-personal config
   ;; insert specific serial number
@@ -346,7 +347,7 @@
     (insert (format my/mc/insert-numbers-pad mc--insert-numbers-number))
     (setq mc--insert-numbers-number (+ mc--insert-numbers-number my/mc/insert-numbers-inc)))
 
-  (defhydra my/hydra-multiple-cursors (:hint nil)
+  (defhydra my/hydra-multiple-cursors (:hint nil :foreign-keys run)
     "
  Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
 ------------------------------------------------------------------
@@ -396,6 +397,9 @@
               ispell-program-name "aspell"
               ispell-extra-args '("--sug-mode=ultra" "--lang=en_US" "--run-together"))
   :config
+  (use-package flyspell-correct
+    :after flyspell
+    :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
   ;; Correcting words with flyspell via Ivy
   (use-package flyspell-correct-ivy
     :after ivy
