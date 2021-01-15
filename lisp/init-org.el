@@ -193,6 +193,7 @@ prepended to the element after the #+HEADER: tag."
                                (C . t)
                                (restclient . t)
                                (java . t)
+                               (lisp . t)
                                (plantuml . t)))
 
   ;; ob-sh renamed to ob-shell since 26.1.
