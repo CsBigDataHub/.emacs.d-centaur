@@ -1105,7 +1105,7 @@ Version 2019-11-04"
        ((string-equal system-type "gnu/linux")
         (mapc
          (lambda ($fpath) (let ((process-connection-type nil))
-                       (start-process "" nil "xdg-open" $fpath))) $file-list))))))
+                            (start-process "" nil "xdg-open" $fpath))) $file-list))))))
 
 (defun xah-show-in-file-manager ()
   "Show current file in desktop.
@@ -2494,18 +2494,20 @@ unadorned lines."
 (define-key occur-mode-map (kbd "C-c C-K") 'occur-mode-clean-buffer)
 
 ;;; My repeat commands
-(eval-when-compile (require 'cl))
+;; (eval-when-compile (require 'cl))
 (defun def-rep-command (alist)
   "Return a lambda that calls the first function of ALIST.
 It sets the transient map to all functions of ALIST."
-  (lexical-let ((keymap (make-sparse-keymap))
-                (func (cdar alist)))
+  (let ((keymap (make-sparse-keymap))
+        (func (cdar alist)))
     (mapc (lambda (x)
-            (define-key keymap (car x) (cdr x)))
+            (when x
+              (define-key keymap (car x) (cdr x))))
           alist)
     (lambda (arg)
       (interactive "p")
-      (funcall func arg)
+      (when func
+        (funcall func arg))
       (set-transient-map keymap t))))
 
 ;; Enlarge and shrink window horizontall commands

@@ -48,6 +48,7 @@
          :map company-mode-map
          ("<backtab>" . company-yasnippet)
          :map company-active-map
+         ("<return>" . company-complete-selection)
          ("C-p" . company-select-previous)
          ("C-n" . company-select-next)
          ("<tab>" . company-complete-common-or-cycle)
@@ -61,13 +62,13 @@
         company-tooltip-limit 12
         company-idle-delay 0
         company-echo-delay (if (display-graphic-p) nil 0)
-        company-minimum-prefix-length 1
+        company-minimum-prefix-length 2
         company-show-numbers 'left ;;my-personal-config
         company-require-match nil
         company-dabbrev-code-everywhere t ;;my-personal-config
-        company-dabbrev-code-modes t ;;my-personal-config
+        ;; company-dabbrev-code-modes t ;;my-personal-config
         company-dabbrev-other-buffers 'all ;;my-personal-config
-        company-dabbrev-code-other-buffers 'all ;;my-personal-config
+        company-dabbrev-code-other-buffers 'code ;;my-personal-config
         company-dabbrev-ignore-case t ;;my-personal-config - changed to t
         company-dabbrev-char-regexp "\\(\\sw\\|\\s_\\|_\\|-\\)" ;;my-personal-config
         company-dabbrev-downcase nil
