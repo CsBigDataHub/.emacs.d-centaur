@@ -9229,3 +9229,10 @@ So this concludes my list.
 Something entirely different next time: Typing equations in Emacs faster than you can write on paper.
 
 --------------
+
+* Look up all the config files using a library
+
+#+begin_src emacs-lisp
+  (require 'loadhist)
+  (file-dependents (feature-file 'cl))
+#+end_src
