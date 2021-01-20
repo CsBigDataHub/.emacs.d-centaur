@@ -125,7 +125,7 @@
     (colorful . doom-snazzy)
     (dark     . doom-dracula)
     (light    . doom-one-light)
-    (warm     . doom-solarized-light)
+    (warm     . doom-flatwhite)
     (cold     . doom-city-lights)
     (day      . doom-tomorrow-day)
     (night    . doom-tomorrow-night))

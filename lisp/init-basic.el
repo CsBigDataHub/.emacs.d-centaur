@@ -127,10 +127,8 @@
 (when (or sys/mac-x-p sys/linux-x-p)
   (use-package exec-path-from-shell
     :init
-    (setq exec-path-from-shell-check-startup-files nil
-          exec-path-from-shell-variables '("PATH" "MANPATH")
-          exec-path-from-shell-copy-envs '("GOPATH" "GO111MODULE" "GOPROXY" "GRADLE_HOME" "GROOVY_HOME" "JAVA_HOME" "MAVEN_HOME" "SBT_HOME" "SCALA_HOME" "WORKON_HOME" "PYENV_ROOT")
-          exec-path-from-shell-arguments '("-l"))
+    (setq exec-path-from-shell-variables '("PATH" "MANPATH")
+          exec-path-from-shell-copy-envs '("GOPATH" "GO111MODULE" "GOPROXY" "GRADLE_HOME" "GROOVY_HOME" "JAVA_HOME" "MAVEN_HOME" "SBT_HOME" "SCALA_HOME" "WORKON_HOME" "PYENV_ROOT"))
     (exec-path-from-shell-initialize)))
 
 ;; Start server
@@ -153,9 +151,11 @@
               '("\\.?cache" ".cask" "url" "COMMIT_EDITMSG\\'" "bookmarks"
                 "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
                 "\\.?ido\\.last$" "\\.revive$" "/G?TAGS$" "/.elfeed/"
-                "^/tmp/" "^/var/folders/.+$" ; "^/ssh:"
+                "^/tmp/" "^/var/folders/.+$" "^/ssh:" "/persp-confs/"
                 (lambda (file) (file-in-directory-p file package-user-dir))))
-  :config (push (expand-file-name recentf-save-file) recentf-exclude))
+  :config
+  (push (expand-file-name recentf-save-file) recentf-exclude)
+  (add-to-list 'recentf-filename-handlers 'abbreviate-file-name))
 
 (use-package savehist
   :ensure nil
