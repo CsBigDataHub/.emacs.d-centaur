@@ -84,67 +84,67 @@
   :bind ("M-/" . hippie-expand))
 
 ;;https://emacs.stackexchange.com/a/30704
-(defun dabbrev-complation-at-point ()
-  (dabbrev--reset-global-variables)
-  (let* ((abbrev (dabbrev--abbrev-at-point))
-         (candidates (dabbrev--find-all-expansions abbrev t))
-         (bnd (bounds-of-thing-at-point 'symbol)))
-    (list (car bnd) (cdr bnd) candidates)))
+;; (defun dabbrev-complation-at-point ()
+;;   (dabbrev--reset-global-variables)
+;;   (let* ((abbrev (dabbrev--abbrev-at-point))
+;;          (candidates (dabbrev--find-all-expansions abbrev t))
+;;          (bnd (bounds-of-thing-at-point 'symbol)))
+;;     (list (car bnd) (cdr bnd) candidates)))
 
-;;https://oremacs.com/2017/10/04/completion-at-point/
-(defun org-completion-symbols ()
-  (when (looking-back "=[a-zA-Z]+")
-    (let (cands)
-      (save-match-data
-        (save-excursion
-          (goto-char (point-min))
-          (while (re-search-forward "=\\([a-zA-Z]+\\)=" nil t)
-            (cl-pushnew
-             (match-string-no-properties 0) cands :test 'equal))
-          cands))
-      (when cands
-        (list (match-beginning 0) (match-end 0) cands)))))
+;; ;;https://oremacs.com/2017/10/04/completion-at-point/
+;; (defun org-completion-symbols ()
+;;   (when (looking-back "=[a-zA-Z]+")
+;;     (let (cands)
+;;       (save-match-data
+;;         (save-excursion
+;;           (goto-char (point-min))
+;;           (while (re-search-forward "=\\([a-zA-Z]+\\)=" nil t)
+;;             (cl-pushnew
+;;              (match-string-no-properties 0) cands :test 'equal))
+;;           cands))
+;;       (when cands
+;;         (list (match-beginning 0) (match-end 0) cands)))))
 
-(defun ora-cap-filesystem ()
-  (let (path)
-    (when (setq path (ffap-string-at-point))
-      (when (string-match "\\`file:\\(.*\\)\\'" path)
-        (setq path (match-string 1 path)))
-      (let ((compl (all-completions path #'read-file-name-internal)))
-        (when compl
-          (let* ((str (car compl))
-                 (offset
-                  (let ((i 0)
-                        (len (length str)))
-                    (while (and (< i len)
-                                (equal (get-text-property i 'face str)
-                                       'completions-common-part))
-                      (cl-incf i))
-                    i)))
-            (list (- (point) offset) (point) compl)))))))
+;; (defun ora-cap-filesystem ()
+;;   (let (path)
+;;     (when (setq path (ffap-string-at-point))
+;;       (when (string-match "\\`file:\\(.*\\)\\'" path)
+;;         (setq path (match-string 1 path)))
+;;       (let ((compl (all-completions path #'read-file-name-internal)))
+;;         (when compl
+;;           (let* ((str (car compl))
+;;                  (offset
+;;                   (let ((i 0)
+;;                         (len (length str)))
+;;                     (while (and (< i len)
+;;                                 (equal (get-text-property i 'face str)
+;;                                        'completions-common-part))
+;;                       (cl-incf i))
+;;                     i)))
+;;             (list (- (point) offset) (point) compl)))))))
 
-(add-to-list 'completion-at-point-functions '(dabbrev-complation-at-point
-                                              dabbrev-completion
-                                              dabbrev-expand
-                                              org-completion-symbols
-                                              ora-cap-filesystem
-                                              ))
+;; (add-to-list 'completion-at-point-functions '(dabbrev-complation-at-point
+;;                                               dabbrev-completion
+;;                                               dabbrev-expand
+;;                                               org-completion-symbols
+;;                                               ora-cap-filesystem
+;;                                               ))
 
-(autoload 'ffap-file-at-point "ffap")
-(defun complete-path-at-point+ ()
-  "Return completion data for UNIX path at point."
-  (let ((fn (ffap-file-at-point))
-        (fap (thing-at-point 'filename)))
-    (when (and (or fn (equal "/" fap))
-               (save-excursion
-                 (search-backward fap (line-beginning-position) t)))
-      (list (match-beginning 0)
-            (match-end 0)
-            #'completion-file-name-table :exclusive 'no))))
+;; (autoload 'ffap-file-at-point "ffap")
+;; (defun complete-path-at-point+ ()
+;;   "Return completion data for UNIX path at point."
+;;   (let ((fn (ffap-file-at-point))
+;;         (fap (thing-at-point 'filename)))
+;;     (when (and (or fn (equal "/" fap))
+;;                (save-excursion
+;;                  (search-backward fap (line-beginning-position) t)))
+;;       (list (match-beginning 0)
+;;             (match-end 0)
+;;             #'completion-file-name-table :exclusive 'no))))
 
-(add-hook 'completion-at-point-functions
-          #'complete-path-at-point+
-          'append)
+;; (add-hook 'completion-at-point-functions
+;;           #'complete-path-at-point+
+;;           'append)
 
 ;; https://emacs.stackexchange.com/questions/15276/how-do-i-write-a-simple-completion-at-point-functions-function
 ;; NOTES: could not get this working -start-
@@ -241,20 +241,20 @@
 ;; (add-hook 'text-mode-hook 'text-mode-hook-setup)
 
 ;; https://endlessparentheses.com/ispell-and-org-mode.html
-(defun endless/org-ispell ()
-  "Configure `ispell-skip-region-alist' for `org-mode'."
-  (make-local-variable 'ispell-skip-region-alist)
-  (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
-  (add-to-list 'ispell-skip-region-alist '("~" "~"))
-  (add-to-list 'ispell-skip-region-alist '("=" "="))
-  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
-  (add-to-list 'ispell-skip-region-alist '("^#\\+begin_src" . "^#\\+end_src"))
-  (add-to-list 'ispell-skip-region-alist '("^#\\+begin_example" . "^#\\+end_example"))
-  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXAMPLE" . "^#\\+END_EXAMPLE"))
-  (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
-  (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
-  )
-(add-hook 'org-mode-hook #'endless/org-ispell)
+;; (defun endless/org-ispell ()
+;;   "Configure `ispell-skip-region-alist' for `org-mode'."
+;;   (make-local-variable 'ispell-skip-region-alist)
+;;   (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
+;;   (add-to-list 'ispell-skip-region-alist '("~" "~"))
+;;   (add-to-list 'ispell-skip-region-alist '("=" "="))
+;;   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
+;;   (add-to-list 'ispell-skip-region-alist '("^#\\+begin_src" . "^#\\+end_src"))
+;;   (add-to-list 'ispell-skip-region-alist '("^#\\+begin_example" . "^#\\+end_example"))
+;;   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXAMPLE" . "^#\\+END_EXAMPLE"))
+;;   (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+;;   (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+;;   )
+;; (add-hook 'org-mode-hook #'endless/org-ispell)
 
 ;; https://emacs.stackexchange.com/questions/54754/how-to-change-the-company-complete-backend-based-on-the-current-syntaxG
 ;; (defun my-in-comment-p (pos)

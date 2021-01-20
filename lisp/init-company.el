@@ -36,19 +36,11 @@
 (use-package company
   :diminish
   :defines (company-dabbrev-ignore-case company-dabbrev-downcase)
-  :commands (company-cancel
-             company-complete-common)
-  :bind (("M-s-÷" . company-complete);;my-personal-config
-         ("C-M-i" . company-complete)
-         ("M-s-ƒ" . company-files)
-         ("M-s-i" . company-complete);;my-personal-config
-         ("M-s-k" . company-keywords)
-         ("M-s-p" . company-dabbrev)
-         ("M-s-f" . company-files)
+  :commands company-cancel
+  :bind (("C-M-i" . company-complete)
          :map company-mode-map
          ("<backtab>" . company-yasnippet)
          :map company-active-map
-         ("<return>" . company-complete-selection)
          ("C-p" . company-select-previous)
          ("C-n" . company-select-next)
          ("<tab>" . company-complete-common-or-cycle)
@@ -59,38 +51,19 @@
   :hook (after-init . global-company-mode)
   :init
   (setq company-tooltip-align-annotations t
+        company-show-numbers 'left
         company-tooltip-limit 12
         company-idle-delay 0
         company-echo-delay (if (display-graphic-p) nil 0)
-        company-minimum-prefix-length 2
-        company-show-numbers 'left ;;my-personal-config
+        company-minimum-prefix-length 1
         company-require-match nil
-        company-dabbrev-code-everywhere t ;;my-personal-config
-        ;; company-dabbrev-code-modes t ;;my-personal-config
-        company-dabbrev-other-buffers 'all ;;my-personal-config
-        company-dabbrev-code-other-buffers 'code ;;my-personal-config
-        company-dabbrev-ignore-case t ;;my-personal-config - changed to t
-        company-dabbrev-char-regexp "\\(\\sw\\|\\s_\\|_\\|-\\)" ;;my-personal-config
+        company-dabbrev-ignore-case nil
         company-dabbrev-downcase nil
         company-global-modes '(not erc-mode message-mode help-mode
                                    gud-mode eshell-mode shell-mode)
-        ;; company-backends '((company-capf :with company-yasnippet)
-        ;;                    (company-dabbrev-code company-keywords company-files)
-        ;;                    company-dabbrev)
-        ;; https://github.com/jcs-elpa/company-fuzzy/issues/14
-        company-backends
-        (append
-         ;; --- Internal ---
-         '(company-capf)
-         '(company-semantic)
-         '(company-keywords)    ; Put infront of `company-dabbrev'
-         '(company-abbrev company-dabbrev company-dabbrev-code)
-         '(company-files)
-         ;; '(company-etags company-gtags)
-         '(company-yasnippet)
-         ;; --- External ---
-         '(company-emoji))
-        )
+        company-backends '((company-capf :with company-yasnippet)
+                           (company-dabbrev-code company-keywords company-files)
+                           company-dabbrev))
 
   (defun my-company-yasnippet ()
     "Hide the current completeions and show snippets."
@@ -136,22 +109,6 @@
             (funcall fun command arg))))
       (advice-add #'company-yasnippet :around #'my-company-yasnippet-disable-inline)))
 
-  ;; my-personal - remove competion on numbers
-  ;; https://emacs.stackexchange.com/questions/9835/how-can-i-prevent-company-mode-completing-numbers
-  ;; https://emacs.stackexchange.com/questions/35345/how-to-turn-off-autocompletion-for-numbers-and-numbers-only-in-company-mode-in
-  ;; https://github.com/company-mode/company-mode/issues/358
-
-  (push (apply-partially #'cl-remove-if
-                         (lambda (c)
-                           (or (string-match-p "[^\x00-\x7F]+" c)
-                               (string-match-p "[0-9]+" c)
-                               (string-match-p "\\`[0-9]+\\'" c)
-                               ;;(if (equal major-mode "org")
-                               ;;    (>= (length c) 15))
-                               )))
-        company-transformers)
-  ;; my-personal - remove competion on numbers - end
-
   ;; Better sorting and filtering
   (use-package company-prescient
     :init (company-prescient-mode 1))
@@ -164,8 +121,7 @@
       :hook (company-mode . company-box-mode)
       :init (setq company-box-enable-icon centaur-icon
                   company-box-backends-colors nil
-                  company-box-doc-delay 0.3
-                  )
+                  company-box-doc-delay 0.3)
       :config
       (with-no-warnings
         ;; Prettify icons
@@ -222,70 +178,6 @@
              ([remap company-show-doc-buffer] . company-quickhelp-manual-begin))
       :hook (global-company-mode . company-quickhelp-mode)
       :init (setq company-quickhelp-delay 0.5))))
-
-;; my-personal-config
-(use-package company-fuzzy
-  :init
-  (setq company-fuzzy-sorting-backend 'flx)
-  (setq company-fuzzy-prefix-ontop nil)
-  (with-eval-after-load 'company
-    (global-company-fuzzy-mode t)))
-
-;; http://oremacs.com/2017/12/27/company-numbers/
-;; https://github.com/abo-abo/oremacs/blob/github/modes/ora-company.el
-
-(require 'company)
-
-(defun ora-advice-add (&rest args)
-  (when (fboundp 'advice-add)
-    (apply #'advice-add args)))
-
-(defun ora-company-number ()
-  "Forward to `company-complete-number'.
-Unless the number is potentially part of the candidate.
-In that case, insert the number."
-  (interactive)
-  (let* ((k (this-command-keys))
-         (re (concat "^" company-prefix k)))
-    (if (or (cl-find-if (lambda (s) (string-match re s))
-                        company-candidates)
-            (> (string-to-number k)
-               (length company-candidates))
-            (looking-back "[0-9]+\\.[0-9]*" (line-beginning-position)))
-        (self-insert-command 1)
-      (company-complete-number
-       (if (equal k "0")
-           10
-         (string-to-number k))))))
-
-(defun ora--company-good-prefix-p (orig-fn prefix)
-  (unless (and (stringp prefix) (string-match-p "\\`[0-9]+\\'" prefix))
-    (funcall orig-fn prefix)))
-(ora-advice-add 'company--good-prefix-p :around #'ora--company-good-prefix-p)
-
-(let ((map company-active-map))
-  (mapc
-   (lambda (x)
-     (define-key map (format "%d" x) 'ora-company-number))
-   (number-sequence 0 9))
-  (define-key map " " (lambda ()
-                        (interactive)
-                        (company-abort)
-                        (self-insert-command 1)))
-  (define-key map (kbd "<return>") nil))
-
-;;https://github.com/company-mode/company-mode/issues/50
-(defun add-pcomplete-to-capf ()
-  (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
-
-(add-hook 'org-mode-hook #'add-pcomplete-to-capf)
-
-(use-package company-dict
-  :config
-  (setq company-dict-dir (concat user-emacs-directory "misc/dict"))
-  (add-to-list 'company-backends 'company-dict))
-
-;;my-personal-config
 
 (provide 'init-company)
 
