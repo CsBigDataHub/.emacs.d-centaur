@@ -136,7 +136,8 @@
 
 (use-package copyit)
 
-(use-package reveal-in-osx-finder)
+(when sys/macp
+  (use-package reveal-in-osx-finder))
 
 (use-package sort-words)
 

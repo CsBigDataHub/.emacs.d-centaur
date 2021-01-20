@@ -324,8 +324,6 @@
   :config
   (bind-key ">" #'dired-subtree-toggle dired-mode-map)
   (bind-key "<" #'dired-subtree-cycle dired-mode-map))
-
-(setq dired-listing-switches "-alh")
 ;; my-personal
 
 

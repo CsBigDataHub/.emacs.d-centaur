@@ -233,8 +233,10 @@ Nil to use font supports ligatures."
     ("#+TAGS:" . ?🏷)
     ("#+TITLE:" . ?📓)
 
-    ("#+BEGIN_SRC" . ?✎)
-    ("#+END_SRC" . ?□)
+    ("#+BEGIN_SRC" . ?⏠)
+    ("#+END_SRC" . ?⏡)
+    ;; ("#+BEGIN_SRC" . ?✎)
+    ;; ("#+END_SRC" . ?□)
     ("#+BEGIN_QUOTE" . ?»)
     ("#+END_QUOTE" . ?«)
     ("#+HEADERS" . ?☰)
@@ -251,8 +253,8 @@ Nil to use font supports ligatures."
     ("#+tags:" . ?🏷)
     ("#+title:" . ?🕮)
 
-    ("#+begin_src" . ?✎)
-    ("#+end_src" . ?□)
+    ("#+begin_src" . ?⏠)
+    ("#+end_src" . ?⏡)
     ("#+begin_quote" . ?»)
     ("#+end_quote" . ?«)
     ("#+headers" . ?☰)

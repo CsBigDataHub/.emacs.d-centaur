@@ -95,13 +95,14 @@ mermaid.initialize({
     (advice-add #'markdown--style-map-prompt   :override #'ignore))
   :config
   ;;mypersonal
-  (setq markdown-command
-        (concat
-         "/usr/local/bin/pandoc"
-         " -f markdown+smart -t html5-smart"
-         " --self-contained --highlight-style=pygments"
-         " -c ~/.emacs.d/site-lisp/github-pandoc.css"
-         " --standalone --mathjax --highlight-style=pygments"))
+  (when sys/macp
+    (setq markdown-command
+          (concat
+           "/usr/local/bin/pandoc"
+           " -f markdown+smart -t html5-smart"
+           " --self-contained --highlight-style=pygments"
+           " -c ~/.emacs.d/site-lisp/github-pandoc.css"
+           " --standalone --mathjax --highlight-style=pygments")))
   ;;my-personal
   (add-to-list 'markdown-code-lang-modes '("mermaid" . mermaid-mode))
 

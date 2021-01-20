@@ -13,28 +13,28 @@
   (setq dabbrev-eliminate-newlines nil)
   (setq dabbrev-upcase-means-case-search t))
 
-(defun my-try-expand-company (old)
-  (unless company-candidates
-    (company-auto-begin))
-  (if (not old)
-      (progn
-        (he-init-string (he-lisp-symbol-beg) (point))
-        (if (not (he-string-member he-search-string he-tried-table))
-            (setq he-tried-table (cons he-search-string he-tried-table)))
-        (setq he-expand-list
-              (and (not (equal he-search-string ""))
-                   company-candidates))))
-  (while (and he-expand-list
-              (he-string-member (car he-expand-list) he-tried-table))
-    (setq he-expand-list (cdr he-expand-list)))
-  (if (null he-expand-list)
-      (progn
-        (if old (he-reset-string))
-        ())
-    (progn
-      (he-substitute-string (car he-expand-list))
-      (setq he-expand-list (cdr he-expand-list))
-      t)))
+;; (defun my-try-expand-company (old)
+;;   (unless company-candidates
+;;     (company-auto-begin))
+;;   (if (not old)
+;;       (progn
+;;         (he-init-string (he-lisp-symbol-beg) (point))
+;;         (if (not (he-string-member he-search-string he-tried-table))
+;;             (setq he-tried-table (cons he-search-string he-tried-table)))
+;;         (setq he-expand-list
+;;               (and (not (equal he-search-string ""))
+;;                    company-candidates))))
+;;   (while (and he-expand-list
+;;               (he-string-member (car he-expand-list) he-tried-table))
+;;     (setq he-expand-list (cdr he-expand-list)))
+;;   (if (null he-expand-list)
+;;       (progn
+;;         (if old (he-reset-string))
+;;         ())
+;;     (progn
+;;       (he-substitute-string (car he-expand-list))
+;;       (setq he-expand-list (cdr he-expand-list))
+;;       t)))
 
 ;; The actual expansion function
 (defun my-try-expand-by-dict (old)
@@ -78,7 +78,8 @@
           try-complete-file-name
           try-expand-all-abbrevs
           my-try-expand-by-dict
-          my-try-expand-company))
+          ;; my-try-expand-company
+          ))
   (setq hippie-expand-verbose nil)
   :bind ("M-/" . hippie-expand))
 
@@ -256,28 +257,28 @@
 (add-hook 'org-mode-hook #'endless/org-ispell)
 
 ;; https://emacs.stackexchange.com/questions/54754/how-to-change-the-company-complete-backend-based-on-the-current-syntaxG
-(defun my-in-comment-p (pos)
-  "Check whether the code at POS is comment by comparing font face."
-  (let* ((fontfaces (get-text-property pos 'face)))
-    (if (not (listp fontfaces))
-        (setq fontfaces (list fontfaces)))
-    (delq nil
-          (mapcar #'(lambda (f)
-                      ;; learn this trick from flyspell
-                      (or (eq f 'font-lock-comment-face)
-                          (eq f 'font-lock-comment-delimiter-face)))
-                  fontfaces))))
+;; (defun my-in-comment-p (pos)
+;;   "Check whether the code at POS is comment by comparing font face."
+;;   (let* ((fontfaces (get-text-property pos 'face)))
+;;     (if (not (listp fontfaces))
+;;         (setq fontfaces (list fontfaces)))
+;;     (delq nil
+;;           (mapcar #'(lambda (f)
+;;                       ;; learn this trick from flyspell
+;;                       (or (eq f 'font-lock-comment-face)
+;;                           (eq f 'font-lock-comment-delimiter-face)))
+;;                   fontfaces))))
 
-(eval-after-load 'company-ispell
-  '(progn
-     ;; use company-ispell in comment when coding
-     (defadvice company-ispell-available (around company-ispell-available-hack activate)
-       (cond
-        ((and (derived-mode-p 'prog-mode)
-              (or (not (company-in-string-or-comment)) ; respect advice in `company-in-string-or-comment'
-                  (not (my-in-comment-p (point))))) ; auto-complete in comment only
-         (setq ad-return-value nil))
-        (t
-         ad-do-it)))))
+;; (eval-after-load 'company-ispell
+;;   '(progn
+;;      ;; use company-ispell in comment when coding
+;;      (defadvice company-ispell-available (around company-ispell-available-hack activate)
+;;        (cond
+;;         ((and (derived-mode-p 'prog-mode)
+;;               (or (not (company-in-string-or-comment)) ; respect advice in `company-in-string-or-comment'
+;;                   (not (my-in-comment-p (point))))) ; auto-complete in comment only
+;;          (setq ad-return-value nil))
+;;         (t
+;;          ad-do-it)))))
 
 (provide 'init-hippie-expand)

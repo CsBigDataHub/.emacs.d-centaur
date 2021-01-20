@@ -130,7 +130,7 @@ This page is about the keyboard key typically labeled *[[https://www.emacswiki.o
 
 ****** Contents
 
- [[#toc6][Using CapsLock as Hyper Modifier]]
+ [[Using CapsLock as Hyper Modifier][Using CapsLock as Hyper Modifier]]
 
 ****** Redefining as autocomplete/expand
 

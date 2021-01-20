@@ -2204,20 +2204,22 @@ Version 2018-07-03"
      (concat "yq r " input-file " -j | jq . > " (shell-quote-argument output-file)))
     ))
 
-(defun formatted-copy ()
-  "Export region to HTML, and copy it to the clipboard."
-  (interactive)
-  (save-window-excursion
-    (let* ((buf (org-export-to-buffer 'html "*Formatted Copy*" nil nil t t))
-           (html (with-current-buffer buf (buffer-string))))
-      (with-current-buffer buf
-        (shell-command-on-region
-         (point-min)
-         (point-max)
-         "textutil -stdin -format html -convert rtf -stdout | pbcopy"))
-      (kill-buffer buf))))
+(when sys/macp
+  (defun formatted-copy ()
+    "Export region to HTML, and copy it to the clipboard."
+    (interactive)
+    (save-window-excursion
+      (let* ((buf (org-export-to-buffer 'html "*Formatted Copy*" nil nil t t))
+             (html (with-current-buffer buf (buffer-string))))
+        (with-current-buffer buf
+          (shell-command-on-region
+           (point-min)
+           (point-max)
+           "textutil -stdin -format html -convert rtf -stdout | pbcopy"))
+        (kill-buffer buf)))))
 
-(global-set-key (kbd "C-x c w") 'formatted-copy)
+(when sys/macp
+  (global-set-key (kbd "C-x c w") 'formatted-copy))
 
 (defun toggle-html-export-on-save ()
   "Enable or disable export HTML when saving current buffer."
@@ -2576,8 +2578,8 @@ It sets the transient map to all functions of ALIST."
         browse-url-chrome-program "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"))
 
 (when sys/linuxp
-  (setq browse-url-browser-function 'browse-url-chrome
-        browse-url-chrome-program "firefox"))
+  (setq browse-url-browser-function 'browse-url-firefox
+        browse-url-firefox-program "firefox"))
 ;; NOTES: Leaving this code here for reference.
 ;; code from - http://ergoemacs.org/emacs/emacs_set_default_browser.html
 ;; use browser depending on url
