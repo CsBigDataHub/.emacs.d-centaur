@@ -32,6 +32,7 @@
 
 (require 'init-const)
 (require 'init-custom)
+(require 'init-funcs)
 
 (use-package org
   :ensure nil
@@ -74,6 +75,7 @@
      ("<" self-insert-command "ins"))))
   :bind (("C-c a" . org-agenda)
          ("C-c b" . org-switchb)
+         ("C-c x" . org-capture)
          :map org-mode-map
          ("<" . (lambda ()
                   "Insert org template."
@@ -116,7 +118,22 @@ prepended to the element after the #+HEADER: tag."
       (when text (insert text))))
 
   ;; To speed up startup, don't put to init section
-  (setq org-agenda-files `(,centaur-org-directory)
+  (setq org-directory centaur-org-directory
+        org-capture-templates
+        `(("i" "Idea" entry (file ,(concat org-directory "/idea.org"))
+           "*  %^{Title} %?\n%U\n%a\n")
+          ("t" "Todo" entry (file ,(concat org-directory "/gtd.org"))
+           "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+          ("n" "Note" entry (file ,(concat org-directory "/note.org"))
+           "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+          ("j" "Journal" entry (,(if emacs/>=26p 'file+olp+datetree 'file+datetree)
+                                ,(concat org-directory "/journal.org"))
+           "*  %^{Title} %?\n%U\n%a\n" :clock-in t :clock-resume t)
+	      ("b" "Book" entry (,(if emacs/>=26p 'file+olp+datetree 'file+datetree)
+                             ,(concat org-directory "/book.org"))
+	       "* Topic: %^{Description}  %^g %? Added: %U"))
+
+        org-agenda-files `(,centaur-org-directory)
         org-todo-keywords
         '((sequence "TODO(t)" "DOING(i)" "HANGUP(h)" "|" "DONE(d)" "CANCEL(c)")
           (sequence "⚑(T)" "🏴(I)" "❓(H)" "|" "✔(D)" "✘(C)"))
@@ -125,6 +142,7 @@ prepended to the element after the #+HEADER: tag."
         org-priority-faces '((?A . error)
                              (?B . warning)
                              (?C . success))
+
         org-tags-column -80
         org-log-done 'time
         org-catch-invisible-edits 'smart
@@ -156,10 +174,11 @@ prepended to the element after the #+HEADER: tag."
     (bind-key [remap org-set-tags-command] #'counsel-org-tag org-mode-map))
 
   ;; Prettify UI
-  (use-package org-bullets
-    :if (char-displayable-p ?⚫)
-    :hook (org-mode . org-bullets-mode)
-    :init (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫")))
+  (when emacs/>=26p
+    (use-package org-superstar
+      :if (char-displayable-p ?⚫)
+      :hook (org-mode . org-superstar-mode)
+      :init (setq org-superstar-headline-bullets-list '("⚫" "⚫" "⚫" "⚫"))))
 
   (use-package org-fancy-priorities
     :diminish
@@ -261,7 +280,7 @@ prepended to the element after the #+HEADER: tag."
 (when (and emacs/>=26p (executable-find "cc"))
   (use-package org-roam
     :diminish
-    :custom (org-roam-directory centaur-org-directory)
+    :custom (org-roam-directory (file-truename centaur-org-directory))
     :hook (after-init . org-roam-mode)
     :bind (:map org-roam-mode-map
            (("C-c n l" . org-roam)

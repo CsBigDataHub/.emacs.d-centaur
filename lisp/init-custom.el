@@ -124,8 +124,10 @@
     (colorful . doom-snazzy)
     (dark     . doom-dark+)
     (light    . doom-one-light)
-    (day      . doom-acario-light)
-    (night    . doom-city-lights))
+    (warm     . doom-flatwhite)
+    (cold     . doom-city-lights)
+    (day      . doom-tomorrow-day)
+    (night    . doom-tomorrow-night))
   "List of themes mapped to internal themes."
   :group 'centaur
   :type '(alist :key-type (symbol :tag "Theme")

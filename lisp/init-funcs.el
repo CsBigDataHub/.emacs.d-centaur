@@ -135,6 +135,7 @@ NEW-SESSION specifies whether to create a new xwidget-webkit session."
                  (require 'browse-url)
                  (browse-url-interactive-arg "xwidget-webkit URL: ")))
   (when (and (featurep 'xwidget-internal)
+             (fboundp 'xwidget-buffer)
              (fboundp 'xwidget-webkit-current-session))
     (xwidget-webkit-browse-url url new-session)
     (let ((buf (xwidget-buffer (xwidget-webkit-current-session))))
@@ -466,9 +467,9 @@ If SYNC is non-nil, the updating process is synchronous."
 
 (defun centaur--load-theme (theme)
   "Disable others and enable new one."
-  (message "Loading theme `%s'" theme)
   (mapc #'disable-theme custom-enabled-themes)
-  (load-theme theme t))
+  (load-theme theme t)
+  (message "Loaded theme `%s'" theme))
 
 (defun centaur-load-random-theme ()
   "Load the random theme."

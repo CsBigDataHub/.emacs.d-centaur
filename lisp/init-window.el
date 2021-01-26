@@ -175,7 +175,7 @@
       ;; `C-g' can deactivate region
       (when (and (called-interactively-p 'interactive)
                  (not (region-active-p)))
-        (let (window buffer)
+        (let (window buffer process)
           (if (one-window-p)
               (progn
                 (setq window (selected-window))
@@ -183,13 +183,17 @@
                                                  (window-buffer window))
                              window)
                   (winner-undo)))
-            (setq window (caar shackle--popup-window-list))
-            (setq buffer (cdar shackle--popup-window-list))
-            (when (and (window-live-p window)
-                       (equal (window-buffer window) buffer))
-              (delete-window window)
+            (progn
+              (setq window (caar shackle--popup-window-list))
+              (setq buffer (cdar shackle--popup-window-list))
+              (when (and (window-live-p window)
+                         (equal (window-buffer window) buffer))
+                (setq process (get-buffer-process buffer))
+                (when (process-live-p process)
+                  (kill-process process))
+                (delete-window window)
 
-              (pop shackle--popup-window-list))))))
+                (pop shackle--popup-window-list)))))))
 
     (advice-add #'keyboard-quit :before #'shackle-close-popup-window-hack)
     (advice-add #'shackle-display-buffer :around #'shackle-display-buffer-hack))
@@ -224,12 +228,14 @@
           ("*Finder*" :select t :size 0.3 :align 'below :autoclose t)
           ("^\\*macro expansion\\**" :regexp t :size 0.4 :align 'below)
           ("^\\*elfeed-entry" :regexp t :size 0.7 :align 'below :autoclose t)
-          ((" *Org todo*" "*Org Dashboard*" "*Org Select*") :select t :size 0.4 :align 'below :autoclose t)
           (" *Install vterm* " :size 0.35 :same t :align 'below)
           (("*Paradox Report*" "*package update results*") :size 0.2 :align 'below :autoclose t)
           ("*Package-Lint*" :size 0.4 :align 'below :autoclose t)
           (("*Gofmt Errors*" "*Go Test*") :select t :size 0.3 :align 'below :autoclose t)
           ("*How Do You*" :select t :size 0.5 :align 'below :autoclose t)
+
+          (("*Org Agenda*" " *Agenda Commands*" " *Org todo*" "*Org Dashboard*" "*Org Select*") :select t :size 0.1 :align 'below :autoclose t)
+          (("\\*Capture\\*" "^CAPTURE-.*\\.org*") :regexp t :select t :size 0.3 :align 'below :autoclose t)
 
           ("*ert*" :size 15 :align 'below :autoclose t)
           (overseer-buffer-mode :size 15 :align 'below :autoclose t)

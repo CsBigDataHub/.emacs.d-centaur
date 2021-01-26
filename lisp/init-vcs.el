@@ -33,12 +33,8 @@
 (require 'init-const)
 
 ;; Git
+;; See `magit-maybe-define-global-key-bindings'
 (use-package magit
-  :mode (("\\COMMIT_EDITMSG\\'" . text-mode)
-         ("\\MERGE_MSG\\'" . text-mode))
-  :bind (("C-x g" . magit-status)
-         ("C-x M-g" . magit-dispatch)
-         ("C-c M-g" . magit-file-popup))
   :init (setq magit-diff-refine-hunk t)
   :config
   (when sys/win32p
@@ -71,10 +67,10 @@
     (use-package forge
       :demand
       :init (setq forge-topic-list-columns
-                  '(("#" 5 t (:right-align t) number nil)
+                  '(("#" 5 forge-topic-list-sort-by-number (:right-align t) number nil)
                     ("Title" 60 t nil title  nil)
                     ("State" 6 t nil state nil)
-                    ("Updated" 10 t nill updated nil)))))
+                    ("Updated" 10 t nil updated nil)))))
 
   ;; Show TODOs in magit
   (when emacs/>=25.2p

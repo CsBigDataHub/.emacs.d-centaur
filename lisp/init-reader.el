@@ -215,7 +215,9 @@
                 process-coding-system-alist))))
 
 ;; Atom/RSS reader
-(when emacs/>=25.2p
+(when (and emacs/>=25.2p
+           (functionp #'org-version)
+           (not (string-empty-p (org-version))))
   (use-package elfeed
     :pretty-hydra
     ((:title (pretty-hydra-title "Elfeed" 'faicon "rss-square" :face 'all-the-icons-orange :height 1.1 :v-adjust -0.05)
@@ -228,11 +230,11 @@
        ("+" elfeed-search-tag-all "tag all")
        ("-" elfeed-search-untag-all "untag all"))
       "Filter"
-      (("s" elfeed-search-live-filter "live filter")
-       ("S" elfeed-search-set-filter "set filter")
+      (("l" elfeed-search-live-filter "live filter")
+       ("s" elfeed-search-set-filter "set filter")
        ("*" (elfeed-search-set-filter "@6-months-ago +star") "starred")
-       ("A" (elfeed-search-set-filter "@6-months-ago" "all"))
-       ("T" (elfeed-search-set-filter "@1-day-ago" "today")))
+       ("a" (elfeed-search-set-filter "@6-months-ago") "all")
+       ("t" (elfeed-search-set-filter "@1-day-ago") "today"))
       "Article"
       (("b" elfeed-search-browse-url "browse")
        ("n" next-line "next")
