@@ -9236,3 +9236,7 @@ Something entirely different next time: Typing equations in Emacs faster than yo
   (require 'loadhist)
   (file-dependents (feature-file 'cl))
 #+end_src
+
+* Split a line at a delimiter
+
+- Use =replace-regexp= and give the value of the ~delimiter~ to split, Next give =new line sequence= ~C-x C-j~ to replace.
