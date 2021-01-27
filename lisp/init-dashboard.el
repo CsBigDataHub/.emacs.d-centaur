@@ -81,7 +81,7 @@
            ("?" . dashboard-hydra/body))
     :hook (dashboard-mode . (lambda () (setq-local frame-title-format "")))
     :init
-    (setq dashboard-banner-logo-title "CENTAUR EMACS - Enjoy Programming & Writing"
+    (setq dashboard-banner-logo-title "EMACS - Enjoy Programming & Writing"
           dashboard-startup-banner (or centaur-logo 'official)
           dashboard-center-content t
           dashboard-show-shortcuts nil
