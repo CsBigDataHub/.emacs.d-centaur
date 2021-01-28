@@ -102,4 +102,9 @@
     :config
     (add-to-list 'auto-mode-alist '("\\.\\(applescri\\|sc\\)pt\\'" . apples-mode))))
 
+(use-package org-pandoc-import
+  :straight (:host github
+             :repo "tecosaur/org-pandoc-import"
+             :files ("*.el" "filters" "preprocessors")))
+
 (provide 'init-straight)
