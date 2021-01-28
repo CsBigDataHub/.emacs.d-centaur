@@ -83,6 +83,7 @@
 (evil-set-initial-state 'wgrep-change-to-wgrep-mode 'emacs)
 (evil-set-initial-state 'flycheck-error-list-mode 'emacs)
 (evil-set-initial-state 'view-mode 'emacs)
+(evil-set-initial-state 'pass-mode 'emacs)
 (add-to-list 'evil-insert-state-modes 'view-mode)
 (evil-set-initial-state 'calendar-mode 'emacs)
 

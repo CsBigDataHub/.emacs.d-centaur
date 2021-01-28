@@ -194,6 +194,7 @@ decrease this. If you experience stuttering, increase this.")
 (require 'init-smartparens)
 (require 'init-shr)
 (require 'init-plantuml)
+(require 'init-pass)
 
 ( cond ((eq system-type 'darwin) (require 'init-macos)))
 ( cond ((eq system-type 'gnu/linux) (require 'init-linux)))
