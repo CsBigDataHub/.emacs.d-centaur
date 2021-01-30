@@ -89,9 +89,12 @@
         (doom-themes-visual-bell-config)
 
         ;; Enable customized theme
-        (doom-themes-treemacs-config)
+        ;; FIXME https://github.com/emacs-lsp/lsp-treemacs/issues/89
+        (with-eval-after-load 'lsp-treemacs
+          (doom-themes-treemacs-config))
         ;; Corrects (and improves) org-mode's native fontification.
         (doom-themes-org-config)))
+
   (progn
     (warn "The current theme may not be compatible!")
     (centaur-load-theme centaur-theme t)))
