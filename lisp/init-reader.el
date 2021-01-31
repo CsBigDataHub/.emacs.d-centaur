@@ -190,12 +190,16 @@
   :mode ("\\.epub\\'" . nov-mode)
   :hook (nov-mode . my-nov-setup)
   :init
+  (add-hook 'nov-mode-hook #'shrface-mode)
   (defun my-nov-setup ()
     "Setup `nov-mode' for better reading experience."
     (visual-line-mode 1)
     (centaur-read-mode)
     (face-remap-add-relative 'variable-pitch :family "Times New Roman" :height 1.5))
   :config
+  (require 'shrface)
+  (setq nov-shr-rendering-functions '((img . nov-render-img) (title . nov-render-title)))
+  (setq nov-shr-rendering-functions (append nov-shr-rendering-functions shr-external-rendering-functions))
   (with-no-warnings
     ;; HACK: errors while opening `nov' files with Unicode characters
     ;; @see https://github.com/wasamasa/nov.el/issues/63

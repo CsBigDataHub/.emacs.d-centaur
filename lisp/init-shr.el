@@ -4,6 +4,9 @@
   ;; :straight (shrface :type git :host github :repo "chenyanming/shrface")
   :config
   (shrface-basic)
+  (shrface-trial)
+  (shrface-default-keybindings) ; setup default keybindings
+  (setq shrface-href-versatile t)
   (setq nov-shr-rendering-functions shr-external-rendering-functions)
   (setq shrface-bullets-bullet-list '("☯" "☢" "❀" "◉" "⚫" "○" "✸" "✿" "~"))
   (setq shrface-item-bullet "➤")
