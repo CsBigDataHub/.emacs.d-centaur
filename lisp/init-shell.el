@@ -152,6 +152,18 @@ not appropriate in some cases like terminals."
   :init
   (add-hook 'sh-mode-hook 'flymake-shellcheck-load))
 
+;;A mode to edit SSH config files.
+;;If you have a SSH config file that you'd like to use this mode on automatically, add this line as the first one in the file:
+;;`# -*- mode: ssh-config -*-'
+(use-package ssh-config-mode
+  :config
+  (autoload 'ssh-config-mode "ssh-config-mode" t)
+  (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
+  (add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
+  (add-to-list 'auto-mode-alist '("/knownhosts\\'"       . ssh-known-hosts-mode))
+  (add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-authorized-keys-mode))
+  (add-hook 'ssh-config-mode-hook 'turn-on-font-lock))
+
 (provide 'init-shell)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
