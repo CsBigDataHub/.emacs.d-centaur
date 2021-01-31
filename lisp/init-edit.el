@@ -142,16 +142,16 @@
                 avy-style 'pre))
 
 ;; Kill text between the point and the character CHAR
-(use-package avy-zap
-  :bind (("M-z" . avy-zap-to-char-dwim)
-         ("M-Z" . avy-zap-up-to-char-dwim)))
+;; (use-package avy-zap
+;;   :bind (("M-z" . avy-zap-to-char-dwim)
+;;          ("M-Z" . avy-zap-up-to-char-dwim)))
 
 ;; my-personal
 ;; Replace zap-to-char functionaity with the more powerful zop-to-char
 (use-package zop-to-char
-  :bind (("M-s-z" . zop-up-to-char)
+  :bind (("M-z" . zop-up-to-char)
          ("M-s-ω" . zop-to-char)
-         ("M-s-Z" . zop-to-char)
+         ("M-Z" . zop-to-char)
          ))
 
 ;; my-personal
