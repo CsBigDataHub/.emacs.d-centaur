@@ -565,21 +565,21 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
           org-roam-server-network-label-truncate t
           org-roam-server-network-label-truncate-length 60
           org-roam-server-network-label-wrap-length 20))
-
-  (use-package org-special-block-extras
-    :hook (org-mode . org-special-block-extras-mode))
   )
 
 (use-package org-ql)
 
-(use-package org-super-agenda
-  ;; TODO: Get config from org-super-agenda/examples.org
-  )
+;; (use-package org-super-agenda
+;;   ;; TODO: Get config from org-super-agenda/examples.org
+;;   )
 
 (when sys/linuxp
   (use-package org-mime))
 
-(use-package org-sidebar)
+;; (use-package org-sidebar)
+
+;; (use-package org-special-block-extras
+;;   :hook (org-mode . org-special-block-extras-mode))
 
 (provide 'init-org)
 
