@@ -10245,3 +10245,28 @@ if the certificate is in ~p12~ or ~pk12~ format, ~key~ and ~cert~ can be generat
   openssl pkcs12 -in mycert.p12 -out file.key.pem -nocerts -nodes
   openssl pkcs12 -in mycert.p12 -out file.crt.pem -clcerts -nokeys
 #+end_src
+
+*** running curl with p12 certs
+#+begin_src sh
+curl --cert-type P12 --cert cert.p12:password https://yoursite.com
+#+end_src
+
+*** The problem: Using Digital Certificates issued by a Certification Authority (CA) with curl.
+
+The situation: I have a .cer (Digital Certificate) file, .pfx (Personal Information Exchange file i.e., the private key for the certificate). I cannot use either of these to authenticate to the web service as curl would not accept these formats.
+
+The solution:
+1) Convert it into PEM format (X.509 certificate) using openssl.
+openssl pkcs12 -in abcd.pfx -out abcd.pem
+Enter a passphrase and a password.
+2) Still you cannot use this with curl because you’d get a few errors.
+3) Convert this PEM certificate into three different certificates for the client, the private key and the certification authority certificate.
+#+BEGIN_SRC sh
+openssl pkcs12 -in abcd.pfx -out ca.pem -cacerts -nokeys
+openssl pkcs12 -in abcd.pfx -out client.pem -clcerts -nokeys
+openssl pkcs12 -in abcd.pfx -out key.pem -nocerts
+#+END_SRC
+4) Use the following command:
+#+BEGIN_SRC sh
+curl -k https://www.thesitetoauthenticate.com/test -v –key key.pem –cacert ca.pem –cert client.pem
+#+END_SRC
