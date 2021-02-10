@@ -9946,7 +9946,6 @@ You don't need to use Emacs to enjoy the benefits of literate programming across
 + https://developers.google.com/custom-search/docs/overview
 + http://lti.tools/oauth/
 
-
 * [[http://prodissues.com/2016/02/emacs-gpg-for-dummies.html][prodissues]] :website:
 
 [2021-02-10 Wed 10:18]
@@ -9976,7 +9975,8 @@ Let's make sure gpg was installed:
    ~ $ gpg --version
 #+end_example
 
-[[http://media.prodissues.com.s3.amazonaws.com/images/2016/02/gpg--version.png]]
+#+DOWNLOADED: http://media.prodissues.com.s3.amazonaws.com/images/2016/02/gpg--version.png @ 2021-02-10 13:58:14
+[[file:images/emacs-notes/gpg--version2021-02-10_13-58-14_.png]]
 
 Figure 1: gpg version information along with the list of supported algorithms
 
@@ -10173,7 +10173,9 @@ I stored all the information related to my gpg key, as well as a backup file in 
 
 Now the encrypted text will replace the original, plain, text:
 
-[[http://media.prodissues.com.s3.amazonaws.com/images/2016/02/encrypted-text.png]]
+
+#+DOWNLOADED: http://media.prodissues.com.s3.amazonaws.com/images/2016/02/encrypted-text.png @ 2021-02-10 14:00:10
+[[file:images/emacs-notes/encrypted-text2021-02-10_14-00-10_.png]]
 
 Figure 2: =M-x epa-encrypt-region= will encrypt a region of text in Emacs
 
@@ -10185,7 +10187,9 @@ To decrypt a message, or a file you've encrypted:
 
 2. Run =M-x epa-decrypt-region=
 
-   [[http://media.prodissues.com.s3.amazonaws.com/images/2016/02/decrypt-text.png]]
+
+#+DOWNLOADED: http://media.prodissues.com.s3.amazonaws.com/images/2016/02/decrypt-text.png @ 2021-02-10 14:00:32
+[[file:images/emacs-notes/decrypt-text2021-02-10_14-00-32_.png]]
 
    Figure 3: =M-x epa-decrypt-region= will decrypt a region of text in Emacs
 
@@ -10193,7 +10197,9 @@ To decrypt a message, or a file you've encrypted:
 
 4. Emacs will ask if you want the decrypted text to replace the original text. If you choose "No", it will open the text in a second window.
 
-[[http://media.prodissues.com.s3.amazonaws.com/images/2016/02/decrypted-text-2.png]]
+
+#+DOWNLOADED: http://media.prodissues.com.s3.amazonaws.com/images/2016/02/decrypted-text-2.png @ 2021-02-10 14:00:37
+[[file:images/emacs-notes/decrypted-text-22021-02-10_14-00-37_.png]]
 
 Figure 4: The decrypted text in a second window
 
@@ -10225,3 +10231,17 @@ That's it. If you're interested in more than the basics that I went through abov
 
    <<fn-3>>
    If Emacs asks for your passphrase too often, you might find this [[https://www.reddit.com/r/emacs/comments/45lx1s/adding_mu4e_support_to_emacs_the_hard_way/d01b1hu][comment in Reddit]], by [[https://www.reddit.com/user/aminb][/u/aminb]], helpful.  [[#fnref-3][↩]]
+
+* authinfo for restclient or verb certificate authentication
+
+- =~/.authinfo= file example
+#+begin_example
+machine schema-registry.com key full-path-to-key cert full-path-to-cert
+
+#+end_example
+
+if the certificate is in ~p12~ or ~pk12~ format, ~key~ and ~cert~ can be generate from ~p12~
+#+begin_src sh
+  openssl pkcs12 -in mycert.p12 -out file.key.pem -nocerts -nodes
+  openssl pkcs12 -in mycert.p12 -out file.crt.pem -clcerts -nokeys
+#+end_src
