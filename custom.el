@@ -91,8 +91,9 @@
  ;; If there is more than one, they won't work right.
  '(centaur-package-archives 'melpa)
  '(centaur-theme 'default)
- '(doom-themes-treemacs-theme "doom-colors")
+ '(doom-themes-treemacs-theme "doom-colors" nil nil "Customized with use-package doom-themes")
  '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:")
+ '(network-stream-use-client-certificates t)
  '(safe-local-variable-values
    '((add-to-list 'browse-at-remote-remote-type-domains
                   '("github.com" . "github"))
@@ -118,6 +119,14 @@
  '(git-timemachine-minibuffer-author-face ((t (:inherit success))))
  '(git-timemachine-minibuffer-detail-face ((t (:inherit warning))))
  '(ivy-minibuffer-match-face-1 ((t (:inherit font-lock-doc-face :foreground nil))))
+ '(lsp-headerline-breadcrumb-path-error-face ((t :underline (:style wave :color "#ff6c6b") :inherit lsp-headerline-breadcrumb-path-face)))
+ '(lsp-headerline-breadcrumb-path-hint-face ((t :underline (:style wave :color "#98be65") :inherit lsp-headerline-breadcrumb-path-face)))
+ '(lsp-headerline-breadcrumb-path-info-face ((t :underline (:style wave :color "#98be65") :inherit lsp-headerline-breadcrumb-path-face)))
+ '(lsp-headerline-breadcrumb-path-warning-face ((t :underline (:style wave :color "#ECBE7B") :inherit lsp-headerline-breadcrumb-path-face)))
+ '(lsp-headerline-breadcrumb-symbols-error-face ((t :inherit lsp-headerline-breadcrumb-symbols-face :underline (:style wave :color "#ff6c6b"))))
+ '(lsp-headerline-breadcrumb-symbols-hint-face ((t :inherit lsp-headerline-breadcrumb-symbols-face :underline (:style wave :color "#98be65"))))
+ '(lsp-headerline-breadcrumb-symbols-info-face ((t :inherit lsp-headerline-breadcrumb-symbols-face :underline (:style wave :color "#98be65"))))
+ '(lsp-headerline-breadcrumb-symbols-warning-face ((t :inherit lsp-headerline-breadcrumb-symbols-face :underline (:style wave :color "#ECBE7B"))))
  '(lsp-ui-sideline-code-action ((t (:inherit warning))))
  '(macrostep-expansion-highlight-face ((t (:background "#23272e" :extend t))))
  '(org-ellipsis ((t (:foreground nil))))

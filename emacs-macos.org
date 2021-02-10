@@ -915,3 +915,12 @@ Others mentions of [[https://takeonrules.com/2020/11/11/synchronizing-osx-termin
 ********** License(s)
 
 /Synchronizing OSX, Terminal, and Emacs Dark/Light Appearance/ by [[https://takeonrules.com/about/][Jeremy Friesen]] is licensed under a [[https://creativecommons.org/licenses/by-nc-nd/4.0/][Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License]]. Based on a work at [[https://takeonrules.com/2020/11/11/synchronizing-osx-terminal-and-emacs-dark-light-appearance/]]. Permissions beyond the scope of this license may be available at [[https://takeonrules.com/more_permissions/]].
+
+* To gpg working on MAC
+
+https://github.com/Homebrew/homebrew-core/issues/14737#issuecomment-309547412
+#+begin_src sh
+  brew install pinentry-mac
+  echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
+  killall gpg-agent
+#+end_src

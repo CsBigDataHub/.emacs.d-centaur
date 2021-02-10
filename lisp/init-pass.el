@@ -1,6 +1,7 @@
 ;;init-pass.el --- Initialize password-store configurations.	-*- lexical-binding: t -*-
 
-
+(require 'epa-file)
+(epa-file-enable)
 
 (use-package password-generator)
 

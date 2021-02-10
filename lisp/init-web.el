@@ -135,6 +135,11 @@
 ;; REST
 (use-package restclient
   :mode ("\\.http\\'" . restclient-mode)
+  :init
+  ;; limit number of times vars are substituted
+  (setq restclient-vars-max-passes 2)
+  ;; use matching client certificates from ~/.authinfo
+  (setq network-stream-use-client-certificates t)
   :config
   (use-package restclient-test
     :diminish
@@ -149,6 +154,22 @@
         (defun json-pretty-print-buffer ()
           (json-prettify-buffer))))
   )
+
+(use-package verb
+  :after org
+  :config
+  (define-key org-mode-map (kbd "C-c k") verb-command-map)
+  :init
+  ;; use matching client certificates from ~/.authinfo
+  (setq network-stream-use-client-certificates t)
+  (setq verb-auto-kill-response-buffers t)
+  (setq verb-json-use-mode 'json-mode))
+
+(use-package ob-verb
+  :ensure verb
+  :after ob-core
+  :commands
+  org-babel-execute:verb)
 
 (provide 'init-web)
 
