@@ -333,12 +333,15 @@
 
 (use-package company-emoji)
 
-(add-to-list 'company-backends 'company-emoji)
+(defun emoji-text-mode-hook-setup ()
+  ;; make `company-backends' local is critcal
+  ;; or else, you will have completion in every major mode, that's very annoying!
+  (make-local-variable 'company-backends)
 
-(add-hook 'emacs-lisp-mode-hook (lambda ()
-                                  (delete 'company-emoji company-backend)))
-;;adding company-emoji to magit mode
-;;(add-hook 'git-commit-setup-hook (lambda () (set (make-local-variable 'company-backends) '((company-capf :with company-dabbrev company-files company-emoji)))))
+  (add-to-list 'company-backends 'company-emoji)
+  )
+
+(add-hook 'text-mode-hook 'emoji-text-mode-hook-setup)
 
 (defun --set-emoji-font (frame)
   "Adjust the font settings of FRAME so Emacs can display emoji properly."
