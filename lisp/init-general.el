@@ -73,6 +73,7 @@ The prefix map is named 'my-DEF-map'."
  "dd" 'counsel-fd-dired-jump
  "df" 'counsel-fd-file-jump
  "f" 'counsel-find-file
+ "v" 'vlf
  "z" 'counsel-fzf
  "p" 'counsel-projectile
  "r" 'counsel-recentf

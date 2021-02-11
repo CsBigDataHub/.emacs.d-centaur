@@ -334,6 +334,9 @@
 (use-package company-emoji)
 
 (add-to-list 'company-backends 'company-emoji)
+
+(add-hook 'emacs-lisp-mode-hook (lambda ()
+                                  (delete 'company-emoji company-backend)))
 ;;adding company-emoji to magit mode
 ;;(add-hook 'git-commit-setup-hook (lambda () (set (make-local-variable 'company-backends) '((company-capf :with company-dabbrev company-files company-emoji)))))
 

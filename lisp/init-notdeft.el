@@ -1,6 +1,13 @@
 ;;init-notdeft.el --- Initialize notdeft configurations.	-*- lexical-binding: t -*-
 
-(add-to-list 'load-path "~/.emacs.d/lisp/notdeft/")
+;; (add-to-list 'load-path "~/.emacs.d/lisp/notdeft/")
+
+(use-package notdeft
+  :straight (notdeft
+             :type git
+             :host github
+             :repo "hasu/notdeft"
+             :files ("*.el" "xapian" "extras/*-hydra.el")))
 
 (require 'notdeft-autoloads)
 
@@ -11,8 +18,8 @@
 (setq notdeft-extension "org")
 (setq notdeft-secondary-extensions '("md" "txt"))
 
-(setq notdeft-xapian-program (expand-file-name "lisp/notdeft/xapian/notdeft-xapian" user-emacs-directory))
-
+(setq notdeft-xapian-program (expand-file-name "straight/build/notdeft/xapian/notdeft-xapian" user-emacs-directory))
+;; (setq notdeft-xapian-program-compile-command-format "g++ -o %s %s -std=c++11 -Wall `pkg-config --cflags --libs tclap` `xapian-config --cxxflags --libs`")
 
 (defun run-local-variables-mode-hooks ()
   "Run hooks for `major-mode' with locals set.
@@ -32,7 +39,7 @@ directory local variables set."
 ;; Define a hook for conditionally enabling the NotDeft minor mode.
 (defun default-notdeft-hook ()
   "Conditionally enable `notdeft-note-mode'.
- when the buffer local variable
+Enable when the buffer local variable
 `notdeft-note-mode-auto-enable' is set to a non-nil value."
   (when notdeft-note-mode-auto-enable
     (notdeft-note-mode 1)))
@@ -50,8 +57,14 @@ Add it for all `notdeft-directories'."
     (let ((default-directory dir))
       (add-dir-local-variable nil 'notdeft-note-mode-auto-enable t))))
 
-;; Extras for Org mode.
-(eval-after-load 'org (lambda () (require 'notdeft-org)))
+;; Org mode "deft:" and "notdeft:" link support.
+(eval-after-load 'org
+  (lambda ()
+    (let ((ver (ignore-errors
+                 (car (version-to-list org-version)))))
+      (require (if (and ver (< ver 9))
+                   'notdeft-org8
+                 'notdeft-org9)))))
 
 ;; Add global bindings for NotDeft. To do that, bind a custom keymap
 ;; that inherits from NotDeft's, one that we can use to override and
@@ -60,12 +73,12 @@ Add it for all `notdeft-directories'."
 (defvar my-notdeft-global-map
   (let ((map (make-sparse-keymap)))
     (define-key map [(a) (d) (l) (v)]
-      'my-notdeft-add-directory-local-variables)
-    (define-key map [(l)] 'notdeft-org-link-existing-note) ;; l for link
-    (define-key map [(n)] 'notdeft-org-link-new-file) ;; n for new
-    (define-key map [(s)] 'org-store-link) ;; s for store
-    (define-key map [(S)] 'notdeft-org-store-deft-link) ;; s for store
-    (define-key map [(*)] 'notdeft-org-open-heading-as-query)
+      #'my-notdeft-add-directory-local-variables)
+    (define-key map [(l)] #'notdeft-org-link-existing-note) ;; l for link
+    (define-key map [(n)] #'notdeft-org-link-new-file) ;; n for new
+    (define-key map [(s)] #'org-store-link) ;; s for store
+    (define-key map [(S)] #'notdeft-org-store-deft-link) ;; s for store
+    (define-key map [(*)] #'notdeft-org-open-heading-as-query)
     (set-keymap-parent map 'notdeft-global-map)
     map)
   "Custom keymap for accessing NotDeft functionality.
@@ -75,19 +88,21 @@ Add it for all `notdeft-directories'."
 (global-set-key (kbd "C-c d n") 'my-notdeft-global-map)
 
 ;; Add Org-specific bindings that are also usable in a NotDeft buffer.
-(eval-after-load 'notdeft
-  (lambda ()
-    (define-key notdeft-mode-map (kbd "C-c S")
-      'notdeft-org-store-deft-link)))
+(add-hook 'notdeft-load-hook
+          (lambda ()
+            (define-key notdeft-mode-map (kbd "C-c S")
+              #'notdeft-org-store-deft-link)))
 
 (require 'hydra nil t)
 (when (featurep 'hydra)
+  (autoload 'notdeft-global-hydra/body "notdeft-global-hydra" nil t)
+  (autoload 'notdeft-mode-hydra/body "notdeft-mode-hydra")
   ;; Augment `notdeft-mode' bindings with a hydra.
   (autoload 'notdeft-mode-hydra/body "notdeft-mode-hydra" nil t)
-  (eval-after-load 'notdeft
-    (lambda ()
-      (define-key notdeft-mode-map (kbd "C-c d n h")
-        'notdeft-mode-hydra/body)))
+  (add-hook 'notdeft-load-hook
+            (lambda ()
+              (define-key notdeft-mode-map (kbd "C-c d n h")
+                #'notdeft-mode-hydra/body)))
 
   ;; Augment the global NotDeft keymap with a hydra also.
   (autoload 'notdeft-global-hydra/body "notdeft-global-hydra" nil t)
