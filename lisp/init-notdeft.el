@@ -186,4 +186,13 @@ argument is given. Choose a file name based on any document
      (and title `(title, title))
      "org" s)))
 
+;; override to using VLF instead of find-file
+(defun notdeft-find-file (file)
+  "Edit NotDeft note FILE.
+Enable NotDeft note mode for the buffer for editing the file.
+Called interactively, query for the FILE using the minibuffer."
+  (interactive "FFind NotDeft file: ")
+  (prog1 (vlf file)
+    (notdeft-note-mode 1)))
+
 (provide 'init-notdeft)
