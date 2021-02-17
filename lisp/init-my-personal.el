@@ -381,7 +381,7 @@
 
 (use-package eshell-toggle
   :custom
-  (eshell-toggle-size-fraction 3)
+  (eshell-toggle-size-fraction 2)
   (eshell-toggle-use-projectile-root t)
   (eshell-toggle-run-command nil)
   (eshell-toggle-window-side 'right)
