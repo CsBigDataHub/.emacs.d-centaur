@@ -107,4 +107,10 @@
              :repo "tecosaur/org-pandoc-import"
              :files ("*.el" "filters" "preprocessors")))
 
+(use-package org-table-wrap-functions
+  :straight (org-table-wrap-functions
+               :type git
+               :host github
+               :repo "analyticd/org-table-wrap-functions"))
+
 (provide 'init-straight)
