@@ -218,7 +218,7 @@
           ("*Calendar*" :select t :size 0.3 :align 'below)
           ;; (("*shell*" "*eshell*" "*ielm*") :popup t :size 0.3 :align 'below)
           (("*shell*" "*ielm*") :popup t :size 0.3 :align 'below)
-          ("^\\*vc-.*\\*$" :regexp t :size 0.3 :align 'below :autoclose t)
+          ;; ("^\\*vc-.*\\*$" :regexp t :size 0.5 :align 'right :autoclose t)
           ("*gud-debug*" :select t :size 0.4 :align 'below :autoclose t)
           ("\\*ivy-occur .*\\*" :regexp t :select t :size 0.3 :align 'below)
           (" *undo-tree*" :select t)
