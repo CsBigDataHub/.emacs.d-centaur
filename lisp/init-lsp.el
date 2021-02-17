@@ -536,7 +536,13 @@
    ;; Java support
    (when emacs/>=25.2p
      (use-package lsp-java
-       :hook (java-mode . (lambda () (require 'lsp-java)))))))
+       :hook (java-mode . (lambda () (require 'lsp-java)))
+       :config
+       (when sys/macp
+         (progn
+           (setenv "JAVA_HOME" "/Users/ckoneru/.sdkman/candidates/java/current/")
+           (setq lsp-java-java-path "/Users/ckoneru/.sdkman/candidates/java/current/bin/java")))
+       ))))
 
 (when centaur-lsp
   ;; Enable LSP in org babel
