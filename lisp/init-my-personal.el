@@ -246,33 +246,33 @@
                   (turn-off-solaire-mode)))))
 
 ;; Golden Ratio
-(use-package golden-ratio                 ; Auto resize windows
-  :diminish golden-ratio-mode
-  :init
-  (golden-ratio-mode 1)
-  (setq golden-ratio-auto-scale t)
-  :config
-  (setq golden-ratio-extra-commands
-        (append golden-ratio-extra-commands
-                '(evil-window-left
-                  evil-window-right
-                  evil-window-up
-                  evil-window-down)))
+;; (use-package golden-ratio                 ; Auto resize windows
+;;   :diminish golden-ratio-mode
+;;   :init
+;;   (golden-ratio-mode 1)
+;;   (setq golden-ratio-auto-scale t)
+;;   :config
+;;   (setq golden-ratio-extra-commands
+;;         (append golden-ratio-extra-commands
+;;                 '(evil-window-left
+;;                   evil-window-right
+;;                   evil-window-up
+;;                   evil-window-down)))
 
-  (setq golden-ratio-exclude-buffer-names '("*Org Select*", "*vterm-1*")
-        golden-ratio-exclude-modes '(messages-buffer-mode
-                                     fundamental-mode
-                                     ediff-mode
-                                     calendar-mode
-                                     wget-mode
-                                     calc-mode
-                                     calc-trail-mode
-                                     )
-        golden-ratio-recenter t)
-  )
+;;   (setq golden-ratio-exclude-buffer-names '("*Org Select*", "*vterm-1*")
+;;         golden-ratio-exclude-modes '(messages-buffer-mode
+;;                                      fundamental-mode
+;;                                      ediff-mode
+;;                                      calendar-mode
+;;                                      wget-mode
+;;                                      calc-mode
+;;                                      calc-trail-mode
+;;                                      )
+;;         golden-ratio-recenter t)
+;;   )
 
-(add-to-list 'golden-ratio-extra-commands 'ace-window)
-(add-to-list 'golden-ratio-extra-commands 'evil-window-next)
+;; (add-to-list 'golden-ratio-extra-commands 'ace-window)
+;; (add-to-list 'golden-ratio-extra-commands 'evil-window-next)
 
 ;;(setq inhibit-startup-message t)
 ;;(add-to-list 'default-frame-alist '(fullscreen . maximized))
