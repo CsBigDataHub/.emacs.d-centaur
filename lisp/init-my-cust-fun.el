@@ -2874,6 +2874,8 @@ are defining or executing a macro."
    "navigation blocks"
    (("N" org-next-block)
     ("P" org-previous-block))
+   "results"
+   (("r" org-babel-remove-result-one-or-many))
    "updates"
    (("." org-ctrl-c-ctrl-c)
     ("*" org-ctrl-c-star)
