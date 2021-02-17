@@ -44,7 +44,12 @@
 
 ;;For gcc emacs
 (setenv "LIBRARY_PATH" "/usr/local/opt/gcc/lib/gcc/10")
-(setq comp-deferred-compilation t)
+(when (fboundp 'native-comp-available-p)
+  (progn
+    (require 'comp)
+    (setq comp-num-cpus 4)
+    (setq package-native-compile t)
+    (setq comp-deferred-compilation t)))
 
 ;; Faster to disable these here (before they've been initialized)
 (push '(menu-bar-lines . 0) default-frame-alist)

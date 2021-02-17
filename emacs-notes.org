@@ -10270,3 +10270,54 @@ openssl pkcs12 -in abcd.pfx -out key.pem -nocerts
 #+BEGIN_SRC sh
 curl -k https://www.thesitetoauthenticate.com/test -v –key key.pem –cacert ca.pem –cert client.pem
 #+END_SRC
+
+* To test that both the fast JSON and native compilation is working
+#+begin_src emacs-lisp
+  ;; To test that both the fast JSON and native compilation is working
+  (if (and (fboundp 'native-comp-available-p)
+           (native-comp-available-p))
+      (progn
+        (setq comp-deferred-compilation t)
+        (message "Native compilation is available"))
+    (message "Native complation is *not* available"))
+
+  ;; And for the JSON
+  (if (functionp 'json-serialize)
+      (message "Native JSON is available")
+    (message "Native JSON is *not* available"))
+#+end_src
+
+
+- If error (error "(setf seq-elt) is already defined as something els...")
+
+try emacs -Q, and eval
+
+#+begin_src emacs-lisp
+  (native-compile-async "~/.emacs.d" 3 t)
+
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package comp
+    :config
+    (defcustom native-compile-async-jobs
+      (or (ignore-errors
+        (string-to-number (shell-command-to-string "nproc")))
+      1)
+      "How many jobs to use."
+      :type 'integer)
+
+    (setf native-compile-async-jobs 2)
+
+    (defun ap/package-native-compile-async (package &optional all)
+      "Compile PACKAGE natively, or with prefix ALL, all packages."
+      (interactive (list (unless current-prefix-arg
+               (completing-read "Package: " (mapcar #'car package-alist)))))
+      (let* ((directory (if package
+                (file-name-directory (locate-library package))
+              package-user-dir)))
+        (native-compile-async directory native-compile-async-jobs t))))
+
+  ;; Code could also be written to reload the compiled packages with `load-library`
+  ;; after the async job finishes.
+#+end_src
