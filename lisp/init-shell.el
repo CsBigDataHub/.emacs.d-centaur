@@ -139,7 +139,7 @@ not appropriate in some cases like terminals."
 ;; Shell Pop
 (use-package shell-pop
   :bind ([f9] . shell-pop)
-  :init (setq shell-pop-window-size 30
+  :init (setq shell-pop-window-size 50
               shell-pop-window-position "right"
               shell-pop-shell-type
               (cond ((fboundp 'vterm) '("vterm" "*vterm*" #'vterm))

@@ -10244,6 +10244,9 @@ if the certificate is in ~p12~ or ~pk12~ format, ~key~ and ~cert~ can be generat
 #+begin_src sh
   openssl pkcs12 -in mycert.p12 -out file.key.pem -nocerts -nodes
   openssl pkcs12 -in mycert.p12 -out file.crt.pem -clcerts -nokeys
+
+  # use the generated keys in curl
+  curl -E ./file.crt.pem --key ./file.key.pem https://myservice.com/service?wsdl
 #+end_src
 
 *** running curl with p12 certs
