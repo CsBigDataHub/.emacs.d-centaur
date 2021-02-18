@@ -92,6 +92,7 @@
  '(centaur-package-archives 'melpa)
  '(centaur-theme 'default)
  '(doom-themes-treemacs-theme "doom-colors" nil nil "Customized with use-package doom-themes")
+ '(ispell-choices-win-default-height 3)
  '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:")
  '(network-stream-use-client-certificates t)
  '(safe-local-variable-values
