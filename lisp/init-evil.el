@@ -152,9 +152,17 @@
 (evil-define-key 'insert vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
 (evil-define-key 'normal vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
 
+;; (add-hook 'evil-mode-hook (lambda()
+;;                             (local-unset-key (kbd "M-."))))
+
 ;; to replace with `xref-find-definitions'
-(add-hook 'evil-mode-hook (lambda()
-                            (local-unset-key (kbd "M-."))))
+;; https://emacs.stackexchange.com/questions/29684/conditional-key-binding-evil-vs-slime-conflict-for-m
+(define-key evil-normal-state-map (kbd "M-.")
+  `(menu-item "" evil-repeat-pop :filter
+              ,(lambda (cmd) (if (eq last-command 'evil-repeat-pop) cmd))))
+
+
+(evil-define-key 'normal lsp-mode-map (kbd "M-.") #'lsp-find-definition)
 
 ;; https://blog.meain.io/2020/emacs-highlight-yanked/
 (defun my/evil-yank-advice (orig-fn beg end &rest args)
