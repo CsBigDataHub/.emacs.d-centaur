@@ -10491,3 +10491,15 @@ Purchases a
 
 **** TODO ~/quote~
 Let's look at what it takes to implement a new endpoint.
+
+* Adding company backend for a file
+
+This was added to Jenkinsfile
+#+begin_src java
+
+  // This is emacs specific config. Please do not remove
+  // Local Variables:
+  // eval: (push '(company-keywords company-dabbrev-code) company-backends)
+  // End:
+
+#+end_src

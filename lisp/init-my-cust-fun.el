@@ -1148,7 +1148,8 @@ Version 2020-02-13"
     (message "path is %s" $path)
     (cond
      ((string-equal system-type "darwin")
-      (shell-command (format "open -a Visual\\ Studio\\ Code.app \"%s\"" $path)))
+      ;; (shell-command (format "open -a Visual\\ Studio\\ Code.app \"%s\"" $path)))
+      (shell-command (format "open -a VSCodium.app \"%s\"" $path)))
      ((string-equal system-type "windows-nt")
       (shell-command (format "Code \"%s\"" $path)))
      ((string-equal system-type "gnu/linux")

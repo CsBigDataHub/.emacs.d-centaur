@@ -186,6 +186,7 @@ prepended to the element after the #+HEADER: tag."
   (defvar load-language-list '((emacs-lisp . t)
                                (perl . t)
                                (python . t)
+                               ;; (powershell . t)
                                (ruby . t)
                                (js . t)
                                (css . t)
