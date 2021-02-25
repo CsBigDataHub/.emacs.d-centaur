@@ -544,9 +544,9 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
     (unless (file-exists-p org-roam-directory)
       (make-directory org-roam-directory)))
 
-  (use-package company-org-roam
-    :config
-    (push 'company-org-roam company-backends))
+  ;; (use-package company-org-roam
+  ;;   :config
+  ;;   (push 'company-org-roam company-backends))
 
   (use-package org-roam-server
     :functions xwidget-buffer xwidget-webkit-current-session

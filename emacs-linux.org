@@ -255,6 +255,54 @@ I have no clue what the ET-3750 expects from a computer to be able to "scan to i
 - Kudos and a huge thank you to the SANE maintainers.
 
 
+* Scanner installation on ubuntu
+
+- [[https://www.youtube.com/watch?v=P5Rm66Li_5Q&list=WL&index=4&t=569s][youtube-video]]
+
+#+DOWNLOADED: screenshot @ 2021-02-20 20:32:03
+[[file:images/emacs-linux/screenshot2021-02-20_20-32-03_.png]]
+
+
+- replace last number to zero
+
+
+#+DOWNLOADED: screenshot @ 2021-02-20 20:33:59
+[[file:images/emacs-linux/screenshot2021-02-20_20-33-59_.png]]
+
+
+  #+begin_src sh
+    # Get IP Addr
+
+    ip addr show
+
+    # To Find the printer addr
+
+    sudo nmap -sP <ip-addr-with-0>/24
+
+  #+end_src
+
+  - Now make sure you have the right ip in this file =/etc/imagescan/imagescan.conf=
+
+  - port can be the same
+
+    #+begin_src conf
+      # /etc/imagescan/imagescan.conf -- Image Scan configuration
+      # Refer to the documentation for details on the configuration options
+      # for the software.  Plugins should come with their own documentation
+      # if they have configuration options.
+      #
+      # Lines starting with a # or a ; are comments.  Comments must be on a
+      # line of their own.  End-of-line comments are not supported.
+
+      [devices]
+
+      myscanner.udi    = esci:networkscan://<ip-addr-from-2nd-screenshot>:1865
+      myscanner.vendor = Epson
+      myscanner.model  = WF-2850
+
+    #+end_src
+
+
 * [[https://www.emadelsaid.com/using-emacs-for-as-email-client/][Using Emacs as email client | Emad Elsaid]] :website:
 
 [2020-11-10 Tue 08:47]
