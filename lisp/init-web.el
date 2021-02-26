@@ -134,7 +134,9 @@
 
 ;; REST
 (use-package restclient
-  :mode ("\\.http\\'" . restclient-mode)
+  :mode (("\\.http\\'" . restclient-mode)
+         ("\\.restclient$" . restclient-mode)
+         ("\\.rest$" . restclient-mode))
   :init
   ;; limit number of times vars are substituted
   (setq restclient-vars-max-passes 2)
