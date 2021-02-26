@@ -151,6 +151,11 @@
     (use-package company-restclient
       :defines company-backends
       :init (add-to-list 'company-backends 'company-restclient)))
+  (defun json-prettify-buffer ()
+    "prettifies a json buffer."
+    (interactive)
+    (save-excursion
+      (json-reformat-region (point-min) (point-max))))
   (eval-after-load "restclient"
     (if (not (fboundp 'json-pretty-print-buffer))
         (defun json-pretty-print-buffer ()
