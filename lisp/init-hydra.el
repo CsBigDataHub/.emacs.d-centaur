@@ -99,6 +99,8 @@
          :toggle (eq centaur-theme 'auto) :exit t)
         ("t m" (centaur-load-theme 'random) "random"
          :toggle (eq centaur-theme 'random) :exit t)
+        ("t s" (centaur-load-theme 'system) "system"
+         :toggle (eq centaur-theme 'system) :exit t)
         ("t d" (centaur-load-theme 'default) "default"
          :toggle (centaur-theme-enable-p 'default) :exit t)
         ("t i" (centaur-load-theme 'classic) "classic"
@@ -117,6 +119,8 @@
          :toggle (centaur-theme-enable-p 'day) :exit t)
         ("t n" (centaur-load-theme 'night) "night"
          :toggle (centaur-theme-enable-p 'night) :exit t)
+        ("t p" (centaur-load-theme 'peace) "peace"
+         :toggle (centaur-theme-enable-p 'peace) :exit t)
         ("t o" (ivy-read "Load custom theme: "
                          (mapcar #'symbol-name
                                  (custom-available-themes))

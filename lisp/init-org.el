@@ -137,7 +137,7 @@ prepended to the element after the #+HEADER: tag."
         org-log-done 'time
         org-catch-invisible-edits 'smart
         org-startup-indented t
-        org-ellipsis (if (char-displayable-p ?⏷) "\t⏷" nil)
+        org-ellipsis (if (and (display-graphic-p) (char-displayable-p ?⏷)) "\t⏷" nil)
         org-pretty-entities nil
         org-hide-emphasis-markers t)
 
@@ -166,7 +166,7 @@ prepended to the element after the #+HEADER: tag."
   ;; Prettify UI
   (when emacs/>=26p
     (use-package org-superstar
-      :if (char-displayable-p ?⚫)
+      :if (and (display-graphic-p) (char-displayable-p ?⚫))
       :hook (org-mode . org-superstar-mode)
       :init (setq org-superstar-headline-bullets-list '("☯" "☢" "▷" "🞛" "◉" "○" "✸" "✿" "~"))))
 
@@ -174,7 +174,7 @@ prepended to the element after the #+HEADER: tag."
     :diminish
     :hook (org-mode . org-fancy-priorities-mode)
     :init (setq org-fancy-priorities-list
-                (if (char-displayable-p ?⯀)
+                (if (and (display-graphic-p) (char-displayable-p ?⯀))
                     '("⯀" "⯀" "⯀" "⯀")
                   '("HIGH" "MEDIUM" "LOW" "OPTIONAL"))))
 

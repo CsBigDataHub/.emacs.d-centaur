@@ -125,10 +125,11 @@
     (colorful . doom-snazzy)
     (dark     . doom-dracula)
     (light    . doom-one-light)
-    (warm     . doom-flatwhite)
+    (warm     . doom-solarized-light)
     (cold     . doom-city-lights)
     (day      . doom-tomorrow-day)
-    (night    . doom-tomorrow-night))
+    (night    . doom-tomorrow-night)
+    (peace    . doom-zenburn))
   "List of themes mapped to internal themes."
   :group 'centaur
   :type '(alist :key-type (symbol :tag "Theme")
@@ -144,14 +145,25 @@ For example:
   '((:sunrise . doom-solarized-light)
     (:sunset  . doom-solarized-dark))"
   :group 'centaur
-  :type `(alist :key-type (string :tag "Time")
+  :type '(alist :key-type (string :tag "Time")
                 :value-type (symbol :tag "Theme")))
+
+(when (boundp 'ns-system-appearance)
+  (defcustom centaur-system-themes '((light  . doom-one-light)
+				                     (dark   . doom-one))
+    "List of themes related the system appearance. It's only available on macOS."
+    :group 'centaur
+    :type '(alist :key-type (symbol :tag "Appearance")
+                  :value-type (symbol :tag "Theme"))))
 
 (defcustom centaur-theme 'default
   "The color theme."
   :group 'centaur
   :type `(choice (const :tag "Auto" 'auto)
                  (const :tag "Random" 'random)
+                 ,(if (boundp 'ns-system-appearance)
+                      '(const :tag "System" 'system)
+                    "")
                  ,@(mapcar
                     (lambda (item)
                       (let ((name (car item)))
