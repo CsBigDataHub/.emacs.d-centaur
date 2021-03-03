@@ -6729,6 +6729,13 @@ Created: 2015-07-23 Thu 22:36
 
 1. create virtualenv with virtualenvwrapper
 #+BEGIN_EXAMPLE sh
+  pyenv shell 3.6.9
+  pyenv shell ${version}
+  # we will need to install virtualenvwrapper. This is done with either the pyenv virtualenvwrapper or pyenv virtualenvwrapper_lazy (preferred) command:
+  pyenv virtualenvwrapper_lazy
+  # or
+  pyenv virtualenvwrapper
+
   workon #lists the virtualenv
   workon $projectName #switch to project
   mkvirtualenv $name #make virtual env for a project
