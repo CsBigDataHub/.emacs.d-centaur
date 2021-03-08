@@ -338,6 +338,7 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 ;;  (setq org-download-screenshot-file "./img/tmp.png")
 ;;  )
 ;;;; my latex function
+;;;; http://pragmaticemacs.com/emacs/org-mode-basics-v-exporting-your-notes/
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
                '("my-latex-fun"
