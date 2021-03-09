@@ -6768,15 +6768,17 @@ Created: 2015-07-23 Thu 22:36
   ;;                           `(("python.pythonPath" "/Users/ckoneru/.virtualenvs/git-warden/bin/python")
   ;;                             ("python.venvPath" "/Users/ckoneru/.virtualenvs/git-warden/"))))
   ;;                  )))
-  ((python-mode . (
-                   (eval . (venv-workon "git-warden"))
-                   (eval . (lsp-pyright-locate-python "/Users/ckoneru/.virtualenvs/git-warden/bin/python"))
-                   (eval . (lsp-pyright-venv-path "/Users/ckoneru/.virtualenvs/git-warden"))
-                   )))
+((python-mode . ((lsp-pyright-venv-path . "/Users/ckoneru/.virtualenvs/git-warden")
+                 (eval . (venv-workon "git-warden"))
+                 )))
   ;; ((nil . ((python-mode . (
   ;; (venv-workon "git-warden")
   ;; (lsp-python-ms-python-executable . "/Users/ckoneru/.virtualenvs/git-warden/bin/python")
   ;; )))))
+
+  ;; or if you use pyvenv
+  ((python-mode . ((pyvenv-workon . "git-warden"))))
+
 
 #+end_src
 

@@ -96,6 +96,8 @@
 (use-package blacken
   :after (python)
   :init
+  (setq-default blacken-fast-unsafe t)
+  (setq-default blacken-line-length 80)
   (add-hook 'python-mode-hook #'blacken-mode))
 
 (use-package pip-requirements
@@ -138,6 +140,26 @@
           (message (concat "Setting virtualenv to " pyenv-current-version))))))
 
 (add-hook 'projectile-after-switch-project-hook 'pyenv-activate-current-project)
+
+(use-package pyvenv
+  :init
+  (setenv "WORKON_HOME" "~/.virtualenvs/")
+  :config
+  ;; (pyvenv-mode t)
+
+  ;; Set correct Python interpreter
+  (setq pyvenv-post-activate-hooks
+        (list (lambda ()
+                (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python")))))
+  (setq pyvenv-post-deactivate-hooks
+        (list (lambda ()
+                (setq python-shell-interpreter "python3")))))
+
+(use-package python-mode
+  :ensure nil
+  :hook
+  (python-mode . pyvenv-mode)
+  (python-mode . yas-minor-mode))
 
 
 ;;; my-personal-config end

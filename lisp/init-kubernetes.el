@@ -3,6 +3,7 @@
 (use-package kubernetes
   :commands (kubernetes-overview)
   :config
+  ;; Emacs hangs if this updates too frequently.  Use "g" to update.
   (setq kubernetes-redraw-frequency 300
         kubernetes-poll-frequency 300))
 
@@ -20,7 +21,7 @@
 (use-package k8s-mode
   :hook (k8s-mode . yas-minor-mode)
   :config
-  ;;(setq k8s-search-documentation-browser-function 'browse-url-firefox)
+  (setq k8s-search-documentation-browser-function 'browse-url-chrome)
   (setq k8s-site-docs-url "https://kubernetes.io/docs/reference/generated/kubernetes-api/")
   (setq k8s-site-docs-version "v1.18")
   )
