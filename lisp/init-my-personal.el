@@ -70,7 +70,7 @@
                   (interactive)
                   (join-line -1)))
 
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets) ;; or "forward"
+;; (setq uniquify-buffer-name-style 'post-forward-angle-brackets) ;; or "forward"
 
 ;; font scaling
 (use-package default-text-scale
@@ -441,6 +441,8 @@
   (add-hook 'eww-after-render-hook #'shrface-mode)
   :config
   (require 'shrface))
+
+(use-package disk-usage)
 
 ;; Added this to build pdf tools
 (setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig:/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")
