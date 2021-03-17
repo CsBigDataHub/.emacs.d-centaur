@@ -294,7 +294,8 @@
                                                     company-dabbrev-code
                                                     company-keywords
                                                     company-files
-                                                    'company-capf :with company-yasnippet))))
+                                                    company-capf
+                                                    company-yasnippet))))
   :config
   (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . jenkinsfile-mode))
   (add-to-list 'auto-mode-alist '("Jenkinsfile" . jenkinsfile-mode))
