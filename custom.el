@@ -14,6 +14,7 @@
 (setq centaur-icon t)                         ; Display icons or not: t or nil
 ;; (setq centaur-package-archives 'emacs-china)   ; Package repo: melpa, melpa-mirror, emacs-china, netease, ustc, tencent or tuna
 (setq centaur-theme 'default)                        ; Color theme: auto, random, default, classic, colorful, dark, light, day or night
+(setq centaur-completion-style 'minibuffer)    ; Completion display style: minibuffer or childframe
 (setq centaur-dashboard t)                    ; Use dashboard at startup or not: t or nil
 (setq centaur-restore-frame-geometry t)      ; Restore the frame's geometry at startup: t or nil
 ;; (setq centaur-lsp 'eglot)                      ; Set LSP client: lsp-mode, eglot or nil
