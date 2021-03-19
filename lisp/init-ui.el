@@ -84,7 +84,9 @@
         (doom-themes-visual-bell-config)
 
         ;; Enable customized theme
-        (doom-themes-treemacs-config)))
+        ;; FIXME https://github.com/emacs-lsp/lsp-treemacs/issues/89
+        (with-eval-after-load 'lsp-treemacs
+          (doom-themes-treemacs-config))))
   (progn
     (warn "The current theme may not be compatible!")
     (centaur-load-theme centaur-theme t)))
@@ -257,13 +259,11 @@
   (add-to-list 'all-the-icons-icon-alist
                '("^Rakefile$" all-the-icons-alltheicon "ruby-alt" :face all-the-icons-red))
   (add-to-list 'all-the-icons-icon-alist
-               '("\\.go$" all-the-icons-fileicon "go" :face all-the-icons-blue))
+               '("\\.\\(bat\\|cmd\\)$" all-the-icons-alltheicon "terminal" :face all-the-icons-lsilver))
   (add-to-list 'all-the-icons-icon-alist
                '("\\go.mod$" all-the-icons-fileicon "go" :face all-the-icons-dblue))
   (add-to-list 'all-the-icons-icon-alist
                '("\\go.sum$" all-the-icons-fileicon "go" :face all-the-icons-dpurple))
-  (add-to-list 'all-the-icons-mode-icon-alist
-               '(go-mode all-the-icons-fileicon "go" :face all-the-icons-blue))
   (add-to-list 'all-the-icons-mode-icon-alist
                '(xwidget-webkit-mode all-the-icons-faicon "chrome" :v-adjust -0.1 :face all-the-icons-blue))
   (add-to-list 'all-the-icons-mode-icon-alist

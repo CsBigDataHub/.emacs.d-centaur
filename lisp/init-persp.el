@@ -63,10 +63,10 @@
              ";;; This is the previous frame parameters.\n"
              ";;; Last generated " (current-time-string) ".\n"
              "(setq initial-frame-alist\n"
-             (format "      '((top . %d)\n" (frame-parameter nil 'top))
-             (format "        (left . %d)\n" (frame-parameter nil 'left))
-             (format "        (width . %d)\n" (frame-parameter nil 'width))
-             (format "        (height . %d)\n" (frame-parameter nil 'height))
+             (format "      '((top . %d)\n" (eval (frame-parameter nil 'top)))
+             (format "        (left . %d)\n" (eval (frame-parameter nil 'left)))
+             (format "        (width . %d)\n" (eval (frame-parameter nil 'width)))
+             (format "        (height . %d)\n" (eval (frame-parameter nil 'height)))
              (format "        (fullscreen . %s)))\n" (frame-parameter nil 'fullscreen)))
             (when (file-writable-p persp-frame-file)
               (write-file persp-frame-file)))
@@ -83,10 +83,17 @@
             (progn
               (load persp-frame-file)
 
+              ;; Force to recover the frame parameters
+              (set-frame-parameter nil 'top (alist-get 'top initial-frame-alist))
+              (set-frame-parameter nil 'left (alist-get 'left initial-frame-alist))
+              ;; (set-frame-parameter nil 'width (alist-get 'width initial-frame-alist))
+              (set-frame-parameter nil 'height (alist-get 'height initial-frame-alist))
+              (set-frame-parameter nil 'fullscreen (alist-get 'fullscreen initial-frame-alist))
+
               ;; Handle multiple monitors gracefully
-              (when (>= (eval (frame-parameter nil 'left)) (display-pixel-width))
-                (set-frame-parameter nil 'left 0))
-              (when (>= (eval (frame-parameter nil 'top)) (display-pixel-height))
+              (when (or (>= (eval (frame-parameter nil 'left)) (display-pixel-width))
+                        (>= (eval (frame-parameter nil 'top)) (display-pixel-height)))
+                (set-frame-parameter nil 'left 0)
                 (set-frame-parameter nil 'top 0)))
           (error
            (warn "persp frame: %s" (error-message-string error)))))))

@@ -31,6 +31,7 @@
 ;;; Code:
 
 (require 'init-const)
+(require 'init-funcs)
 
 ;; Display available keybindings in popup
 (use-package which-key
@@ -83,7 +84,33 @@
   (which-key-add-major-mode-key-based-replacements 'gfm-mode
     "C-c C-t" "markdown-header")
   (which-key-add-major-mode-key-based-replacements 'gfm-mode
-    "C-c C-x" "markdown-toggle"))
+    "C-c C-x" "markdown-toggle")
+
+  (when (childframe-workable-p)
+    (use-package which-key-posframe
+      :diminish
+      :functions ivy-poshandler-frame-center-near-bottom-fn
+      :custom-face
+      (which-key-posframe-border ((t (:background ,(face-foreground 'font-lock-comment-face)))))
+      :init
+      (setq which-key-posframe-border-width 3
+            which-key-posframe-poshandler #'ivy-poshandler-frame-center-near-bottom-fn)
+
+      (with-eval-after-load 'solaire-mode
+        (setq which-key-posframe-parameters
+              `((background-color . ,(face-background 'solaire-default-face)))))
+
+      (which-key-posframe-mode 1)
+      :config
+      (add-hook 'after-load-theme-hook
+                (lambda ()
+                  (posframe-delete-all)
+                  (custom-set-faces
+                   `(which-key-posframe-border
+                     ((t (:background ,(face-foreground 'font-lock-comment-face))))))
+                  (with-eval-after-load 'solaire-mode
+                    (setf (alist-get 'background-color which-key-posframe-parameters)
+                          (face-background 'solaire-default-face))))))))
 
 ;; Persistent the scratch buffer
 (use-package persistent-scratch
@@ -269,6 +296,36 @@
   (setq-default proced-format 'verbose)
   (setq proced-auto-update-flag t
         proced-auto-update-interval 3))
+
+;; Search
+(use-package webjump
+  :ensure nil
+  :bind ("C-c /" . webjump)
+  :init (setq webjump-sites
+              '(;; Emacs
+                ("Emacs Home Page" .
+                 "www.gnu.org/software/emacs/emacs.html")
+                ("Xah Emacs Site" . "ergoemacs.org/index.html")
+                ("(or emacs irrelevant)" . "oremacs.com")
+                ("Mastering Emacs" .
+                 "https://www.masteringemacs.org/")
+
+                ;; Search engines.
+                ("DuckDuckGo" .
+                 [simple-query "duckduckgo.com"
+                               "duckduckgo.com/?q=" ""])
+                ("Google" .
+                 [simple-query "www.google.com"
+                               "www.google.com/search?q=" ""])
+                ("Bing" .
+                 [simple-query "www.bing.com"
+                               "www.bing.com/search?q=" ""])
+
+                ("Baidu" .
+                 [simple-query "www.baidu.com"
+                               "www.baidu.com/s?wd=" ""])
+                ("Wikipedia" .
+                 [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""]))))
 
 ;; IRC
 (use-package erc

@@ -99,12 +99,12 @@
          :toggle (eq centaur-theme 'auto) :exit t)
         ("t m" (centaur-load-theme 'random) "random"
          :toggle (eq centaur-theme 'random) :exit t)
+        ("t s" (centaur-load-theme 'system) "system"
+         :toggle (eq centaur-theme 'system) :exit t)
         ("t d" (centaur-load-theme 'default) "default"
          :toggle (centaur-theme-enable-p 'default) :exit t)
-        ("t c" (centaur-load-theme 'classic) "classic"
-         :toggle (centaur-theme-enable-p 'classic) :exit t)
-        ("t r" (centaur-load-theme 'colorful) "colorful"
-         :toggle (centaur-theme-enable-p 'colorful) :exit t)
+        ("t p" (centaur-load-theme 'pro) "pro"
+         :toggle (centaur-theme-enable-p 'pro) :exit t)
         ("t k" (centaur-load-theme 'dark) "dark"
          :toggle (centaur-theme-enable-p 'dark) :exit t)
         ("t l" (centaur-load-theme 'light) "light"
