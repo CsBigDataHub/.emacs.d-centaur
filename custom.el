@@ -22,7 +22,7 @@
 ;; (setq centaur-chinese-calendar nil)            ; Use Chinese calendar or not: t or nil
 (setq centaur-prettify-symbols-alist nil)      ; Alist of symbol prettifications
 ;; (setq centaur-prettify-org-symbols-alist nil)  ; Alist of symbol prettifications for `org-mode'
-(setq centaur-benchmark-init t)                ; Enable initialization benchmark or not: t or nil
+;; (setq centaur-benchmark-init t); Enable initialization benchmark or not: t or nil ;; removed in c2b53bc5c26ae49b79b74b48c448f8d50ef421f2 in seagle0128
 
 ;; For Emacs devel
 ;; (setq package-user-dir (locate-user-emacs-file (format "elpa-%s" emacs-major-version)))
