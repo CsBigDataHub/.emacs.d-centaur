@@ -302,6 +302,9 @@ directory."
   (setq eshell-history-size 10000)
   (setq eshell-save-history-on-exit t))
 
+(use-package pcomplete-extension
+  :after pcomplete)
+
 (use-package pcmpl-git
   :after pcomplete)
 
