@@ -112,12 +112,12 @@
   :init
   (setq enable-recursive-minibuffers t) ; Allow commands in minibuffers
 
-  (setq ivy-use-selectable-prompt t
+  (setq ivy-height 12
+        ivy-use-selectable-prompt t
         ivy-use-virtual-buffers t    ; Enable bookmarks and recentf
-        ivy-height 10
         ivy-fixed-height-minibuffer t
         ivy-count-format "(%d/%d) "
-        ivy-on-del-error-function nil
+        ivy-on-del-error-function #'ignore
         ivy-initial-inputs-alist nil)
 
   ;; Better performance on Windows
@@ -447,6 +447,7 @@ This is for use in `ivy-re-builders-alist'."
           (setq hydra-posframe-show-params
                 `(:internal-border-width 3
                   :internal-border-color ,(face-foreground 'font-lock-comment-face)
+                  :lines-truncate t
                   :poshandler ivy-hydra-poshandler-frame-center-below-fn))
           (with-eval-after-load 'solaire-mode
             (plist-put hydra-posframe-show-params
@@ -560,7 +561,7 @@ This is for use in `ivy-re-builders-alist'."
 ;; Display completion in child frame
 (when (childframe-workable-p)
   (use-package ivy-posframe
-    :defines persp-filter-save-buffers-functions
+    :defines (persp-load-buffer-functions persp-filter-save-buffers-functions)
     :custom-face
     (ivy-posframe-border ((t (:background ,(face-foreground 'font-lock-comment-face)))))
     :hook (ivy-mode . ivy-posframe-mode)
@@ -572,6 +573,9 @@ This is for use in `ivy-re-builders-alist'."
             `((background-color . ,(face-background 'solaire-default-face)))))
 
     (with-eval-after-load 'persp-mode
+      (add-hook 'persp-load-buffer-functions
+                (lambda (&rest _)
+                  (posframe-delete-all)))
       (add-to-list 'persp-filter-save-buffers-functions
                    (lambda (b)
                      "Ignore posframe buffers."
