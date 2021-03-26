@@ -146,6 +146,10 @@
             counsel-find-file-occur-cmd
             "gls -a | grep -i -E '%s' | tr '\\n' '\\0' | xargs -0 gls -d --group-directories-first")))
   :config
+  ;; persist views
+  (with-eval-after-load 'savehist
+    (add-to-list 'savehist-additional-variables 'ivy-views))
+
   (with-no-warnings
     ;; Display an arrow with the selected item
     (defun my-ivy-format-function-arrow (cands)
@@ -462,11 +466,9 @@ This is for use in `ivy-re-builders-alist'."
           (setq hydra-posframe-show-params
                 `(:internal-border-width 3
                   :internal-border-color ,(face-foreground 'font-lock-comment-face)
+                  :background-color ,(face-background 'tooltip)
                   :lines-truncate t
-                  :poshandler ivy-hydra-poshandler-frame-center-below-fn))
-          (with-eval-after-load 'solaire-mode
-            (plist-put hydra-posframe-show-params
-                       :background-color (face-background 'solaire-default-face))))
+                  :poshandler ivy-hydra-poshandler-frame-center-below-fn)))
 
         (ivy-hydra-set-posframe-show-params)
         (add-hook 'after-load-theme-hook #'ivy-hydra-set-posframe-show-params))))
@@ -582,11 +584,9 @@ This is for use in `ivy-re-builders-alist'."
     (ivy-posframe-border ((t (:background ,(face-foreground 'font-lock-comment-face)))))
     :hook (ivy-mode . ivy-posframe-mode)
     :init
-    (setq ivy-posframe-border-width 3)
-
-    (with-eval-after-load 'solaire-mode
-      (setq ivy-posframe-parameters
-            `((background-color . ,(face-background 'solaire-default-face)))))
+    (setq ivy-posframe-border-width 3
+          ivy-posframe-parameters
+          `((background-color . ,(face-background 'tooltip))))
 
     (with-eval-after-load 'persp-mode
       (add-hook 'persp-load-buffer-functions
@@ -604,9 +604,8 @@ This is for use in `ivy-re-builders-alist'."
                 (custom-set-faces
                  `(ivy-posframe-border
                    ((t (:background ,(face-foreground 'font-lock-comment-face))))))
-                (with-eval-after-load 'solaire-mode
-                  (setf (alist-get 'background-color ivy-posframe-parameters)
-                        (face-background 'solaire-default-face)))))
+                (setf (alist-get 'background-color ivy-posframe-parameters)
+                      (face-background 'tooltip))))
 
     (with-no-warnings
       (defun ivy-display-at-frame-center-near-bottom-fn (str)
