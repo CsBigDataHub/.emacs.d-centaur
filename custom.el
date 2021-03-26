@@ -80,6 +80,8 @@
                             (:sunset  . doom-one)))
 
 
+(put 'downcase-region 'disabled nil)
+
 ;; Display on the specified monitor
 ;; (when (and (> (length (display-monitor-attributes-list)) 1)
 ;;            (> (display-pixel-width) 1920))
