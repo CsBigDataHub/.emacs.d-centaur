@@ -152,6 +152,11 @@
 (evil-define-key 'insert vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
 (evil-define-key 'normal vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
 
+(add-hook 'vterm-mode-hook
+          (lambda ()
+            (evil-insert-state)))
+
+
 ;; (add-hook 'evil-mode-hook (lambda()
 ;;                             (local-unset-key (kbd "M-."))))
 
