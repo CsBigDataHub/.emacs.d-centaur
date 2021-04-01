@@ -574,6 +574,8 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 (when sys/linuxp
   (use-package org-mime))
 
+(setq org-M-RET-may-split-line '((item . nil)))
+
 ;; (use-package org-sidebar)
 
 ;; (use-package org-special-block-extras
