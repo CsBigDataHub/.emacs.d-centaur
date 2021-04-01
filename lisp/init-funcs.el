@@ -124,7 +124,7 @@ Same as `replace-string C-q C-m RET RET'."
       (progn
         (kill-new filename)
         (message "Copied '%s'" filename))
-    (message "WARNING: Current buffer is not attached to a file!")))
+    (warn "Current buffer is not attached to a file!")))
 
 ;; Browse URL
 (defun centaur-webkit-browse-url (url &optional pop-buffer new-session)
@@ -144,6 +144,16 @@ NEW-SESSION specifies whether to create a new xwidget-webkit session."
         (if pop-buffer
             (pop-to-buffer buf)
           (switch-to-buffer buf))))))
+
+(defun centaur-find-pdf-file (&optional url)
+  "Find a PDF file via URL and render by `pdf.js'."
+  (interactive "f")
+  (cond ((featurep 'xwidget-internal)
+         (xwidget-webkit-browse-url (concat "file://" url)))
+        ((bound-and-true-p counsel-mode)
+         (counsel-find-file url))
+        (t (find-file url))))
+(defalias 'find-pdf-file #'centaur-find-pdf-file)
 
 ;; Mode line
 (defun mode-line-height ()

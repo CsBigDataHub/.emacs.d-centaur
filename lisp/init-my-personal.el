@@ -290,10 +290,10 @@
 (use-package jenkinsfile-mode
   :preface
   (defun my-company-jenkinsfile-mode-company-hook ()
-    (set (make-local-variable 'company-backends) '((company-dabbrev
+    (set (make-local-variable 'company-backends) '((company-files)
+                                                   (company-dabbrev
                                                     company-dabbrev-code
                                                     company-keywords
-                                                    company-files
                                                     company-capf
                                                     company-yasnippet))))
   :config

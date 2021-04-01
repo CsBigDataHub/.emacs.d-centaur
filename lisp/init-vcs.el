@@ -101,11 +101,10 @@
     :hook (after-init . transient-posframe-mode)
     :init
     (setq transient-posframe-border-width 3
-          transient-posframe-min-height 21)
-
-    (with-eval-after-load 'solaire-mode
-      (setq transient-posframe-parameters
-            `((background-color . ,(face-background 'solaire-default-face)))))
+          transient-posframe-min-height 21
+          transient-posframe-min-width nil
+          transient-posframe-parameters
+          `((background-color . ,(face-background 'tooltip))))
     :config
     (add-hook 'after-load-theme-hook
               (lambda ()
@@ -113,9 +112,28 @@
                 (custom-set-faces
                  `(transient-posframe-border
                    ((t (:background ,(face-foreground 'font-lock-comment-face))))))
-                (with-eval-after-load 'solaire-mode
-                  (setf (alist-get 'background-color transient-posframe-parameters)
-                        (face-background 'solaire-default-face)))))))
+                (setf (alist-get 'background-color transient-posframe-parameters)
+                      (face-background 'tooltip))))
+
+    (with-no-warnings
+      (defun my-transient-posframe--show-buffer (buffer _alist)
+        "Show BUFFER in posframe and we do not use _ALIST at this period."
+        (when (posframe-workable-p)
+          (let ((posframe (posframe-show
+                           buffer
+			               :font transient-posframe-font
+			               :position (point)
+			               :poshandler transient-posframe-poshandler
+			               :background-color (face-attribute 'transient-posframe :background nil t)
+			               :foreground-color (face-attribute 'transient-posframe :foreground nil t)
+			               :min-width (or transient-posframe-min-width (round (* (frame-width) 0.62)))
+			               :min-height transient-posframe-min-height
+                           :lines-truncate t
+			               :internal-border-width transient-posframe-border-width
+			               :internal-border-color (face-attribute 'transient-posframe-border :background nil t)
+			               :override-parameters transient-posframe-parameters)))
+            (frame-selected-window posframe))))
+      (advice-add #'transient-posframe--show-buffer :override #'my-transient-posframe--show-buffer))))
 
 ;; Walk through git revisions of a file
 (use-package git-timemachine
@@ -192,6 +210,7 @@
                                 :string popuped-message
                                 :left-fringe 8
                                 :right-fringe 8
+                                :background-color (face-background 'tooltip)
                                 :internal-border-width 1
                                 :internal-border-color (face-foreground 'font-lock-comment-face))
                  (unwind-protect

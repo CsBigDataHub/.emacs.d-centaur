@@ -226,38 +226,65 @@ Lisp function does not specify a special indentation."
   :ensure nil
   :diminish
   :config
-  (when (childframe-workable-p)
-    (use-package eldoc-box
-      :diminish
-      :custom-face
-      (eldoc-box-border ((t (:background ,(face-foreground 'font-lock-comment-face)))))
-      (eldoc-box-body ((t (:inherit 'tooltip))))
-      :hook ((emacs-lisp-mode lisp-mode lisp-interaction-mode)
-             .
-             eldoc-box-hover-at-point-mode)
-      :init
-      (when (eq centaur-lsp 'eglot)
-        (add-hook 'eglot--managed-mode-hook #'eldoc-box-hover-mode t))
-      :config
-      (add-hook 'after-load-theme-hook
-                (lambda ()
-                  (custom-set-faces
-                   `(eldoc-box-border ((t (:background ,(face-foreground 'font-lock-comment-face)))))))))))
+  ;; Display `eldoc' in child frame
+  (with-no-warnings
+    (when (childframe-workable-p)
+      (defvar eldoc-posframe-buffer "*eldoc-posframe-buffer*"
+        "The posframe buffer name use by eldoc-posframe.")
+
+      (defvar eldoc-posframe-hide-posframe-hooks
+        '(pre-command-hook post-command-hook focus-out-hook)
+        "The hooks which should trigger automatic removal of the posframe.")
+
+      (defvar eldoc-posframe-delay 0.2
+        "Delay seconds to display `eldoc'.")
+
+      (defvar-local eldoc-posframe--timer nil)
+
+      (defun eldoc-posframe-hide-posframe ()
+        "Hide messages currently being shown if any."
+        (when eldoc-posframe--timer
+          (cancel-timer eldoc-posframe--timer))
+
+        (posframe-hide eldoc-posframe-buffer)
+        (dolist (hook eldoc-posframe-hide-posframe-hooks)
+          (remove-hook hook #'eldoc-posframe-hide-posframe t)))
+
+      (defun eldoc-posframe-show-posframe (str &rest args)
+        "Display STR with ARGS."
+        (when eldoc-posframe--timer
+          (cancel-timer eldoc-posframe--timer))
+
+        (posframe-hide eldoc-posframe-buffer)
+        (dolist (hook eldoc-posframe-hide-posframe-hooks)
+          (add-hook hook #'eldoc-posframe-hide-posframe nil t))
+
+        (setq eldoc-posframe--timer
+              (run-with-idle-timer
+               eldoc-posframe-delay nil
+               (lambda ()
+                 (when str
+                   (posframe-show
+                    eldoc-posframe-buffer
+                    :string (apply #'format str args)
+                    :postion (point)
+                    :poshandler #'posframe-poshandler-point-bottom-left-corner-upward
+                    :left-fringe 8
+                    :right-fringe 8
+                    :internal-border-width 1
+                    :internal-border-color (face-attribute 'font-lock-comment-face :foreground)
+                    :background-color (face-background 'tooltip)))))))
+
+      (setq eldoc-message-function #'eldoc-posframe-show-posframe))))
 
 ;; Interactive macro expander
 (use-package macrostep
   :custom-face
-  (macrostep-expansion-highlight-face ((t (:background ,(face-background 'tooltip) :extend t))))
+  (macrostep-expansion-highlight-face ((t (:inherit tooltip :extend t))))
   :bind (:map emacs-lisp-mode-map
          ("C-c e" . macrostep-expand)
          :map lisp-interaction-mode-map
-         ("C-c e" . macrostep-expand))
-  :config
-  (add-hook 'after-load-theme-hook
-            (lambda ()
-              (custom-set-faces
-               `(macrostep-expansion-highlight-face
-                 ((t (:background ,(face-background 'tooltip) :extend t))))))))
+         ("C-c e" . macrostep-expand)))
 
 ;; A better *Help* buffer
 (use-package helpful
