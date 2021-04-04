@@ -1,0 +1,367 @@
+#+title: Magit Notes
+* [[https://www.lvguowei.me/post/magit-rebase/][Magit tutorial - Rebase (Part I)]] :website:
+
+[2021-04-04 Sun 17:29]
+
+** Article
+
+[[https://magit.vc/][*Magit*]] is arguably the best Git tool out there and also my favorite. It is a package in Emacs, and it is text based. In this tutorial, we will explore how to use it to tackle one of the more elusive topics in Git: *Rebase*.
+
+*** In the beginning there was darkness
+
+Let's create an empty repository and add one empty file to it.
+
+#+begin_example
+    git init
+  touch file.txt
+  git add .
+  git commit -m  'first commit'
+#+end_example
+
+*** Rewording commit
+
+Now let's add some fruits in the file. Open the file and add a new line
+
+#+begin_example
+    apple
+#+end_example
+
+Open Magit, commit the change with a message says
+
+#+begin_example
+    Add apple
+#+end_example
+
+Then add a new line
+
+#+begin_example
+    pear
+#+end_example
+
+with commit message
+
+#+begin_example
+    apple again, wrong commit message
+#+end_example
+
+Then add a new line
+
+#+begin_example
+    peach
+#+end_example
+
+with a commit message
+
+#+begin_example
+    peach
+#+end_example
+
+Now it is clear that we need to fix the second commit message. But since this is not the last one we cannot use =git commit --amend=. But we can still use =rebase= to change it.
+
+In Magit, press =ll= to open the log history. Put the cursor under the wrong commit.
+
+[[https://www.lvguowei.me/img/select-wrong-commit.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/select-wrong-commit.png @ 2021-04-04 17:35:16
+[[file:images/magit-notes/select-wrong-commit2021-04-04_17-35-16_.png]]
+
+
+Then press =r=(rebase) and =w=(to reword a commit).
+
+[[https://www.lvguowei.me/img/ready-to-reword.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/ready-to-reword.png @ 2021-04-04 17:35:25
+[[file:images/magit-notes/ready-to-reword2021-04-04_17-35-25_.png]]
+
+
+Now enter the correct commit message /pear/ and press =C-c C-c=. Now you should see the commit messages updates.
+
+*** Squashing commits
+
+It appears that the last 3 commits should really be 1 commit with a message like /add fruits/. We can use rebase to squash them into one commit like this:
+
+In the commit history, put the cursor on the oldest of the 3 commits that we want to squash, and press =r=(rebase) =i=(interactively). We now see the interactive rebase page.
+
+[[https://www.lvguowei.me/img/rebase-interactive-page.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/rebase-interactive-page.png @ 2021-04-04 17:35:27
+[[file:images/magit-notes/rebase-interactive-page2021-04-04_17-35-27_.png]]
+
+
+The good thing about this page is that it contains a cheatsheet already, so you can just see what kind things can be done here.
+
+Notice that the order of the commits now is reversed, the latest commit being at the bottom.
+
+As the cheatsheet says, we can put the cursor on the /pear/ commit and press =s=, this means that we want this commit to be squashed into its previous commit. And then we do the same for the =peach= commit.
+
+[[https://www.lvguowei.me/img/squash-page.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/squash-page.png @ 2021-04-04 17:35:29
+[[file:images/magit-notes/squash-page2021-04-04_17-35-29_.png]]
+
+
+We can see that the two commits are marked as =squash= now, then we can press =C-c C-c= to make the squash happen. It will prompt you to enter the new commit and also hint you the previous commit messages. Type /Add fruits/ and press =C-c C-c=.
+
+Now we can see from the history that the 3 previous commits become one now.
+
+[[https://www.lvguowei.me/img/squashed-commits.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/squashed-commits.png @ 2021-04-04 17:35:31
+[[file:images/magit-notes/squashed-commits2021-04-04_17-35-31_.png]]
+
+
+*** Splitting commit
+
+It will come at times that we want to split a big commit into smaller ones. This can also be achieved by using rebase.
+
+Let's add a new file =file2.txt= and modify the =file.txt= to add some animal names. Commit the changes with message /add animals to file and create file2/. So we want to split this commit into 2 commits, one for adding animals and one for creating /file2/.
+
+As always, we go to the commits history page, put the cursor on the last commit, and press =r=, then press =m=(to edit a commit).
+
+[[https://www.lvguowei.me/img/edit-commit.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/edit-commit.png @ 2021-04-04 17:35:32
+[[file:images/magit-notes/edit-commit2021-04-04_17-35-32_.png]]
+
+
+Notice that there is a =@= sign in front of the commit, meaning the HEAD now is at this commit. And then, we want to move the HEAD one step before the current by git reset. Move the cursor to previous commit /Add fruits/ and press =x=, then choose =master~1=. Now go back to the main screen you should see this:
+
+[[https://www.lvguowei.me/img/split-reset.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/split-reset.png @ 2021-04-04 17:35:33
+[[file:images/magit-notes/split-reset2021-04-04_17-35-33_.png]]
+
+
+Now you can commit the changes separately.
+
+[[https://www.lvguowei.me/img/split-done.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/split-done.png @ 2021-04-04 17:35:34
+[[file:images/magit-notes/split-done2021-04-04_17-35-34_.png]]
+
+
+Now continue the rebase by click =r= again and choose =r=(continue).
+
+OK, now the split is done. Check the history you should see the expected result.
+
+
+* [[https://www.lvguowei.me/post/magit-rebase-2/][Magit tutorial - Rebase (Part II)]] :website:
+
+[2021-04-04 Sun 17:37]
+
+** Article
+
+In [[https://www.lvguowei.me/post/magit-rebase/][part I]] we went through how to use git rebase to modify commit history, things like reword a commit, squash multiple commits, split commit. In this part, we will talk about another common use case of rebase: rebase before merging branches.
+
+Let's first create a new repo and add one =file.txt= as the first commit.
+
+#+begin_example
+    apple
+  pear
+  peach
+
+  cat
+  dog
+  snake
+#+end_example
+
+Now we create a =feature= branch from =master= branch. To create a new branch, press =b=(Branching) and =c=(Checkout new branch).
+
+Now that we are on the =feature= branch, lets add a new file =file2.txt= with the folloing content:
+
+#+begin_example
+    TODOs:
+  1. Go to supermarket
+  2. Pick up dog
+#+end_example
+
+Commit the changes with message =add todos=.
+
+Then let's modify the =file.txt= to the following:
+
+#+begin_example
+    apple
+  pear
+  peach
+
+  cat
+  dog
+  pig
+#+end_example
+
+Then commit with the message =change snake to pig=.
+
+Now let's switch back to =master= branch.
+
+To make things more interesting, let's also modify the =file.txt= to replace =snake= with =panda=, then commit.
+
+To recap, now the history looks like this:
+
+[[https://www.lvguowei.me/img/before-rebase.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/before-rebase.png @ 2021-04-04 17:38:04
+[[file:images/magit-notes/before-rebase2021-04-04_17-38-04_.png]]
+
+
+Note that the last commits in =master= and =feature= are conflicting each other.
+
+Suppose now the =feature= branch has finished, and we want to merge it back to =master=.
+
+First, let's rebase it against master.
+
+Checkout =feature=, and press =r=(Rebasing), and =e=(elsewhere) and choose =master=. Since there is conflict, Magit will show the following page indicating that we have to solve the conflicts.
+
+[[https://www.lvguowei.me/img/rebase-conflict.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/rebase-conflict.png @ 2021-04-04 17:38:05
+[[file:images/magit-notes/rebase-conflict2021-04-04_17-38-05_.png]]
+
+
+This is as we expected, let's now use the =Ediff dwimming=(do what I mean) to resolve the conflict. Put the cursor on the conflicting file, and press =e=.
+
+Now we are entering the =Ediff= buffer.
+
+[[https://www.lvguowei.me/img/ediff.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/ediff.png @ 2021-04-04 17:38:06
+[[file:images/magit-notes/ediff2021-04-04_17-38-06_.png]]
+
+
+Let's say that we decided to take the changes in =feature= branch, then we can press =n= to select the diff, and =b= to choose variant B. If everything goes right, we should see that the C Section should now contain the correct text.
+
+[[https://www.lvguowei.me/img/ediff-ok.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/ediff-ok.png @ 2021-04-04 17:38:07
+[[file:images/magit-notes/ediff-ok2021-04-04_17-38-07_.png]]
+
+
+Now press =q= to quit =Ediff= and also choose save the file when prompted.
+
+Now we should be back at the main Magit screen, press =g= to refresh should show the following.
+
+[[https://www.lvguowei.me/img/ediff-done.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/ediff-done.png @ 2021-04-04 17:38:08
+[[file:images/magit-notes/ediff-done2021-04-04_17-38-08_.png]]
+
+
+Looks everything is good, we can press =r= and continue rebasing.
+
+After done, the log should show the following:
+
+[[https://www.lvguowei.me/img/rebase-done.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/rebase-done.png @ 2021-04-04 17:38:09
+[[file:images/magit-notes/rebase-done2021-04-04_17-38-09_.png]]
+
+
+See that now the history looks very clean and as if changes were done in a linear fashion.
+
+~The End~
+
+* [[https://www.lvguowei.me/post/magit-tutorial-bisect/][Magit Tutorial - Bisect]] :website:
+
+[2021-04-04 Sun 17:38]
+
+** Article
+
+It's 5 o'clock on a sunny Friday afternoon, you are thinking where to have dinner with friends and such. The only thing you have to finish before you can go is to pull your colleage's latest changes and make a demo build to customer. You pull, there are 20 commits all nicely structured, you are now giving yourself a pat on the back for teaching him to use rebase yesterday (by pointing him to these 2 wonderful articles [[https://www.lvguowei.me/post/magit-rebase/][1]] and [[https://www.lvguowei.me/post/magit-rebase-2/][2]]). The build is making, the clock is ticking, you are a little bit late to the dinner party. You installed the app, and it quits right after you open it, leaves no trace at all in the log. Your heart sinks.
+
+This happens to every developer. What? it never happened on you? It will, you can count on me, and when it happens, it will be on Friday afternoon most likely. So what should you do? You can check out each and every single commit and run the build, install it and see if the problem remains. But you are a good programmer, you know binary search by heart, so you take out a piece of paper, and jot down the commits you tested and the results, and you can quickly pin down the last working commit, and make a build from there. Actually git has a way to help you do the exact same, it is called [[https://git-scm.com/docs/git-bisect][bisect]]. Let's try it out.
+
+Let's first take a look at the crime scene.
+
+[[https://www.lvguowei.me/img/bisect-init.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/bisect-init.png @ 2021-04-04 17:38:55
+[[file:images/magit-notes/bisect-init2021-04-04_17-38-55_.png]]
+
+
+What we know is that the last commit =add 10= is bad, and the first commit =init= is good. So we need to find out the first bad commit in the whole history.
+
+So now, press =B=(Bisecting) =B=(Start), then it will prompt you with /Start bisect with bad revision:/ Enter =HEAD= as the first bad version, and =HEAD~10= as the last good version.
+
+Now we have set the range, Magit shows this now:
+
+[[https://www.lvguowei.me/img/bisect-1.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/bisect-1.png @ 2021-04-04 17:38:56
+[[file:images/magit-notes/bisect-12021-04-04_17-38-56_.png]]
+
+
+This shows that we are currently at commit =add 5=, so we can test to see if this is a bad commit now. Let's open the =file.txt= and it looks perfect normal:
+
+#+begin_example
+    0
+  1
+  2
+  3
+  4
+  5
+#+end_example
+
+OK, we can now mark this commit as good. Press =B=(Bisecting) =g=(Good).
+
+Now Magit shows as this:
+
+[[https://www.lvguowei.me/img/bisect-2.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/bisect-2.png @ 2021-04-04 17:38:57
+[[file:images/magit-notes/bisect-22021-04-04_17-38-57_.png]]
+
+
+Now we are at commit =add 7=, let's check =file.txt= and it shows:
+
+#+begin_example
+    0
+  1
+  2
+  3
+  4
+  5
+  6
+  *7
+#+end_example
+
+AHA! There it is! There is an extra * there. OK, we found the problem, we can now mark this commit as bad by pressing =B=(Bisecting) =b=(Bad).
+
+Then next screen looks like this:
+
+[[https://www.lvguowei.me/img/bisect-3.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/bisect-3.png @ 2021-04-04 17:38:58
+[[file:images/magit-notes/bisect-32021-04-04_17-38-58_.png]]
+
+
+OK, now we can check commit =add 6=. Believe me, it looks normal. So we mark it as good as well.
+
+Done! There goes the verdict screen:
+
+[[https://www.lvguowei.me/img/bisect-verdict.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/bisect-verdict.png @ 2021-04-04 17:38:58
+[[file:images/magit-notes/bisect-verdict2021-04-04_17-38-58_.png]]
+
+
+As you can see, I did commit a bad * there with number 7.
+
+Phew! We can now fix it. But wait, this still feels like a lot of manual work. Can we even automate it more? The anwser is yes, so let's do this all over again. You can reset everything by =B= =r=(Reset).
+
+You maybe already noticed that there is a =script.sh= there, it turns out that instead of manually check the good or bad of a certain commit, we can run a script to do it. If the script returns 0 it means good commit, if it is non-zero then it is a bad commit.
+
+Given all that, it is obvious that we can write a script like this:
+
+#+begin_example
+     count = $(grep -c  "*" file.txt )
+   exit  $count
+#+end_example
+
+Now we can do the bisect by first press =B= then =s=(Start script). Then just follow the instruction to set the first bad commit and last good commit, then a command to run the script. And the result should be the same.
+
+[[https://www.lvguowei.me/img/bisect-script.png]]
+
+#+DOWNLOADED: https://www.lvguowei.me/img/bisect-script.png @ 2021-04-04 17:39:00
+[[file:images/magit-notes/bisect-script2021-04-04_17-39-00_.png]]
+
+
+~THE END~
