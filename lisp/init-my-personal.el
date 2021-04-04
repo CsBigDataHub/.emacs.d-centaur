@@ -283,8 +283,8 @@
   (add-to-list 'auto-mode-alist '("\\.g\\(?:ant\\|roovy\\)\\'" . groovy-mode))
   ;; (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
   ;; (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . groovy-mode)))
-  (with-eval-after-load 'exec-path-from-shell
-    (exec-path-from-shell-copy-envs '("JAVA_HOME" "GROOVY_HOME")))
+  ;; (with-eval-after-load 'exec-path-from-shell
+  ;;   (exec-path-from-shell-copy-envs '("JAVA_HOME" "GROOVY_HOME")))
   )
 
 (use-package jenkinsfile-mode
