@@ -10512,3 +10512,95 @@ This was added to Jenkinsfile
   // End:
 
 #+end_src
+
+* [[https://www.srijn.net/running-multiple-emacs-daemons/][Running multiple emacs daemons]] :website:
+
+[2021-04-03 Sat 23:41]
+
+** Article
+
+Apr 2, 2021 2 min read [[/tag/emacs/][emacs]]
+
+*** Running multiple emacs daemons
+
+Run multiple emacs daemons for different purposes and set different themes/config based on daemon name
+
+I have been using [[https://www.gnu.org/software/emacs/][Emacs]] for several years, and these days I'm using it both for writing code and for working with my email (another post on that soon).
+
+As commonly suggested, I run Emacs in daemon-mode to keep things fast and snappy, with an alias to auto-start the daemon if it's not started, and connect to it if started:
+
+#+begin_example
+   alias e='emacsclient -a "" -c'
+#+end_example
+
+Config for single daemon
+
+But, this has some problems:
+
+1. The buffers for email and code projects get mixed together
+2. Restarting the emacs server for code (for example) kills the open mail buffers as well
+3. Emacs themes are global -- they cannot be set per frame.\\
+   For code, I prefer a dark theme (most of the time), but for email, a light theme works better for me (specially for HTML email).
+
+To solve this, I searched for a way to run multiple emacs daemons, selecting which one to connect to using shell aliases, and automatically setting the theme based on the daemon name. Here's my setup to achieve this:
+
+***** Custom run_emacs function in zshrc:
+
+#+begin_example
+   run_emacs() {
+    if [ "$1" != "" ];
+    then
+      server_name="${1}"
+      args="${@:2}"
+    else
+      server_name="default"
+      args=""
+    fi
+
+    if ! emacsclient -s ${server_name} "${@:2}";
+    then
+      emacs --daemon=${server_name}
+      echo ">> Server should have started. Trying to connect..."
+      emacsclient -s ${server_name} "${@:2}"
+    fi
+  }
+#+end_example
+
+This function takes an optional argument -- the name to be used for the daemon. If not provided, it uses =default= as the name. Then, it tries to connect to a running daemon with the name. And if it's not running, it starts the daemon and then connects to it. It also passes any additional arguments to =emacsclient=.
+
+***** Custom aliases in zshrc:
+
+#+begin_example
+   # Create a new frame in the default daemon
+  alias e='run_emacs default -n -c'
+
+  # Create a new terminal (TTY) frame in the default daemon
+  alias en='run_emacs default -t'
+
+  # Open a file to edit using sudo
+  es() {
+      e "/sudo:root@localhost:$@"
+  }
+
+  # Open a new frame in the `mail` daemon, and start notmuch in the frame
+  alias em="run_emacs mail -n -c -e '(notmuch-hello)'"
+#+end_example
+
+The first 3 aliases use the =default= daemon. The last one creates a new frame in the =mail= daemon and also uses =emacsclient='s =-e= flag to start notmuch (the email package I use in Emacs).
+
+***** Emacs config:
+
+#+begin_example
+   (cond
+   ((string= "mail" (daemonp))
+    (setq doom-theme 'modus-operandi)
+   )
+   (t
+    (setq doom-theme 'modus-vivendi)
+   )
+  )
+#+end_example
+
+This checks the name of the daemon passed during startup, and sets the doom theme accordingly. The same pattern can be used to set any config based on the daemon name.
+
+Note that I'm using [[https://github.com/hlissner/doom-emacs][doom emacs]], but the above method should work with or without any framework for Emacs. Tested with Emacs 27 and 28.
