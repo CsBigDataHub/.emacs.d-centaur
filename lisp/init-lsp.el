@@ -98,7 +98,7 @@
 
      (setq lsp-keymap-prefix "C-c l"
            lsp-auto-guess-root nil
-           lsp-flycheck-live-reporting nil
+
            lsp-keep-workspace-alive nil
            lsp-signature-auto-activate nil
            lsp-modeline-code-actions-enable nil
@@ -120,6 +120,9 @@
 
      ;; For `lsp-clients'
      (setq lsp-clients-python-library-directories '("/usr/local/" "/usr/"))
+     :custom
+     (lsp-terraform-server (expand-file-name "lsp/terraform-lsp" user-emacs-directory))
+     (lsp-flycheck-live-reporting nil)
      :config
      ;; my-personal
      ;; configure terraform for lsp
@@ -131,7 +134,7 @@
      ;; :server-id 'terraform-ls))
      ;; -------- OLD --------
 
-     (setq lsp-terraform-server (expand-file-name "lsp/terraform-lsp" user-emacs-directory))
+     ;; (setq lsp-terraform-server (expand-file-name "lsp/terraform-lsp" user-emacs-directory))
 
      ;; my-personal
      (with-no-warnings

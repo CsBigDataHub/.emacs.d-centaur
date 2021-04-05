@@ -137,11 +137,13 @@
   :mode (("\\.http\\'" . restclient-mode)
          ("\\.restclient$" . restclient-mode)
          ("\\.rest$" . restclient-mode))
+  :custom
+  (network-stream-use-client-certificates t)
   :init
   ;; limit number of times vars are substituted
   (setq restclient-vars-max-passes 2)
   ;; use matching client certificates from ~/.authinfo
-  (setq network-stream-use-client-certificates t)
+  ;; (setq network-stream-use-client-certificates t)
   :config
   (use-package restclient-test
     :diminish
@@ -151,11 +153,13 @@
     (use-package company-restclient
       :defines company-backends
       :init (add-to-list 'company-backends 'company-restclient)))
-  (defun json-prettify-buffer ()
+
+  (defun json-prettify-buffer()
     "prettifies a json buffer."
     (interactive)
     (save-excursion
       (json-reformat-region (point-min) (point-max))))
+
   (eval-after-load "restclient"
     (if (not (fboundp 'json-pretty-print-buffer))
         (defun json-pretty-print-buffer ()
@@ -164,11 +168,13 @@
 
 (use-package verb
   :after org
+  :custom
+  (network-stream-use-client-certificates t)
   :config
   (define-key org-mode-map (kbd "C-c k") verb-command-map)
   :init
   ;; use matching client certificates from ~/.authinfo
-  (setq network-stream-use-client-certificates t)
+  ;; (setq network-stream-use-client-certificates t)
   (setq verb-auto-kill-response-buffers t)
   (setq verb-json-use-mode 'json-mode))
 

@@ -184,6 +184,7 @@ The prefix map is named 'my-DEF-map'."
 
 (general-global-spc-menu-definer
  "Hydra" "h"
+ "C" 'hydra-change-case/body
  "h" 'my-hydra/body
  "b" 'bm-hydra/body
  "M" 'my/hydra-macro/body

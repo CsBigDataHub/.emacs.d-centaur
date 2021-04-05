@@ -580,12 +580,13 @@ This is for use in `ivy-re-builders-alist'."
 (when (childframe-workable-p)
   (use-package ivy-posframe
     :defines (persp-load-buffer-functions persp-filter-save-buffers-functions)
+    :custom
+    (ivy-posframe-border-width 3)
     :custom-face
     (ivy-posframe-border ((t (:background ,(face-foreground 'font-lock-comment-face)))))
     :hook (ivy-mode . ivy-posframe-mode)
     :init
-    (setq ivy-posframe-border-width 3
-          ivy-posframe-parameters
+    (setq ivy-posframe-parameters
           `((background-color . ,(face-background 'tooltip))))
 
     (with-eval-after-load 'persp-mode

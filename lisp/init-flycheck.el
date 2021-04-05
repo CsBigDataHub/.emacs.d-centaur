@@ -56,6 +56,8 @@
   ;; Display Flycheck errors
   (if (childframe-workable-p)
       (use-package flycheck-posframe
+        :custom
+        (flycheck-posframe-border-width 1)
         :custom-face
         (flycheck-posframe-face ((t (:foreground ,(face-foreground 'success)))))
         (flycheck-posframe-info-face ((t (:foreground ,(face-foreground 'success)))))
@@ -63,7 +65,7 @@
         (flycheck-posframe-border-face ((t (:inherit font-lock-comment-face))))
         :hook (flycheck-mode . flycheck-posframe-mode)
         :init
-        (setq flycheck-posframe-border-width 1)
+        ;; (setq flycheck-posframe-border-width 1)
         (add-hook 'flycheck-posframe-inhibit-functions
                   (lambda (&rest _) (bound-and-true-p company-backend))))
     (use-package flycheck-popup-tip

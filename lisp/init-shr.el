@@ -46,4 +46,11 @@
                '(pre . shr-tag-pre-highlight))
   )
 
+(use-package eww
+  :defer t
+  :init
+  (add-hook 'eww-after-render-hook #'shrface-mode)
+  :config
+  (require 'shrface))
+
 (provide 'init-shr)

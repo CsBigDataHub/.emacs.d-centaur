@@ -99,12 +99,14 @@
     :custom-face
     (transient-posframe-border ((t (:background ,(face-foreground 'font-lock-comment-face)))))
     :hook (after-init . transient-posframe-mode)
+    :custom
+    (transient-posframe-border-width 3)
+    (transient-posframe-min-height 21)
+    (transient-posframe-min-width nil)
     :init
-    (setq transient-posframe-border-width 3
-          transient-posframe-min-height 21
-          transient-posframe-min-width nil
-          transient-posframe-parameters
-          `((background-color . ,(face-background 'tooltip))))
+    (setq
+     transient-posframe-parameters
+     `((background-color . ,(face-background 'tooltip))))
     :config
     (add-hook 'after-load-theme-hook
               (lambda ()

@@ -35,6 +35,9 @@
   :ensure nil
   :defines eshell-prompt-function
   :functions eshell/alias
+  :custom
+  (eshell-visual-commands '("ssh" "less" "top" "man"))
+  (eshell-visual-options '(("git" "commit" "log")))
   :hook (eshell-mode . (lambda ()
                          (bind-key "C-l" 'eshell/clear eshell-mode-map)
                          (bind-key "C-r" 'counsel-esh-history eshell-mode-map) ;; my-personal-conf
@@ -52,10 +55,10 @@
   :config
   ;; (with-eval-after-load 'exec-path-from-shell
   ;;   (exec-path-from-shell-copy-envs '("GOPATH" "GO111MODULE" "GOPROXY" "GRADLE_HOME" "GROOVY_HOME" "JAVA_HOME" "MAVEN_HOME" "SBT_HOME" "SCALA_HOME" "WORKON_HOME" "PYENV_ROOT")))
-  (setq eshell-visual-commands '("ssh" "less" "top" "man")
-        ;; eshell-visual-subcommands '(("git" "log" "l" "diff" "show"))
-        eshell-visual-options '(("git" "commit" "log"))
-        )
+  ;; (setq eshell-visual-commands '("ssh" "less" "top" "man")
+  ;;       ;; eshell-visual-subcommands '(("git" "log" "l" "diff" "show"))
+  ;;       eshell-visual-options '(("git" "commit" "log"))
+  ;;       )
   (with-no-warnings
     ;; For compatibility
     (unless (fboundp 'flatten-tree)
@@ -215,15 +218,54 @@ directory."
                    (read-buffer-to-switch "Switch to buffer: "))
            ">")))
 
+(defun prot-eshell--command-prompt-output ()
+  "Capture last command prompt and its output."
+  (let ((beg (save-excursion
+               (goto-char (eshell-beginning-of-input))
+               (goto-char (point-at-bol)))))
+    (when (derived-mode-p 'eshell-mode)
+      (buffer-substring-no-properties beg (eshell-end-of-output)))))
+
 (defun my/eshell-put-last-output-to-buffer ()
   "Produce a buffer with output of last `eshell' command."
   (interactive)
-  (let ((eshell-output (kill-region (eshell-beginning-of-output)
-                                    (eshell-end-of-output))))
+  (let ((eshell-output (prot-eshell--command-prompt-output)))
     (with-current-buffer (get-buffer-create  "*last-eshell-output*")
-      (erase-buffer)
-      (yank)           ; TODO do it with `insert' and `delete-region'?
+      (goto-char (point-max))
+      (unless (eq (point-min) (point-max))
+        (insert (format "\n%s\n\n" "* * *")))
+      (goto-char (point-at-bol))
+      (insert eshell-output)
       (switch-to-buffer-other-window (current-buffer)))))
+
+(defun prot-eshell-find-subdirectory-recursive ()
+  "Recursive `eshell/cd' to subdirectory.
+This command has the potential for infinite recursion: use it
+wisely or prepare to call `eshell-interrupt-process'."
+  (interactive)
+  (let* ((dir (abbreviate-file-name (eshell/pwd)))
+         (contents (directory-files-recursively dir ".*" t nil nil))
+         (dirs (cl-remove-if-not (lambda (x)
+                                   (or (file-directory-p x)
+                                       (string-match-p "\\.git" x)))
+                                 contents))
+         (selection (completing-read
+                     (format "Find sub-dir from %s: "
+                             (propertize dir 'face 'success))
+                     dirs nil t)))
+    (insert selection)
+    (eshell-send-input)))
+
+(defun prot-eshell-root-dir ()
+  "Switch to the root directory of the present project."
+  (interactive)
+  (let ((root (or (vc-root-dir)
+                  (locate-dominating-file "." ".git"))))
+    (if root
+        (progn
+          (insert root)
+          (eshell-send-input))
+      (user-error "Cannot find a project root here"))))
 
 (defun my/eshell-execute-current-line ()
   "Insert text of current line in eshell and execute."
