@@ -142,3 +142,4 @@ flycheck_*.el
 
 # End of https://www.toptal.com/developers/gitignore/api/emacs
 lsp/terraform-lsp
+*.cache
