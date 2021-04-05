@@ -436,14 +436,28 @@
 
 (use-package jq-format)
 
-(use-package eww
-  :defer t
-  :init
-  (add-hook 'eww-after-render-hook #'shrface-mode)
-  :config
-  (require 'shrface))
-
 (use-package disk-usage)
+
+(use-package selected
+  :commands selected-minor-mode
+  :init
+  (setq selected-org-mode-map (make-sparse-keymap))
+  :bind (:map selected-keymap
+         ("/" . undo-in-region)
+         ("C" . hydra-change-case/body)
+         ("c" . capitalize-region)
+         ("l" . downcase-region)
+         ("D" . delete-duplicate-lines)
+         ("m" . apply-macro-to-region-lines)
+         ("q" . selected-off)
+         ("s" . sort-lines)
+         ("u" . upcase-region)
+         ("w" . count-words-region)
+         :map selected-org-mode-map
+         ("t" . org-table-convert-region)
+         ("-" . org-ctrl-c-minus))
+  :config (selected-global-mode)
+  (setq selected-minor-mode-override t))
 
 ;; Added this to build pdf tools
 (setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig:/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")
