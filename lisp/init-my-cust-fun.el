@@ -621,6 +621,13 @@ point reaches the beginning or end of the buffer, stop there."
   (align-regexp start end
                 "\\(\\s-*\\):" 1 0 t))
 
+;; https://blog.lambda.cx/posts/emacs-align-columns/
+(defun align-non-space (BEG END)
+  "Align non-space columns in region BEG END."
+  (interactive "r")
+  (align-regexp BEG END
+                "\\(\\s-*\\)\\S-+" 1 1 t))
+
 (bind-keys*
  ("M-m g A SPC" . my/align-whitespace)
  ("M-m g A &"   . my/align-ampersand)

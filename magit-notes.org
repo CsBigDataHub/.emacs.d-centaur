@@ -365,3 +365,5 @@ Now we can do the bisect by first press =B= then =s=(Start script). Then just fo
 
 
 ~THE END~
+
+* https://www.youtube.com/watch?v=j-k-lkilbEs - It's Magit! - John Wiegley
