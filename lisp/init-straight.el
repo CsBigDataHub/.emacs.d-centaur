@@ -103,14 +103,36 @@
     (add-to-list 'auto-mode-alist '("\\.\\(applescri\\|sc\\)pt\\'" . apples-mode))))
 
 (use-package org-pandoc-import
-  :straight (:host github
+  :straight (org-pandoc-import
+             :type git
+             :host github
              :repo "tecosaur/org-pandoc-import"
              :files ("*.el" "filters" "preprocessors")))
 
 (use-package org-table-wrap-functions
   :straight (org-table-wrap-functions
-               :type git
-               :host github
-               :repo "analyticd/org-table-wrap-functions"))
+             :type git
+             :host github
+             :repo "analyticd/org-table-wrap-functions"))
+
+
+(use-package org-timed-alerts
+  :after (org alert)
+  :straight (org-timed-alerts
+             :type git
+             :host github
+             :repo "legalnonsense/org-timed-alerts")
+  :custom
+  (org-timed-alerts-alert-function #'alert)
+  (org-timed-alerts-tag-exclusions nil)
+  (org-timed-alerts-default-alert-props nil)
+  (org-timed-alerts-warning-times '(-15 -7 -3))
+  (org-timed-alerts-agenda-hook-p t)
+  (org-timed-alert-final-alert-string "IT IS %alert-time\n\n%todo %headline")
+  (org-timed-alert-warning-string (concat "%todo %headline\n at %alert-time\n "
+                                          "it is now %current-time\n "
+                                          "*THIS IS YOUR %warning-time MINUTE WARNING*"))
+  :config
+  (add-hook 'org-mode-hook #'org-timed-alerts-mode))
 
 (provide 'init-straight)

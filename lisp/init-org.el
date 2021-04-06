@@ -580,6 +580,73 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 ;; (use-package org-special-block-extras
 ;;   :hook (org-mode . org-special-block-extras-mode))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;notification;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; example https://christiantietze.de/posts/2019/12/emacs-notifications/
+
+(use-package alert
+  :config
+  (when sys/macp
+    (setq alert-default-style 'notifier)))
+
+;; simpler code for `org-alert' package
+;; https://raw.githubusercontent.com/jakecoble/org-alert/master/org-alert.el
+;;(use-package org-alert
+;;  :demand t
+;; :init
+;; (org-alert-enable)
+;;  )
+
+(use-package org-wild-notifier
+  :after (org alert)
+  :custom
+  (org-wild-notifier-alert-time '(120 60 30 10 5 1))
+  (org-wild-notifier-keyword-whitelist '("TODO"))
+  (org-wild-notifier--day-wide-events t)
+  (org-wild-notifier-keyword-blacklist '("CANCELED" "DONE" "ABORDED" "HAVE" "GIVEN" "CONSUMED" "LOST"))
+  (org-wild-notifier-notification-title "Org Wild Reminder!")
+  :init
+  (org-wild-notifier-mode))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; adding as a fail safe if above does not alert
+(require 'appt)
+
+(setq appt-time-msg-list nil)    ;; clear existing appt list
+(setq appt-display-interval '5)  ;; warn every 5 minutes from t - appt-message-warning-time
+(setq
+  appt-message-warning-time '15  ;; send first warning 15 minutes before appointment
+  appt-display-mode-line nil     ;; don't show in the modeline
+  appt-display-format 'window)   ;; pass warnings to the designated window function
+(setq appt-disp-window-function (function ct/appt-display-native))
+
+(appt-activate 1)                ;; activate appointment notification
+; (display-time) ;; Clock in modeline
+
+(defun ct/send-notification (title msg)
+  (let ((notifier-path (executable-find "alerter")))
+       (start-process
+           "Appointment Alert"
+           "*Appointment Alert*" ; use `nil` to not capture output; this captures output in background
+           notifier-path
+           "-message" msg
+           "-title" title
+           "-sender" "org.gnu.Emacs"
+           "-activate" "org.gnu.Emacs")))
+(defun ct/appt-display-native (min-to-app new-time msg)
+  (ct/send-notification
+    (format "Appointment in %s minutes" min-to-app) ; Title
+    (format "%s" msg)))                             ; Message/detail text
+
+
+;; Agenda-to-appointent hooks
+(org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
+(run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
+(add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt) ;; update appt list on agenda view
+
+
 (provide 'init-org)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
