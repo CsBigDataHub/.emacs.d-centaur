@@ -575,6 +575,10 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 
 (setq org-M-RET-may-split-line '((item . nil)))
 
+(setq org-agenda-start-with-log-mode t)
+(setq org-log-done 'time)
+(setq org-log-into-drawer t)
+
 ;; (use-package org-sidebar)
 
 ;; (use-package org-special-block-extras
