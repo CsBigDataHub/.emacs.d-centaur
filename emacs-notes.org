@@ -7099,19 +7099,19 @@ Clocking commands can be used on sub headlines to start and stop timing. More in
 
 [2020-10-13 Tue 14:20]
 
-***** Article
+** Article
 
 [[/tags/emacs/][#emacs]] | [[/tags/gnu/][#GNU]] | [[/tags/org/][#org]] | [[/tags/programming/][#programming]]
 
-****** June 15, 2020
+*** June 15, 2020
 
 
-****** Post updates
+*** Post updates
 
 
 - [2020-06-23] New section. "Combine source blocks"
 
-****** Intro
+*** Intro
 
 
 It's time to start documenting how I use Emacs [[https://orgmode.org/][Org mode]] (from now on org) and it will contain a serie of posts. This is the first post and it will cover source blocks. Some of the content assumes basic knowledge about org. If you are new to org I can recommend this two videos; [[https://www.youtube.com/watch?v=SzA2YODtgK4][hrs]] and [[https://www.youtube.com/watch?v=fgizHHd7nOo][kitchin]].
@@ -7128,7 +7128,7 @@ This is the structure of a source block. Org mode's documentation on source bloc
 
 Header arguments differ for different languages and applications. Look in the documentation for your specific language/application to find out what and how to use it.
 
-****** Versions
+*** Versions
 
 
 ... of Emacs and Org mode.
@@ -7150,7 +7150,7 @@ Header arguments differ for different languages and applications. Look in the do
   :  of 2020-05-19
 #+END_EXAMPLE
 
-****** Emacs config
+*** Emacs config
 
 
 Without config Emacs don't know how to execute source blocks. This following snippet provides Emacs with the ability to understand a set of languages/applications. The set of languages/applications need to be available in the underlying OS. To get a complete list of languages/applications available in org. A complete list can be found here: [[https://code.orgmode.org/bzg/org-mode/src/master/lisp][repo]]. Support for source blocks are available in files prefixed with =ob-=.
@@ -7170,7 +7170,7 @@ Without config Emacs don't know how to execute source blocks. This following sni
       ( clojure  .  t )))
 #+END_EXAMPLE
 
-****** Bash echo
+*** Bash echo
 
 
 This small example uses bash to evaluate the =echo= command. Evaluation is done by moving the pointer to the source block and press the key sequence =C-c C-c=.
@@ -7186,7 +7186,7 @@ This small example uses bash to evaluate the =echo= command. Evaluation is done 
   : /bin/bash
 #+END_EXAMPLE
 
-****** Echo input variables
+*** Echo input variables
 
 
 Arguments can be passed to source blocks from the document. This example passes 2 =:var=, *ARG1* and *ARG2*. The command get the arguments and uses them in the command.
@@ -7200,7 +7200,7 @@ Arguments can be passed to source blocks from the document. This example passes 
   : FOO BAR
 #+END_EXAMPLE
 
-****** Document variables
+*** Document variables
 
 
 Lets elaborate on argument to source blocks even further. Org documents can contain variables that holds data. This example contains a org table with the variable name =my-list=. =my-list= is passed as an argument to the Python source block via the variable =lst=. When executed by Python the =lst= data structure is a vector with vectors.
@@ -7234,12 +7234,12 @@ Lets elaborate on argument to source blocks even further. Org documents can cont
   [['B', 2], ['C', 3], ['D', 4]]
 #+END_EXAMPLE
 
-****** Result output
+*** Result output
 
 
 Results output can be in many different shapes. Raw output, tables, as code and many more. Output results are described with the =:results= switch in the source block header. This post won't go more into details but more information can be found [[https://orgmode.org/manual/Results-of-Evaluation.html][here]].
 
-****** More on document variables
+*** More on document variables
 
 
 This example provides another org document variable. In this case the =text-example= text block. The text in that block is passed as an argument to the =awk= source block. =awk= is a programming language with good features to manipulate text. It can take text from *stdin*. That's exactly what is happening here. Often you see =awk= used in shell commands, similar to this: =cat /etc/passwd | awk -F":" '{ print $1 }'=. Here =awk= gets *stdin* data from the pipe. But in our source block it gets *stdin* data from the org document.
@@ -7262,7 +7262,7 @@ This example provides another org document variable. In this case the =text-exam
    | Sum | 350 |
 #+END_EXAMPLE
 
-****** File from file system
+*** File from file system
 
 
 This example is very similar to the one in [[#headline-4]["Echo input variables"]]. It passed a variable to the source block that tells a file path to =awk=. =awk= is then called with that *:in-file* as an argument.
@@ -7280,7 +7280,7 @@ This example is very similar to the one in [[#headline-4]["Echo input variables"
    | john |
 #+END_EXAMPLE
 
-****** Combine source blocks
+*** Combine source blocks
 
 
 It's possible to combine text from different source blocks with the =:noweb yes= header argument. This example shows a ledger that's split up into income and expenses source blocks. They are then combined in the =balance= source block. Ledger is a plaintext accounting tool and can create a balance report from our assets, income and expenses. The =:noweb= header arguments in not something that is specific for ledger.
@@ -7326,7 +7326,7 @@ Docs on =:noweb= header argument can be found [[https://orgmode.org/manual/Noweb
   :                    0
 #+END_EXAMPLE
 
-****** Combine results and source blocks
+*** Combine results and source blocks
 
 
 Now lets use the result from one source block as argument to another. The example requires some files with a =.awk= ending to be present in =/tmp=. We use =bash= to get data about our file system. That result is then feed to =awk= that creates a good looking table. That table is then sent to Python for further processing.
@@ -7376,19 +7376,19 @@ There is nothing different here from the other examples except that in this case
   : 1.3 kb
 #+END_EXAMPLE
 
-****** Nice things I didn't cover
+*** Nice things I didn't cover
 
 
 Org have ways to execute code on remote servers via source blocks. This is awesome and can be used for DevOps. I have used it in cases where an Ansible playbook is overkill. There is a really nice blog post and video about this stuff [[http://howardism.org/Technical/Emacs/literate-devops.html][here]].
 
 Source blocks can also be written to the file system via the header switch =:tangle=. This is also very useful. More info about that can be found [[https://orgmode.org/manual/Extracting-Source-Code.html][here]].
 
-****** Conclusion
+*** Conclusion
 
 
 I think org is truly an amazing piece of software. With very little effort from the user it can provide a very rich and interactive experience with a lot of applications and languages. From the document view everything is just text so version control a org document is very simple.
 
-******* Similar articles:
+**** Similar articles:
 
 
 - [[/posts/clojure-spec-test-transducers/][Quick overview of Clojure spec, test.check and transducers]]
@@ -7398,14 +7398,14 @@ I think org is truly an amazing piece of software. With very little effort from 
 
 [2020-10-13 Tue 14:20]
 
-******** Article
+** Article
 
 [[/tags/emacs/][#emacs]] | [[/tags/gnu/][#GNU]] | [[/tags/org/][#org]] | [[/tags/programming/][#programming]]
 
-********* July 22, 2020
+*** July 22, 2020
 
 
-********* Intro
+*** Intro
 
 
 This is the third post in a series about Emacs Org mode and the second about source code blocks.
@@ -7414,7 +7414,7 @@ The last post about source code blocks (blocks from now on) covered org document
 
 This post will focus on how and where block result output will end up. It won't cover all of the arguments and features as I don't use all of them. If you wanna get the full picture, here is the [[https://orgmode.org/manual/Results-of-Evaluation.html#Results-of-Evaluation][docs]].
 
-********* Versions
+*** Versions
 
 
 Since last post a new Emacs version 27.1 have been released! Here are some about the release, [[https://lists.gnu.org/archive/html/emacs-devel/2020-08/msg00237.html][news]].
@@ -7428,7 +7428,7 @@ Here are the "inline code blocks" used to show what versions of the software I a
     src_emacs-lisp{org-version}  {{{results(=9.4=)}}}
 #+END_EXAMPLE
 
-********* Default argument
+*** Default argument
 
 
 Results from source block evaluation can appear in many different shapes. As list, as source block, as "raw", to file and so on.
@@ -7455,7 +7455,7 @@ This is the same as the argument =:results output=.
     : Hello Emacs
 #+END_EXAMPLE
 
-********* Output code
+*** Output code
 
 
 Lets output the result into a new source code block. By default the new block gets the same language as the parent. In this case the language is shell.
@@ -7484,7 +7484,7 @@ If the output language is not the same as the parent. =:wrap= can be used to tel
      #+end_src
 #+END_EXAMPLE
 
-********* Append results
+*** Append results
 
 
 Results can be appended into the org document. In this case the block have been evaluated three times. I don't use this very often.
@@ -7500,7 +7500,7 @@ Results can be appended into the org document. In this case the block have been 
     : 2020-08-29 11:52:38
 #+END_EXAMPLE
 
-********* Table
+*** Table
 
 
 Results can end up in nicely formatted org tables
@@ -7531,7 +7531,7 @@ Or what about a nice looking NetworkManager table.
      | integrity_vpn      | wireguard       | integrity_vpn |
 #+END_EXAMPLE
 
-********* File
+*** File
 
 
 Results can be written to a file. In the results area a org link to the file containing the results is provided.
@@ -7574,7 +7574,7 @@ Let's look on the attributes of the =script.sh= file.
      #+end_src
 #+END_EXAMPLE
 
-********* Pass result on
+*** Pass result on
 
 
 Result data from one source block can be passed to another in the same execution. You don't need to run =C-c C-c= two times and have results stored in variables. In the example on bash block generates a string and numbers from 1 to 20. Those two lines are then passed on to the =attr_wrap= named source block. This block takes data from the previous block and append two more lines. One with a string and the other with numbers from 20 to 30.
@@ -7607,7 +7607,7 @@ Result data from one source block can be passed to another in the same execution
      #+end_src
 #+END_EXAMPLE
 
-********* Tangle
+*** Tangle
 
 
 This is a sidestep from source code block results, but it's related. Text within a source code block can be written to a file. Using the =(org-babel-tangle)= function. =(org-babel-tangle)= will look through all of the document and find all of the source code blocks with =:tangle= arguments and write all of them to the local file system.
@@ -7629,7 +7629,7 @@ This example writes some text from a source code block to a file.
      #+end_src
 #+END_EXAMPLE
 
-********* Tangled file permissions
+*** Tangled file permissions
 
 
 Just lite =:file-mode= we have =:tangle-mode= to set file permissions when writing a file to the file system. This example is a small bash script written to the file system and set to be executable for all users.
@@ -7657,7 +7657,7 @@ Just lite =:file-mode= we have =:tangle-mode= to set file permissions when writi
      #+end_src
 #+END_EXAMPLE
 
-********* Bigger example
+*** Bigger example
 
 
 This example combines many of the features. And in the end it generates a nicely formatted system report with a org structure.
@@ -7819,7 +7819,7 @@ And voila, here is the result! The report is well formatted and looks very good.
        #+END_SRC
 #+END_EXAMPLE
 
-********** Similar articles:
+**** Similar articles:
 
 
 - [[/posts/emacs-orgmode-tables/][Emacs Org mode tables]]
@@ -8113,9 +8113,9 @@ This is the old mode (suggested by @hb9 on GitHub: [[https://github.com/hvesalai
 
 [2020-11-05 Thu 08:36]
 
-***** Article
+** Article
 
-****** Introduction
+*** Introduction
 
 
 In this tutorial, I will go through setting up *Emacs* for *Java development.* The installation part will be fairly simple, as we will use my java specific Emacs settings. For this particular setup, I want to focus on Java Programming specific packages. Therefore, this setup does not contain other popular Emacs packages. Once you are comfortable with how it works, you should be able to add your favorite package to this setting or copy settings and ideas from here to your setup without any problem. We will use *Language Server Protocol (LSP)* related packages and settings for this setup. You can read more about LSP [[https://langserver.org/][here]]. At the end of this setup you should have an editor that has a debugger UI, code auto-completion, project initializer and several other features to help you edit and manager your code. E.g.
@@ -8125,7 +8125,7 @@ In this tutorial, I will go through setting up *Emacs* for *Java development.* T
 [[file:images/emacs-notes/image-142020-11-05_08-38-05_.png]]
 
 
-****** Installation
+*** Installation
 
 
 You should have *emacs* installed in your computer. If not, go ahead and install it first. Also, make sure you have installed *java*, *maven* and *git*. Backup your current emacs folders and files. If later you don't like this setup you can always revert back. *After backing up*, delete any *.emacs* or *.emacs.d* files/folders in your home directory. In a terminal window execute following commands. These commands are for unix environments. If you are on windows adjust the commands to match the directories accordingly.
@@ -8155,7 +8155,7 @@ You can switch between white and dark themes using F6 key. You can go through [[
 
 Next, we will tackle how to use LSP to work with java projects.
 
-****** Working with Java Project.
+*** Working with Java Project.
 
 
 You can work on a simple java project with few files that has main method in it. However, here let's setup a little bit more than that. LSP comes with *lsp-java-spring-initializer* command, an emacs interface for [[https://start.spring.io/][start.spring.io]] (spring initializer). Go ahead and execute that command. Use following setup instructions.
@@ -8329,7 +8329,7 @@ If you now run the project with *mvn spring-boot:run* using *C-c p u* command la
 
 To quit the running server, press *C-c C-k* in the * *compilation** window (window where you see the spring messages).
 
-****** Debugging
+*** Debugging
 
 
 There are various ways to debug your application. If you want to start from main, you can invoke *dap-java-debug* command to start debugging. In this example though this command will run the *HelloController*. Let's instead test *Person* class. Open *PersonTest class* and invoke *dap-java-debug-test-class*. You can also test a single method by using *dap-java-debug-test-method*. You should see *1 test successful* message. This is not very intuitive. Let's add a break point at line 11 of *PersonTest* class. This is the next line to where *Person* class is initialized. Now if you invoke *dap-java-debug-test-method*, when your cursor is within the *tetMethods()* method, you should see the debug UI. There should be a *hydra* window at the bottom showing you keys for different options.
@@ -8348,12 +8348,12 @@ You can open up local variable list with *sl* key, similarly *sb* to see breakpo
 #+DOWNLOADED: https://xpressrazor.files.wordpress.com/2020/11/image-9.png?w=1024 @ 2020-11-05 08:46:15
 [[file:images/emacs-notes/image-92020-11-05_08-46-15_.png]]
 
-****** Conclusion
+*** Conclusion
 
 
 This tutorial should get you to a comfortable position where you can explore more options provided by *LSP*, *Projectile*, *DAP* and *Helm* to work through your project. To make your coding easier I suggest adding various snippets to complete your code. Also remember to manage LSP servers. If you start too many servers your computer memory might go up quickly. Take a look at memory usage, and restart *LSP* server or *emacs* if necessary. To make lsp start over again, you can delete the *.lsp-session** files and *workspace folder* (last option) inside your *.emacs.d* folder. Also use *projectile-remove-known-project* or similar projectile commands to remove projects that are no longer needed. You can always add them later. If you feel your computer is sluggish with Emacs and LSP tweak *gc-cons-threshold* and *gc-cons-percentage* values in init.el. You can also tweak *read-process-output-max* variable in *lsp-mode* setting. Java uses around 1GB *memory*. You can tweak *lsp-java-vmargs* as listed in [[https://github.com/emacs-lsp/lsp-java/blob/master/lsp-java.el][lsp-java github]] configuration file as well. I hope this tutorial helped you to start using Emacs for Java development.
 
-****** References
+*** References
 
 
 1. [[https://github.com/emacs-lsp/lsp-java]]
@@ -8364,9 +8364,9 @@ This tutorial should get you to a comfortable position where you can explore mor
 
 [2020-11-09 Mon 11:06]
 
-**** Article
+** Article
 
-***** A quick guide to directory-local (or project-specific) variables
+*** A quick guide to directory-local (or project-specific) variables
 
 
 05 Jul 2016, by [[https://github.com/Malabarba][Artur Malabarba]].
@@ -8388,7 +8388,7 @@ Also worth noting:
 - If you answer =eval= for the variable name, it will prompt you for a lisp expression, instead of a value. This expression will be saved and will be evaluated every time a file is visited.
 - After doing this, call [[https://doc.endlessparentheses.com/Fun/revert-buffer][=revert-buffer=]] on any previously-open files to apply the new value.
 
-****** Update 21 Jul 2016
+**** Update 21 Jul 2016
 
 
 It's worth mentioning that Joel McCracken posted [[http://joelmccracken.github.io/entries/project-local-variables-in-projectile-with-dirlocals/][a similar quick guide]] a few years ago. Some of the information is the same, but some is complementary, so you might want to have a look.
@@ -9959,7 +9959,7 @@ You don't need to use Emacs to enjoy the benefits of literate programming across
 
 [2021-02-10 Wed 10:18]
 
-*** Article
+** Article
 
 I've [[https://prodissues.com/2016/02/adding-mu4e-support-to-emacs.html][set up mu4e]], and have my Gmail credentials stored in two files:
 
@@ -9972,7 +9972,7 @@ My goal with this post was to create a simple guide on how to install gpg, gener
 
 Now that our expectations are set, and assuming you're up for the ride, lets start this journey.
 
-**** Installing GPG
+*** Installing GPG
 
 #+begin_example
    ~ $ brew install gpg
@@ -9995,7 +9995,7 @@ Now really, the most informative source of information is gpg's help. Go ahead a
     ~  $  gpg  -h
 #+end_example
 
-**** Create a key
+*** Create a key
 
 #+begin_example
    ~ $ gpg --gen-key
@@ -10073,7 +10073,7 @@ Here's how this flow looks like:
 
 Now that you've created a key, you can go ahead and sign the =.authinfo= file.
 
-**** Sign and encrypt the =.authinfo= file ^{[[#fn-1][1]]}
+*** Sign and encrypt the =.authinfo= file ^{[[#fn-1][1]]}
 
 #+begin_example
    ~ $ gpg -se .authinfo
@@ -10089,7 +10089,7 @@ You'll be asked for your passphrase. Enter it, and the =.authinfo= will be signe
 
 Back in Emacs, there are couple of changes we need to make in order for mu4e to start working with the =,authinfo.gpg= file. I wish I read [[https://gist.github.com/areina/3879626][this gist]] before, because it covers those changes succinctly, but here is a summary of those modifications:
 
-**** Changes to =.offlineimaprc=
+*** Changes to =.offlineimaprc=
 
 Two additions:
 
@@ -10122,7 +10122,7 @@ Here's how your =.offlineimaprc= file will look like afterwards:
    realdelete  =  no
 #+end_example
 
-**** Add a =.offlineimap.py= file
+*** Add a =.offlineimap.py= file
 
 This file will define the =get_password_emac= function:
 
@@ -10137,7 +10137,7 @@ This file will define the =get_password_emac= function:
        return  p . search ( authinfo ) . group ( 1 )
 #+end_example
 
-**** Changes to mu4e config
+*** Changes to mu4e config
 
 
 --------------
@@ -10161,9 +10161,9 @@ Lastly, in your Emacs config, under the mu4e smtp settings, add a reference to t
 
 Now, you're emails should be sent using the =.authinfo.gpg= file. Go on and try it ^{[[#fn-2][2]]}. Note that before actually sending the email, Emacs will ask for your pass-phrase ^{[[#fn-3][3]]}
 
-**** Extras
+*** Extras
 
-***** Backup private key
+**** Backup private key
 
 I stored all the information related to my gpg key, as well as a backup file in my [[https://agilebits.com/onepassword][1password]]. Here's how I created the key backup:
 
@@ -10173,7 +10173,7 @@ I stored all the information related to my gpg key, as well as a backup file in 
 
 *Important:* Make sure to store the output file in a secure place; it contains your private key in plain text.
 
-***** Encrypt text in Emacs
+**** Encrypt text in Emacs
 
 
 1. Mark the text you would like to encrypt
@@ -10188,7 +10188,7 @@ Now the encrypted text will replace the original, plain, text:
 
 Figure 2: =M-x epa-encrypt-region= will encrypt a region of text in Emacs
 
-***** Decrypt text
+**** Decrypt text
 
 To decrypt a message, or a file you've encrypted:
 
@@ -10214,7 +10214,7 @@ Figure 4: The decrypted text in a second window
 
 That's it. If you're interested in more than the basics that I went through above, try the links bellow.
 
-**** Reference
+*** Reference
 
 
 - [[https://www.gnupg.org/documentation/howtos.html][Gnupg - documentation]]

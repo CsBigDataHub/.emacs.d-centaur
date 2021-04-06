@@ -579,6 +579,14 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 (setq org-log-done 'time)
 (setq org-log-into-drawer t)
 
+(setq org-refile-targets
+      '(("Archive.org" :maxlevel . 1)
+        ("Tasks.org" :maxlevel . 1)))
+
+;; Save Org buffers after refiling!
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
+
+
 ;; (use-package org-sidebar)
 
 ;; (use-package org-special-block-extras
