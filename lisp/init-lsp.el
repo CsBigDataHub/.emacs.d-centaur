@@ -53,9 +53,9 @@
      (add-to-list 'eglot-server-programs '(dockerfile-mode . ("docker-langserver" "--stdio")))
      (add-to-list 'eglot-server-programs '(json-mode . ("vscode-json-languageserver" "--stdio")))
      (add-to-list 'eglot-server-programs '(yaml-mode . ("yaml-language-server" "--stdio")))
-     (add-to-list 'eglot-server-programs '(terraform-mode . ("~/.emacs.d/lsp/terraform-ls" "serve")))
-     )
-   )
+     (add-to-list 'eglot-server-programs '(terraform-mode . ("terraform-lsp" "-enable-log-file")))
+     ;; (add-to-list 'eglot-server-programs '(terraform-mode . ("~/.emacs.d/lsp/terraform-ls" "serve")))
+     ))
 
   ('lsp-mode
    ;; Emacs client for the Language Server Protocol
