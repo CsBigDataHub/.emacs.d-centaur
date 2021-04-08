@@ -37,7 +37,25 @@
 (pcase centaur-lsp
   ('eglot
    (use-package eglot
-     :hook (prog-mode . eglot-ensure)))
+     :hook ((go-mode . eglot-ensure)
+            (python-mode . eglot-ensure)
+            (java-mode . eglot-ensure)
+            (sh-mode . eglot-ensure)
+            (yaml-mode . eglot-ensure)
+            (json-mode . eglot-ensure)
+            (terraform-mode . eglot-ensure)
+            (groovy-mode . eglot-ensure)
+            (dockerfile-mode . eglot-ensure)
+            )
+     :config
+     (add-to-list 'eglot-server-programs
+                  '(python-mode . ("pyright-langserver" "--stdio")))
+     (add-to-list 'eglot-server-programs '(dockerfile-mode . ("docker-langserver" "--stdio")))
+     (add-to-list 'eglot-server-programs '(json-mode . ("vscode-json-languageserver" "--stdio")))
+     (add-to-list 'eglot-server-programs '(yaml-mode . ("yaml-language-server" "--stdio")))
+     (add-to-list 'eglot-server-programs '(terraform-mode . ("~/.emacs.d/lsp/terraform-ls" "serve")))
+     )
+   )
 
   ('lsp-mode
    ;; Emacs client for the Language Server Protocol
