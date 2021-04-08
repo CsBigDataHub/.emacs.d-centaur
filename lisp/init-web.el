@@ -151,8 +151,19 @@
 
   (with-eval-after-load 'company
     (use-package company-restclient
-      :defines company-backends
-      :init (add-to-list 'company-backends 'company-restclient)))
+      :preface
+      (defun my-company-restclient-mode-company-hook ()
+        (set (make-local-variable 'company-backends) '((company-files)
+                                                       (company-dabbrev
+                                                        company-dabbrev-code
+                                                        company-keywords
+                                                        company-capf
+                                                        company-yasnippet)
+                                                       (company-restclient))))
+      :config
+      (add-hook 'restclient-mode-hook 'my-company-restclient-mode-company-hook)
+      )
+    )
 
   (defun json-prettify-buffer()
     "prettifies a json buffer."

@@ -144,3 +144,4 @@ flycheck_*.el
 lsp/terraform-lsp
 *.cache
 /lsp/
+/eglot-eclipse-jdt-cache/
