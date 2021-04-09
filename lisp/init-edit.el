@@ -474,7 +474,8 @@ _C_: correct  _p_: prev error _d_: done checking
 
 (use-package imenu-list
   :config
-  (setq-default imenu-list-position "left"))
+  (setq-default imenu-list-position "left"
+                imenu-list-size 0.65))
 
 ;; my-personal
 
