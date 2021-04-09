@@ -8,6 +8,7 @@
 
 ;;; Code:
 
+(require 'init-custom)
 (require 'major-mode-hydra)
 
 (defun with-mode-icon (mode str &optional height nospace face)
@@ -27,33 +28,101 @@
                               'face '(:weight bold :height 1.1))
                   1.1))
 
-(major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode)
-  (:color teal :quit-key "q" :title (my-lsp-hydra--title))
-  ("Quick Action"
-   (("d" lsp-describe-thing-at-point "describe symbol")
-    ("a" lsp-execute-code-action "code action")
-    ("m" lsp-ui-imenu "imenu")
-    ("i" lsp-info-under-point "info at point")
-    ("f" lsp-format-buffer "format"))
-   "Find & Goto"
-   (("gr" lsp-ui-peek-find-references "references")
-    ("gd" lsp-ui-peek-find-definitions "definitions")
-    ("gt" lsp-goto-type-definition "type defintion")
-    ("gf" lsp-ivy-workspace-symbol "workspace symbol"))
-   "Errors"
-   (("ee" hydra-flycheck/body)
-    ("el" lsp-ui-flycheck-list))
-   "Refactor"
-   (("rs" lsp-rename))
-   "Connection"
-   (("cc" lsp "start")
-    ("cr" lsp-restart-workspace "restart")
-    ("cd" lsp-describe-session "describe session")
-    ("cq" lsp-shutdown-workspace "shutdown"))
-   "Toggles"
-   (("ol" lsp-lens-mode "toggle lens" :toggle t :exit nil)
-    ("od" lsp-ui-doc-mode "toggle hover doc" :toggle t :exit nil)
-    ("os" lsp-ui-sideline-mode "toggle sideline" :toggle t :exit nil))))
+(pcase centaur-lsp
+  ('lsp
+   (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode)
+     (:color teal :quit-key "q" :title (my-lsp-hydra--title))
+     ("Quick Action"
+      (("d" lsp-describe-thing-at-point "describe symbol")
+       ("a" lsp-execute-code-action "code action")
+       ("m" lsp-ui-imenu "imenu")
+       ("i" lsp-info-under-point "info at point")
+       ("f" lsp-format-buffer "format"))
+      "Find & Goto"
+      (("gr" lsp-ui-peek-find-references "references")
+       ("gd" lsp-ui-peek-find-definitions "definitions")
+       ("gt" lsp-goto-type-definition "type defintion")
+       ("gf" lsp-ivy-workspace-symbol "workspace symbol"))
+      "Errors"
+      (("ee" hydra-flycheck/body)
+       ("el" lsp-ui-flycheck-list))
+      "Refactor"
+      (("rs" lsp-rename))
+      "Connection"
+      (("cc" lsp "start")
+       ("cr" lsp-restart-workspace "restart")
+       ("cd" lsp-describe-session "describe session")
+       ("cq" lsp-shutdown-workspace "shutdown"))
+      "Toggles"
+      (("ol" lsp-lens-mode "toggle lens" :toggle t :exit nil)
+       ("od" lsp-ui-doc-mode "toggle hover doc" :toggle t :exit nil)
+       ("os" lsp-ui-sideline-mode "toggle sideline" :toggle t :exit nil))))
+
+
+   (major-mode-hydra-define+ java-mode nil
+     ("Quick Action"
+      (("b" lsp-java-build-project "build")
+       ("t" dap-java-run-test-class "test")
+       ("T" dap-java-debug-test-class "debug test")
+       ("O" lsp-java-organize-imports "organize imports")
+       ("U" lsp-java-update-project-configuration "update project config"))
+      "Generate"
+      (("gs" lsp-generate-to-string "generate toString")
+       ("ge" lsp-java-generate-equals-and-hash-code "generate equals/hashCode")
+       ("go" lsp-java-generate-overrides "generate overrides")
+       ("gg" lsp-java-generate-getters-and-setters "generate getters/setters"))
+      "Refactoring"
+      (("re" lsp-java-extract-to-constant "extract constant")
+       ("rm" lsp-java-extract-method "extract method")
+       ("ri" lsp-java-add-import  "add import")
+       ("ru" lsp-java-add-unimplemented-methods "add unimplemented methods")
+       ("rp" lsp-java-create-parameter "introduce parameter")
+       ("rf" lsp-java-create-field "introduce field")
+       ("rl" lsp-java-create-local "introduce local variable"))))
+
+   (defun my-lsp-metals-build-restart ()
+     (interactive)
+     (lsp-send-execute-command "build-restart" ()))
+
+   (major-mode-hydra-define+ scala-mode nil
+     ("Connection"
+      (("ci" lsp-metals-build-import "import build")
+       ("cg" my-lsp-metals-build-restart "restart build"))))
+   )
+
+  ('eglot
+   (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode terraform-mode yaml-mode)
+     (:color teal :quit-key "q" :title (my-lsp-hydra--title))
+     ("Quick Action"
+      (("d" eldoc-print-current-symbol-info "describe symbol")
+       ("a" eglot-code-actions "code action")
+       ("m" counsel-imenu "imenu")
+       ("i" eldoc-doc-buffer "info at point")
+       ("f" eglot-format-buffer "format"))
+      "Find & Goto"
+      (("gr" eglot-find-implementation "references")
+       ("gd" xref-find-definitions "definitions")
+       ("gt" eglot-find-typeDefinition "type defintion")
+       ;; ("gf" lsp-ivy-workspace-symbol "workspace symbol")
+       )
+      "Errors"
+      (("ee" flymake-show-diagnostics-buffer "list errors")
+       ("er" flymake-goto-next-error "next error")
+       ("ew" flymake-goto-prev-error "prev error")
+       ("es" flymake-start "start checks")
+       ("eS" flymake-stop-all-syntax-checks "stop checks"))
+      "Refactor"
+      (("rs" eglot-rename "rename"))
+      "Connection"
+      (("cc" eglot "start")
+       ("cr" eglot-reconnect "restart")
+       ("cd" eglot-events-buffer "describe session")
+       ("ce" eglot-stderr-buffer "lsp error buffer")
+       ("xx" eglot-shutdown "shutdown")
+       ("XX" eglot-shutdown-all "shutdown all"))
+      ))
+   )
+  )
 
 (major-mode-hydra-define+ python-mode nil
   ("Quick Action"
@@ -65,37 +134,6 @@
    (("Ia" go-import-add "add")
     ("Ir" go-remove-unused-imports "cleanup")))
   )
-
-(major-mode-hydra-define+ java-mode nil
-  ("Quick Action"
-   (("b" lsp-java-build-project "build")
-    ("t" dap-java-run-test-class "test")
-    ("T" dap-java-debug-test-class "debug test")
-    ("O" lsp-java-organize-imports "organize imports")
-    ("U" lsp-java-update-project-configuration "update project config"))
-   "Generate"
-   (("gs" lsp-generate-to-string "generate toString")
-    ("ge" lsp-java-generate-equals-and-hash-code "generate equals/hashCode")
-    ("go" lsp-java-generate-overrides "generate overrides")
-    ("gg" lsp-java-generate-getters-and-setters "generate getters/setters"))
-   "Refactoring"
-   (("re" lsp-java-extract-to-constant "extract constant")
-    ("rm" lsp-java-extract-method "extract method")
-    ("ri" lsp-java-add-import  "add import")
-    ("ru" lsp-java-add-unimplemented-methods "add unimplemented methods")
-    ("rp" lsp-java-create-parameter "introduce parameter")
-    ("rf" lsp-java-create-field "introduce field")
-    ("rl" lsp-java-create-local "introduce local variable"))))
-
-(defun my-lsp-metals-build-restart ()
-  (interactive)
-  (lsp-send-execute-command "build-restart" ()))
-
-(major-mode-hydra-define+ scala-mode nil
-  ("Connection"
-   (("ci" lsp-metals-build-import "import build")
-    ("cg" my-lsp-metals-build-restart "restart build"))))
-
 (provide 'init-lsp-hydra)
 
 ;;; init-lsp-hydra.el ends here

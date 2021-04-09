@@ -44,7 +44,7 @@
             (yaml-mode . eglot-ensure)
             (json-mode . eglot-ensure)
             (terraform-mode . eglot-ensure)
-            (groovy-mode . eglot-ensure)
+            ;; (groovy-mode . eglot-ensure)
             (dockerfile-mode . eglot-ensure)
             )
      :config
