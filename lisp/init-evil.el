@@ -80,6 +80,7 @@
 (evil-set-initial-state 'vc-git-command 'emacs)
 (evil-set-initial-state 'vc-git-log-edit-mode 'emacs)
 (evil-set-initial-state 'help-mode 'emacs)
+(evil-set-initial-state 'helpful-mode 'emacs)
 (evil-set-initial-state 'wgrep-change-to-wgrep-mode 'emacs)
 (evil-set-initial-state 'flycheck-error-list-mode 'emacs)
 (evil-set-initial-state 'imenu-list-major-mode 'emacs)
