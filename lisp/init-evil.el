@@ -78,8 +78,8 @@
 (evil-set-initial-state 'vc-mode 'emacs)
 (evil-set-initial-state 'diff-mode 'emacs)
 (evil-set-initial-state 'vc-git-command 'emacs)
-(evil-set-initial-state 'Log-Edit 'emacs)
-(evil-set-initial-state 'helpful-mode 'emacs)
+(evil-set-initial-state 'vc-git-log-edit-mode 'emacs)
+(evil-set-initial-state 'help-mode 'emacs)
 (evil-set-initial-state 'wgrep-change-to-wgrep-mode 'emacs)
 (evil-set-initial-state 'flycheck-error-list-mode 'emacs)
 (evil-set-initial-state 'imenu-list-major-mode 'emacs)
@@ -87,6 +87,18 @@
 (evil-set-initial-state 'pass-mode 'emacs)
 (add-to-list 'evil-insert-state-modes 'view-mode)
 (evil-set-initial-state 'calendar-mode 'emacs)
+(evil-set-initial-state 'docker-image-mode 'emacs)
+(evil-set-initial-state 'docker-network-mode 'emacs)
+(evil-set-initial-state 'docker-container-mode 'emacs)
+(evil-set-initial-state 'docker-volume-mode 'emacs)
+(evil-set-initial-state 'magit-status-mode 'emacs)
+
+
+(evil-set-initial-state 'flymake-diagnostics-buffer-mode 'emacs)
+
+;; (add-hook 'flymake-diagnostics-buffer-mode-hook
+;;           (lambda ()
+;;             (evil-insert-state)))
 
 (use-package evil-numbers
   )

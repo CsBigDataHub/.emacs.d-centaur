@@ -135,8 +135,7 @@
          ("M-s a" . avy-goto-char-2)
          ("M-s l" . avy-goto-line)
          (:map evil-normal-state-map
-          ("g s" . avy-goto-char)
-          ("g S" . avy-goto-char-2)))
+          ("g s" . avy-goto-char-2)))
   ;;;;my-personal-config end
   :hook (after-init . avy-setup-default)
   :config (setq avy-all-windows nil

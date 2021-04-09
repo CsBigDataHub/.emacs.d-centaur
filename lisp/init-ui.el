@@ -106,6 +106,7 @@
   (doom-modeline-minor-modes t)
   (doom-modeline-unicode-fallback t)
   (doom-modeline-mu4e nil)
+  (doom-modeline-buffer-file-name-style 'relative-from-project)
   :hook (after-init . doom-modeline-mode)
   :init
   ;; Prevent flash of unstyled modeline at startup
