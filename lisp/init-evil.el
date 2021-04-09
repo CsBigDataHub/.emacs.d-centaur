@@ -92,6 +92,7 @@
 (evil-set-initial-state 'docker-container-mode 'emacs)
 (evil-set-initial-state 'docker-volume-mode 'emacs)
 (evil-set-initial-state 'magit-status-mode 'emacs)
+(evil-set-initial-state 'notdeft-mode 'emacs)
 
 
 (evil-set-initial-state 'flymake-diagnostics-buffer-mode 'emacs)
