@@ -57,6 +57,12 @@ The prefix map is named 'my-DEF-map'."
  )
 
 (general-global-spc-menu-definer
+ "company" "c"
+ "f" 'company-files
+ "s" 'company-ispell
+ "y" 'ivy-yasnippet)
+
+(general-global-spc-menu-definer
  "dumb-jump/dired" "d"
  "d" 'dired
  "j" 'dired-jump

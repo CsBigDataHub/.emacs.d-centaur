@@ -78,7 +78,8 @@
 
 (use-package clipboard2org
   :straight (clipboard2org :type git :host github :repo "itf/clipboard2org")
-  :bind ("C-S-y" . clipboard2org))
+  :bind (:map org-mode-map
+         ("C-S-y" . clipboard2org-paste)))
 
 (when (image-type-available-p 'svg)
   (use-package imgur

@@ -344,7 +344,7 @@
 
 ;;(use-package gitignore-templates)
 
-(setq vc-follow-symlinks nil)
+(setq vc-follow-symlinks t)
 
 (eval-after-load "vc-hooks"
   '(define-key vc-prefix-map (kbd "M-=") 'vc-ediff))
