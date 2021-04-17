@@ -76,32 +76,38 @@
          ("C-c X" . quickrun)))
 
 (use-package cask-mode)
+
+;; C# development
 (use-package csharp-mode)
+(use-package sharper)
+(use-package csproj-mode)
+;; C# development
 
-(use-package omnisharp
-  :hook (csharp-mode . omnisharp-mode)
-  :mode (("\\.cs\\'" . csharp-mode))
-  :custom
-  (omnisharp-server-executable-path "/usr/local/bin/omnisharp")
-  :config
-  (eval-after-load
-      'company
-    '(add-to-list 'company-backends #'company-omnisharp))
-  (defun my-csharp-mode-setup ()
-    (omnisharp-mode)
-    (company-mode)
-    (flycheck-mode)
-    (eldoc-mode)
+;; Using LSP mode - revert to this if LSP mode is not working
+;; (use-package omnisharp
+;;   :hook (csharp-mode . omnisharp-mode)
+;;   :mode (("\\.cs\\'" . csharp-mode))
+;;   :custom
+;;   (omnisharp-server-executable-path "/usr/local/bin/omnisharp")
+;;   :config
+;;   (eval-after-load
+;;       'company
+;;     '(add-to-list 'company-backends #'company-omnisharp))
+;;   (defun my-csharp-mode-setup ()
+;;     (omnisharp-mode)
+;;     (company-mode)
+;;     (flycheck-mode)
+;;     (eldoc-mode)
 
-    (setq indent-tabs-mode nil)
-    (setq c-syntactic-indentation t)
-    (setq c-basic-offset 4)
-    (setq truncate-lines t)
-    (setq tab-width 4)
-    (setq evil-shift-width 4))
+;;     (setq indent-tabs-mode nil)
+;;     (setq c-syntactic-indentation t)
+;;     (setq c-basic-offset 4)
+;;     (setq truncate-lines t)
+;;     (setq tab-width 4)
+;;     )
 
-  (electric-pair-local-mode 1)
-  (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t))
+;;   (electric-pair-local-mode 1)
+;;   (add-hook 'csharp-mode-hook 'my-csharp-mode-setup t))
 
 (use-package csv-mode)
 
