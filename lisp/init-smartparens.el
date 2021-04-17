@@ -32,8 +32,12 @@
   :diminish smartparens-strict-mode
   :config
 
-  ;; Diasble in org- mode as `smartparens' is heavy in `org-self-insert-command'.
+  ;; Disable in org- mode as `smartparens' is heavy in `org-self-insert-command'.
   (add-to-list 'sp-ignore-modes-list 'org-mode)
+  ;; Disable for csharp-mode due to extra closing parenthesis entered.
+  ;; https://www.reddit.com/r/emacs/comments/mskdsk/help_resolve_electric_pair_issue_in_c_mode/
+  (add-to-list 'sp-ignore-modes-list 'csharp-mode)
+  (add-to-list 'sp-ignore-modes-list 'c-mode)
 
   ;;(require 'smartparens-config)
   (smartparens-global-mode)
