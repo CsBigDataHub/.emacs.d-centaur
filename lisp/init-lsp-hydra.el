@@ -30,7 +30,7 @@
 
 (pcase centaur-lsp
   ('lsp
-   (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode)
+   (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode terraform-mode yaml-mode csharp-mode)
      (:color teal :quit-key "q" :title (my-lsp-hydra--title))
      ("Quick Action"
       (("d" lsp-describe-thing-at-point "describe symbol")
@@ -91,7 +91,7 @@
    )
 
   ('eglot
-   (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode terraform-mode yaml-mode)
+   (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode terraform-mode yaml-mode csharp-mode)
      (:color teal :quit-key "q" :title (my-lsp-hydra--title))
      ("Quick Action"
       (("d" eldoc-print-current-symbol-info "describe symbol")
