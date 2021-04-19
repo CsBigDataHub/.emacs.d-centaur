@@ -55,7 +55,7 @@
      (add-to-list 'eglot-server-programs '(json-mode . ("vscode-json-languageserver" "--stdio")))
      (add-to-list 'eglot-server-programs '(yaml-mode . ("yaml-language-server" "--stdio")))
      (add-to-list 'eglot-server-programs '(terraform-mode . ("terraform-lsp" "-enable-log-file")))
-     ;; disabling for `csharp' as lsp mode is not working, using `omnisharp-emacs'
+     ;; make to delete `-P' in `pwd -P' of run file in `omnisharp' directory when its behind a symlink
      (add-to-list 'eglot-server-programs '(csharp-mode . ("~/bin/omnisharp-osx/run" "-lsp")))
      ;; (add-to-list 'eglot-server-programs '(terraform-mode . ("~/.emacs.d/lsp/terraform-ls" "serve")))
      ))
