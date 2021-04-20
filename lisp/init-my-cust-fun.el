@@ -2896,4 +2896,16 @@ are defining or executing a macro."
     ("K" org-shiftup)
     ("t" org-todo))))
 
+(defhydra hydra-flycheck
+  (:pre (flycheck-list-errors)
+   :post (quit-windows-on "*Flycheck errors*")
+   :hint nil)
+  "Errors"
+  ("f" flycheck-error-list-set-filter "Filter")
+  ("j" flycheck-next-error "Next")
+  ("k" flycheck-previous-error "Previous")
+  ("gg" flycheck-first-error "First")
+  ("G" (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
+  ("q" nil))
+
 (provide 'init-my-cust-fun)

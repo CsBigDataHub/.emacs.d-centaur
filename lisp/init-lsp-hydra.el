@@ -29,9 +29,9 @@
                   1.1))
 
 (pcase centaur-lsp
-  ('lsp
+  ('lsp-mode
    (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode terraform-mode yaml-mode csharp-mode)
-     (:color teal :quit-key "q" :title (my-lsp-hydra--title))
+     (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
      ("Quick Action"
       (("d" lsp-describe-thing-at-point "describe symbol")
        ("a" lsp-execute-code-action "code action")
@@ -92,7 +92,7 @@
 
   ('eglot
    (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode terraform-mode yaml-mode csharp-mode)
-     (:color teal :quit-key "q" :title (my-lsp-hydra--title))
+     (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
      ("Quick Action"
       (("d" eldoc-print-current-symbol-info "describe symbol")
        ("a" eglot-code-actions "code action")
