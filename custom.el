@@ -95,8 +95,9 @@
  '(centaur-package-archives 'melpa)
  '(centaur-theme 'default)
  '(doom-themes-treemacs-theme "doom-colors" nil nil "Customized with use-package doom-themes")
- '(find-file-visit-truename t)
  '(ispell-choices-win-default-height 3)
+ '(lsp-java-jdt-download-url
+   "https://download.eclipse.org/jdtls/milestones/1.0.0/jdt-language-server-1.0.0-202104151857.tar.gz")
  '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:")
  '(network-stream-use-client-certificates t)
  '(safe-local-variable-values
