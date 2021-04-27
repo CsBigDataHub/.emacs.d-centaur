@@ -353,6 +353,19 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
+(with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-classes
+               '("org-plain-latex"
+                 "\\documentclass{article}
+           [NO-DEFAULT-PACKAGES]
+           [PACKAGES]
+           [EXTRA]"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 ;;;; my latex function
 
 (use-package org-web-tools)
@@ -490,6 +503,23 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 
 (setq org-latex-minted-options '(("breaklines" "true")
                                  ("breakanywhere" "true")))
+
+;;;; ox-beamer - Beamer export
+(use-package ox-beamer
+  :ensure nil
+  :commands (org-beamer-export-as-latex
+             org-beamer-export-to-latex
+             org-beamer-export-to-pdf)
+  :config
+  (progn
+    ;; allow for export=>beamer by placing
+    ;; #+LaTeX_CLASS: beamer in org files
+    (add-to-list 'org-latex-classes
+                 '("beamer"
+                   "\\documentclass[presentation]{beamer}"
+                   ("\\section{%s}"        . "\\section*{%s}")
+                   ("\\subsection{%s}"     . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}"  . "\\subsubsection*{%s}")))))
 
 ;;;;; my personal modification end here
 ;; org-roam
