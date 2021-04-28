@@ -59,7 +59,8 @@
        ("os" lsp-ui-sideline-mode "toggle sideline" :toggle t :exit nil))))
 
 
-   (major-mode-hydra-define+ java-mode nil
+   (major-mode-hydra-define+ java-mode
+     (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
      ("Quick Action"
       (("b" lsp-java-build-project "build")
        ("t" dap-java-run-test-class "test")
@@ -71,7 +72,7 @@
        ("ge" lsp-java-generate-equals-and-hash-code "generate equals/hashCode")
        ("go" lsp-java-generate-overrides "generate overrides")
        ("gg" lsp-java-generate-getters-and-setters "generate getters/setters"))
-      "Refactoring"
+      "Refactor"
       (("re" lsp-java-extract-to-constant "extract constant")
        ("rm" lsp-java-extract-method "extract method")
        ("ri" lsp-java-add-import  "add import")
@@ -124,12 +125,14 @@
    )
   )
 
-(major-mode-hydra-define+ python-mode nil
+(major-mode-hydra-define+ python-mode
+  (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
   ("Quick Action"
    (("B" blacken-buffer "black format")))
   )
 
-(major-mode-hydra-define+ go-mode nil
+(major-mode-hydra-define+ go-mode
+  (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
   ("Quick Action"
    (("Ia" go-import-add "add")
     ("Ir" go-remove-unused-imports "cleanup")))

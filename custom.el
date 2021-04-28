@@ -13,7 +13,7 @@
 (setq centaur-server t)                      ; Enable `server-mode' or not: t or nil
 (setq centaur-icon t)                         ; Display icons or not: t or nil
 ;; (setq centaur-package-archives 'emacs-china)   ; Package repo: melpa, melpa-mirror, emacs-china, netease, ustc, tencent or tuna
-(setq centaur-theme 'default)                        ; Color theme: auto, random, default, classic, colorful, dark, light, day or night
+(setq centaur-theme 'doom-snazzy)                        ; Color theme: auto, random, default, classic, colorful, dark, light, day or night
 (setq centaur-completion-style 'minibuffer)    ; Completion display style: minibuffer or childframe
 (setq centaur-dashboard t)                    ; Use dashboard at startup or not: t or nil
 (setq centaur-restore-frame-geometry t)      ; Restore the frame's geometry at startup: t or nil
@@ -37,12 +37,12 @@
            when (font-installed-p font)
            return (set-face-attribute 'default nil
                                       :font font
-                                      :height (cond (sys/mac-x-p 170)
+                                      :height (cond (sys/mac-x-p 160)
                                                     (sys/win32p 110)
                                                     (t 120))))
 
   ;; Specify font for all unicode characters
-  (cl-loop for font in '("Apple Color Emoji" "Symbola" "icons-in-terminal" "Apple Symbols" "Symbol")
+  (cl-loop for font in '("icons-in-terminal" "Apple Color Emoji" "Symbola" "Apple Symbols" "Symbol")
            when (font-installed-p font)
            return (set-fontset-font t 'unicode font nil 'prepend))
 
@@ -93,11 +93,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(centaur-package-archives 'melpa)
- '(centaur-theme 'default)
  '(doom-themes-treemacs-theme "doom-colors" nil nil "Customized with use-package doom-themes")
  '(ispell-choices-win-default-height 3)
  '(lsp-java-jdt-download-url
    "https://download.eclipse.org/jdtls/milestones/1.0.0/jdt-language-server-1.0.0-202104151857.tar.gz")
+ '(lsp-ui-doc-border "#5B6268")
+ '(lsp-ui-flycheck-list-position 'right)
+ '(lsp-ui-sideline-enable nil)
+ '(lsp-ui-sideline-ignore-duplicate t)
+ '(lsp-ui-sideline-show-diagnostics nil)
  '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:")
  '(network-stream-use-client-certificates t)
  '(safe-local-variable-values
@@ -133,6 +137,8 @@
  '(lsp-headerline-breadcrumb-symbols-hint-face ((t :inherit lsp-headerline-breadcrumb-symbols-face :underline (:style wave :color "#98be65"))))
  '(lsp-headerline-breadcrumb-symbols-info-face ((t :inherit lsp-headerline-breadcrumb-symbols-face :underline (:style wave :color "#98be65"))))
  '(lsp-headerline-breadcrumb-symbols-warning-face ((t :inherit lsp-headerline-breadcrumb-symbols-face :underline (:style wave :color "#ECBE7B"))))
+ '(lsp-ui-peek-highlight ((t (:inherit lsp-ui-peek-header :background "gridColor" :foreground "Red" :box 1))))
+ '(lsp-ui-peek-selection ((t (:background "systemGrayColor" :foreground "Green" :weight bold))))
  '(lsp-ui-sideline-code-action ((t (:inherit warning))))
  '(macrostep-expansion-highlight-face ((t (:background "#23272e" :extend t))))
  '(org-ellipsis ((t (:foreground nil))))

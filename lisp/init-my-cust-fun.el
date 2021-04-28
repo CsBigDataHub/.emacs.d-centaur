@@ -2318,6 +2318,17 @@ C-u C-u C-u M-x xah-cycle-letter-case -> Force capitalize."
          ;; Capitalize -> UPPER
          (put this-command 'next-state "UPPER")))))
 
+(defun xah-toggle-line-spacing ()
+  "Toggle line spacing between no extra space to extra half line height.
+URL `http://ergoemacs.org/emacs/emacs_toggle_line_spacing.html'
+Version 2015-12-17"
+  (interactive)
+  (if (null line-spacing)
+      (setq line-spacing 0.2) ; add 0.5 height between lines
+    (setq line-spacing nil)   ; no extra heigh between lines
+    )
+  (redraw-frame (selected-frame)))
+
 (defun my/upcase ()     (interactive) (xah-cycle-letter-case 4) (forward-word))
 (defun my/downcase ()   (interactive) (xah-cycle-letter-case 16) (forward-word))
 (defun my/capitalize () (interactive) (xah-cycle-letter-case 64) (forward-word))
@@ -2852,6 +2863,7 @@ are defining or executing a macro."
     )
    "🧪 Misc."
    (("dlk" diff-last-two-kills "diff last to kills")
+    ("ls" xah-toggle-line-spacing "toggle line spacing")
     ("id" my/xah-insert-date-time "insert date")
     ("jl" my/join-line "join lines")
     ("flk" flush-kill-lines "flush-lines and save kills")
@@ -2860,7 +2872,6 @@ are defining or executing a macro."
     ("up" my/package-upgrade-all "Upgrade all packages"))
    "␣ Open"
    (("oo" xah-open-in-external-app "Open in external app")
-    ("of" xah-open-file-at-cursor "open in finder")
     ("ov" xah-open-in-vscode "open in vscode")
     ("ot" xah-open-in-terminal "open in terminal")
     )
