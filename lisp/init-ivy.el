@@ -157,7 +157,7 @@
       ;; (ivy-format-function-line cands)
       (ivy--format-function-generic
        (lambda (str)
-         (ivy--add-face (concat "🠶 " str "\n") 'ivy-current-match))
+         (ivy--add-face (concat "🠞 " str "\n") 'ivy-current-match))
        (lambda (str)
          (concat "  " str "\n"))
        cands
