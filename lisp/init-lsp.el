@@ -151,6 +151,11 @@
      ;; C#
      (lsp-csharp-omnisharp-roslyn-server-dir (expand-file-name "lsp/omnisharp-roslyn/latest/omnisharp-osx" user-emacs-directory))
      (lsp-flycheck-live-reporting nil)
+     (lsp-yaml-schemas
+      `((,(intern "https://json.schemastore.org/helmfile.json") . ["Chart.yaml" , "pipeline.yaml"])
+        (,(intern
+           "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json") . ["docker-compose.yml", "docker-compose.yaml"])
+        (kubernetes . ["/*-k8s.yaml"])))
      :config
      ;; my-personal
      ;; configure terraform for lsp
