@@ -123,7 +123,8 @@ prepended to the element after the #+HEADER: tag."
   (when sys/macp
     (setq org-agenda-files
           '("/Users/ckoneru/GitRepos/my-org-agenda-files/")))
-  (setq org-todo-keywords
+  (setq org-modules nil                 ; Faster loading
+        org-todo-keywords
         '((sequence "TODO(t)" "DOING(i)" "HANGUP(h)" "|" "DONE(d)" "CANCEL(c)")
           (sequence "⚑(T)" "🏴(I)" "❓(H)" "|" "✔(D)" "✘(C)"))
         org-todo-keyword-faces '(("HANGUP" . warning)
@@ -251,9 +252,14 @@ prepended to the element after the #+HEADER: tag."
                                     (text-scale-increase 0)
                                     (org-remove-inline-images)
                                     (read-only-mode -1))))
-    :config
-    (org-tree-slide-simple-profile)
-    (setq org-tree-slide-skip-outline-level 6))
+    :init (setq org-tree-slide-header nil
+                org-tree-slide-slide-in-effect t
+                org-tree-slide-heading-emphasis nil
+                org-tree-slide-cursor-init t
+                org-tree-slide-modeline-display 'outside
+                org-tree-slide-skip-done nil
+                org-tree-slide-skip-comments t
+                org-tree-slide-skip-outline-level 3))
 
   ;; Pomodoro
   (use-package org-pomodoro
