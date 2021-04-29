@@ -548,7 +548,7 @@ _C_: correct  _p_: prev error _d_: done checking
 (use-package origami
   :pretty-hydra
   ((:title (pretty-hydra-title "Origami" 'octicon "fold" :height 1.1 :v-adjust -0.05)
-    :color amaranth :quit-key "q")
+    :foreign-keys run :color amaranth :quit-key "q")
    ("Node"
     ((":" origami-recursively-toggle-node "toggle recursively")
      ("a" origami-toggle-all-nodes "toggle all")

@@ -197,6 +197,7 @@ decrease this. If you experience stuttering, increase this.")
 (require 'init-pass)
 (require 'init-multi-compile)
 (require 'init-multi-scratch)
+(require 'init-savekill)
 
 ( cond ((eq system-type 'darwin) (require 'init-macos)))
 ( cond ((eq system-type 'gnu/linux) (require 'init-linux)))

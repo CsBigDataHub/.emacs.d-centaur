@@ -49,6 +49,9 @@
          ("C-p" . company-select-previous)
          ("C-n" . company-select-next))
   :hook (after-init . global-company-mode)
+  :custom
+  (company-dabbrev-code-everywhere t)
+  (company-selection-wrap-around t)
   :init
   (setq company-tooltip-align-annotations t
         company-show-numbers 'left
