@@ -49,6 +49,7 @@
     (require 'comp)
     (setq comp-num-cpus 4)
     (setq package-native-compile t)
+    (setq comp-async-report-warnings-errors nil)
     (setq comp-deferred-compilation t)))
 
 ;; Faster to disable these here (before they've been initialized)
