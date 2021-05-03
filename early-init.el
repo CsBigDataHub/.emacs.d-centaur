@@ -42,8 +42,8 @@
 ;; Inhibit resizing frame
 (setq frame-inhibit-implied-resize t)
 
-;;For gcc emacs
-(setenv "LIBRARY_PATH" "/usr/local/opt/gcc/lib/gcc/10")
+;;For gcc Emacs
+(cond ((eq system-type 'darwin) (setenv "LIBRARY_PATH" "/usr/local/opt/gcc/lib/gcc/10")))
 (when (fboundp 'native-comp-available-p)
   (progn
     (require 'comp)
