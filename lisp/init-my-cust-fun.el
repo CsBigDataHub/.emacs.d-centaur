@@ -2844,6 +2844,18 @@ are defining or executing a macro."
         (message "Moved %s words" count))
     (message "No region selected")))
 
+;; https://stackoverflow.com/a/32353255
+;; https://stackoverflow.com/questions/49042522/orgmode-region-to-table
+(defun org-convert-csv-table-with-quotes-to-org (beg end)
+  "convert csv to org-table considering  a,\"12,12\",b --> a | 12,12 |b"
+  (interactive (list (point) (mark)))
+  (replace-match "\\(^\\)\\|\\(\".*?\"\\)\\|," (quote (replace-eval-replacement
+                                                       replace-quote (cond ((equal "^" (match-string 1)) "|")
+                                                                           ((equal "," (match-string 0)) "|")
+                                                                           ((match-string 2))) ))  nil  beg end))
+
+
+
 (pretty-hydra-define my-hydra (:title (pretty-hydra-title "my custom functions" 'faicon "product-hunt" :v-adjust -0.1)
                                :foreign-keys run :color amaranth :quit-key "q")
   ("📁 File"
