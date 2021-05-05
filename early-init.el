@@ -56,8 +56,11 @@
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
-(when (featurep 'ns)
-  (push '(ns-transparent-titlebar . t) default-frame-alist))
+;; (when (featurep 'ns)
+;;   (push '(ns-transparent-titlebar . t) default-frame-alist))
 
+(when (memq window-system '(mac ns))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark)) ; nil for dark text
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . nil)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; early-init.el ends here
