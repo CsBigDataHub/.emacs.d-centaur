@@ -143,11 +143,5 @@
              :repo "CsBigDataHub/ob-pwsh")
   :init (cl-pushnew '(powershell . t) load-language-list))
 
-(use-package sln-mode
-  :straight (sln-mode
-             :type git
-             :host github
-             :repo "sensorflo/sln-mode")
-  :mode ("\\.sln\\'" . sln-mode))
 
 (provide 'init-straight)
