@@ -163,6 +163,24 @@
   :config
   (global-evil-mc-extras-mode 1))
 
+(use-package evil-snipe
+  :commands (evil-snipe-mode
+             evil-snipe-override-mode
+             evil-snipe-local-mode
+             evil-snipe-override-local-mode)
+  :init
+  (setq evil-snipe-smart-case t
+        evil-snipe-scope 'visible
+        evil-snipe-repeat-scope 'visible
+        evil-snipe-char-fold t)
+  :config
+  ;; and disable in specific modes
+  (push 'Info-mode evil-snipe-disabled-modes)
+  (push 'treemacs-mode evil-snipe-disabled-modes)
+  (push 'calc-mode evil-snipe-disabled-modes)
+  (evil-snipe-mode +1)
+  (evil-snipe-override-mode +1))
+
 ;;for shell-pop
 (evil-define-key 'insert vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
 (evil-define-key 'normal vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
