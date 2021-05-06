@@ -170,7 +170,7 @@
       "Transform CANDS into a string for minibuffer."
       (if (and (display-graphic-p)
                (image-type-available-p 'pbm))
-          (let ((width 3)
+          (let ((width (if sys/macp 3 6))
                 (height (1+ (window-font-height))))
             (ivy--format-function-generic
              (lambda (str)
@@ -621,7 +621,9 @@ This is for use in `ivy-re-builders-alist'."
     (ivy-posframe-border ((t (:background ,(face-foreground 'font-lock-comment-face)))))
     :hook (ivy-mode . ivy-posframe-mode)
     :init
-    (setq ivy-posframe-parameters
+    (setq ivy-height 15
+          ivy-posframe-border-width 3
+          ivy-posframe-parameters
           `((background-color . ,(face-background 'tooltip))))
 
     (with-eval-after-load 'persp-mode
@@ -639,17 +641,17 @@ This is for use in `ivy-re-builders-alist'."
                       (face-background 'tooltip))))
 
     (with-no-warnings
-      (defun ivy-display-at-frame-center-near-bottom-fn (str)
-        (ivy-posframe--display str #'ivy-poshandler-frame-center-near-bottom-fn))
+      (defun ivy-posframe-display-at-frame-center-near-bottom-fn (str)
+        (ivy-posframe--display str #'posframe-poshandler-frame-center-near-bottom-fn))
 
-      (defun ivy-poshandler-frame-center-near-bottom-fn (info)
+      (defun posframe-poshandler-frame-center-near-bottom-fn (info)
         (let ((parent-frame (plist-get info :parent-frame))
               (pos (posframe-poshandler-frame-center info)))
           (cons (car pos)
                 (truncate (/ (frame-pixel-height parent-frame) 2)))))
 
       (setf (alist-get t ivy-posframe-display-functions-alist)
-            #'ivy-display-at-frame-center-near-bottom-fn))))
+            #'ivy-posframe-display-at-frame-center-near-bottom-fn))))
 
 (provide 'init-ivy)
 
