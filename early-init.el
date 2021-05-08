@@ -49,8 +49,14 @@
     (require 'comp)
     (setq comp-num-cpus 4)
     (setq package-native-compile t)
-    (setq comp-async-report-warnings-errors nil)
-    (setq comp-deferred-compilation t)))
+    (setq native-comp-async-report-warnings-errors nil)
+    ;; (setq comp-async-report-warnings-errors nil)
+    (setq comp-deferred-compilation t)
+    ;; native comp of powerline throws error below
+    ;; getting past  Error: List contains a loop ("22", . #0)
+    ;; https://www.gitmemory.com/issue/milkypostman/powerline/187/812440385
+    (setq comp-deferred-compilation-deny-list '("powerline"))
+    ))
 
 ;; Faster to disable these here (before they've been initialized)
 (push '(menu-bar-lines . 0) default-frame-alist)
