@@ -44,6 +44,7 @@
 
 ;;For gcc Emacs
 (cond ((eq system-type 'darwin) (setenv "LIBRARY_PATH" "/usr/local/opt/gcc/lib/gcc/10")))
+(cond ((eq system-type 'gnu/linux) (setenv "LIBRARY_PATH" "/usr/bin/gcc-10")))
 (when (fboundp 'native-comp-available-p)
   (progn
     (require 'comp)
@@ -54,7 +55,7 @@
     (setq comp-deferred-compilation t)
     ;; native comp of powerline throws error below
     ;; getting past  Error: List contains a loop ("22", . #0)
-    ;; https://www.gitmemory.com/issue/milkypostman/powerline/187/812440385
+    ;; hhttps://github.com/milkypostman/powerline/issues/187
     (setq comp-deferred-compilation-deny-list '("powerline"))
     ))
 
