@@ -147,7 +147,8 @@
      ;; (setq lsp-csharp-server-install-dir "~/.emacs.d/lsp/omnisharp-roslyn/latest/omnisharp-osx/")
      ;; (setq lsp-csharp-omnisharp-roslyn-server-dir "~/.emacs.d/lsp/omnisharp-roslyn/latest/omnisharp-osx")
      :custom
-     (lsp-terraform-server (expand-file-name "lsp/terraform-lsp" user-emacs-directory))
+     ;; using new server below
+     ;; (lsp-terraform-server (expand-file-name "lsp/terraform-lsp" user-emacs-directory))
      ;; C#
      (lsp-csharp-omnisharp-roslyn-server-dir (expand-file-name "lsp/omnisharp-roslyn/latest/omnisharp-osx" user-emacs-directory))
      (lsp-flycheck-live-reporting nil)
@@ -166,7 +167,12 @@
      ;;                   :major-modes '(terraform-mode)
      ;; :server-id 'terraform-ls))
      ;; -------- OLD --------
+     (lsp-register-client
+      (make-lsp-client :new-connection (lsp-stdio-connection '("terraform-ls" "serve"))
+                       :major-modes '(terraform-mode)
+                       :server-id 'terraform-ls))
 
+     (add-hook 'terraform-mode-hook #'lsp-deferred)
      ;; (setq lsp-terraform-server (expand-file-name "lsp/terraform-lsp" user-emacs-directory))
 
      ;; my-personal
