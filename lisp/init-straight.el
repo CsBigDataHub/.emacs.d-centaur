@@ -143,5 +143,11 @@
              :repo "CsBigDataHub/ob-pwsh")
   :init (cl-pushnew '(powershell . t) load-language-list))
 
+(use-package restclient-jq
+  :straight (restclient-jq
+             :type git
+             :host github
+             :repo "pashky/restclient.el"
+             :files ("restclient-jq.el")))
 
 (provide 'init-straight)
