@@ -587,6 +587,8 @@
          :bind (:map lsp-mode-map
                 ("<f5>" . dap-debug)
                 ("M-<f5>" . dap-hydra))
+         :custom
+         (dap-netcore-install-dir (expand-file-name "lsp/netcoredbg/" user-emacs-directory))
          :hook ((after-init . dap-auto-configure-mode)
                 (dap-stopped . (lambda (_args) (dap-hydra)))
                 (dap-terminated . (lambda (_args) (dap-hydra/nil)))
@@ -599,6 +601,7 @@
                 (php-mode . (lambda () (require 'dap-php)))
                 (elixir-mode . (lambda () (require 'dap-elixir)))
                 ((js-mode js2-mode) . (lambda () (require 'dap-chrome)))
+                (csharp-mode . (lambda () (require 'dap-netcore)))
                 (powershell-mode . (lambda () (require 'dap-pwsh))))
          :init
          (when (executable-find "python3")

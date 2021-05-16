@@ -144,6 +144,8 @@
   :init (cl-pushnew '(powershell . t) load-language-list))
 
 (use-package restclient-jq
+  :after restclient
+  :demand t
   :straight (restclient-jq
              :type git
              :host github
