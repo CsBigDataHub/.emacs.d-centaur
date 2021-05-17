@@ -33,7 +33,7 @@
 (require 'init-custom)
 
 (use-package css-mode
-  :ensure nil
+  :straight nil
   :init (setq css-indent-offset 2))
 
 ;; SCSS mode
@@ -190,7 +190,7 @@
   (setq verb-json-use-mode 'json-mode))
 
 (use-package ob-verb
-  :ensure verb
+  :straight verb
   :after ob-core
   :commands
   org-babel-execute:verb)

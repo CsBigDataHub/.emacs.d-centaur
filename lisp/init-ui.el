@@ -355,7 +355,7 @@
 ;; Show native line numbers if possible, otherwise use `linum'
 (if (fboundp 'display-line-numbers-mode)
     (use-package display-line-numbers
-      :ensure nil
+      :straight nil
       :hook (prog-mode . display-line-numbers-mode))
   (use-package linum-off
     :demand
@@ -419,7 +419,7 @@
 
 ;; When `centaur-prettify-symbols-alist' is `nil' use font supported ligatures
 (use-package composite
-  :ensure nil
+  :straight nil
   :unless centaur-prettify-symbols-alist
   :init (defvar composition-ligature-table (make-char-table nil))
   :hook (((prog-mode conf-mode nxml-mode markdown-mode help-mode)

@@ -258,7 +258,7 @@
 
 ;; Process
 (use-package proced
-  :ensure nil
+  :straight nil
   :init
   (setq-default proced-format 'verbose)
   (setq proced-auto-update-flag t
@@ -266,7 +266,7 @@
 
 ;; Search
 (use-package webjump
-  :ensure nil
+  :straight nil
   :bind ("C-c /" . webjump)
   :init (setq webjump-sites
               '(;; Emacs
@@ -296,7 +296,7 @@
 
 ;; IRC
 (use-package erc
-  :ensure nil
+  :straight nil
   :defines erc-autojoin-channels-alist
   :init (setq erc-rename-buffers t
               erc-interpret-mirc-color t

@@ -35,7 +35,7 @@
 ;; Prettify Symbols
 ;; e.g. display “lambda” as “λ”
 (use-package prog-mode
-  :ensure nil
+  :straight nil
   :hook (prog-mode . prettify-symbols-mode)
   :init
   (setq-default prettify-symbols-alist centaur-prettify-symbols-alist)
@@ -135,7 +135,7 @@
                                  '((nil "^[[:space:]]*\\(message\\|service\\|enum\\)[[:space:]]+\\([[:alnum:]]+\\)" 2))))))
 
 (use-package nxml-mode
-  :ensure nil
+  :straight nil
   :mode (("\\.xaml$" . xml-mode)))
 
 ;; New `conf-toml-mode' in Emacs 26

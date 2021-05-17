@@ -34,13 +34,13 @@
 
 ;; Delete selection if you insert
 (use-package delsel
-  :ensure nil
+  :straight nil
   :hook (after-init . delete-selection-mode))
 
 ;; Rectangle
 (use-package rect
   :after org
-  :ensure nil
+  :straight nil
   :bind (:map text-mode-map
          ("<C-return>" . rect-hydra/body)
          :map prog-mode-map
@@ -76,13 +76,13 @@
 
 ;; Automatically reload files was modified by external program
 (use-package autorevert
-  :ensure nil
+  :straight nil
   :diminish
   :hook (after-init . global-auto-revert-mode))
 
 ;; Pass a URL to a WWW browser
 (use-package browse-url
-  :ensure nil
+  :straight nil
   :defines dired-mode-map
   :bind (("C-c C-z ." . browse-url-at-point)
          ("C-c C-z b" . browse-url-of-buffer)
@@ -95,7 +95,7 @@
     (bind-key "C-c C-z f" #'browse-url-of-file dired-mode-map)))
 
 (use-package xwidget
-  :ensure nil
+  :straight nil
   :if (featurep 'xwidget-internal)
   :bind (("C-c C-z w" . xwidget-webkit-browse-url)
          :map xwidget-webkit-mode-map
@@ -123,7 +123,7 @@
 
 ;; Click to browse URL or to send to e-mail address
 (use-package goto-addr
-  :ensure nil
+  :straight nil
   :hook ((text-mode . goto-address-mode)
          (prog-mode . goto-address-prog-mode)))
 
@@ -244,7 +244,7 @@
 
 ;; A comprehensive visual interface to diff & patch
 (use-package ediff
-  :ensure nil
+  :straight nil
   :hook(;; show org ediffs unfolded
         (ediff-prepare-buffer . outline-show-all)
         ;; restore window layout when done
@@ -269,7 +269,7 @@
 
 ;; Automatic parenthesis pairing
 (use-package elec-pair
-  :ensure nil
+  :straight nil
   :hook (after-init . electric-pair-mode)
   :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
 
@@ -387,7 +387,7 @@
 
 ;; On-the-fly spell checker
 (use-package flyspell
-  :ensure nil
+  :straight nil
   :diminish
   :if (executable-find "aspell")
   :hook (((text-mode outline-mode) . flyspell-mode)
@@ -463,7 +463,7 @@ _C_: correct  _p_: prev error _d_: done checking
 
 ;; Framework for mode-specific buffer indexes
 (use-package imenu
-  :ensure nil
+  :straight nil
   :bind (("C-." . imenu)))
 
 ;; my-personal
@@ -531,14 +531,14 @@ _C_: correct  _p_: prev error _d_: done checking
 
 ;; Handling capitalized subwords in a nomenclature
 (use-package subword
-  :ensure nil
+  :straight nil
   :diminish
   :hook ((prog-mode . subword-mode)
          (minibuffer-setup . subword-mode)))
 
 ;; Hideshow
 (use-package hideshow
-  :ensure nil
+  :straight nil
   :diminish hs-minor-mode
   :bind (:map hs-minor-mode-map
          ("C-`" . hs-toggle-hiding)))

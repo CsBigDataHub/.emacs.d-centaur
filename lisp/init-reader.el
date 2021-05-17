@@ -35,7 +35,7 @@
 ;; PDF reader
 (when (display-graphic-p)
   (use-package pdf-view
-    :ensure pdf-tools
+    :straight pdf-tools
     :diminish (pdf-view-midnight-minor-mode pdf-view-printer-minor-mode)
     :defines pdf-annot-activate-created-annotations
     :functions (my-pdf-view-set-midnight-colors my-pdf-view-set-dark-theme)
@@ -102,10 +102,10 @@
                (hotspots (pdf-view-apply-hotspot-functions
                           window page size)))
           (pdf-view-create-image data
-            :width width
-            :scale (if (pdf-view-use-scaling-p) 0.5 1)
-            :map hotspots
-            :pointer 'arrow)))
+                                 :width width
+                                 :scale (if (pdf-view-use-scaling-p) 0.5 1)
+                                 :map hotspots
+                                 :pointer 'arrow)))
       (advice-add #'pdf-view-create-page :override #'my-pdf-view-create-page)
 
       (defun my-pdf-util-frame-scale-factor ()
@@ -125,7 +125,7 @@
       (defun my-pdf-isearch-hl-matches (current matches &optional occur-hack-p)
         "Highlighting edges CURRENT and MATCHES."
         (cl-destructuring-bind (fg1 bg1 fg2 bg2)
-          (pdf-isearch-current-colors)
+            (pdf-isearch-current-colors)
           (let* ((width (car (pdf-view-image-size)))
                  (page (pdf-view-current-page))
                  (window (selected-window))
@@ -168,12 +168,12 @@
               (when highlight-p
                 (pdf-view-display-image
                  (pdf-view-create-image
-                     (pdf-cache-renderpage-highlight
-                      page (car size)
-                      `("white" "steel blue" 0.35 ,@edges))
-                   :map (pdf-view-apply-hotspot-functions
-                         window page size)
-                   :width (car size))))
+                  (pdf-cache-renderpage-highlight
+                   page (car size)
+                   `("white" "steel blue" 0.35 ,@edges))
+                  :map (pdf-view-apply-hotspot-functions
+                        window page size)
+                  :width (car size))))
               (pdf-util-scroll-to-edges
                (pdf-util-scale-relative-to-pixel (car edges)))))))
       (advice-add #'pdf-annot-show-annotation :override #'my-pdf-annot-show-annotation))
@@ -382,7 +382,7 @@ browser defined by `browse-url-generic-program'."
 
 ;; Another Atom/RSS reader
 (use-package newsticker
-  :ensure nil
+  :straight nil
   :bind ("C-x W" . newsticker-show-news)
   :hook (newsticker-treeview-item-mode . centaur-read-mode)
   :init (setq newsticker-url-list

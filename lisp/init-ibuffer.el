@@ -34,7 +34,7 @@
 (require 'init-funcs)
 
 (use-package ibuffer
-  :ensure nil
+  :straight nil
   :bind (("C-x C-b" . ibuffer)
          (:map ibuffer-mode-map
           ( "." . my/hydra-ibuffer-main/body)))

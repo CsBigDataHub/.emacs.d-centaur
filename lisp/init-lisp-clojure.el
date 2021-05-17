@@ -36,7 +36,7 @@
 
 ;; common lisp
 (use-package lisp-mode
-  :ensure nil
+  :straight nil
   :mode (("\\.cl\\'" . lisp-mode)
          ("\\.lisp\\'" . lisp-mode)
          ("\\.sbclrc\\'" . lisp-mode)))

@@ -34,7 +34,7 @@
 
 ;; Bookmark
 (use-package bookmark
-  :ensure nil
+  :straight nil
   :config
   (when (icons-displayable-p)
     (with-no-warnings

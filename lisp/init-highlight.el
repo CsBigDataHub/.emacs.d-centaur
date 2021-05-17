@@ -34,14 +34,14 @@
 
 ;; Highlight the current line
 (use-package hl-line
-  :ensure nil
+  :straight nil
   :hook ((after-init . global-hl-line-mode)
          ((dashboard-mode eshell-mode shell-mode term-mode vterm-mode) .
           (lambda () (setq-local global-hl-line-mode nil)))))
 
 ;; Highlight matching parens
 (use-package paren
-  :ensure nil
+  :straight nil
   :hook (after-init . show-paren-mode)
   :init (setq show-paren-when-point-inside-paren t
               show-paren-when-point-in-periphery t)
@@ -303,7 +303,7 @@ FACE defaults to inheriting from default and highlight."
 
 ;; Pulse current line
 (use-package pulse
-  :ensure nil
+  :straight nil
   :custom-face
   (pulse-highlight-start-face ((t (:inherit region))))
   (pulse-highlight-face ((t (:inherit region))))

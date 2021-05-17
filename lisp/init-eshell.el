@@ -32,7 +32,7 @@
 
 ;; Emacs command shell
 (use-package eshell
-  :ensure nil
+  :straight nil
   :defines eshell-prompt-function
   :functions eshell/alias
   :custom
@@ -294,7 +294,7 @@ wisely or prepare to call `eshell-interrupt-process'."
 (global-set-key (kbd "C-x E") 'my/eshell-execute-current-line)
 
 (use-package esh-module
-  :ensure nil
+  :straight nil
   :config
   (setq eshell-modules-list             ; Needs review
         '(eshell-alias
@@ -312,13 +312,13 @@ wisely or prepare to call `eshell-interrupt-process'."
           eshell-unix)))
 
 (use-package em-dirs
-  :ensure nil
+  :straight nil
   :after esh-mode
   :config
   (setq eshell-cd-on-directory t))
 
 (use-package em-tramp
-  :ensure nil
+  :straight nil
   :after esh-mode
   :config
   (setq password-cache t)
@@ -328,7 +328,7 @@ wisely or prepare to call `eshell-interrupt-process'."
                               (local-unset-key (kbd "M-s"))))
 
 (use-package em-hist
-  :ensure nil
+  :straight nil
   :after esh-mode
   :bind (:map eshell-mode-map
          ("C-c e e" . my/eshell-insert-file-at-point)

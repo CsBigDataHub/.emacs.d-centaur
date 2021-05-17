@@ -14,7 +14,7 @@
 ;;   )
 
 (use-package tab-bar
-  :ensure nil
+  :straight nil
   :init
   (setq tab-bar-close-button-show nil)
   (setq tab-bar-close-last-tab-choice 'tab-bar-mode-disable)

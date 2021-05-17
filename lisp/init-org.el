@@ -34,9 +34,12 @@
 (require 'init-custom)
 (require 'init-funcs)
 
-(use-package org
+(use-package org-plus-contrib
+  :straight (org-plus-contrib
+             :local-repo "org"
+             :includes (org))
   ;; :ensure nil
-  :ensure org-plus-contrib ;; My-personal-config
+  ;; :ensure org-plus-contrib ;; My-personal-config
   :commands (org-dynamic-block-define)
   :custom-face (org-ellipsis ((t (:foreground nil))))
   :pretty-hydra
@@ -186,7 +189,7 @@ prepended to the element after the #+HEADER: tag."
   (defvar load-language-list '((emacs-lisp . t)
                                (perl . t)
                                (python . t)
-                               ;; (powershell . t)
+                               (powershell . t)
                                (ruby . t)
                                (js . t)
                                (css . t)
@@ -269,6 +272,14 @@ prepended to the element after the #+HEADER: tag."
     (org-pomodoro-mode-line-break ((t (:inherit success))))
     :bind (:map org-agenda-mode-map
            ("P" . org-pomodoro))))
+(straight-use-package 'org-plus-contrib)
+;;(use-package org-plus-contrib
+;;  :straight (org-plus-contrib 
+;;            ;;:type git 
+;;            ;;:repo "https://code.orgmode.org/bzg/org-mode.git"
+;;            :local-repo "org"
+;;            :files (:defaults "contrib/lisp/*.el")
+;;            :includes (org)))
 
 ;;;;; My personal modifications
 (use-package org-download
@@ -512,7 +523,7 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 
 ;;;; ox-beamer - Beamer export
 (use-package ox-beamer
-  :ensure nil
+  :straight nil
   :commands (org-beamer-export-as-latex
              org-beamer-export-to-latex
              org-beamer-export-to-pdf)

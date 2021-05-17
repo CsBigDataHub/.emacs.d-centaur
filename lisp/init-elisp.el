@@ -35,7 +35,7 @@
 
 ;; Emacs lisp mode
 (use-package elisp-mode
-  :ensure nil
+  :straight nil
   :defines (flycheck-disabled-checkers calculate-lisp-indent-last-sexp)
   :functions (helpful-update
               my-lisp-indent-function
@@ -223,7 +223,7 @@ Lisp function does not specify a special indentation."
 ;; Show function arglist or variable docstring
 ;; `global-eldoc-mode' is enabled by default.
 (use-package eldoc
-  :ensure nil
+  :straight nil
   :diminish
   :config
   ;; Display `eldoc' in child frame

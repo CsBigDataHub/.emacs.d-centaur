@@ -39,7 +39,6 @@
 
 
 (use-package shr-tag-pre-highlight
-  :ensure t
   :after shr
   :config
   (add-to-list 'shr-external-rendering-functions

@@ -10,8 +10,7 @@
 (setq org-mu4e-convert-to-html t)
 
 (require 'smtpmail)
-(use-package mu4e-alert
-  :ensure t)
+(use-package mu4e-alert)
 
 (mu4e-alert-set-default-style 'libnotify)
 (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)

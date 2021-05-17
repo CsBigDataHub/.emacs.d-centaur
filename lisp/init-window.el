@@ -32,12 +32,12 @@
 
 ;; Directional window-selection routines
 (use-package windmove
-  :ensure nil
+  :straight nil
   :hook (after-init . windmove-default-keybindings))
 
 ;; Restore old window configurations
 (use-package winner
-  :ensure nil
+  :straight nil
   :commands (winner-undo winner-redo)
   :hook (after-init . winner-mode)
   :init (setq winner-boring-buffers '("*Completions*"

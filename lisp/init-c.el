@@ -32,7 +32,7 @@
 
 ;; C/C++ Mode
 (use-package cc-mode
-  :ensure nil
+  :straight nil
   :bind (:map c-mode-base-map
          ("C-c c" . compile))
   :hook (c-mode-common . (lambda () (c-set-style "stroustrup")))

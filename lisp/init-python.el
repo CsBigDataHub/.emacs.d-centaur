@@ -33,7 +33,7 @@
 ;; Python Mode
 ;; Install: pip install pyflakes autopep8
 (use-package python
-  :ensure nil
+  :straight nil
   :hook (inferior-python-mode . (lambda ()
                                   (process-query-on-exit-flag
                                    (get-process "Python"))))
@@ -156,7 +156,7 @@
                 (setq python-shell-interpreter "python3")))))
 
 (use-package python-mode
-  :ensure nil
+  :straight nil
   :hook
   (python-mode . pyvenv-mode)
   (python-mode . yas-minor-mode))

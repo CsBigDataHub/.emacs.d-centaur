@@ -35,7 +35,7 @@
 
 ;; Directory operations
 (use-package dired
-  :ensure nil
+  :straight nil
   :bind (:map dired-mode-map
          ("C-c C-p" . wdired-change-to-wdired-mode)
          ( "." . my/hydra-dired/body))
@@ -120,9 +120,9 @@
       (advice-add #'all-the-icons-dired--refresh :override #'my-all-the-icons-dired--refresh)))
 
   ;; Extra Dired functionality
-  (use-package dired-aux :ensure nil)
+  (use-package dired-aux :straight nil)
   (use-package dired-x
-    :ensure nil
+    :straight nil
     :demand
     :config
     (let ((cmd (cond (sys/mac-x-p "open")

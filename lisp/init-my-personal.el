@@ -39,19 +39,16 @@
 
 ;;Restart emacs from emacs
 (use-package restart-emacs
-  :ensure t
   :config (defalias 'emacs-restart #'restart-emacs)
   :bind* (("C-x M-c" . restart-emacs)))
 
 ;; Open Large file
 (use-package vlf
-  :ensure t
   :config
   (require 'vlf-setup))
 
 ;; Enhance fuzzy matching
-(use-package flx
-  :ensure t)
+(use-package flx)
 
 ;;(when (<= 26 emacs-major-version)
 ;;(setq-default
@@ -310,7 +307,7 @@
 (use-package groovy-imports)
 (use-package flycheck-gradle)
 
-(use-package shell-command+
+(use-package shell-command-plus
   :bind ("M-!" . shell-command+))
 
 (setq lsp-server-install-dir (concat user-emacs-directory "lsp/")
