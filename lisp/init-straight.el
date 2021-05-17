@@ -1,5 +1,5 @@
 (setq straight-recipes-gnu-elpa-use-mirror t
-      straight-repository-branch           "develop"
+      ;; straight-repository-branch           "develop"
       straight-check-for-modifications     'live
       straight-vc-git-default-clone-depth  1)
 

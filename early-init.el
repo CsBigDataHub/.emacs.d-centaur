@@ -50,12 +50,12 @@
     (require 'comp)
     (setq comp-num-cpus 4)
     (setq package-native-compile t)
-    (setq native-comp-async-report-warnings-errors nil)
-    ;; (setq comp-async-report-warnings-errors nil)
+    ;; (setq native-comp-async-report-warnings-errors nil)
+    (setq comp-async-report-warnings-errors nil)
     (setq comp-deferred-compilation t)
     ;; native comp of powerline throws error below
     ;; getting past  Error: List contains a loop ("22", . #0)
-    ;; hhttps://github.com/milkypostman/powerline/issues/187
+    ;; https://github.com/milkypostman/powerline/issues/187
     (setq comp-deferred-compilation-deny-list '("powerline"))
     ))
 
