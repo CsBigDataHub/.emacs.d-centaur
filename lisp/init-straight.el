@@ -144,12 +144,17 @@
   :init (cl-pushnew '(powershell . t) load-language-list))
 
 (use-package restclient-jq
-  :after restclient
+  :after (restclient ob-restclient)
   :demand t
   :straight (restclient-jq
              :type git
              :host github
              :repo "pashky/restclient.el"
-             :files ("restclient-jq.el")))
+             :files ("restclient-jq.el"))
+  :config
+  (eval-after-load 'restclient
+    '(require restclient-jq))
+  (eval-after-load 'ob-restclient
+    '(require restclient-jq)))
 
 (provide 'init-straight)
