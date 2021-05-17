@@ -153,8 +153,8 @@
              :files ("restclient-jq.el"))
   :config
   (eval-after-load 'restclient
-    '(require restclient-jq))
+    '(require 'restclient-jq))
   (eval-after-load 'ob-restclient
-    '(require restclient-jq)))
+    '(require 'restclient-jq)))
 
 (provide 'init-straight)
