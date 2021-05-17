@@ -79,7 +79,10 @@
 
 ;; C# development
 (use-package csharp-mode)
-(use-package sharper)
+(use-package sharper
+  :config (setq sharper-run-only-one t)
+  :bind (:map csharp-mode-map
+         ("C-c C-b" . 'sharper-main-transient)))
 (use-package csproj-mode)
 ;; C# development
 
