@@ -14,6 +14,7 @@
 ;;Similarly x-select-enable-clipboard will be deprecated in favor of select-enable-clipboard
 (setq select-enable-primary nil
 	  select-enable-clipboard t
+      mouse-drag-copy-region t
 	  select-active-regions t)
 
 ;;Keyboard tweaks
@@ -404,9 +405,6 @@
   :bind
   ("<f12>" . eshell-toggle)
   ("s-~" . eshell-toggle))
-
-(use-package gitignore-templates)
-
 
 (use-package read-aloud
   :config

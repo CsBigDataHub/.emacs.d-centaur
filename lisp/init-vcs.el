@@ -40,10 +40,7 @@
          ("\\MERGE_MSG\\'" . text-mode))
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch)
-         ("C-c M-g" . magit-file-dispatch)
-         (:map magit-status-mode-map
-          ("q" . magit-quit-session)
-          ))
+         ("C-c M-g" . magit-file-dispatch))
   :init (setq magit-diff-refine-hunk t)
   :config
   (setq-default magit-diff-refine-hunk 'all)
@@ -311,32 +308,6 @@
           ("~/GitRepos/my-projects/" . 1)
           ("~/IdeaProjects/" . 1))))
 
-;; C-c C-a to amend without any prompt
-;; This code is inbuild by magit so Instead you should be using the built in Extend Commit command: `c e'
-;;(defun magit-just-amend ()
-;;  (interactive)
-;;  (save-window-excursion
-;;    (magit-refresh
-;;     (shell-command "git --no-pager commit --amend --reuse-message=HEAD"))))
-;;
-;;(eval-after-load "magit"
-;;  '(define-key magit-status-mode-map (kbd "C-c C-a") 'magit-just-amend))
-
-;; full screen magit-status
-
-;; (defadvice magit-status (around magit-fullscreen activate)
-;;   (window-configuration-to-register :magit-fullscreen)
-;;   ad-do-it
-;;   (delete-other-windows))
-
-(defun magit-quit-session ()
-  "Restores the previous window configuration and kills the magit buffer"
-  (interactive)
-  (kill-buffer)
-  (jump-to-register :magit-fullscreen))
-
-;;(define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
-
 ;;Emacs comes with a version control interface called "VC", see (emacs)Version Control. It is enabled be default, and if you don’t use it in addition to Magit, then you should disable it to keep it from performing unnecessary work:
 
 ;; enable line below if you are seeing `Args out of range' error
@@ -346,7 +317,7 @@
 
 ;;(setq vc-handled-backends (delq 'Git vc-handled-backens)) ;;had to disable this to get git-gutter working
 
-;;(use-package gitignore-templates)
+(use-package gitignore-templates)
 
 (setq vc-follow-symlinks t)
 
