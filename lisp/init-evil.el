@@ -103,14 +103,15 @@
 ;;           (lambda ()
 ;;             (evil-insert-state)))
 
-(use-package evil-numbers
-  )
+(use-package evil-numbers)
 
-(global-set-key (kbd "C-c C-i +") 'evil-numbers/inc-at-pt)
-(global-set-key (kbd "C-c C-i -") 'evil-numbers/dec-at-pt)
+(global-set-key (kbd "C-c M-i +") 'evil-numbers/inc-at-pt)
+(global-set-key (kbd "C-c M-i -") 'evil-numbers/dec-at-pt)
 
-(define-key evil-normal-state-map (kbd "C-c C-i +") 'evil-numbers/inc-at-pt)
-(define-key evil-normal-state-map (kbd "C-c C-i -") 'evil-numbers/dec-at-pt)
+(evil-define-key '(normal visual) 'global (kbd "<kp-add>") 'evil-numbers/inc-at-pt)
+(evil-define-key '(normal visual) 'global (kbd "<kp-subtract>") 'evil-numbers/dec-at-pt)
+(evil-define-key '(normal visual) 'global (kbd "C-<kp-add>") 'evil-numbers/inc-at-pt-incremental)
+(evil-define-key '(normal visual) 'global (kbd "C-<kp-subtract>") 'evil-numbers/dec-at-pt-incremental)
 
 ;; See Doc at https://github.com/edkolev/evil-lion
 (use-package evil-lion
@@ -123,14 +124,13 @@
          ("g l " . evil-lion-left)
          ("g L " . evil-lion-right)))
 
-(use-package evil-exchange
-  )
+(use-package evil-exchange)
 
 (use-package evil-goggles
   :config
   (evil-goggles-mode)
   (setq evil-goggles-pulse nil)
-  (setq evil-goggles-duration 0.400) ;; default is 0.200
+  (setq evil-goggles-duration 0.100) ;; default is 0.200
 
   ;; optionally use diff-mode's faces; as a result, deleted text
   ;; will be highlighed with `diff-removed` face which is typically
@@ -138,7 +138,7 @@
   ;; other faces such as `diff-added` will be used for other actions
   ;; (evil-goggles-use-diff-faces)
   (custom-set-faces
-   '(evil-goggles-default-face ((t (:inherit 'highlight)))) ;; default is to inherit 'region
+   ;; '(evil-goggles-default-face ((t (:inherit 'highlight)))) ;; default is to inherit 'region
    ;; run `M-x list-faces-display` in a fresh emacs to get a list of faces on your emacs
    '(evil-goggles-delete-face ((t (:inherit 'menu))))
    '(evil-goggles-paste-face ((t (:inherit 'custom-saved))))
@@ -178,8 +178,8 @@
   (push 'Info-mode evil-snipe-disabled-modes)
   (push 'treemacs-mode evil-snipe-disabled-modes)
   (push 'calc-mode evil-snipe-disabled-modes)
-  (evil-snipe-mode +1)
-  (evil-snipe-override-mode +1))
+  (evil-snipe-mode 1)
+  (evil-snipe-override-mode 1))
 
 ;;for shell-pop
 (evil-define-key 'insert vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
