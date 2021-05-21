@@ -457,6 +457,8 @@
   :config (selected-global-mode)
   (setq selected-minor-mode-override t))
 
+(use-package counsel-jq)
+
 ;; Added this to build pdf tools
 (setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig:/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")
 

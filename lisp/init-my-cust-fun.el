@@ -2855,6 +2855,20 @@ are defining or executing a macro."
                                                                            ((match-string 2))) ))  nil  beg end))
 
 
+;; https://github.com/jorgenschaefer/circe/wiki/Configuration#safer-password-management
+;; using in restclient variables like this
+;; :app_secret := (my-fetch-password :user "login" :host "machine")
+(defun my-fetch-password (&rest params)
+  "fetch password from .authinfo file"
+  (require 'auth-source)
+  (let ((match (car (apply 'auth-source-search params))))
+    (if match
+        (let ((secret (plist-get match :secret)))
+          (if (functionp secret)
+              (funcall secret)
+            secret))
+      (error "Password not found for %S" params))))
+
 
 (pretty-hydra-define my-hydra (:title (pretty-hydra-title "my custom functions" 'faicon "product-hunt" :v-adjust -0.1)
                                :foreign-keys run :color amaranth :quit-key "q")
