@@ -2856,8 +2856,9 @@ are defining or executing a macro."
 
 
 ;; https://github.com/jorgenschaefer/circe/wiki/Configuration#safer-password-management
-;; using in restclient variables like this
+;; using this function in restclient variables like this
 ;; :app_secret := (my-fetch-password :user "login" :host "machine")
+;; to refresh authinfo changes run `M-x auth-source-forget-all-cached'
 (defun my-fetch-password (&rest params)
   "fetch password from .authinfo file"
   (require 'auth-source)
