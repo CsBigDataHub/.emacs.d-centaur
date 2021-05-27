@@ -9389,6 +9389,101 @@ The fine grained customizations were certaingly the hardest to get to work and I
 
 © Lincoln Clarete --- All written content on this website reflects my personal opinion and it's available under [[https://creativecommons.org/licenses/by/4.0/][CC BY 4.0]]
 
+
+* [[https://blog.nittionio.nu/posts/2019-06-27-restclient][restclient.el | Excursion in Distraction]] :website:
+
+[2021-05-26 Wed 23:57]
+
+** Article
+
+I've been using [[https://github.com/pashky/restclient.el][=restclient=]] for quite some time now, but it wasn't until a couple of months ago I got annoyed enough to find its variable and scripting support. To showcase my findings I've put together a small example of accessing the [[https://developer.github.com/][GitHub GraphQL API]] using the [[https://github.com/vermiculus/graphql.el][=graphql=]] package. This is only a sample, and for proper GitHub interaction it would be better to use the [[https://github.com/magit/ghub][=ghub=]] package.
+
+The most basic assignment using plain === operator:
+
+#+begin_example
+   :graphql-url = https://api.github.com/graphql
+#+end_example
+
+Replacing the === operator with =:== evaluates the right hand side as elisp:
+
+#+begin_example
+   :github-token := (auth-source-pass-get "token" "web/github")
+#+end_example
+
+This also showcases accessing extra data in the password store [[https://www.passwordstore.org/][=pass=]], via [[https://github.com/DamienCassou/auth-password-store][=auth-password-store=]]. The content of =web/github= would be something like:
+
+#+begin_example
+   $ pass web/github
+  s1kr1ttp4zzw0rd
+  token: b0baf377b0baf377b0baf377b0baf377b0baf377
+#+end_example
+
+Multi-line support via =<<=, and referring to other variables:
+
+#+begin_example
+   :headers = <<
+  Authorization: Bearer :github-token
+  User-Agent: Emacs
+  #
+#+end_example
+
+...and for scripting by combining the =:== and =<<= operators:
+
+#+begin_example
+   :query-repos := <<
+  (graphql-query
+   ((viewer
+     (repositories
+      :arguments
+      ((first . 3)
+       (orderBy . ((direction . DESC)
+                   (field     . UPDATED_AT))))
+      (nodes
+       name
+       pushedAt)))))
+  #
+#+end_example
+
+Finally the actual HTTP call, using the variables now assigned:
+
+#+begin_example
+   POST :graphql-url
+  :headers
+  { "query": ":query-repos"}
+#+end_example
+
+Executing the following via C-c =+= v will result in:
+
+[[/static/482431e0a1985b086383807f6637b704/321d0/restclient.png][ [[/static/482431e0a1985b086383807f6637b704/dbb61/restclient.png]]]]
+
+As seen by the screenshot, the elisp sections are highlighted correctly. This performed by the [[https://github.com/polymode/polymode][=polymode=]] package which enables embedding of multiple major modes within the same buffer. While configuring this for =restclient= I found a couple of bugs, and within a day of interacting with the maintainer the issues got resolved - so it seems like a good package to depend on.
+
+The definition for the elisp sections within =restclient= buffers is as follows:
+
+#+begin_example
+    ( define-hostmode pm/restclient-hostmode
+     :mode  'restclient-mode )
+
+   ( define-innermode pm/restclient-innermode
+     :mode  'emacs-lisp-mode
+     :head-mode  'host
+     :tail-mode  'host )
+
+   ( define-innermode pm/restclient-single-innermode pm/restclient-innermode
+     :head-matcher  "^:[^ ]+ :="
+     :tail-matcher  "\n" )
+
+   ( define-innermode pm/restclient-multi-innermode pm/restclient-innermode
+     :head-matcher  "^:[^ ]+ := <<\n"
+     :tail-matcher  "^#\n" )
+
+   ( define-polymode pm/restclient-mode
+     :hostmode  'pm/restclient-hostmode
+     :innermodes  '( pm/restclient-single-innermode
+                  pm/restclient-multi-innermode ) )
+#+end_example
+
+Another useful package is [[https://github.com/iquiw/company-restclient][=company-restclient=]] which, thanks to [[https://github.com/for-GET/know-your-http-well][=know-your-http-well=]], adds completion for pretty much everything that goes into a HTTP header.
 * Rest Call Me Maybe
 
 #+BEGIN_QUOTE
