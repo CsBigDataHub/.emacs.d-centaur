@@ -387,6 +387,8 @@
        :init
        (when (executable-find "python3")
          (setq dap-python-executable "python3"))))
+       ;; @see https://emacs-lsp.github.io/lsp-mode/page/performance
+       (setq read-process-output-max (* 1024 1024)) ;; 1MB
 
    ;; `lsp-mode' and `treemacs' integration
    (when emacs/>=25.2p
