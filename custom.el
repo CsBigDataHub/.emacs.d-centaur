@@ -13,7 +13,7 @@
 (setq centaur-server t)                      ; Enable `server-mode' or not: t or nil
 (setq centaur-icon t)                         ; Display icons or not: t or nil
 ;; (setq centaur-package-archives 'emacs-china)   ; Package repo: melpa, melpa-mirror, emacs-china, netease, ustc, tencent or tuna
-(setq centaur-theme 'doom-snazzy)                        ; Color theme: auto, random, default, classic, colorful, dark, light, day or night
+(setq centaur-theme 'auto)                        ; Color theme: auto, random, default, classic, colorful, dark, light, day or night
 (setq centaur-completion-style 'minibuffer)    ; Completion display style: minibuffer or childframe
 (setq centaur-dashboard t)                    ; Use dashboard at startup or not: t or nil
 (setq centaur-restore-frame-geometry t)      ; Restore the frame's geometry at startup: t or nil
@@ -76,8 +76,8 @@
       calendar-longitude -93.473892
       calendar-standard-time-zone-name "CST"
       calendar-daylight-time-zone-name "CDT"
-      centaur-auto-themes '((:sunrise . doom-one-light)
-                            (:sunset  . doom-one)))
+      centaur-auto-themes '((:sunrise . modus-vivendi)
+                            (:sunset  . modus-vivendi)))
 
 
 (put 'downcase-region 'disabled nil)

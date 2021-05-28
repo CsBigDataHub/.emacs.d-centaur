@@ -135,8 +135,8 @@
   :type '(alist :key-type (symbol :tag "Theme")
                 :value-type (symbol :tag "Internal theme")))
 
-(defcustom centaur-auto-themes '(("6:00"  . doom-solarized-light)
-				                 ("19:00" . doom-solarized-dark))
+(defcustom centaur-auto-themes '(("6:00"  . modus-vivendi)
+				                 ("19:00" . modus-vivendi))
   "List of themes mapped to the time they should be loaded.
 
 The keywords `:sunrise' and `:sunset' can be used for the time
