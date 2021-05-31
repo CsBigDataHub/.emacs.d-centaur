@@ -1,6 +1,6 @@
 ;; init-lsp.el --- Initialize LSP configurations.	-*- lexical-binding: t -*-
 
-;; Copyright (C) 2018-2020 Vincent Zhang
+;; Copyright (C) 2018-2021 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
 ;; URL: https://github.com/seagle0128/.emacs.d
@@ -387,8 +387,6 @@
        :init
        (when (executable-find "python3")
          (setq dap-python-executable "python3"))))
-       ;; @see https://emacs-lsp.github.io/lsp-mode/page/performance
-       (setq read-process-output-max (* 1024 1024)) ;; 1MB
 
    ;; `lsp-mode' and `treemacs' integration
    (when emacs/>=25.2p
@@ -590,19 +588,19 @@
      :init (when (executable-find "python3")
              (setq lsp-pyright-python-executable-cmd "python3")))
 
-  ;; Microsoft python-language-server support - using pyright
-  ;; (use-package lsp-python-ms
-  ;;   :hook (python-mode . (lambda () (require 'lsp-python-ms)))
-  ;;   :init
-  ;;   (when (executable-find "python3")
-  ;;     (when sys/macp
-  ;;       (setq lsp-python-ms-python-executable-cmd "python3"
-  ;;             lsp-python-ms-executable "~/GitRepos/python-language-server/output/bin/Release/osx-x64/publish/Microsoft.Python.LanguageServer"))
-  ;;     (when sys/linuxp
-  ;;       (setq lsp-python-ms-python-executable-cmd "python3"
-  ;;             lsp-python-ms-executable "~/Documents/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"))
-  ;;     )
-  ;;   )
+   ;; Microsoft python-language-server support - using pyright
+   ;; (use-package lsp-python-ms
+   ;;   :hook (python-mode . (lambda () (require 'lsp-python-ms)))
+   ;;   :init
+   ;;   (when (executable-find "python3")
+   ;;     (when sys/macp
+   ;;       (setq lsp-python-ms-python-executable-cmd "python3"
+   ;;             lsp-python-ms-executable "~/GitRepos/python-language-server/output/bin/Release/osx-x64/publish/Microsoft.Python.LanguageServer"))
+   ;;     (when sys/linuxp
+   ;;       (setq lsp-python-ms-python-executable-cmd "python3"
+   ;;             lsp-python-ms-executable "~/Documents/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"))
+   ;;     )
+   ;;   )
 
    ;; C/C++/Objective-C support
    ;; (use-package ccls

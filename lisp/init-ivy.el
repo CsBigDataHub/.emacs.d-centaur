@@ -1,6 +1,6 @@
 ;;; init-ivy.el --- Initialize ivy configurations.	-*- lexical-binding: t -*-
 
-;; Copyright (C) 2016-2020 Vincent Zhang
+;; Copyright (C) 2016-2021 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
 ;; URL: https://github.com/seagle0128/.emacs.d
@@ -424,7 +424,7 @@
   (use-package ivy-prescient
     :commands ivy-prescient-re-builder
     :custom-face
-    (ivy-minibuffer-match-face-1 ((t (:inherit font-lock-doc-face :foreground nil))))
+    (ivy-minibuffer-match-face-1 ((t (:foreground ,(face-foreground 'font-lock-doc-face nil t)))))
     :init
     (defun ivy-prescient-non-fuzzy (str)
       "Generate an Ivy-formatted non-fuzzy regexp list for the given STR.
@@ -453,7 +453,8 @@ This is for use in `ivy-re-builders-alist'."
             lsp-ivy-workspace-symbol ivy-resume ivy--restore-session
             counsel-grep counsel-git-grep counsel-rg counsel-ag
             counsel-ack counsel-fzf counsel-pt counsel-imenu
-            counsel-org-capture counsel-load-theme counsel-yank-pop
+            counsel-org-capture counsel-outline counsel-org-goto
+            counsel-load-theme counsel-yank-pop
             counsel-recentf counsel-buffer-or-recentf
             centaur-load-theme))
 
@@ -652,6 +653,7 @@ This is for use in `ivy-re-builders-alist'."
                  `(ivy-posframe-border ((t (:background ,(face-foreground 'font-lock-comment-face nil t))))))))
 
     (with-no-warnings
+      ;; FIXME: hide minibuffer with same colors
       (defun my-ivy-posframe--minibuffer-setup (fn &rest args)
         "Advice function of FN, `ivy--minibuffer-setup' with ARGS."
         (if (not (display-graphic-p))
@@ -665,8 +667,8 @@ This is for use in `ivy-re-builders-alist'."
               (overlay-put ov 'window (selected-window))
               (overlay-put ov 'ivy-posframe t)
               (overlay-put ov 'face
-                           (let* ((face (if (facep 'solaire-minibuffer-face)
-                                            'solaire-minibuffer-face
+                           (let* ((face (if (facep 'solaire-default-face)
+                                            'solaire-default-face
                                           'default))
                                   (bg-color (face-background face nil t)))
                              `(:background ,bg-color :foreground ,bg-color
