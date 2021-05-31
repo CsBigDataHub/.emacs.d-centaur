@@ -1,6 +1,6 @@
 ;; init-lsp.el --- Initialize LSP configurations.	-*- lexical-binding: t -*-
 
-;; Copyright (C) 2018-2020 Vincent Zhang
+;; Copyright (C) 2018-2021 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
 ;; URL: https://github.com/seagle0128/.emacs.d
@@ -385,6 +385,9 @@
               (csharp-mode . (lambda () (require 'dap-netcore)))
               (powershell-mode . (lambda () (require 'dap-pwsh))))
        :init
+
+       ;; @see https://emacs-lsp.github.io/lsp-mode/page/performance
+       (setq read-process-output-max (* 1024 1024)) ;; 1MB
        (when (executable-find "python3")
          (setq dap-python-executable "python3"))))
 
