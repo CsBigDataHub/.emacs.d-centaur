@@ -67,6 +67,18 @@
       (use-package solaire-mode
         :hook (after-load-theme . solaire-global-mode))
 
+      (use-package modus-themes
+        :init
+        ;; Add all your customizations prior to loading the themes
+        (setq modus-themes-slanted-constructs t
+              modus-themes-bold-constructs nil
+              modus-themes-region 'no-extend)
+
+        (require 'doom-themes)
+        ;; Load the theme files before enabling a theme
+        (modus-themes-load-themes)
+        )
+
       (use-package doom-themes
         :custom-face
         (doom-modeline-buffer-file ((t (:inherit (mode-line bold)))))
