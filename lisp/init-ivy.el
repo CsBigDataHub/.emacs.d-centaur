@@ -469,32 +469,11 @@ This is for use in `ivy-re-builders-alist'."
       (setq hydra-hint-display-type 'posframe)
 
       (with-no-warnings
-        (defun my-hydra-posframe-show (str)
-          (require 'posframe)
-          (when hydra--posframe-timer
-            (cancel-timer hydra--posframe-timer))
-          (setq hydra--posframe-timer nil)
-          (apply #'posframe-show
-                 " *hydra-posframe*"
-                 :string (concat (propertize "\n" 'face '(:height 0.5))
-                                 str
-                                 (propertize "\n" 'face '(:height 0.5)))
-                 hydra-posframe-show-params))
-        (advice-add #'hydra-posframe-show :override #'my-hydra-posframe-show)
-
-        (defun hydra-posframe-delete ()
-          (require 'posframe)
-          (unless hydra--posframe-timer
-            (setq hydra--posframe-timer
-                  (run-with-idle-timer
-                   0 nil (lambda ()
-                           (setq hydra--posframe-timer nil)
-                           (posframe-delete " *hydra-posframe*"))))))
-
-        (setq hydra-hint-display-alist
-              (list (list 'lv #'lv-message #'lv-delete-window)
-                    (list 'message (lambda (str) (message "%s" str)) (lambda () (message "")))
-                    (list 'posframe #'hydra-posframe-show #'hydra-posframe-delete)))
+        (defun my-hydra-posframe-prettify-string (fn str)
+          (funcall fn (concat (propertize "\n" 'face '(:height 0.5))
+                              str
+                              (propertize "\n" 'face '(:height 0.5)))))
+        (advice-add #'hydra-posframe-show :around #'my-hydra-posframe-prettify-string)
 
         (defun ivy-hydra-poshandler-frame-center-below (info)
           (let ((num 0)
@@ -610,9 +589,17 @@ This is for use in `ivy-re-builders-alist'."
 
 ;; Better experience with icons
 ;; Enable it before`ivy-rich-mode' for better performance
-(use-package all-the-icons-ivy-rich
-  :if (icons-displayable-p)
-  :hook (ivy-mode . all-the-icons-ivy-rich-mode))
+(when (icons-displayable-p)
+  (use-package all-the-icons-ivy-rich
+    :hook (ivy-mode . all-the-icons-ivy-rich-mode)
+    :config
+    (plist-put all-the-icons-ivy-rich-display-transformers-list
+               'centaur-load-theme
+               '(:columns
+                 ((all-the-icons-ivy-rich-theme-icon)
+                  (ivy-rich-candidate))
+                 :delimiter "\t"))
+    (all-the-icons-ivy-rich-reload)))
 
 ;; More friendly display transformer for Ivy
 (use-package ivy-rich
@@ -628,9 +615,6 @@ This is for use in `ivy-re-builders-alist'."
 ;; Display completion in child frame
 (when (childframe-workable-p)
   (use-package ivy-posframe
-    :defines (persp-load-buffer-functions persp-filter-save-buffers-functions)
-    :custom
-    (ivy-posframe-border-width 3)
     :custom-face
     (ivy-posframe ((t (:inherit tooltip))))
     (ivy-posframe-border ((t (:background ,(face-foreground 'font-lock-comment-face nil t)))))
@@ -640,11 +624,6 @@ This is for use in `ivy-re-builders-alist'."
           ivy-posframe-border-width 3
           ivy-posframe-parameters '((left-fringe . 8)
                                     (right-fringe . 8)))
-
-    (with-eval-after-load 'persp-mode
-      (add-hook 'persp-load-buffer-functions
-                (lambda (&rest _)
-                  (posframe-delete-all))))
     :config
     (add-hook 'after-load-theme-hook
               (lambda ()
@@ -677,12 +656,14 @@ This is for use in `ivy-re-builders-alist'."
               (setq-local cursor-type nil)))))
       (advice-add #'ivy-posframe--minibuffer-setup :override #'my-ivy-posframe--minibuffer-setup)
 
-      (defun my-ivy-posframe--adjust-prompt (&rest _)
-        "Add top margin to the prompt."
+      (defun my-ivy-posframe--prettify-buffer (&rest _)
+        "Add top and bottom margin to the prompt."
         (with-current-buffer ivy-posframe-buffer
           (goto-char (point-min))
+          (insert (propertize "\n" 'face '(:height 0.3)))
+          (goto-char (point-max))
           (insert (propertize "\n" 'face '(:height 0.3)))))
-      (advice-add #'ivy-posframe--add-prompt :after #'my-ivy-posframe--adjust-prompt)
+      (advice-add #'ivy-posframe--display :after #'my-ivy-posframe--prettify-buffer)
 
       (defun ivy-posframe-display-at-frame-center-near-bottom (str)
         (ivy-posframe--display str #'posframe-poshandler-frame-center-near-bottom))

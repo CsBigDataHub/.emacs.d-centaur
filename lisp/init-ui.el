@@ -400,6 +400,32 @@
          ("C-s--" . default-text-scale-decrease)
          ("C-s-0" . default-text-scale-reset)))
 
+;; Mouse & Smooth Scroll
+;; Scroll one line at a time (less "jumpy" than defaults)
+(when (display-graphic-p)
+  (setq mouse-wheel-scroll-amount '(1 ((shift) . hscroll))
+        mouse-wheel-scroll-amount-horizontal 1
+        mouse-wheel-progressive-speed nil))
+(setq scroll-step 1
+      scroll-margin 0
+      scroll-conservatively 100000
+      auto-window-vscroll nil
+      scroll-preserve-screen-position t)
+
+;; Good pixel line scrolling
+(when emacs/>=27p
+  (use-package good-scroll
+    :diminish
+    :hook (after-init . good-scroll-mode)
+    :bind (([remap next] . good-scroll-up-full-screen)
+           ([remap prior] . good-scroll-down-full-screen))))
+
+;; Smooth scrolling over images
+(when emacs/>=26p
+  (use-package iscroll
+    :diminish
+    :hook (after-init . iscroll-mode)))
+
 ;; Use fixed pitch where it's sensible
 (use-package mixed-pitch
   :diminish)
@@ -412,6 +438,12 @@
 ;; Child frame
 (when (childframe-workable-p)
   (use-package posframe
+    :hook (after-load-theme . posframe-delete-all)
+    :init
+    (with-eval-after-load 'persp-mode
+      (add-hook 'persp-load-buffer-functions
+                (lambda (&rest _)
+                  (posframe-delete-all))))
     :config
     (with-no-warnings
       (defun my-posframe--prettify-frame (&rest _)
