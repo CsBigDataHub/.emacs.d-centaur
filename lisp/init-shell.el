@@ -114,7 +114,8 @@
   (use-package vterm
     :bind (:map vterm-mode-map
            ([f9] . shell-pop))
-    :init (setq vterm-always-compile-module t)
+    :init (setq vterm-always-compile-module t
+                vterm-kill-buffer-on-exit t)
     :config
     (defun evil-collection-vterm-escape-stay ()
       "Go back to normal state but don't move

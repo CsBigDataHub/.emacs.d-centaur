@@ -416,8 +416,8 @@
     (progn
       ;; place the language-tool directory in $HOME
       (setq langtool-language-tool-jar
-            "/usr/local/Cellar/languagetool/4.9.1/libexec/languagetool-commandline.jar")
-      (setq langtool-java-bin "/Users/ckoneru/.sdkman/candidates/java/8.0.232.j9-adpt/bin/java")
+            "/usr/local/Cellar/languagetool/5.3/libexec/languagetool-commandline.jar")
+      (setq langtool-java-bin "/Users/ckoneru/.sdkman/candidates/java/8.0.282.j9-adpt/bin/java")
       (setq langtool-bin "/usr/local/bin/languagetool")
       (setq langtool-default-language "en-US")
       (setq langtool-java-user-arguments '("-Dfile.encoding=UTF-8"))
@@ -440,6 +440,7 @@
     )
   )
 
+
 ;; hyra for langtool check
 (defhydra hydra-langtool (:color pink
                           :hint nil)
@@ -454,6 +455,32 @@ _C_: correct  _p_: prev error _d_: done checking
   ("d"  langtool-check-done :color blue)
   ("q" nil "quit" :color blue))
 (bind-key "C-c h l t" 'hydra-langtool/body)
+
+(use-package languagetool
+  :custom
+  (languagetool-java-arguments '("-Dfile.encoding=UTF-8"))
+  (languagetool-default-language "en-US")
+  :config
+  (when sys/macp
+    (progn
+      (setq languagetool-language-tool-jar
+            "/usr/local/Cellar/languagetool/5.3/libexec/languagetool-commandline.jar")
+      (setq languagetool-java-bin "/Users/ckoneru/.sdkman/candidates/java/8.0.282.j9-adpt/bin/java")
+      ))
+  )
+
+(defhydra hydra-languagetool (:color pink
+                              :hint nil)
+  "
+_c_: check     _p_: correct at point
+_C_: correct   _d_: done checking
+"
+  ("p"  languagetool-correct-at-point)
+  ("c"  languagetool-check)
+  ("C"  languagetool-correct-buffer)
+  ("d"  languagetool-clear-buffer :color blue)
+  ("q" nil "quit" :color blue))
+(bind-key "C-c h l l" 'hydra-languagetool/body)
 
 ;; Hungry deletion
 (use-package hungry-delete

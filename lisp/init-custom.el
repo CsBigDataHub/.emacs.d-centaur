@@ -135,7 +135,7 @@
   :type '(alist :key-type (symbol :tag "Theme")
                 :value-type (symbol :tag "Internal theme")))
 
-(defcustom centaur-auto-themes '(("6:00"  . modus-vivendi)
+(defcustom centaur-auto-themes '(("6:00"  . modus-operandi)
 				                 ("19:00" . modus-vivendi))
   "List of themes mapped to the time they should be loaded.
 

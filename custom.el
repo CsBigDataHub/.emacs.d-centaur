@@ -76,7 +76,7 @@
       calendar-longitude -93.473892
       calendar-standard-time-zone-name "CST"
       calendar-daylight-time-zone-name "CDT"
-      centaur-auto-themes '((:sunrise . modus-vivendi)
+      centaur-auto-themes '((:sunrise . modus-operandi)
                             (:sunset  . modus-vivendi)))
 
 
@@ -93,17 +93,18 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(centaur-package-archives 'melpa)
+ '(centaur-theme 'auto)
  '(doom-themes-treemacs-theme "doom-colors" nil nil "Customized with use-package doom-themes")
  '(ispell-choices-win-default-height 3)
  '(lsp-java-jdt-download-url
    "https://download.eclipse.org/jdtls/milestones/1.0.0/jdt-language-server-1.0.0-202104151857.tar.gz")
  '(lsp-ui-doc-border "#5B6268")
- '(lsp-ui-flycheck-list-position 'right)
  '(lsp-ui-sideline-enable nil)
  '(lsp-ui-sideline-ignore-duplicate t)
  '(lsp-ui-sideline-show-diagnostics nil)
  '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:")
  '(network-stream-use-client-certificates t)
+ '(modus-themes-mode-line '3d)
  '(safe-local-variable-values
    '((add-to-list 'browse-at-remote-remote-type-domains
                   '("github.com" . "github"))

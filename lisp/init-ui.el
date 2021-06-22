@@ -65,7 +65,13 @@
     (progn
       ;; Make certain buffers grossly incandescent
       (use-package solaire-mode
-        :hook (after-load-theme . solaire-global-mode))
+        :hook (after-load-theme . solaire-global-mode)
+        :config
+        (with-eval-after-load 'solaire-mode
+          (add-to-list 'solaire-mode-themes-to-face-swap "^modus-"))
+        (with-eval-after-load 'solaire-mode
+          (add-to-list 'solaire-mode-themes-to-face-swap "^doom-"))
+        )
 
       (use-package modus-themes
         :init
