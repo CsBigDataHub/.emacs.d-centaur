@@ -76,9 +76,23 @@
       (use-package modus-themes
         :init
         ;; Add all your customizations prior to loading the themes
-        (setq modus-themes-slanted-constructs t
-              modus-themes-bold-constructs nil
-              modus-themes-region 'no-extend)
+        (setq modus-themes-success-deuteranopia t
+              modus-themes-slanted-constructs t
+              modus-themes-bold-constructs t
+              modus-themes-syntax 'alt-syntax
+              modus-themes-mode-line '(3d accented)
+              modus-themes-completions 'opinionated
+              modus-themes-fringes 'intense
+              modus-themes-paren-match 'intense-bold
+              modus-themes-region 'accent
+              modus-themes-org-blocks 'tinted-background
+              modus-themes-scale-headings t
+              modus-themes-variable-pitch-ui t
+              modus-themes-variable-pitch-headings t
+              modus-themes-fringes 'intense
+              modus-themes-hl-line 'accented-background
+              modus-themes-headings '((t . section))
+              )
 
         (require 'doom-themes)
         ;; Load the theme files before enabling a theme
