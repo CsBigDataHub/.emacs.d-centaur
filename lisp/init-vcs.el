@@ -107,7 +107,7 @@
     (transient-posframe-min-width nil)
     :init
     (setq transient-posframe-border-width 3
-          transient-posframe-min-height 22
+          transient-posframe-min-height 24
           transient-posframe-min-width nil
           transient-posframe-parameters '((left-fringe . 8)
                                           (right-fringe . 8)))

@@ -35,6 +35,20 @@
 (require 'init-funcs)
 
 (pcase centaur-lsp
+  ('tags
+   (use-package citre
+     :diminish
+     :functions projectile-project-root
+     :bind (("C-x c j" . citre-jump)
+            ("C-x c k" . citre-jump-back)
+            ("C-x c p" . citre-ace-peek))
+     :hook (prog-mode . citre-auto-enable-citre-mode)
+     :config
+     (with-eval-after-load 'projectile
+       (setq citre-project-root-function #'projectile-project-root))
+     (with-eval-after-load 'cc-mode (require 'citre-lang-c))
+     (with-eval-after-load 'dired (require 'citre-lang-fileref))))
+
   ('eglot
    (use-package eglot
      :hook ((go-mode . eglot-ensure)
@@ -627,7 +641,7 @@
      (use-package lsp-java
        :hook (java-mode . (lambda () (require 'lsp-java)))))))
 
-(when centaur-lsp
+(when (memq centaur-lsp '(lsp-mode eglot))
   ;; Enable LSP in org babel
   ;; https://github.com/emacs-lsp/lsp-mode/issues/377
   (cl-defmacro lsp-org-babel-enable (lang)
