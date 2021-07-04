@@ -423,6 +423,10 @@
 
 (use-package skeletor)
 
+(use-package vagrant-tramp)
+
+(use-package magrant)
+
 (use-package emojify
   :hook
   ;; (after-init . global-emojify-mode)

@@ -95,8 +95,8 @@
 (evil-set-initial-state 'magit-status-mode 'emacs)
 (evil-set-initial-state 'notdeft-mode 'emacs)
 (evil-set-initial-state 'lsp-ui-flycheck-list-mode 'emacs)
-
-
+(evil-set-initial-state 'magrant-machine-mode 'emacs)
+(evil-set-initial-state 'magrant-box-mode 'emacs)
 (evil-set-initial-state 'flymake-diagnostics-buffer-mode 'emacs)
 
 ;; (add-hook 'flymake-diagnostics-buffer-mode-hook
@@ -127,6 +127,8 @@
 (use-package evil-exchange)
 
 (use-package evil-goggles
+  :init
+  (evil-goggles-mode)
   :config
   (evil-goggles-mode)
   (setq evil-goggles-pulse nil)
@@ -173,6 +175,8 @@
         evil-snipe-scope 'visible
         evil-snipe-repeat-scope 'visible
         evil-snipe-char-fold t)
+  (evil-snipe-mode 1)
+  (evil-snipe-override-mode 1)
   :config
   ;; and disable in specific modes
   (push 'Info-mode evil-snipe-disabled-modes)

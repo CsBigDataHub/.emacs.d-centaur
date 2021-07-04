@@ -76,7 +76,7 @@
       calendar-longitude -93.473892
       calendar-standard-time-zone-name "CST"
       calendar-daylight-time-zone-name "CDT"
-      centaur-auto-themes '((:sunrise . modus-operandi)
+      centaur-auto-themes '((:sunrise . modus-vivendi)
                             (:sunset  . modus-vivendi)))
 
 

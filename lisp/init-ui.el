@@ -85,7 +85,7 @@
               modus-themes-fringes 'intense
               modus-themes-paren-match 'intense-bold
               modus-themes-region 'accent
-              modus-themes-org-blocks 'tinted-background
+              modus-themes-org-blocks 'gray-background
               modus-themes-scale-headings t
               modus-themes-variable-pitch-ui t
               modus-themes-variable-pitch-headings t
