@@ -2855,6 +2855,45 @@ are defining or executing a macro."
                                                                            ((match-string 2))) ))  nil  beg end))
 
 
+;; https://www.emacswiki.org/emacs/RecentFiles#h5o-21
+;; https://www.reddit.com/r/emacs/comments/8u8slx/dired_quickly_jumping_to_previously_visited/
+(eval-after-load "recentf"
+  '(progn
+     (defun recentf-track-opened-file ()
+       "Insert the name of the dired or file just opened or written into the recent list."
+       (let ((buff-name (or buffer-file-name (and (derived-mode-p 'dired-mode) default-directory))))
+         (and buff-name
+              (recentf-add-file buff-name)))
+       ;; Must return nil because it is run from `write-file-functions'.
+       nil)
+
+     (defun recentf-track-closed-file ()
+       "Update the recent list when a file or dired buffer is killed.
+That is, remove a non kept file from the recent list."
+       (let ((buff-name (or buffer-file-name (and (derived-mode-p 'dired-mode) default-directory))))
+         (and buff-name
+              (recentf-remove-if-non-kept buff-name))))
+
+     (add-hook 'dired-after-readin-hook 'recentf-track-opened-file)))
+
+;; http://pragmaticemacs.com/emacs/open-a-recent-directory-in-dired-revisited/
+(defun my/ivy-dired-recent-dirs ()
+  "Present a list of recently used directories and open the selected one in dired"
+  (interactive)
+  (let ((recent-dirs
+         (delete-dups
+          (mapcar (lambda (file)
+                    (if (file-directory-p file) file (file-name-directory file)))
+                  recentf-list))))
+
+    (let ((dir (ivy-read "Directory: "
+                         recent-dirs
+                         :re-builder #'ivy--regex
+                         :sort nil
+                         :initial-input nil)))
+      (dired dir))))
+(global-set-key (kbd "C-x C-d") 'my/ivy-dired-recent-dirs)
+
 ;; https://github.com/jorgenschaefer/circe/wiki/Configuration#safer-password-management
 ;; using this function in restclient variables like this
 ;; :app_secret := (my-fetch-password :user "login" :host "machine")
