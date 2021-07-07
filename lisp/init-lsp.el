@@ -37,17 +37,24 @@
 (pcase centaur-lsp
   ('tags
    (use-package citre
-     :diminish
-     :functions projectile-project-root
-     :bind (("C-x c j" . citre-jump)
-            ("C-x c k" . citre-jump-back)
-            ("C-x c p" . citre-ace-peek))
-     :hook (prog-mode . citre-auto-enable-citre-mode)
-     :config
-     (with-eval-after-load 'projectile
-       (setq citre-project-root-function #'projectile-project-root))
-     (with-eval-after-load 'cc-mode (require 'citre-lang-c))
-     (with-eval-after-load 'dired (require 'citre-lang-fileref))))
+       :diminish
+       :functions projectile-project-root
+       :bind (("C-x c j" . citre-jump+)
+              ("C-x c k" . citre-jump-back)
+              ("C-x c p" . citre-peek)
+              ("C-x c a" . citre-ace-peek))
+       :hook (prog-mode . citre-auto-enable-citre-mode)
+       :config
+       (defun citre-jump+ ()
+         (interactive)
+         (condition-case _
+             (citre-jump)
+           (error (call-interactively #'xref-find-definitions))))
+
+       (with-eval-after-load 'projectile
+         (setq citre-project-root-function #'projectile-project-root))
+       (with-eval-after-load 'cc-mode (require 'citre-lang-c))
+       (with-eval-after-load 'dired (require 'citre-lang-fileref))))
 
   ('eglot
    (use-package eglot
