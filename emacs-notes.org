@@ -10280,7 +10280,9 @@ openssl pkcs12 -in abcd.pfx -out key.pem -nocerts
 #+END_SRC
 4) Use the following command:
 #+BEGIN_SRC sh
-curl -k https://www.thesitetoauthenticate.com/test -v –key key.pem –cacert ca.pem –cert client.pem
+  curl -k https://www.thesitetoauthenticate.com/test -v –key key.pem –cacert ca.pem –cert client.pem
+
+  curl -v -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" --data "@key_schema.json"  --cert ./client.cert.pem --key ./client.key.pem  --tlsv1.2 --cacert ./client.cert.pem https://schema-registrycom/subjects/TESTLOAD-key/versions
 #+END_SRC
 
 * To test that both the fast JSON and native compilation is working
