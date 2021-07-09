@@ -1,4 +1,5 @@
 (use-package quelpa
+  :demand t
   :config
   (setq quelpa-update-melpa-p nil)
   (quelpa-self-upgrade))
