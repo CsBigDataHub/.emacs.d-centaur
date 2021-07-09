@@ -73,11 +73,13 @@
           (add-to-list 'solaire-mode-themes-to-face-swap "^doom-"))
         )
 
+      (use-package doom-themes )
+
       (use-package modus-themes
         :init
         ;; Add all your customizations prior to loading the themes
         (setq modus-themes-success-deuteranopia t
-              modus-themes-slanted-constructs t
+              modus-themes-italic-constructs t
               modus-themes-bold-constructs t
               modus-themes-syntax 'alt-syntax
               modus-themes-mode-line '(3d accented)
@@ -117,7 +119,8 @@
         (with-eval-after-load 'lsp-treemacs
           (doom-themes-treemacs-config))
         ;; Corrects (and improves) org-mode's native fontification.
-        (doom-themes-org-config)))
+        (doom-themes-org-config))
+      )
 
   (progn
     (warn "The current theme may not be compatible!")
