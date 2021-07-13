@@ -71,6 +71,11 @@
   :diminish
   :hook (projectile-mode . projectile-rails-global-mode))
 
+;; auto formatter
+(use-package rufo
+  :hook (ruby-mode . rufo-minor-mode)
+  )
+
 (provide 'init-ruby)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
