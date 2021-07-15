@@ -128,8 +128,9 @@
   (use-package exec-path-from-shell
     :init
     (setq exec-path-from-shell-variables '("PATH" "MANPATH"
-                                           "GOPATH" "GO111MODULE" "GOPROXY" "GRADLE_HOME" "GROOVY_HOME" "JAVA_HOME" "MAVEN_HOME" "SBT_HOME" "SCALA_HOME" "WORKON_HOME" "PYENV_ROOT"))
-    (exec-path-from-shell-initialize)))
+          "GOPATH" "GO111MODULE" "GOPROXY" "GRADLE_HOME" "GROOVY_HOME" "JAVA_HOME" "MAVEN_HOME" "SBT_HOME" "SCALA_HOME" "WORKON_HOME" "PYENV_ROOT")
+    exec-path-from-shell-arguments '("-l"))
+  (exec-path-from-shell-initialize)))
 
 ;; Start server
 (use-package server
