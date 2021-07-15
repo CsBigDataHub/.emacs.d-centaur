@@ -427,7 +427,7 @@
 ;; Scroll one line at a time (less "jumpy" than defaults)
 (when (display-graphic-p)
   (setq mouse-wheel-scroll-amount '(1 ((shift) . hscroll))
-        mouse-wheel-scroll-amount-horizontal 1
+        mouse-wheel-tilt-scroll t
         mouse-wheel-progressive-speed nil))
 (setq scroll-step 1
       scroll-margin 0

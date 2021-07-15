@@ -203,5 +203,12 @@ decrease this. If you experience stuttering, increase this.")
 ( cond ((eq system-type 'darwin) (require 'init-macos)))
 ( cond ((eq system-type 'gnu/linux) (require 'init-linux)))
 ;; ( cond ((eq system-type 'gnu/linux) (require 'init-mail)))
+;; sometimes emacs server do not start
+;; start emacs-server if not running
+(add-hook 'after-init-hook
+          (lambda ()
+            (require 'server)
+            (unless (server-running-p)
+              (server-start))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
