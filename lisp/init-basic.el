@@ -81,50 +81,7 @@
 (modify-coding-system-alist 'process "*" 'utf-8)
 
 ;; Environment
-;;(when (or sys/mac-x-p sys/linux-x-p)
-;;  (use-package exec-path-from-shell
-;;    :init
-;;    (setq exec-path-from-shell-check-startup-files nil
-;;          exec-path-from-shell-variables '("PATH" "MANPATH")
-;;          exec-path-from-shell-arguments '("-l"))
-;;    (exec-path-from-shell-initialize)
-;;    :config ;;my-personal config added
-;;    (exec-path-from-shell-copy-env "LC_ALL")
-;;    (exec-path-from-shell-copy-env "LANG")
-;;    (exec-path-from-shell-copy-env "LC_TYPE")
-;;    (exec-path-from-shell-copy-env "SSH_AGENT_PID")
-;;    (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
-;;    (exec-path-from-shell-copy-env "SHELL")
-;;    (exec-path-from-shell-copy-env "JAVA_HOME")
-;;    (defun set-exec-path-from-shell-PATH ()
-;;      "Sets the exec-path to the same value used by the user shell"
-;;      (let ((path-from-shell
-;;             (replace-regexp-in-string
-;;              "[[:space:]\n]*$" ""
-;;              (shell-command-to-string "$SHELL -l -c 'echo $PATH'"))))
-;;        (setenv "PATH" path-from-shell)
-;;        (setq exec-path (split-string path-from-shell path-separator))))
-;;
-;;    ;; call function now
-;;    (set-exec-path-from-shell-PATH)
-;;
-;;    (cond ((display-graphic-p)
-;;           ;; A known problem with GUI Emacs on MacOS: it runs in an isolated
-;;           ;; environment, so envvars will be wrong. That includes the PATH
-;;           ;; Emacs picks up. `exec-path-from-shell' fixes this. This is slow
-;;           ;; and benefits greatly from compilation.
-;;           (setq exec-path
-;;                 (or (eval-when-compile
-;;                       (when (require 'exec-path-from-shell nil t)
-;;                         (setq exec-path-from-shell-check-startup-files nil)
-;;                         (nconc exec-path-from-shell-variables '("GOPATH" "GOROOT" "PYTHONPATH"))
-;;                         (exec-path-from-shell-initialize)
-;;                         exec-path))
-;;                     exec-path))))
-;;    ))
-
-;; Environment
-(when (or sys/mac-x-p sys/linux-x-p)
+(when (or sys/mac-x-p sys/linux-x-p (daemonp))
   (use-package exec-path-from-shell
     :init
     (setq exec-path-from-shell-variables '("PATH" "MANPATH"
