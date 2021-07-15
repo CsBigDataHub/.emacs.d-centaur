@@ -30,6 +30,21 @@
 
 ;;; Code:
 
+(use-package robe
+  :hook (ruby-mode . robe-mode)
+  :config
+  (eval-after-load 'company '(push 'company-robe company-backends))
+  )
+
+(use-package enh-ruby-mode
+  :hook (ruby-mode . enh-ruby-mode)
+  :init
+  (setq enh-ruby-program "/Users/ckoneru/.rbenv/shims/ruby")
+  (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
+  :config
+  (add-to-list 'auto-mode-alist
+               '("\\(?:\\.rb\\|ru\\|rake\\|thor\\|jbuilder\\|gemspec\\|podspec\\|/\\(?:Gem\\|Rake\\|Cap\\|Thor\\|Vagrant\\|Guard\\|Pod\\)file\\)\\'" . enh-ruby-mode)))
+
 ;; Integrate rbenv
 (use-package rbenv
   :hook (after-init . global-rbenv-mode)

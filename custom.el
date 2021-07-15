@@ -17,8 +17,8 @@
 (setq centaur-completion-style 'minibuffer)    ; Completion display style: minibuffer or childframe
 (setq centaur-dashboard t)                    ; Use dashboard at startup or not: t or nil
 (setq centaur-restore-frame-geometry t)      ; Restore the frame's geometry at startup: t or nil
-;; (setq centaur-lsp 'eglot)                      ; Set LSP client: lsp-mode, eglot or nil
-(setq centaur-lsp-format-on-save-ignore-modes '(json-mode)) ; Ignore format on save for some languages
+;; (setq centaur-lsp 'lsp-mode)                      ; Set LSP client: lsp-mode, eglot or nil
+(setq centaur-lsp-format-on-save-ignore-modes '(json-mode ruby-mode)) ; Ignore format on save for some languages
 ;; (setq centaur-chinese-calendar nil)            ; Use Chinese calendar or not: t or nil
 (setq centaur-prettify-symbols-alist nil)      ; Alist of symbol prettifications
 ;; (setq centaur-prettify-org-symbols-alist nil)  ; Alist of symbol prettifications for `org-mode'
