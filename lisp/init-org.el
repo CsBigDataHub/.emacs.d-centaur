@@ -565,7 +565,16 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
     :custom
     (org-roam-directory (car org-roam-directory-alist))
     (org-roam-completion-system 'ivy)
-    :hook (after-init . org-roam-mode)
+    :hook (after-init . org-roam-setup)
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n g" . org-roam-graph)
+           ("C-c n i" . org-roam-node-insert)
+           ("C-c n c" . org-roam-capture)
+           ("C-c n j" . org-roam-dailies-capture-today)
+           ("C-c n I" . org-roam-insert-immediate))
+    :init
+    (setq org-roam-v2-ack t)
     :config
     (require 'org-roam-protocol)
     (setq org-roam-capture-templates
@@ -574,24 +583,14 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
              :file-name "${slug}"
              :head "#+TITLE: ${title}\n"
              :unnarowed t)))
-    :bind (:map org-roam-mode-map
-           (("C-c n l" . org-roam)
-            ("C-c n f" . org-roam-find-file)
-            ("C-c n d" . my/toggle-org-roam-directory)
-            ("C-c n g" . org-roam-graph))
-           :map org-mode-map
-           (("C-c n i" . org-roam-insert))
-           (("C-c n I" . org-roam-insert-immediate)))
-    :config
-    (unless (file-exists-p org-roam-directory)
-      (make-directory org-roam-directory)))
+    )
 
   ;; (use-package company-org-roam
   ;;   :config
   ;;   (push 'company-org-roam company-backends))
 
   (use-package org-roam-server
-    :functions xwidget-buffer xwidget-webkit-current-session
+    :diminish
     :hook (org-roam-server-mode . org-roam-server-browse)
     :init
     (defun org-roam-server-browse ()
