@@ -112,10 +112,10 @@ The prefix map is named 'my-DEF-map'."
  "nh" 'notdeft-mode-hydra/body
  "de" 'deft
  "dd" 'my/toggle-org-roam-directory
- "l" 'org-roam
- "f" 'org-roam-find-file
+ "l" 'org-roam-buffer-toggle
+ "f" 'org-roam-node-find
  "g" 'org-roam-graph
- "i" 'org-roam-insert
+ "i" 'org-roam-node-insert
  "s" 'org-roam-server-mode
  )
 
