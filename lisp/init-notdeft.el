@@ -17,6 +17,7 @@
 
 (setq notdeft-extension "org")
 (setq notdeft-secondary-extensions '("md" "txt"))
+(setq notdeft-allow-org-property-drawers t)
 
 (setq notdeft-xapian-program (expand-file-name "straight/build/notdeft/xapian/notdeft-xapian" user-emacs-directory))
 ;; (setq notdeft-xapian-program-compile-command-format "g++ -o %s %s -std=c++11 -Wall `pkg-config --cflags --libs tclap` `xapian-config --cxxflags --libs`")
