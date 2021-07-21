@@ -440,26 +440,50 @@
 
 (use-package disk-usage)
 
-(use-package selected
-  :commands selected-minor-mode
-  :init
-  (setq selected-org-mode-map (make-sparse-keymap))
-  :bind (:map selected-keymap
-         ("/" . undo-in-region)
-         ("C" . hydra-change-case/body)
-         ("c" . capitalize-region)
-         ("l" . downcase-region)
-         ("D" . delete-duplicate-lines)
-         ("m" . apply-macro-to-region-lines)
-         ("q" . selected-off)
-         ("s" . sort-lines)
-         ("u" . upcase-region)
-         ("w" . count-words-region)
-         :map selected-org-mode-map
-         ("t" . org-table-convert-region)
-         ("-" . org-ctrl-c-minus))
-  :config (selected-global-mode)
-  (setq selected-minor-mode-override t))
+(use-package scratch
+  :config
+  (defun prot/scratch-buffer-setup ()
+    "Add contents to `scratch' buffer and name it accordingly.
+If region is active, add its contents to the new buffer."
+    (let* ((mode major-mode)
+           (string (format "Scratch buffer for: %s\n\n" mode))
+           (region (with-current-buffer (current-buffer)
+                     (if (region-active-p)
+                         (buffer-substring-no-properties
+                          (region-beginning)
+                          (region-end)))
+                     ""))
+           (text (concat string region)))
+      (when scratch-buffer
+	    (save-excursion
+          (insert text)
+          (goto-char (point-min))
+          (comment-region (point-at-bol) (point-at-eol)))
+	    (forward-line 2))
+      (rename-buffer (format "*Scratch for %s*" mode) t)))
+  (add-hook 'scratch-create-buffer-hook #'prot/scratch-buffer-setup)
+  :bind ("C-c S" . scratch))
+
+  (use-package selected
+    :commands selected-minor-mode
+    :init
+    (setq selected-org-mode-map (make-sparse-keymap))
+    :bind (:map selected-keymap
+           ("/" . undo-in-region)
+           ("C" . hydra-change-case/body)
+           ("c" . capitalize-region)
+           ("l" . downcase-region)
+           ("D" . delete-duplicate-lines)
+           ("m" . apply-macro-to-region-lines)
+           ("q" . selected-off)
+           ("s" . sort-lines)
+           ("u" . upcase-region)
+           ("w" . count-words-region)
+           :map selected-org-mode-map
+           ("t" . org-table-convert-region)
+           ("-" . org-ctrl-c-minus))
+    :config (selected-global-mode)
+    (setq selected-minor-mode-override t))
 
 (use-package counsel-jq)
 
