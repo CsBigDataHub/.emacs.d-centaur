@@ -135,6 +135,32 @@ not appropriate in some cases like terminals."
         (apply orig-fun args)))
 
     (advice-add 'counsel-yank-pop-action :around #'vterm-counsel-yank-pop-action)
+
+    (defun my/vtermexecute-current-line ()
+      "Insert text of current line in vterm and execute."
+      (interactive)
+      (eval-when-compile (require 'vterm))
+      (eval-when-compile (require 'subr-x))
+      (let ((command (string-trim (buffer-substring
+                                   (save-excursion
+                                     (beginning-of-line)
+                                     (point))
+                                   (save-excursion
+                                     (end-of-line)
+                                     (point))))))
+        (let ((buf (current-buffer)))
+          (unless (get-buffer vterm-buffer-name)
+            (vterm))
+          (display-buffer vterm-buffer-name t)
+          (switch-to-buffer-other-window vterm-buffer-name)
+          (vterm--goto-line -1)
+          (message command)
+          (vterm-send-string command)
+          (vterm-send-return)
+          (switch-to-buffer-other-window buf)
+          )))
+
+    (global-set-key (kbd "C-x E E") 'my/vterm-execute-current-line)
     ))
 
 

@@ -270,14 +270,15 @@ wisely or prepare to call `eshell-interrupt-process'."
 (defun my/eshell-execute-current-line ()
   "Insert text of current line in eshell and execute."
   (interactive)
-  (require 'eshell)
-  (let ((command (buffer-substring
-                  (save-excursion
-                    (beginning-of-line)
-                    (point))
-                  (save-excursion
-                    (end-of-line)
-                    (point)))))
+  (eval-when-compile (require 'subr-x))
+  (eval-when-compile (require 'eshell))
+  (let ((command (string-trim (buffer-substring
+                               (save-excursion
+                                 (beginning-of-line)
+                                 (point))
+                               (save-excursion
+                                 (end-of-line)
+                                 (point))))))
     (let ((buf (current-buffer)))
       (unless (get-buffer eshell-buffer-name)
         (eshell))
@@ -291,7 +292,7 @@ wisely or prepare to call `eshell-interrupt-process'."
       (switch-to-buffer-other-window buf)
       )))
 
-(global-set-key (kbd "C-x E") 'my/eshell-execute-current-line)
+(global-set-key (kbd "C-x E e") 'my/eshell-execute-current-line)
 
 (use-package esh-module
   :ensure nil
