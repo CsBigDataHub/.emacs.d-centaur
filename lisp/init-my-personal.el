@@ -440,6 +440,8 @@
 
 (use-package disk-usage)
 
+(use-package regex-tool)
+
 (use-package scratch
   :config
   (defun prot/scratch-buffer-setup ()
