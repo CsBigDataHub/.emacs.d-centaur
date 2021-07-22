@@ -116,27 +116,8 @@
            ([f9] . shell-pop))
     :init (setq vterm-always-compile-module t
                 vterm-kill-buffer-on-exit t)
-    :config
-    (defun evil-collection-vterm-escape-stay ()
-      "Go back to normal state but don't move
-cursor backwards. Moving cursor backwards is the default vim behavior but it is
-not appropriate in some cases like terminals."
-      (setq-local evil-move-cursor-back nil))
 
-    (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
-
-    (defun vterm-counsel-yank-pop-action (orig-fun &rest args)
-      (if (equal major-mode 'vterm-mode)
-          (let ((inhibit-read-only t)
-                (yank-undo-function (lambda (_start _end) (vterm-undo))))
-            (cl-letf (((symbol-function 'insert-for-yank)
-                       (lambda (str) (vterm-send-string str t))))
-              (apply orig-fun args)))
-        (apply orig-fun args)))
-
-    (advice-add 'counsel-yank-pop-action :around #'vterm-counsel-yank-pop-action)
-
-    (defun my/vtermexecute-current-line ()
+    (defun my/vterm-execute-current-line ()
       "Insert text of current line in vterm and execute."
       (interactive)
       (eval-when-compile (require 'vterm))
@@ -161,7 +142,25 @@ not appropriate in some cases like terminals."
           )))
 
     (global-set-key (kbd "C-x E E") 'my/vterm-execute-current-line)
-    ))
+    :config
+    (defun evil-collection-vterm-escape-stay ()
+      "Go back to normal state but don't move
+cursor backwards. Moving cursor backwards is the default vim behavior but it is
+not appropriate in some cases like terminals."
+      (setq-local evil-move-cursor-back nil))
+
+    (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
+
+    (defun vterm-counsel-yank-pop-action (orig-fun &rest args)
+      (if (equal major-mode 'vterm-mode)
+          (let ((inhibit-read-only t)
+                (yank-undo-function (lambda (_start _end) (vterm-undo))))
+            (cl-letf (((symbol-function 'insert-for-yank)
+                       (lambda (str) (vterm-send-string str t))))
+              (apply orig-fun args)))
+        (apply orig-fun args)))
+
+    (advice-add 'counsel-yank-pop-action :around #'vterm-counsel-yank-pop-action)))
 
 
 ;; Shell Pop
