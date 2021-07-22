@@ -113,7 +113,8 @@
            (executable-find "make"))
   (use-package vterm
     :bind (:map vterm-mode-map
-           ([f9] . shell-pop))
+           ([f9] . shell-pop)
+           ("C-<delete>" . vterm-send-delete))
     :init (setq vterm-always-compile-module t
                 vterm-kill-buffer-on-exit t)
 
@@ -142,6 +143,8 @@
           )))
 
     (global-set-key (kbd "C-x E E") 'my/vterm-execute-current-line)
+    (add-hook 'vterm-mode-hook (lambda() (hungry-delete-mode -1)))
+
     :config
     (defun evil-collection-vterm-escape-stay ()
       "Go back to normal state but don't move

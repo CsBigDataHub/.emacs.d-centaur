@@ -98,6 +98,7 @@
 (evil-set-initial-state 'magrant-machine-mode 'emacs)
 (evil-set-initial-state 'magrant-box-mode 'emacs)
 (evil-set-initial-state 'flymake-diagnostics-buffer-mode 'emacs)
+(evil-set-initial-state 'vterm-mode 'emacs)
 
 ;; (add-hook 'flymake-diagnostics-buffer-mode-hook
 ;;           (lambda ()
@@ -186,12 +187,14 @@
   (evil-snipe-override-mode 1))
 
 ;;for shell-pop
-(evil-define-key 'insert vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
-(evil-define-key 'normal vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
+;; (evil-define-key 'insert vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
+;; (evil-define-key 'normal vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
+;; (evil-define-key 'insert vterm-mode-map (kbd "<delete>")  #'vterm-send-delete) ;;Added personally
+;; (evil-define-key 'normal vterm-mode-map (kbd "<delete>")  #'vterm-send-delete) ;;Added personally
 
-(add-hook 'vterm-mode-hook
-          (lambda ()
-            (evil-insert-state)))
+;; (add-hook 'vterm-mode-hook
+;;           (lambda ()
+;;             (evil-insert-state)))
 
 
 ;; (add-hook 'evil-mode-hook (lambda()
