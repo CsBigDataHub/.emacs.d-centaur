@@ -34,28 +34,8 @@
 (require 'init-custom)
 (require 'init-funcs)
 
-(pcase centaur-lsp
-  ('tags
-   (use-package citre
-     :diminish
-     :functions projectile-project-root
-     :bind (("C-x c j" . citre-jump+)
-            ("C-x c k" . citre-jump-back)
-            ("C-x c p" . citre-peek)
-            ("C-x c a" . citre-ace-peek))
-     :hook (prog-mode . citre-auto-enable-citre-mode)
-     :config
-     (defun citre-jump+ ()
-       (interactive)
-       (condition-case _
-           (citre-jump)
-         (error (call-interactively #'xref-find-definitions))))
-
-     (with-eval-after-load 'projectile
-       (setq citre-project-root-function #'projectile-project-root))
-     (with-eval-after-load 'cc-mode (require 'citre-lang-c))
-     (with-eval-after-load 'dired (require 'citre-lang-fileref))))
-
+(when emacs/>=26p
+ (pcase centaur-lsp
   ('eglot
    (use-package eglot
      :hook ((go-mode . eglot-ensure)
@@ -646,7 +626,7 @@
    ;; Java support
    (when emacs/>=25.2p
      (use-package lsp-java
-       :hook (java-mode . (lambda () (require 'lsp-java)))))))
+       :hook (java-mode . (lambda () (require 'lsp-java))))))))
 
 (when (memq centaur-lsp '(lsp-mode eglot))
   ;; Enable LSP in org babel
