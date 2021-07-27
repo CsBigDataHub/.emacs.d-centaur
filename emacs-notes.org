@@ -11117,4 +11117,45 @@ Display the signatures in a less readable font.
 \\
 
 Back to my [[../index.html][Programming Homepage]]
+
+* [[https://philjackson.github.io//emacs/shell/2021/07/26/export-an-environment-variable-to-emacs/][Export an environment variable to Emacs | Snippets and other bits]] :website:
+
+[2021-07-26 Mon 21:51]
+
+** Article
+
+*** Export an environment variable to Emacs
+
+Jul 26, 2021
+
+Handy function to export environment variables to Emacs from the command line:
+
+#+begin_example
+    function export-emacs  {
+       if  [  " $(emacsclient  -e t ) "  !=  't'  ] ;  then
+          return 1
+       fi
+
+      for name  in  " ${ @ } " ;  do
+           value = $( eval echo  \"\$ ${ name } \" )
+          emacsclient  -e  "(setenv  \" ${ name } \"   \" ${ value } \" )"  >/dev/null
+       done
+   }
+#+end_example
+
+Use it like this:
+
+#+begin_example
+    export  BLAH = "Some value"
+  export-emacs BLAH
+#+end_example
+
+And in emacs:
+
+#+begin_example
+    ( getenv  "BLAH" )  ; => "Some value"
+#+end_example
+
+--------------
+
 *
