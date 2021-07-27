@@ -577,12 +577,10 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
     (setq org-roam-v2-ack t)
     :config
     (require 'org-roam-protocol)
-    (setq org-roam-capture-templates
-          '(("d" "default" plain (function org-roam--capture-get-point)
-             "%?"
-             :file-name "${slug}"
-             :head "#+TITLE: ${title}\n"
-             :unnarowed t)))
+    (setq-default org-roam-capture-templates
+                  '(("d" "default" plain "%?" :if-new
+                     (file+head "${slug}.org" "#+title: ${title}")
+                     :unnarrowed t)))
     ;; https://orgmode-exocortex.com/2021/07/22/configure-org-roam-v2-to-update-database-only-when-idle/
     (with-eval-after-load "org-roam"
       ;; queue for files that will be updated in org-roam-db when emacs is idle
