@@ -268,17 +268,16 @@ wisely or prepare to call `eshell-interrupt-process'."
       (user-error "Cannot find a project root here"))))
 
 (defun my/eshell-execute-current-line ()
-  "Insert text of current line in eshell and execute."
+  "Insert text of current line or selected in eshell and execute."
   (interactive)
   (eval-when-compile (require 'subr-x))
   (eval-when-compile (require 'eshell))
-  (let ((command (string-trim (buffer-substring
-                               (save-excursion
-                                 (beginning-of-line)
-                                 (point))
-                               (save-excursion
-                                 (end-of-line)
-                                 (point))))))
+  (if (use-region-p)
+      (setq min (region-beginning)
+            max (region-end))
+    (setq min (point-at-bol)
+          max (point-at-eol)))
+  (let ((command (string-trim (buffer-substring min max))))
     (let ((buf (current-buffer)))
       (unless (get-buffer eshell-buffer-name)
         (eshell))

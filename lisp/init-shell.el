@@ -119,17 +119,16 @@
                 vterm-kill-buffer-on-exit t)
 
     (defun my/vterm-execute-current-line ()
-      "Insert text of current line in vterm and execute."
+      "Insert text of current line or region in vterm and execute."
       (interactive)
       (eval-when-compile (require 'vterm))
       (eval-when-compile (require 'subr-x))
-      (let ((command (string-trim (buffer-substring
-                                   (save-excursion
-                                     (beginning-of-line)
-                                     (point))
-                                   (save-excursion
-                                     (end-of-line)
-                                     (point))))))
+      (if (use-region-p)
+          (setq min (region-beginning)
+                max (region-end))
+        (setq min (point-at-bol)
+              max (point-at-eol)))
+      (let ((command (string-trim (buffer-substring min max))))
         (let ((buf (current-buffer)))
           (unless (get-buffer vterm-buffer-name)
             (vterm))
