@@ -241,20 +241,20 @@
 ;; (add-hook 'text-mode-hook 'text-mode-hook-setup)
 
 ;; https://endlessparentheses.com/ispell-and-org-mode.html
-;; (defun endless/org-ispell ()
-;;   "Configure `ispell-skip-region-alist' for `org-mode'."
-;;   (make-local-variable 'ispell-skip-region-alist)
-;;   (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
-;;   (add-to-list 'ispell-skip-region-alist '("~" "~"))
-;;   (add-to-list 'ispell-skip-region-alist '("=" "="))
-;;   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
-;;   (add-to-list 'ispell-skip-region-alist '("^#\\+begin_src" . "^#\\+end_src"))
-;;   (add-to-list 'ispell-skip-region-alist '("^#\\+begin_example" . "^#\\+end_example"))
-;;   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXAMPLE" . "^#\\+END_EXAMPLE"))
-;;   (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
-;;   (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
-;;   )
-;; (add-hook 'org-mode-hook #'endless/org-ispell)
+(defun endless/org-ispell ()
+  "Configure `ispell-skip-region-alist' for `org-mode'."
+  (make-local-variable 'ispell-skip-region-alist)
+  (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
+  (add-to-list 'ispell-skip-region-alist '("~" "~"))
+  (add-to-list 'ispell-skip-region-alist '("=" "="))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+begin_src" . "^#\\+end_src"))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+begin_example" . "^#\\+end_example"))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_EXAMPLE" . "^#\\+END_EXAMPLE"))
+  (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+  (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+  )
+(add-hook 'org-mode-hook #'endless/org-ispell)
 
 ;; https://emacs.stackexchange.com/questions/54754/how-to-change-the-company-complete-backend-based-on-the-current-syntaxG
 ;; (defun my-in-comment-p (pos)
