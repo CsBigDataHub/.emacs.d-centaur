@@ -1,0 +1,50 @@
+#+title: Emacs org mode notes
+** [[https://emacs.stackexchange.com/a/45180][org mode - Does org have any "inverse-tangle" operations e.g. for collaborating with non-org users? - Emacs Stack Exchange]] :website:
+
+[2021-07-31 Sat 22:40]
+
+**** Answer
+
+Yes, it's =org-babel-detangle=.
+
+#+begin_quote
+  org-babel-detangle is an interactive compiled Lisp function in =ob-tangle.el=.
+
+  =(org-babel-detangle &optional SOURCE-CODE-FILE)=
+
+  Propagate changes in source file back original to Org file. This requires that code blocks were tangled with link comments which enable the original code blocks to be found.
+#+end_quote
+
+You need to set the =comments= header argument to =link= to make it work, for example,
+
+#+begin_example
+   #+begin_src ruby :tangle hello.rb :comments link
+    puts 'hello'
+  #+end_src
+#+end_example
+
+then use =M-x org-babel-tangle= to export the code block, a new file named =hello.rb= will be created, it should have similar contents like the following
+
+#+begin_example
+   ~ $ cat hello.rb
+  # [[file:~/foo.org][No heading:1]]
+  puts 'hello'
+  # No heading:1 ends here
+  ~ $
+#+end_example
+
+Finally, open =hello.rb= in Emacs, change =hello= to =hello world=, and run =M-x org-babel-detangle= in =hello.rb='s buffer. The org file will be updated
+
+#+begin_example
+   #+begin_src ruby :tangle hello.rb :comments link
+    puts 'hello world'
+  #+end_src
+#+end_example
+
+****  Answer 2
+
+There is also [[https://github.com/mtekman/org-tanglesync.el][org-tanglesync]], which has a much simpler method of syncing than =org-babel-detangle=
+
+Essentially if a block is tangled to an external file, then every time that block is edited the external file is checked also, and if a diff is detected, the user is prompted to either reject or pull the external changes into the org src block.
+
+This also has functions to automatically process all tangled blocks in a buffer. I hope it helps.
