@@ -45,6 +45,19 @@
   :config
   (setq-default magit-diff-refine-hunk 'all)
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
+;; https://takeonrules.com/2021/08/03/using-magit-built-in-functions-for-workflow/
+  (setq magit-repolist-columns
+        '(("Name"    25 magit-repolist-column-ident ())
+          ("Version" 25 magit-repolist-column-version ())
+          ("D"        1 magit-repolist-column-dirty ())
+          ("⇣"      3 magit-repolist-column-unpulled-from-upstream
+           ((:right-align t)
+            (:help-echo "Upstream changes not in branch")))
+          ("⇡"        3 magit-repolist-column-unpushed-to-upstream
+           ((:right-align t)
+            (:help-echo "Local changes not in upstream")))
+          ("Path"    99 magit-repolist-column-path ())))
+
   (when sys/macp
     (setq magit-git-executable "/usr/local/bin/git"))
   (when sys/win32p
