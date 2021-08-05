@@ -209,6 +209,19 @@ Install the doc if it's not installed."
                        (add-hook 'before-save-hook
                                  #'fish_indent-before-save))))
 
+(use-package eldoc-box
+  :commands (eldoc-box-eglot-help-at-point)
+  :hook ((omnisharp-mode . eldoc-box-hover-mode)
+         (eglot--managed-mode . (lambda () (eldoc-box-hover-mode t)))
+         )
+  :init
+  (setq eldoc-box-clear-with-C-g t
+        eldoc-box-fringe-use-same-bg nil
+        eldoc-box-cleanup-interval 0.2)
+  :config
+  ;; (add-hook 'eglot--managed-mode-hook #'eldoc-box-hover-at-point-mode t)
+  )
+
 (provide 'init-prog)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
