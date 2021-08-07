@@ -98,7 +98,6 @@
        (lsp-headerline-breadcrumb-symbols-hint-face
         ((t :inherit lsp-headerline-breadcrumb-symbols-face
             :underline (:style wave :color ,(face-foreground 'success)))))
-
        :hook ((prog-mode . (lambda ()
                              (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'jenkinsfile-mode 'ruby-mode 'enh-ruby-mode)
                                (lsp-deferred))))
@@ -176,13 +175,35 @@
        (add-hook 'terraform-mode-hook #'lsp-deferred)
        ;; (setq lsp-terraform-server (expand-file-name "lsp/terraform-lsp" user-emacs-directory))
 
-       ;; my-personal
+       ;; my-personal ends here;;;
+
        (with-no-warnings
-         (defun my-lsp--init-if-visible (func &rest args)
+         (defun my-lsp--init-if-visible (fn &rest args)
            "Not enabling lsp in `git-timemachine-mode'."
            (unless (bound-and-true-p git-timemachine-mode)
-             (apply func args)))
-         (advice-add #'lsp--init-if-visible :around #'my-lsp--init-if-visible))
+             (apply fn args)))
+         (advice-add #'lsp--init-if-visible :around #'my-lsp--init-if-visible)
+
+         (defun my-lsp-icons-get-symbol-kind (fn &rest args)
+           (when (and centaur-icon (display-graphic-p))
+             (apply fn args)))
+         (advice-add #'lsp-icons-get-by-symbol-kind :around #'my-lsp-icons-get-symbol-kind)
+
+         (defun my-lsp-icons-get-by-file-ext (fn &rest args)
+           (when (and centaur-icon (display-graphic-p))
+             (apply fn args)))
+         (advice-add #'lsp-icons-get-by-file-ext :around #'my-lsp-icons-get-by-file-ext)
+
+         (defun my-lsp-icons-all-the-icons-material-icon (icon-name face fallback &optional feature)
+           (if (and centaur-icon
+                    (display-graphic-p)
+                    (functionp 'all-the-icons-material)
+                    (lsp-icons--enabled-for-feature feature))
+               (all-the-icons-material icon-name
+                                       :face face)
+             (propertize fallback 'face face)))
+         (advice-add #'lsp-icons-all-the-icons-material-icon
+                     :override #'my-lsp-icons-all-the-icons-material-icon))
 
        (defun lsp-update-server ()
          "Update LSP server."
