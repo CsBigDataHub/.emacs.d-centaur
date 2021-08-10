@@ -49,15 +49,16 @@
 (when (fboundp 'native-comp-available-p)
   (progn
     (require 'comp)
-    (setq comp-num-cpus 4)
+    ;; (setq comp-num-cpus 8)
     (setq package-native-compile t)
     ;; (setq native-comp-async-report-warnings-errors nil)
-    (setq comp-async-report-warnings-errors nil)
-    (setq comp-deferred-compilation t)
+    (setq native-comp-deferred-compilation t)
     ;; native comp of powerline throws error below
     ;; getting past  Error: List contains a loop ("22", . #0)
-    ;; https://github.com/milkypostman/powerline/issues/187
-    (setq comp-deferred-compilation-deny-list '("powerline"))
+    ;; https://github.com/milkypostman/powerline/issues/187 - closed
+    ;; (setq native-comp-deferred-compilation-deny-list '("powerline"))
+    (custom-set-variables
+     '(native-comp-async-report-warnings-errors 'silent))
     ))
 
 ;; Faster to disable these here (before they've been initialized)

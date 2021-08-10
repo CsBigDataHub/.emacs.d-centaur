@@ -98,17 +98,17 @@
  '(ispell-choices-win-default-height 3)
  '(lsp-java-jdt-download-url
    "https://download.eclipse.org/jdtls/milestones/1.0.0/jdt-language-server-1.0.0-202104151857.tar.gz")
- '(lsp-ui-doc-border "#5B6268")
+ '(lsp-ui-doc-border "#5B6268" t)
  '(lsp-ui-sideline-enable nil)
- '(lsp-ui-sideline-ignore-duplicate t)
- '(lsp-ui-sideline-show-diagnostics nil)
+ '(lsp-ui-sideline-ignore-duplicate t t)
+ '(lsp-ui-sideline-show-diagnostics nil t)
  '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:")
  '(network-stream-use-client-certificates t)
- '(modus-themes-mode-line '3d)
  '(safe-local-variable-values
    '((add-to-list 'browse-at-remote-remote-type-domains
                   '("github.com" . "github"))
      (magit-todos-exclude-globs "*.elc" "elpa/**" "straight/**" "*.md" "*.org"))))
+ '(vterm-max-scrollback 10000))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -125,6 +125,9 @@
  '(doom-modeline-buffer-file ((t (:inherit (mode-line bold)))))
  '(epe-pipeline-host-face ((t (:foreground "tomato1"))))
  '(epe-pipeline-time-face ((t (:foreground "DarkOrchid1"))))
+ '(evil-goggles-delete-face ((t (:inherit 'menu))))
+ '(evil-goggles-paste-face ((t (:inherit 'custom-saved))))
+ '(evil-goggles-yank-face ((t (:inherit 'custom-invalid))))
  '(flycheck-posframe-face ((t (:foreground "#98be65"))))
  '(flycheck-posframe-info-face ((t (:foreground "#98be65"))))
  '(git-timemachine-minibuffer-author-face ((t (:inherit success))))
