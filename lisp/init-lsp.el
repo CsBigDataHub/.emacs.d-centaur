@@ -100,7 +100,7 @@
             :underline (:style wave :color ,(face-foreground 'success)))))
 
        :hook ((prog-mode . (lambda ()
-                             (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'jenkinsfile-mode 'ruby-mode 'enh-ruby-mode)
+                             (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'jenkinsfile-mode 'yaml-mode 'ruby-mode 'enh-ruby-mode)
                                (lsp-deferred))))
               (lsp-mode . (lambda ()
                             ;; Integrate `which-key'

@@ -139,6 +139,7 @@ prepended to the element after the #+HEADER: tag."
         org-startup-indented t
         org-ellipsis (if (and (display-graphic-p) (char-displayable-p ?⏷)) "\t⏷" nil)
         org-pretty-entities nil
+        org-imenu-depth 4
         org-hide-emphasis-markers t)
 
   ;; Add new template
