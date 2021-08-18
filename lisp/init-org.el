@@ -610,30 +610,12 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 
       ;; we'll only start updating db if we've been idle for this many seconds
       (run-with-idle-timer 5 t #'org-roam-db-idle-update-files))
+    (unless (file-exists-p org-roam-directory)
+      (make-directory org-roam-directory))
     )
-
   ;; (use-package company-org-roam
   ;;   :config
   ;;   (push 'company-org-roam company-backends))
-
-  (use-package org-roam-server
-    :diminish
-    :hook (org-roam-server-mode . org-roam-server-browse)
-    :init
-    (defun org-roam-server-browse ()
-      (when org-roam-server-mode
-        (let ((url (format "http://%s:%d" org-roam-server-host org-roam-server-port)))
-          (if (featurep 'xwidget-internal)
-              (centaur-webkit-browse-url url t)
-            (browse-url url)))))
-    :config
-    (setq org-roam-server-host "127.0.0.1"
-          org-roam-server-port 8181
-          org-roam-server-export-inline-images t
-          org-roam-server-authenticate nil
-          org-roam-server-network-label-truncate t
-          org-roam-server-network-label-truncate-length 60
-          org-roam-server-network-label-wrap-length 20))
   )
 
 (use-package org-ql)
@@ -729,7 +711,6 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 (org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
 (run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
 (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt) ;; update appt list on agenda view
-
 
 (provide 'init-org)
 

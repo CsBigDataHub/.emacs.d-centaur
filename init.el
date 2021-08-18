@@ -95,6 +95,13 @@
 
 (update-load-path)
 
+;; Easier customization
+(defmacro csetq (variable value)
+  "Set the VARIABLE to VALUE, but use `set-default' if needed."
+  `(funcall (or (get ',variable 'custom-set)
+                'set-default)
+            ',variable ,value))
+
 ;; Packages
 ;; Without this comment Emacs25 adds (package-initialize) here
 (require 'init-package)
