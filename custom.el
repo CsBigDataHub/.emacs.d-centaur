@@ -107,7 +107,7 @@
  '(safe-local-variable-values
    '((add-to-list 'browse-at-remote-remote-type-domains
                   '("github.com" . "github"))
-     (magit-todos-exclude-globs "*.elc" "elpa/**" "straight/**" "*.md" "*.org"))))
+     (magit-todos-exclude-globs "*.elc" "elpa/**" "straight/**" "*.md" "*.org")))
  '(vterm-max-scrollback 10000))
 
 (custom-set-faces
