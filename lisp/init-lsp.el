@@ -42,22 +42,22 @@
               (python-mode . eglot-ensure)
               (java-mode . eglot-ensure)
               (sh-mode . eglot-ensure)
-              (yaml-mode . eglot-ensure)
+              ;; (yaml-mode . eglot-ensure)
               (json-mode . eglot-ensure)
               (terraform-mode . eglot-ensure)
               ;; (groovy-mode . eglot-ensure)
               (dockerfile-mode . eglot-ensure)
-              (csharp-mode . eglot-ensure)
+              ;; (csharp-mode . eglot-ensure)
               )
        :config
-       (add-to-list 'eglot-server-programs
-                    '(python-mode . ("pyright-langserver" "--stdio")))
+       ;; (add-to-list 'eglot-server-programs
+       ;;              '(python-mode . ("pyright-langserver" "--stdio")))
        (add-to-list 'eglot-server-programs '(dockerfile-mode . ("docker-langserver" "--stdio")))
        (add-to-list 'eglot-server-programs '(json-mode . ("vscode-json-languageserver" "--stdio")))
-       (add-to-list 'eglot-server-programs '(yaml-mode . ("yaml-language-server" "--stdio")))
+       ;; (add-to-list 'eglot-server-programs '(yaml-mode . ("yaml-language-server" "--stdio")))
        ;; (add-to-list 'eglot-server-programs '(terraform-mode . ("terraform-lsp" "-enable-log-file")))
        ;; make sure to delete `-P' in `pwd -P' of run file in `omnisharp' directory when its behind a symlink
-       (add-to-list 'eglot-server-programs '(csharp-mode . ("~/bin/omnisharp-osx/run" "-lsp")))
+       ;; (add-to-list 'eglot-server-programs '(csharp-mode . ("~/bin/omnisharp-osx/run" "-lsp")))
        (add-to-list 'eglot-server-programs '(terraform-mode . ("terraform-ls" "serve")))
        ))
 
@@ -99,7 +99,7 @@
         ((t :inherit lsp-headerline-breadcrumb-symbols-face
             :underline (:style wave :color ,(face-foreground 'success)))))
        :hook ((prog-mode . (lambda ()
-                             (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'jenkinsfile-mode 'yaml-mode 'ruby-mode 'enh-ruby-mode)
+                             (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'jenkinsfile-mode 'yaml-mode 'ruby-mode 'enh-ruby-mode 'csharp-mode)
                                (lsp-deferred))))
               (lsp-mode . (lambda ()
                             ;; Integrate `which-key'
