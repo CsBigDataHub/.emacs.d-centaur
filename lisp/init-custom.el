@@ -196,7 +196,7 @@ If Non-nil, save and restore the frame's geometry."
   :group 'centaur
   :type 'boolean)
 
-(defcustom centaur-lsp 'lsp-mode
+(defcustom centaur-lsp 'eglot
   "Set language server.
 
 `lsp-mode': See https://github.com/emacs-lsp/lsp-mode.
