@@ -573,14 +573,13 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
     :custom
     (org-roam-directory (car org-roam-directory-alist))
     (org-roam-completion-system 'ivy)
-    :hook (after-init . org-roam-setup)
+    :hook (after-init . org-roam-db-autosync-enable)
     :bind (("C-c n l" . org-roam-buffer-toggle)
            ("C-c n f" . org-roam-node-find)
            ("C-c n g" . org-roam-graph)
            ("C-c n i" . org-roam-node-insert)
            ("C-c n c" . org-roam-capture)
-           ("C-c n j" . org-roam-dailies-capture-today)
-           ("C-c n I" . org-roam-insert-immediate))
+           ("C-c n j" . org-roam-dailies-capture-today))
     :init
     (setq org-roam-v2-ack t)
     :config
