@@ -188,8 +188,8 @@
   (evil-snipe-override-mode 1))
 
 ;;for shell-pop
-;; (evil-define-key 'insert vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
-;; (evil-define-key 'normal vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
+(evil-define-key 'insert vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
+(evil-define-key 'normal vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
 ;; (evil-define-key 'insert vterm-mode-map (kbd "<delete>")  #'vterm-send-delete) ;;Added personally
 ;; (evil-define-key 'normal vterm-mode-map (kbd "<delete>")  #'vterm-send-delete) ;;Added personally
 

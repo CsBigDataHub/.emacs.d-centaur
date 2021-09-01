@@ -148,6 +148,7 @@
   (setq shackle-default-size 0.4
         shackle-default-alignment 'below
         shackle-default-rule nil
+        shackle-select-reused-windows t
         shackle-rules
         '((("*Help*" "*Apropos*") :select t :size 0.3 :align 'below :autoclose t)
           (compilation-mode :select t :size 0.3 :align 'below :autoclose t)
@@ -167,8 +168,6 @@
           (" *undo-tree*" :select t)
           ("*quickrun*" :select t :size 15 :align 'below)
           ("*tldr*" :size 0.4 :align 'below :autoclose t)
-          ("*osx-dictionary*" :size 20 :align 'below :autoclose t)
-          ("*Youdao Dictionary*" :size 15 :align 'below :autoclose t)
           ("*Finder*" :select t :size 0.3 :align 'below :autoclose t)
           ("^\\*macro expansion\\**" :regexp t :size 0.4 :align 'below)
           ("^\\*elfeed-entry" :regexp t :size 0.7 :align 'below :autoclose t)
@@ -176,6 +175,8 @@
           (("*Paradox Report*" "*package update results*") :size 0.2 :align 'below :autoclose t)
           ("*Package-Lint*" :size 0.4 :align 'below :autoclose t)
           ("*How Do You*" :select t :size 0.5 :align 'below :autoclose t)
+
+          ((youdao-dictionary-mode osx-dictionary-mode fanyi-mode) :select t :size 0.5 :align 'below :autoclose t)
 
           (("*Org Agenda*" " *Agenda Commands*" " *Org todo*" "*Org Dashboard*" "*Org Select*")
            :select t :size 0.1 :align 'below :autoclose t)
@@ -204,13 +205,12 @@
           (("*Gofmt Errors*" "*Go Test*") :select t :size 0.3 :align 'below :autoclose t)
           (godoc-mode :select t :size 0.4 :align 'below :autoclose t)
 
-          ((grep-mode rg-mode deadgrep-mode ag-mode pt-mode) :select t :size 0.4 :align 'below)
+          ((grep-mode occur-mode rg-mode deadgrep-mode ag-mode pt-mode) :select t :size 0.4 :align 'below)
           (Buffer-menu-mode :select t :size 0.5 :align 'below :autoclose t)
           (gnus-article-mode :select t :size 0.7 :align 'below :autoclose t)
           (helpful-mode :select t :size 0.3 :align 'below :autoclose t)
           (devdocs-mode :select t :size 0.4 :align 'below :autoclose t)
-          ((process-menu-mode cargo-process-mode) :select t :size 0.3 :align 'below :autoclose t)
-          ("*Process-Environment*" :select t :size 0.3 :align 'below :autoclose t)
+          ((process-menu-mode list-environment-mode cargo-process-mode) :select t :size 0.3 :align 'below)
           (("*docker-containers*" "*docker-images*" "*docker-networks*" "*docker-volumes*")
            :size 0.4 :align 'below :autoclose t)
           (bookmark-bmenu-mode :select t :size 0.4 :align 'below)

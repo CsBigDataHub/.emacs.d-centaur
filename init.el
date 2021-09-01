@@ -136,6 +136,7 @@
 (require 'init-markdown)
 (require 'init-reader)
 
+(require 'init-dict)
 (require 'init-docker)
 (require 'init-utils)
 

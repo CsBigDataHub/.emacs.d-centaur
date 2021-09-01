@@ -84,6 +84,7 @@
          ("C-c c h" . counsel-command-history)
          ("C-c c i" . counsel-git)
          ("C-c c j" . counsel-git-grep)
+         ("C-c c k" . counsel-ace-link)
          ("C-c c l" . counsel-git-log)
          ("C-c c m" . counsel-minibuffer-history)
          ("C-c c o" . counsel-outline)
@@ -419,15 +420,7 @@
 
     (ivy-add-actions
      'counsel-load-library
-     '(("p" my-ivy-copy-library-path "copy path")))
-
-    ;; Integration with `projectile'
-    (with-eval-after-load 'projectile
-      (setq projectile-completion-system 'ivy))
-
-    ;; Integration with `magit'
-    (with-eval-after-load 'magit
-      (setq magit-completing-read-function 'ivy-completing-read)))
+     '(("p" my-ivy-copy-library-path "copy path"))))
 
   ;; Enhance M-x
   (use-package amx
@@ -499,17 +492,20 @@ This is for use in `ivy-re-builders-alist'."
         (advice-add #'hydra-posframe-show :around #'my-hydra-posframe-prettify-string)
 
         (defun ivy-hydra-poshandler-frame-center-below (info)
-          (let ((num 0)
+          (let (ivy-posframe-visible-p
                 (pos (posframe-poshandler-frame-center-near-bottom info)))
             (dolist (frame (frame-list))
               (when (and (frame-visible-p frame)
-                         (frame-parameter frame 'posframe-buffer))
-                (setq num (1+ num))))
-            (cons (car pos)
-                  (- (cdr pos)
-                     (if (>= num 1)
-                         (plist-get info :posframe-height)
-                       0)))))
+                         (string= (car (frame-parameter frame 'posframe-buffer))
+                                  ivy-posframe-buffer))
+                (setq ivy-posframe-visible-p t)))
+            (cons
+             (car pos)
+             (- (cdr pos)
+                (if ivy-posframe-visible-p
+                    (- (plist-get info :posframe-height)
+                       (plist-get hydra-posframe-show-params :internal-border-width))
+                  0)))))
 
         (defun ivy-hydra-set-posframe-show-params ()
           "Set hydra-posframe style."
