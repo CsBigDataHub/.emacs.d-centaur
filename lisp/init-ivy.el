@@ -213,6 +213,7 @@
         end-of-line mwim-end-of-line mwim-end-of-code-or-line mwim-end-of-line-or-code
         yank ivy-yank-word ivy-yank-char ivy-yank-symbol counsel-yank-pop))
 
+    (defvar-local my-ivy-fly--travel nil)
     (defun my-ivy-fly-back-to-present ()
       (remove-hook 'pre-command-hook 'my-ivy-fly-back-to-present t)
       (cond ((and (memq last-command my-ivy-fly-commands)
@@ -223,18 +224,19 @@
                            (listify-key-sequence (kbd "M-p")))))
             ((or (memq this-command my-ivy-fly-back-commands)
                  (equal (this-command-keys-vector) (kbd "M-n")))
-             (delete-region (point) (point-max))
-             (when (memq this-command '(ivy-forward-char
-                                        ivy-delete-char delete-forward-char
-                                        kill-word kill-sexp
-                                        end-of-line mwim-end-of-line
-                                        mwim-end-of-code-or-line
-                                        mwim-end-of-line-or-code))
-               (insert (ivy-cleanup-string ivy-text))
-               (when (memq this-command '(ivy-delete-char
-                                          delete-forward-char
-                                          kill-word kill-sexp))
-                 (beginning-of-line))))))
+             (unless my-ivy-fly--travel
+               (delete-region (point) (point-max))
+               (when (memq this-command '(ivy-forward-char
+                                          ivy-delete-char delete-forward-char
+                                          kill-word kill-sexp
+                                          end-of-line mwim-end-of-line
+                                          mwim-end-of-code-or-line
+                                          mwim-end-of-line-or-code))
+                 (insert (ivy-cleanup-string ivy-text))
+                 (when (memq this-command '(ivy-delete-char
+                                            delete-forward-char
+                                            kill-word kill-sexp))
+                   (beginning-of-line)))))))
 
     (defun my-ivy-fly-time-travel ()
       (when (memq this-command my-ivy-fly-commands)
