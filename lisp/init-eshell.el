@@ -362,6 +362,8 @@ wisely or prepare to call `eshell-interrupt-process'."
 (use-package eshell-syntax-highlighting
   :after esh-mode
   :demand t ;; Install if not already installed.
+  :custom-face
+  (eshell-syntax-highlighting-shell-command-face ((t (:foreground "spring green"))))
   :config
   ;; Enable in all Eshell buffers.
   (eshell-syntax-highlighting-global-mode +1))
