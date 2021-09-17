@@ -152,7 +152,7 @@
 (require 'init-elisp)
 ;;(require 'init-c)
 (require 'init-go)
-(require 'init-rust)
+;; (require 'init-rust)
 (require 'init-python)
 (require 'init-ruby)
 ;;(require 'init-dart)
