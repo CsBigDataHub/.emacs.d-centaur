@@ -32,15 +32,15 @@
 
 (require 'init-custom)
 
-(use-package css-mode
-  :ensure nil
-  :init (setq css-indent-offset 2))
+;; (use-package css-mode
+;;   :ensure nil
+;;   :init (setq css-indent-offset 2))
 
 ;; SCSS mode
-(use-package scss-mode
-  :init
-  ;; Disable complilation on save
-  (setq scss-compile-at-save nil))
+;; (use-package scss-mode
+;;   :init
+;;   ;; Disable complilation on save
+;;   (setq scss-compile-at-save nil))
 
 ;; New `less-css-mde' in Emacs 26
 (unless (fboundp 'less-css-mode)
@@ -103,16 +103,16 @@
   (with-eval-after-load 'skewer-html
     (diminish 'skewer-html-mode)))
 
-(use-package typescript-mode
-  :mode ("\\.ts[x]\\'" . typescript-mode))
+;; (use-package typescript-mode
+;;   :mode ("\\.ts[x]\\'" . typescript-mode))
 
 ;; Run Mocha or Jasmine tests
-(use-package mocha
-  :config (use-package mocha-snippets))
+;; (use-package mocha
+;;   :config (use-package mocha-snippets))
 
 ;; Major mode for CoffeeScript code
-(use-package coffee-mode
-  :config (setq coffee-tab-width 2))
+;; (use-package coffee-mode
+;;   :config (setq coffee-tab-width 2))
 
 ;; Major mode for editing web templates
 (use-package web-mode
@@ -134,8 +134,8 @@
          .
          prettier-js-mode))
 
-(use-package haml-mode)
-(use-package php-mode)
+;; (use-package haml-mode)
+;; (use-package php-mode)
 
 ;; REST
 (use-package restclient

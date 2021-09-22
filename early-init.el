@@ -52,6 +52,8 @@
     ;; (setq comp-num-cpus 8)
     (setq package-native-compile t)
     ;; (setq native-comp-async-report-warnings-errors nil)
+    (cond ((eq system-type 'darwin) (setq native-comp-compiler-options '("-O2" "-mtune=native"))))
+    (cond ((eq system-type 'gnu/linux) (setq native-comp-compiler-options '("-O2" "-march=haswell" "-mtune=native"))))
     (setq native-comp-deferred-compilation t)
     (setq native-comp-compiler-options '("-O2" "-mtune=native"))
     ;; native comp of powerline throws error below

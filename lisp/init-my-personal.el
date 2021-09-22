@@ -40,13 +40,11 @@
 
 ;;Restart emacs from emacs
 (use-package restart-emacs
-  :ensure t
   :config (defalias 'emacs-restart #'restart-emacs)
   :bind* (("C-x M-c" . restart-emacs)))
 
 ;; Open Large file
 (use-package vlf
-  :ensure t
   :config
   (require 'vlf-setup))
 
@@ -72,12 +70,6 @@
                   (join-line -1)))
 
 ;; (setq uniquify-buffer-name-style 'post-forward-angle-brackets) ;; or "forward"
-
-;; font scaling
-(use-package default-text-scale
-  :config
-  (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
-  (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
 
 (use-package fontify-face)
 
@@ -421,7 +413,7 @@
 
 (use-package mvn)
 
-(use-package skeletor)
+;; (use-package skeletor)
 
 (use-package vagrant-tramp)
 
