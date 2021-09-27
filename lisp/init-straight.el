@@ -157,4 +157,18 @@
   (eval-after-load 'ob-restclient
     '(require 'restclient-jq)))
 
+;; enable to use later
+;; (use-package turbo-log
+;;   :straight (turbo-log
+;;              :type git
+;;              :host github
+;;              :repo "artawower/turbo-log")
+;;   :bind (("C-s-l" . turbo-log-print)
+;;          ("C-s-i" . turbo-log-print-immediately)
+;;          ("C-s-h" . turbo-log-comment-all-logs)
+;;          ("C-s-s" . turbo-log-uncomment-all-logs)
+;;          ("C-s-x" . turbo-log-delete-all-logs))
+;;   :config
+;;   (setq turbo-console--prefix "✰"))
+
 (provide 'init-straight)
