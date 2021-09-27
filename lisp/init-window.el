@@ -33,6 +33,8 @@
 ;; Directional window-selection routines
 (use-package windmove
   :ensure nil
+  :custom
+  (windmove-default-keybindings '([ignore] hyper)) ;; using hyper key instead of shift
   :hook (after-init . windmove-default-keybindings))
 
 ;; Restore old window configurations
