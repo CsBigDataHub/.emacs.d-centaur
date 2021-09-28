@@ -33,9 +33,12 @@
 ;; Directional window-selection routines
 (use-package windmove
   :ensure nil
-  :custom
-  (windmove-default-keybindings '([ignore] hyper)) ;; using hyper key instead of shift
-  :hook (after-init . windmove-default-keybindings))
+  ;; :hook (after-init . windmove-default-keybindings) ;;using hyper
+  :config
+  ;; http://pragmaticemacs.com/emacs/whizz-between-windows-with-windmove/
+  (windmove-default-keybindings 'hyper)
+  ;; wrap around at edges
+  (setq windmove-wrap-around t))
 
 ;; Restore old window configurations
 (use-package winner

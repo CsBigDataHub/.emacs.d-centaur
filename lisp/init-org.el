@@ -137,10 +137,18 @@ prepended to the element after the #+HEADER: tag."
         org-log-done 'time
         org-catch-invisible-edits 'smart
         org-startup-indented t
+        org-replace-disputed-keys t ;;https://irreal.org/blog/?p=1562
         org-ellipsis (if (and (display-graphic-p) (char-displayable-p ?⏷)) "\t⏷" nil)
         org-pretty-entities nil
         org-imenu-depth 4
         org-hide-emphasis-markers t)
+
+  ;; Make windmove work in Org mode:
+  ;; https://orgmode.org/manual/Conflicts.html#Conflicts
+  (add-hook 'org-shiftup-final-hook 'windmove-up)
+  (add-hook 'org-shiftleft-final-hook 'windmove-left)
+  (add-hook 'org-shiftdown-final-hook 'windmove-down)
+  (add-hook 'org-shiftright-final-hook 'windmove-right)
 
   ;; Add new template
   (add-to-list 'org-structure-template-alist '("n" . "note"))
