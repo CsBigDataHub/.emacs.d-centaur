@@ -478,7 +478,7 @@ _C_: correct  _p_: prev error _d_: done checking
   (when sys/macp
     (progn
       (setq languagetool-language-tool-jar
-            "/usr/local/Cellar/languagetool/5.3/libexec/languagetool-commandline.jar")
+            "/usr/local/Cellar/languagetool/5.4/libexec/languagetool-commandline.jar")
       (setq languagetool-java-bin "/Users/ckoneru/.sdkman/candidates/java/8.0.282.j9-adpt/bin/java")
       ))
   )
