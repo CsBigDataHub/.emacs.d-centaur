@@ -7,6 +7,8 @@
              :type git
              :host github
              :repo "hasu/notdeft"
+             :pre-build (("make")
+                         ("bash" "-c" "cd xapian && make"))
              :files ("*.el" "xapian" "extras/*-hydra.el")))
 
 (require 'notdeft-autoloads)
