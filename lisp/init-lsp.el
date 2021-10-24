@@ -125,6 +125,7 @@
              lsp-modeline-code-actions-enable nil
              lsp-modeline-diagnostics-enable nil
              lsp-modeline-workspace-status-enable nil
+             lsp-headerline-breadcrumb-enable nil
 
              lsp-signature-render-documentation t
 
@@ -719,7 +720,7 @@
                             (upcase ,lang))))))))
 
     (defvar org-babel-lang-list
-      '("go" "python" "ipython" "ruby" "js" "css" "sass" "C" "rust" "java"))
+      '("go" "python" "ipython" "ruby" "js" "css" "sass" "c" "rust" "java" "cpp" "c++"))
     (add-to-list 'org-babel-lang-list (if emacs/>=26p "shell" "sh"))
     (dolist (lang org-babel-lang-list)
       (eval `(lsp-org-babel-enable ,lang)))))
