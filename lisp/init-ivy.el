@@ -684,6 +684,24 @@ This is for use in `ivy-re-builders-alist'."
       (setf (alist-get t ivy-posframe-display-functions-alist)
             #'ivy-posframe-display-at-frame-center-near-bottom))))
 
+
+
+(use-package embark
+  :bind
+  (("s-/" . embark-act)         ;; pick some comfortable binding
+   ("s-?" . embark-dwim))        ;; good alternative: M-.
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  ;; (setq which-key-use-C-h-commands nil
+  ;;       prefix-help-command #'embark-prefix-help-command)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+
 (provide 'init-ivy)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
