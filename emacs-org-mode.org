@@ -48,3 +48,7 @@ There is also [[https://github.com/mtekman/org-tanglesync.el][org-tanglesync]], 
 Essentially if a block is tangled to an external file, then every time that block is edited the external file is checked also, and if a diff is detected, the user is prompted to either reject or pull the external changes into the org src block.
 
 This also has functions to automatically process all tangled blocks in a buffer. I hope it helps.
+
+** Org table to csv file
+
+- https://emacs.stackexchange.com/questions/54490/exact-steps-to-export-to-an-org-table-to-csv

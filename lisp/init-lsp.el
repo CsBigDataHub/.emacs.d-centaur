@@ -101,6 +101,7 @@
        :hook ((prog-mode . (lambda ()
                              (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'jenkinsfile-mode 'yaml-mode 'ruby-mode 'enh-ruby-mode 'csharp-mode)
                                (lsp-deferred))))
+              (markdown-mode . lsp-deferred)
               (lsp-mode . (lambda ()
                             ;; Integrate `which-key'
                             (lsp-enable-which-key-integration)
@@ -118,13 +119,14 @@
        (setq read-process-output-max (* 1024 1024)) ;; 1MB
 
        (setq lsp-keymap-prefix "C-c l"
-             lsp-auto-guess-root nil
+             lsp-auto-guess-root t
 
              lsp-keep-workspace-alive nil
              lsp-signature-auto-activate nil
              lsp-modeline-code-actions-enable nil
              lsp-modeline-diagnostics-enable nil
              lsp-modeline-workspace-status-enable nil
+             lsp-headerline-breadcrumb-enable nil
 
              lsp-signature-render-documentation t
 
@@ -719,7 +721,7 @@
                             (upcase ,lang))))))))
 
     (defvar org-babel-lang-list
-      '("go" "python" "ipython" "ruby" "js" "css" "sass" "C" "rust" "java"))
+      '("go" "python" "ipython" "ruby" "js" "css" "sass" "c" "rust" "java" "cpp" "c++"))
     (add-to-list 'org-babel-lang-list (if emacs/>=26p "shell" "sh"))
     (dolist (lang org-babel-lang-list)
       (eval `(lsp-org-babel-enable ,lang)))))
