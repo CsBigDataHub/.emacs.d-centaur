@@ -500,7 +500,8 @@ _C_: correct   _d_: done checking
 (use-package hungry-delete
   :diminish
   :hook (after-init . global-hungry-delete-mode)
-  :init (setq hungry-delete-except-modes
+  :init (setq hungry-delete-chars-to-skip " \t\f\v"
+              hungry-delete-except-modes
               '(help-mode minibuffer-mode minibuffer-inactive-mode calc-mode)))
 
 ;; Framework for mode-specific buffer indexes
