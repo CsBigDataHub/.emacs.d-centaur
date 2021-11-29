@@ -262,11 +262,12 @@
            ("conf" all-the-icons-octicon "settings"    :v-adjust 0.0 :face all-the-icons-yellow)
            ("eln"  all-the-icons-octicon "file-binary" :v-adjust 0.0 :face all-the-icons-dsilver)
            ("epub" all-the-icons-faicon "book"         :height 1.0 :v-adjust -0.1 :face all-the-icons-green)
+           ("exe"  all-the-icons-octicon "file-binary" :v-adjust 0.0 :face all-the-icons-dsilver)
            ("make" all-the-icons-fileicon "gnu"        :face all-the-icons-dorange)
            ("rss"  all-the-icons-octicon "rss"         :height 1.1 :v-adjust 0.0 :face all-the-icons-lorange)
            ("toml" all-the-icons-octicon "settings"    :v-adjust 0.0 :face all-the-icons-yellow)
            ("tsx"  all-the-icons-fileicon "tsx"        :height 1.0 :v-adjust -0.1 :face all-the-icons-cyan-alt)
-           ("xpm"    all-the-icons-octicon "file-media"  :v-adjust 0.0 :face all-the-icons-dgreen))))
+           ("xpm"  all-the-icons-octicon "file-media"  :v-adjust 0.0 :face all-the-icons-dgreen))))
     (dolist (icon extension-icon-alist)
       (add-to-list 'all-the-icons-extension-icon-alist icon)))
 
@@ -323,7 +324,8 @@
 (if (fboundp 'display-line-numbers-mode)
     (use-package display-line-numbers
       :ensure nil
-      :hook ((prog-mode yaml-mode) . display-line-numbers-mode))
+      :hook ((prog-mode yaml-mode) . display-line-numbers-mode)
+      :init (setq display-line-numbers-width-start t))
   (use-package linum-off
     :demand
     :defines linum-format
@@ -373,13 +375,14 @@
       scroll-preserve-screen-position t)
 
 ;; Good pixel line scrolling
-(when (and emacs/>=27p
-           (not sys/macp))
-  (use-package good-scroll
-    :diminish
-    :hook (after-init . good-scroll-mode)
-    :bind (([remap next] . good-scroll-up-full-screen)
-           ([remap prior] . good-scroll-down-full-screen))))
+(if (boundp 'pixel-scroll-precision-mode)
+    (pixel-scroll-precision-mode t)
+  (when (and emacs/>=27p (not sys/macp))
+    (use-package good-scroll
+      :diminish
+      :hook (after-init . good-scroll-mode)
+      :bind (([remap next] . good-scroll-up-full-screen)
+             ([remap prior] . good-scroll-down-full-screen)))))
 
 ;; Smooth scrolling over images
 (when emacs/>=26p
