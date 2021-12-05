@@ -126,6 +126,18 @@
 
 (setq-default indicate-empty-lines t)
 
+;; ** Functions
+;; - copyit-variable
+;; - copyit-file-pathname
+;; - copyit-file-content
+;; - copyit-file-exif-information
+;; - copyit-file-as-data-uri
+;; - copyit-ssh
+;;
+;; ** Customize
+;; - copyit-binary-file-copy-method
+;; - copyit-ssh-directory-path
+;; - copyit-copy-bare-string
 
 (use-package copyit)
 
@@ -142,7 +154,7 @@
   :config
   (ivy-set-actions
    'counsel-fd-file-jump
-   `(("d" ,(lambda (x)
+   `(("D" ,(lambda (x)
              (dired (or (file-name-directory x) default-directory)))
       "open in dired")))
   )
@@ -458,26 +470,26 @@ If region is active, add its contents to the new buffer."
   (add-hook 'scratch-create-buffer-hook #'prot/scratch-buffer-setup)
   :bind ("C-c S" . scratch))
 
-  (use-package selected
-    :commands selected-minor-mode
-    :init
-    (setq selected-org-mode-map (make-sparse-keymap))
-    :bind (:map selected-keymap
-           ("/" . undo-in-region)
-           ("C" . hydra-change-case/body)
-           ("c" . capitalize-region)
-           ("l" . downcase-region)
-           ("D" . delete-duplicate-lines)
-           ("m" . apply-macro-to-region-lines)
-           ("q" . selected-off)
-           ("s" . sort-lines)
-           ("u" . upcase-region)
-           ("w" . count-words-region)
-           :map selected-org-mode-map
-           ("t" . org-table-convert-region)
-           ("-" . org-ctrl-c-minus))
-    :config (selected-global-mode)
-    (setq selected-minor-mode-override t))
+(use-package selected
+  :commands selected-minor-mode
+  :init
+  (setq selected-org-mode-map (make-sparse-keymap))
+  :bind (:map selected-keymap
+         ("/" . undo-in-region)
+         ("C" . hydra-change-case/body)
+         ("c" . capitalize-region)
+         ("l" . downcase-region)
+         ("D" . delete-duplicate-lines)
+         ("m" . apply-macro-to-region-lines)
+         ("q" . selected-off)
+         ("s" . sort-lines)
+         ("u" . upcase-region)
+         ("w" . count-words-region)
+         :map selected-org-mode-map
+         ("t" . org-table-convert-region)
+         ("-" . org-ctrl-c-minus))
+  :config (selected-global-mode)
+  (setq selected-minor-mode-override t))
 
 (use-package counsel-jq)
 

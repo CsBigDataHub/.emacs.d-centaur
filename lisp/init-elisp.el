@@ -335,9 +335,9 @@ Lisp function does not specify a special indentation."
     (advice-add #'helpful--navigate :override #'my-helpful--navigate)))
 
 ;; For ERT
-(use-package overseer
-  :diminish
-  :hook (emacs-lisp-mode . overseer-mode))
+;;(use-package overseer
+;;  :diminish
+;;  :hook (emacs-lisp-mode . overseer-mode))
 
 (provide 'init-elisp)
 
