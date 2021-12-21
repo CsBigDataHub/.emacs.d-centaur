@@ -203,23 +203,23 @@
          t)))
 
     ;; Enahnce the appearance of a couple counsel commands
-    (plist-put! ivy-rich-display-transformers-list
-                'counsel-describe-variable
-                '(:columns
-                  ((counsel-describe-variable-transformer (:width 40)) ; the original transformer
-                   (+ivy-rich-describe-variable-transformer (:width 50)) ; display variable value
-                   (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
-                'counsel-M-x
-                '(:columns
-                  ((counsel-M-x-transformer (:width 60))
-                   (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-                ;; Apply switch buffer transformers to `counsel-projectile-switch-to-buffer' as well
-                'counsel-projectile-switch-to-buffer
-                (plist-get ivy-rich-display-transformers-list 'ivy-switch-buffer)
-                'counsel-bookmark
-                '(:columns
-                  ((ivy-rich-candidate (:width 0.5))
-                   (ivy-rich-bookmark-filename-or-empty (:width 60)))))
+    (centaur-plist-put ivy-rich-display-transformers-list
+                       'counsel-describe-variable
+                       '(:columns
+                         ((counsel-describe-variable-transformer (:width 40)) ; the original transformer
+                          (+ivy-rich-describe-variable-transformer (:width 50)) ; display variable value
+                          (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
+                       'counsel-M-x
+                       '(:columns
+                         ((counsel-M-x-transformer (:width 60))
+                          (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+                       ;; Apply switch buffer transformers to `counsel-projectile-switch-to-buffer' as well
+                       'counsel-projectile-switch-to-buffer
+                       (plist-get ivy-rich-display-transformers-list 'ivy-switch-buffer)
+                       'counsel-bookmark
+                       '(:columns
+                         ((ivy-rich-candidate (:width 0.5))
+                          (ivy-rich-bookmark-filename-or-empty (:width 60)))))
 
     (defun my-ivy-format-function (cands)
       "Transform CANDS into a string for minibuffer."

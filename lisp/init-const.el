@@ -119,7 +119,7 @@ Loaded by `org-babel-load-file'.")
   (>= emacs-major-version 28)
   "Emacs is 28 or above.")
 
-(defmacro plist-put! (plist &rest rest)
+(defmacro centaur-plist-put (plist &rest rest)
   "Set each PROP VALUE pair in REST to PLIST in-place."
   `(cl-loop for (prop value)
             on (list ,@rest) by #'cddr

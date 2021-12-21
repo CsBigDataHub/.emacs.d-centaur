@@ -104,6 +104,7 @@
  '(lsp-ui-sideline-show-diagnostics nil t)
  '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:")
  '(network-stream-use-client-certificates t)
+ '(native-comp-async-report-warnings-errors 'silent)
  '(safe-local-variable-values
    '((add-to-list 'browse-at-remote-remote-type-domains
                   '("github.com" . "github"))
@@ -125,6 +126,7 @@
  '(doom-modeline-buffer-file ((t (:inherit (mode-line bold)))))
  '(epe-pipeline-host-face ((t (:foreground "tomato1"))))
  '(epe-pipeline-time-face ((t (:foreground "DarkOrchid1"))))
+ '(eshell-syntax-highlighting-shell-command-face ((t (:foreground "spring green"))))
  '(evil-goggles-delete-face ((t (:inherit 'menu))))
  '(evil-goggles-paste-face ((t (:inherit 'custom-saved))))
  '(evil-goggles-yank-face ((t (:inherit 'custom-invalid))))
