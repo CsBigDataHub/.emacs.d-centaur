@@ -50,8 +50,8 @@
               ;; (csharp-mode . eglot-ensure)
               )
        :config
-       ;; (add-to-list 'eglot-server-programs
-       ;;              '(python-mode . ("pyright-langserver" "--stdio")))
+       (add-to-list 'eglot-server-programs
+                    '(python-mode . ("pyright-langserver" "--stdio")))
        (add-to-list 'eglot-server-programs '(dockerfile-mode . ("docker-langserver" "--stdio")))
        (add-to-list 'eglot-server-programs '(json-mode . ("vscode-json-languageserver" "--stdio")))
        ;; (add-to-list 'eglot-server-programs '(yaml-mode . ("yaml-language-server" "--stdio")))

@@ -86,6 +86,7 @@
     `(,(cons 'melpa
              `(,(cons "gnu"   (concat proto "://elpa.gnu.org/packages/"))
                ,(cons "org"   (concat proto "://orgmode.org/elpa/")) ;; my-personal
+               ,(cons "nongnu" (concat proto "://elpa.nongnu.org/packages/"))
                ,(cons "melpa" (concat proto "://melpa.org/packages/"))
                ,(cons "melpa-stable" (concat proto "://stable.melpa.org/packages/"))
                ))
