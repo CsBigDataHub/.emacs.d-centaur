@@ -9,7 +9,7 @@
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 2, or
+;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
 ;;
 ;; This program is distributed in the hope that it will be useful,
@@ -693,34 +693,39 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 (setq appt-time-msg-list nil)    ;; clear existing appt list
 (setq appt-display-interval '5)  ;; warn every 5 minutes from t - appt-message-warning-time
 (setq
-  appt-message-warning-time '15  ;; send first warning 15 minutes before appointment
-  appt-display-mode-line nil     ;; don't show in the modeline
-  appt-display-format 'window)   ;; pass warnings to the designated window function
+ appt-message-warning-time '15  ;; send first warning 15 minutes before appointment
+ appt-display-mode-line nil     ;; don't show in the modeline
+ appt-display-format 'window)   ;; pass warnings to the designated window function
 (setq appt-disp-window-function (function ct/appt-display-native))
 
 (appt-activate 1)                ;; activate appointment notification
-; (display-time) ;; Clock in modeline
+                                        ; (display-time) ;; Clock in modeline
 
 (defun ct/send-notification (title msg)
   (let ((notifier-path (executable-find "alerter")))
-       (start-process
-           "Appointment Alert"
-           "*Appointment Alert*" ; use `nil` to not capture output; this captures output in background
-           notifier-path
-           "-message" msg
-           "-title" title
-           "-sender" "org.gnu.Emacs"
-           "-activate" "org.gnu.Emacs")))
+    (start-process
+     "Appointment Alert"
+     "*Appointment Alert*" ; use `nil` to not capture output; this captures output in background
+     notifier-path
+     "-message" msg
+     "-title" title
+     "-sender" "org.gnu.Emacs"
+     "-activate" "org.gnu.Emacs")))
 (defun ct/appt-display-native (min-to-app new-time msg)
   (ct/send-notification
-    (format "Appointment in %s minutes" min-to-app) ; Title
-    (format "%s" msg)))                             ; Message/detail text
+   (format "Appointment in %s minutes" min-to-app) ; Title
+   (format "%s" msg)))                             ; Message/detail text
 
 
 ;; Agenda-to-appointent hooks
 (org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
 (run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
 (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt) ;; update appt list on agenda view
+
+(use-package org-roam-ui
+  :init
+  (when (featurep 'xwidget-internal)
+    (setq org-roam-ui-browser-function #'xwidget-webkit-browse-url)))
 
 (provide 'init-org)
 

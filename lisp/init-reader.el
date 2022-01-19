@@ -9,7 +9,7 @@
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 2, or
+;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
 ;;
 ;; This program is distributed in the hope that it will be useful,
@@ -326,7 +326,9 @@ browser defined by `browse-url-generic-program'."
                 ("Mastering Emacs" "http://www.masteringemacs.org/feed/")
                 ("Oremacs" "https://oremacs.com/atom.xml")
                 ("EmacsCast" "https://pinecast.com/feed/emacscast")
-                ("Emacs Reddit" "https://www.reddit.com/r/emacs.rss"))))
+                ("Emacs TIL" "https://emacstil.com/feed.xml")
+                ;; ("Emacs Reddit" "https://www.reddit.com/r/emacs.rss")
+                )))
 
 (provide 'init-reader)
 

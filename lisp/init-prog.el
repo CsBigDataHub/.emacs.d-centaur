@@ -9,7 +9,7 @@
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 2, or
+;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
 ;;
 ;; This program is distributed in the hope that it will be useful,
@@ -41,6 +41,13 @@
   :init
   (setq-default prettify-symbols-alist centaur-prettify-symbols-alist)
   (setq prettify-symbols-unprettify-at-point 'right-edge))
+
+;; Tree-sitter
+(use-package tree-sitter
+  :ensure tree-sitter-langs
+  :diminish
+  :hook ((after-init . global-tree-sitter-mode)
+         (tree-sitter-after-on . tree-sitter-hl-mode)))
 
 ;; Cross-referencing commands
 (use-package xref
@@ -123,6 +130,7 @@
                    (setq-local devdocs-current-docs (cdr e)))))
      devdocs-major-mode-docs-alist)
 
+    (setq devdocs-data-dir (expand-file-name "devdocs" user-emacs-directory))
     (defun devdocs-dwim()
       "Look up a DevDocs documentation entry.
 
