@@ -90,6 +90,10 @@
         (setq modus-themes-deuteranopia t
               modus-themes-italic-constructs t
               modus-themes-bold-constructs t
+              modus-themes-tabs-accented t
+              modus-themes-lang-checkers '(text-also background)
+              modus-themes-links '(italic bold neutral-underline background)
+              modus-themes-prompts '(intense bold)
               modus-themes-syntax '(alt-syntax)
               modus-themes-mode-line '(3d accented)
               modus-themes-completions 'opinionated
