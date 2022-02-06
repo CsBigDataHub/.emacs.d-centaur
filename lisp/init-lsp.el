@@ -9,7 +9,7 @@
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 2, or
+;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
 ;;
 ;; This program is distributed in the hope that it will be useful,
@@ -215,14 +215,13 @@
        :bind (("C-c u" . lsp-ui-imenu)
               :map lsp-ui-mode-map
               ("M-<f6>" . lsp-ui-hydra/body)
-              ("M-RET" . lsp-ui-sideline-apply-code-actions)
+              ("s-<return>" . lsp-ui-sideline-apply-code-actions)
               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
               ([remap xref-find-references] . lsp-ui-peek-find-references))
        :hook (lsp-mode . lsp-ui-mode)
        :init (setq lsp-ui-sideline-show-diagnostics nil
                    lsp-ui-sideline-ignore-duplicate t
                    lsp-ui-doc-delay 0.1
-                   lsp-ui-doc-position 'at-point
                    lsp-ui-doc-border (face-foreground 'font-lock-comment-face nil t)
                    lsp-ui-imenu-colors `(,(face-foreground 'font-lock-keyword-face)
                                          ,(face-foreground 'font-lock-string-face)
@@ -253,9 +252,6 @@
                    (propertize " " 'display '(space :height (1)))
                    (and (not (equal after ?\n)) (propertize " \n" 'face '(:height 0.5)))))))))
          (advice-add #'lsp-ui-doc--handle-hr-lines :override #'my-lsp-ui-doc--handle-hr-lines))
-
-       ;; `C-g'to close doc
-       (advice-add #'keyboard-quit :before #'lsp-ui-doc-hide)
 
        ;; Reset `lsp-ui-doc-background' after loading theme
        (add-hook 'after-load-theme-hook
@@ -550,7 +546,16 @@
        (with-eval-after-load 'projectile
          (setq projectile-project-root-files-top-down-recurring
                (append '("compile_commands.json" ".ccls")
-                       projectile-project-root-files-top-down-recurring))))
+                       projectile-project-root-files-top-down-recurring)))
+       (with-no-warnings
+         ;; FIXME: fail to call ccls.xref
+         ;; @see https://github.com/emacs-lsp/emacs-ccls/issues/109
+         (cl-defmethod my-lsp-execute-command
+           ((_server (eql ccls)) (command (eql ccls.xref)) arguments)
+           (when-let ((xrefs (lsp--locations-to-xref-items
+                              (lsp--send-execute-command (symbol-name command) arguments))))
+             (xref--show-xrefs xrefs nil)))
+         (advice-add #'lsp-execute-command :override #'my-lsp-execute-command)))
 
      ;; Swift/C/C++/Objective-C
      (when sys/macp

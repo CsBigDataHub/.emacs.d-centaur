@@ -9,7 +9,7 @@
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 2, or
+;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
 ;;
 ;; This program is distributed in the hope that it will be useful,
@@ -307,11 +307,15 @@ prepended to the element after the #+HEADER: tag."
            ("C-c n c" . org-roam-capture)
            ("C-c n j" . org-roam-dailies-capture-today))
     :init
-    (setq org-roam-directory (file-truename centaur-org-directory)
-          org-roam-v2-ack t)
+    (setq org-roam-directory (file-truename centaur-org-directory))
     :config
     (unless (file-exists-p org-roam-directory)
-      (make-directory org-roam-directory))))
+      (make-directory org-roam-directory))
+
+    (use-package org-roam-ui
+      :init
+      (when (featurep 'xwidget-internal)
+        (setq org-roam-ui-browser-function #'xwidget-webkit-browse-url)))))
 
 (provide 'init-org)
 

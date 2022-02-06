@@ -9,7 +9,7 @@
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 2, or
+;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
 ;;
 ;; This program is distributed in the hope that it will be useful,
@@ -226,63 +226,7 @@ Lisp function does not specify a special indentation."
 ;; `global-eldoc-mode' is enabled by default.
 (use-package eldoc
   :ensure nil
-  :diminish
-  :config
-  (with-no-warnings
-    ;; Display `eldoc' in child frame
-    (when (and (require 'posframe nil t) (posframe-workable-p))
-      (defvar eldoc-posframe-buffer "*eldoc-posframe-buffer*"
-        "The posframe buffer name use by eldoc-posframe.")
-
-      (defvar eldoc-posframe-hide-posframe-hooks
-        '(pre-command-hook post-command-hook focus-out-hook)
-        "The hooks which should trigger automatic removal of the posframe.")
-
-      (defvar eldoc-posframe-delay 0.2
-        "Delay seconds to display `eldoc'.")
-
-      (defvar-local eldoc-posframe--timer nil)
-
-      (defun eldoc-posframe-hide-posframe ()
-        "Hide messages currently being shown if any."
-        (when eldoc-posframe--timer
-          (cancel-timer eldoc-posframe--timer))
-
-        (posframe-hide eldoc-posframe-buffer)
-        (dolist (hook eldoc-posframe-hide-posframe-hooks)
-          (remove-hook hook #'eldoc-posframe-hide-posframe t)))
-
-      (defun eldoc-posframe-show-posframe (str &rest args)
-        "Display STR with ARGS."
-        (when eldoc-posframe--timer
-          (cancel-timer eldoc-posframe--timer))
-
-        (posframe-hide eldoc-posframe-buffer)
-        (dolist (hook eldoc-posframe-hide-posframe-hooks)
-          (add-hook hook #'eldoc-posframe-hide-posframe nil t))
-
-        (setq eldoc-posframe--timer
-              (run-with-idle-timer
-               eldoc-posframe-delay nil
-               (lambda ()
-                 (when str
-                   (posframe-show
-                    eldoc-posframe-buffer
-                    :string (concat (propertize "\n" 'face '(:height 0.3))
-                                    (apply #'format str args)
-                                    (propertize "\n\n" 'face '(:height 0.3)))
-                    :postion (point)
-                    :left-fringe 8
-                    :right-fringe 8
-                    :max-width (round (* (frame-width) 0.62))
-                    :max-height (round (* (frame-height) 0.62))
-                    :poshandler #'posframe-poshandler-point-bottom-left-corner-upward
-                    :internal-border-width 1
-                    :internal-border-color (face-foreground 'font-lock-comment-face nil t)
-                    :background-color (face-background 'tooltip nil t)))))))
-      (add-hook 'emacs-lisp-mode-hook
-                (lambda ()
-                  (setq-local eldoc-message-function #'eldoc-posframe-show-posframe))))))
+  :diminish)
 
 ;; Interactive macro expander
 (use-package macrostep
@@ -295,32 +239,36 @@ Lisp function does not specify a special indentation."
 
 ;; A better *Help* buffer
 (use-package helpful
-  :defines (counsel-describe-function-function
-            counsel-describe-variable-function)
   :commands helpful--buffer
-  :bind (([remap describe-key] . helpful-key)
+  :bind (([remap describe-function] . helpful-callable)
+         ([remap describe-command] . helpful-command)
+         ([remap describe-variable] . helpful-variable)
+         ([remap describe-key] . helpful-key)
          ([remap describe-symbol] . helpful-symbol)
          ("C-c C-d" . helpful-at-point)
          :map helpful-mode-map
          ("r" . remove-hook-at-point))
   :hook (helpful-mode . cursor-sensor-mode) ; for remove-advice button
   :init
-  (with-eval-after-load 'counsel
-    (setq counsel-describe-function-function #'helpful-callable
-          counsel-describe-variable-function #'helpful-variable))
+  (with-no-warnings
+    (with-eval-after-load 'counsel
+      (setq counsel-describe-function-function #'helpful-callable
+            counsel-describe-variable-function #'helpful-variable
+            counsel-describe-symbol-function #'helpful-symbol
+            counsel-descbinds-function #'helpful-callable))
 
-  (with-eval-after-load 'apropos
-    ;; patch apropos buttons to call helpful instead of help
-    (dolist (fun-bt '(apropos-function apropos-macro apropos-command))
-      (button-type-put
-       fun-bt 'action
-       (lambda (button)
-         (helpful-callable (button-get button 'apropos-symbol)))))
-    (dolist (var-bt '(apropos-variable apropos-user-option))
-      (button-type-put
-       var-bt 'action
-       (lambda (button)
-         (helpful-variable (button-get button 'apropos-symbol))))))
+    (with-eval-after-load 'apropos
+      ;; patch apropos buttons to call helpful instead of help
+      (dolist (fun-bt '(apropos-function apropos-macro apropos-command))
+        (button-type-put
+         fun-bt 'action
+         (lambda (button)
+           (helpful-callable (button-get button 'apropos-symbol)))))
+      (dolist (var-bt '(apropos-variable apropos-user-option))
+        (button-type-put
+         var-bt 'action
+         (lambda (button)
+           (helpful-variable (button-get button 'apropos-symbol)))))))
   :config
   (with-no-warnings
     ;; Open the buffer in other window

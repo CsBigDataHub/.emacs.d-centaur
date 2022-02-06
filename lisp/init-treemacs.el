@@ -9,7 +9,7 @@
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 2, or
+;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
 ;;
 ;; This program is distributed in the hope that it will be useful,
@@ -40,6 +40,8 @@
                treemacs-filewatch-mode
                treemacs-fringe-indicator-mode
                treemacs-git-mode)
+    :custom-face
+    (cfrs-border-color ((t (:background ,(face-foreground 'font-lock-comment-face nil t)))))
     :bind (([f8]        . treemacs)
            ("M-0"       . treemacs-select-window)
            ("C-x 1"     . treemacs-delete-other-windows)

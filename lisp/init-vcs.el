@@ -9,7 +9,7 @@
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 2, or
+;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
 ;;
 ;; This program is distributed in the hope that it will be useful,
@@ -217,16 +217,6 @@
     (advice-add #'git-messenger:popup-close :override #'ignore)
     (advice-add #'git-messenger:popup-message :override #'my-git-messenger:popup-message)))
 
-;; Show git blame info
-(use-package blamer
-  :custom-face (blamer-face ((t (:inherit completions-annotations :height 0.85))))
-  :hook (after-init . global-blamer-mode)
-  :init (setq blamer-idle-time 0.5
-              blamer-min-offset 40
-              blamer-author-formatter "%s "
-              blamer-datetime-formatter "[%s] "
-              blamer-commit-formatter "- %s"))
-
 ;; Resolve diff3 conflicts
 (use-package smerge-mode
   :ensure nil
@@ -268,7 +258,7 @@
                             (smerge-mode 1)))))
          (magit-diff-visit-file . (lambda ()
                                     (when smerge-mode
-                                      (hydra-smerge/body))))))
+                                      (smerge-mode-hydra/body))))))
 
 ;; Open github/gitlab/bitbucket page
 (use-package browse-at-remote

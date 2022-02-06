@@ -9,7 +9,7 @@
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 2, or
+;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
 ;;
 ;; This program is distributed in the hope that it will be useful,
@@ -36,7 +36,7 @@
 (use-package projectile
   :diminish
   :bind (:map projectile-mode-map
-         ("s-t" . projectile-find-file) ; `cmd-t' or `super-t'
+         ("s-t" . projectile-find-file-dwim) ; `cmd-t' or `super-t'
          ("C-c p" . projectile-command-map))
   :hook (after-init . projectile-mode)
   :init
