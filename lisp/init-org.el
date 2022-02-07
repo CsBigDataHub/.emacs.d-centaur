@@ -297,6 +297,14 @@ prepended to the element after the #+HEADER: tag."
         ("C-c C-x m" . org-pomodoro)))))
 
 ;;;;; My personal modifications
+
+(use-package org-appear
+  :after org
+  :config
+  (setq org-appear-autolinks t
+        org-appear-autosubmarkers t)
+  :hook (org-mode . org-appear-mode))
+
 (use-package org-download
   :after org
   :bind
