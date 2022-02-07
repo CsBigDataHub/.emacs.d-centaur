@@ -153,6 +153,7 @@
  '(org-pomodoro-mode-line-overtime ((t (:inherit error))))
  '(pulse-highlight-face ((t (:inherit region))))
  '(pulse-highlight-start-face ((t (:inherit region))))
+ '(region ((t (:extend t :background "gray30" :foreground "#ffffff"))))
  '(symbol-overlay-default-face ((t (:inherit (region bold)))))
  '(ztreep-arrow-face ((t (:inherit font-lock-comment-face))))
  '(ztreep-diff-header-face ((t (:inherit (diff-header bold)))))
