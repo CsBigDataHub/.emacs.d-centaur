@@ -87,22 +87,28 @@
       (use-package modus-themes
         :init
         ;; Add all your customizations prior to loading the themes
-        (setq modus-themes-success-deuteranopia t
+        (setq modus-themes-deuteranopia t
               modus-themes-italic-constructs t
               modus-themes-bold-constructs t
-              modus-themes-syntax 'alt-syntax
+              modus-themes-tabs-accented t
+              modus-themes-lang-checkers '(text-also background)
+              modus-themes-links '(italic bold neutral-underline background)
+              modus-themes-prompts '(intense bold)
+              modus-themes-syntax '(alt-syntax)
               modus-themes-mode-line '(3d accented)
               modus-themes-completions 'opinionated
               modus-themes-fringes 'intense
-              modus-themes-paren-match 'intense-bold
-              modus-themes-region 'accent
+	          modus-themes-mixed-fonts 't
+              modus-themes-paren-match '(bold intense)
+              modus-themes-region '(accent)
               modus-themes-org-blocks 'gray-background
-              modus-themes-scale-headings t
               modus-themes-variable-pitch-ui t
-              modus-themes-variable-pitch-headings t
-              modus-themes-fringes 'intense
-              modus-themes-hl-line 'accented-background
-              modus-themes-headings '((t . section))
+              modus-themes-hl-line '(underline accented)
+	          modus-themes-headings
+		      '((1 . (background overline variable-pitch 1.5))
+		        (2 . (overline rainbow 1.3))
+		        (3 . (overline 1.1))
+		        (t . (monochrome)))
               )
 
         (require 'doom-themes)
