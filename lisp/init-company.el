@@ -52,6 +52,7 @@
   :custom
   (company-dabbrev-code-everywhere t)
   (company-selection-wrap-around t)
+  (company-files-exclusions '(".git/" ".DS_Store" ".vscode/"))
   :init
   (setq company-tooltip-align-annotations t
         company-show-quick-access 'left
@@ -61,6 +62,7 @@
         company-idle-delay 0.2
         company-echo-delay (if (display-graphic-p) nil 0)
         company-minimum-prefix-length 1
+        company-tooltip-flip-when-above t
         company-icon-margin 3
         company-require-match nil
         company-dabbrev-ignore-case nil
