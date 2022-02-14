@@ -726,9 +726,9 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 
 
 ;; Agenda-to-appointent hooks
-(org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
-(run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
-(add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt) ;; update appt list on agenda view
+;; (org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
+;; (run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
+;; (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt) ;; update appt list on agenda view
 
 (use-package org-roam-ui
   :init
