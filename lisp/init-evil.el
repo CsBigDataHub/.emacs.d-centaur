@@ -4,6 +4,7 @@
   :init
   (setq evil-disable-insert-state-bindings t) ;;full blown emacs in insert mode
   (setq evil-want-keybinding nil)
+  :config
   (evil-mode 1)
   )
 ;;(setq evil-disable-insert-state-bindings t) ;;full blown emacs in insert mode

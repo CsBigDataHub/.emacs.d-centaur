@@ -136,12 +136,12 @@
   :config
   (add-hook 'org-mode-hook #'org-timed-alerts-mode))
 
-(use-package ob-pwsh
-  :straight (ob-pwsh
-             :type git
-             :host github
-             :repo "CsBigDataHub/ob-pwsh")
-  :init (cl-pushnew '(powershell . t) load-language-list))
+;; (use-package ob-pwsh
+;;  :straight (ob-pwsh
+;;             :type git
+;;             :host github
+;;             :repo "CsBigDataHub/ob-pwsh")
+;;  :init (cl-pushnew '(powershell . t) load-language-list))
 
 (use-package restclient-jq
   :after (restclient ob-restclient)
