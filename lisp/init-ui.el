@@ -86,7 +86,7 @@
 
       (use-package modus-themes
         :init
-        ;; Add all your customizations prior to loading the themes
+        ;; Add all your customization's prior to loading the themes
         (setq modus-themes-deuteranopia t
               modus-themes-italic-constructs t
               modus-themes-bold-constructs t
@@ -96,7 +96,9 @@
               modus-themes-prompts '(intense bold)
               modus-themes-syntax '(alt-syntax)
               modus-themes-mode-line '(3d accented)
-              modus-themes-completions 'opinionated
+              modus-themes-completions '((matches . (extrabold intense underline background))
+                                         (selection . (accented intense italic))
+                                         (popup . (accented intense)))
               modus-themes-fringes 'intense
 	          modus-themes-mixed-fonts 't
               modus-themes-paren-match '(bold intense)
