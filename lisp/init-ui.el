@@ -82,7 +82,25 @@
           (add-to-list 'solaire-mode-themes-to-face-swap "^doom-"))
         )
 
-      (use-package doom-themes )
+      (use-package doom-themes
+        :custom-face
+        (doom-modeline-buffer-file ((t (:inherit (mode-line bold)))))
+        :custom
+        (doom-themes-treemacs-theme "doom-colors")
+        :init (centaur-load-theme centaur-theme t)
+        :config
+        ;; Global settings (defaults)
+        (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+              doom-themes-enable-italic t) ; if nil, italics is universally disabled
+        ;; Enable flashing mode-line on errors
+        (doom-themes-visual-bell-config)
+
+        ;; Enable customized theme
+        ;; FIXME https://github.com/emacs-lsp/lsp-treemacs/issues/89
+        (with-eval-after-load 'lsp-treemacs
+          (doom-themes-treemacs-config))
+        ;; Corrects (and improves) org-mode's native fontification.
+        (doom-themes-org-config))
 
       (use-package modus-themes
         :init
@@ -113,30 +131,20 @@
 		        (t . (monochrome)))
               )
 
-        (require 'doom-themes)
         ;; Load the theme files before enabling a theme
         (modus-themes-load-themes)
-        )
-
-      (use-package doom-themes
-        :custom-face
-        (doom-modeline-buffer-file ((t (:inherit (mode-line bold)))))
-        :custom
-        (doom-themes-treemacs-theme "doom-colors")
-        :init (centaur-load-theme centaur-theme t)
         :config
-        ;; Global settings (defaults)
-        (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-              doom-themes-enable-italic t) ; if nil, italics is universally disabled
-        ;; Enable flashing mode-line on errors
-        (doom-themes-visual-bell-config)
-
-        ;; Enable customized theme
+        ;; Load the theme of your choice
+        (modus-themes-load-vivendi)
+        ;; (modus-themes-load-operandi)
+        (require 'doom-themes-ext-org)
+        (require 'doom-themes-ext-treemacs)
+        (doom-themes-treemacs-config)
+        (doom-themes-org-config)
         ;; FIXME https://github.com/emacs-lsp/lsp-treemacs/issues/89
         (with-eval-after-load 'lsp-treemacs
           (doom-themes-treemacs-config))
-        ;; Corrects (and improves) org-mode's native fontification.
-        (doom-themes-org-config))
+        )
       )
 
   (progn
