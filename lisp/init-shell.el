@@ -212,8 +212,7 @@ not appropriate in some cases like terminals."
                     (vterm-clear t))
                   (setq-local cursor-type 'box))
                 ;; Focus the child frame
-                (select-frame-set-input-focus vterm-posframe--frame)))))
-        (bind-key "C-`" #'vterm-posframe-toggle)))))
+                (select-frame-set-input-focus vterm-posframe--frame)))))))))
 
 ;; Shell Pop
 (use-package shell-pop

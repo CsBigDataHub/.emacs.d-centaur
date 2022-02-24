@@ -245,14 +245,15 @@ prepended to the element after the #+HEADER: tag."
   (use-package org-timeline
     :hook (org-agenda-finalize . org-timeline-insert-timeline))
 
-  ;; Auto-toggle Org LaTeX fragments
-  (use-package org-fragtog
-    :diminish
-    :hook (org-mode . org-fragtog-mode))
+  (when emacs/>=27p
+    ;; Auto-toggle Org LaTeX fragments
+    (use-package org-fragtog
+      :diminish
+      :hook (org-mode . org-fragtog-mode))
 
-  ;; Preview
-  (use-package org-preview-html
-    :diminish)
+    ;; Preview
+    (use-package org-preview-html
+      :diminish))
 
   ;; Presentation
   (use-package org-tree-slide
@@ -732,10 +733,11 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 ;; (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt) ;; update appt list on agenda view
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;notification;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package org-roam-ui
+(when emacs/>=27p
+ (use-package org-roam-ui
   :init
   (when (featurep 'xwidget-internal)
-    (setq org-roam-ui-browser-function #'xwidget-webkit-browse-url)))
+    (setq org-roam-ui-browser-function #'xwidget-webkit-browse-url))))
 
 (provide 'init-org)
 
