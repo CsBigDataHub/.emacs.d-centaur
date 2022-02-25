@@ -78,6 +78,8 @@
 (use-package autorevert
   :ensure nil
   :diminish
+  :config
+  (setq global-auto-revert-non-file-buffers t)
   :hook (after-init . global-auto-revert-mode))
 
 ;; Pass a URL to a WWW browser
