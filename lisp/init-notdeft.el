@@ -112,7 +112,7 @@ Add it for all `notdeft-directories'."
   (define-key my-notdeft-global-map [(h)] 'notdeft-global-hydra/body))
 
 ;; (require 'org-web-tools)
-
+;;
 ;; (defun my-org-web-tools--html-to-org-with-pandoc (html &optional selector)
 ;;   "Return string of HTML converted to Org with Pandoc.
 ;; When SELECTOR is non-nil, the HTML is filtered using
@@ -135,7 +135,7 @@ Add it for all `notdeft-directories'."
 ;;       (error "Pandoc failed"))
 ;;     (org-web-tools--clean-pandoc-output)
 ;;     (buffer-string)))
-
+;;
 ;; (defun my-org-web-tools--url-as-readable-org (&optional url)
 ;;   "Return string containing Org entry of URL's web page content.
 ;; Content is processed with `eww-readable' and Pandoc.  Entry will
@@ -145,7 +145,7 @@ Add it for all `notdeft-directories'."
 ;;   ;; By taking an optional URL, and getting it from the clipboard if
 ;;   ;; none is given, this becomes suitable for use in an org-capture
 ;;   ;; template, like:
-
+;;
 ;;   ;; ("wr" "Capture Web site with eww-readable" entry
 ;;   ;;  (file "~/org/articles.org")
 ;;   ;;  "%(org-web-tools--url-as-readable-org)")
@@ -172,7 +172,7 @@ Add it for all `notdeft-directories'."
 ;;        timestamp "\n\n"
 ;;        "** Article" "\n\n")
 ;;       (buffer-string))))
-
+;;
 ;; (defun my-notdeft-import-web-page (url &optional ask-dir)
 ;;   "Import the web page at URL into NotDeft.
 ;; Query for the target directory if ASK-DIR is non-nil.

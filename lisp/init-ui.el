@@ -82,40 +82,6 @@
           (add-to-list 'solaire-mode-themes-to-face-swap "^doom-"))
         )
 
-      (use-package doom-themes )
-
-      (use-package modus-themes
-        :init
-        ;; Add all your customizations prior to loading the themes
-        (setq modus-themes-deuteranopia t
-              modus-themes-italic-constructs t
-              modus-themes-bold-constructs t
-              modus-themes-tabs-accented t
-              modus-themes-lang-checkers '(text-also background)
-              modus-themes-links '(italic bold neutral-underline background)
-              modus-themes-prompts '(intense bold)
-              modus-themes-syntax '(alt-syntax)
-              modus-themes-mode-line '(3d accented)
-              modus-themes-completions 'opinionated
-              modus-themes-fringes 'intense
-	          modus-themes-mixed-fonts 't
-              modus-themes-paren-match '(bold intense)
-              modus-themes-region '(accent)
-              modus-themes-org-blocks 'gray-background
-              modus-themes-variable-pitch-ui t
-              modus-themes-hl-line '(underline accented)
-	          modus-themes-headings
-		      '((1 . (background overline variable-pitch 1.5))
-		        (2 . (overline rainbow 1.3))
-		        (3 . (overline 1.1))
-		        (t . (monochrome)))
-              )
-
-        (require 'doom-themes)
-        ;; Load the theme files before enabling a theme
-        (modus-themes-load-themes)
-        )
-
       (use-package doom-themes
         :custom-face
         (doom-modeline-buffer-file ((t (:inherit (mode-line bold)))))
@@ -135,6 +101,50 @@
           (doom-themes-treemacs-config))
         ;; Corrects (and improves) org-mode's native fontification.
         (doom-themes-org-config))
+
+      (use-package modus-themes
+        :init
+        ;; Add all your customization's prior to loading the themes
+        (setq modus-themes-deuteranopia t
+              modus-themes-italic-constructs t
+              modus-themes-bold-constructs t
+              modus-themes-tabs-accented t
+              modus-themes-lang-checkers '(text-also background)
+              modus-themes-links '(italic bold neutral-underline background)
+              modus-themes-prompts '(intense bold)
+              modus-themes-syntax '(alt-syntax)
+              modus-themes-mode-line '(3d accented)
+              modus-themes-completions '((matches . (extrabold intense underline background))
+                                         (selection . (accented intense italic))
+                                         (popup . (accented intense)))
+              modus-themes-fringes 'intense
+	          modus-themes-mixed-fonts 't
+              modus-themes-paren-match '(bold intense)
+              modus-themes-region '(accent)
+              modus-themes-org-blocks 'gray-background
+              modus-themes-variable-pitch-ui t
+              modus-themes-hl-line '(underline accented)
+	          modus-themes-headings
+		      '((1 . (background overline variable-pitch 1.5))
+		        (2 . (overline rainbow 1.3))
+		        (3 . (overline 1.1))
+		        (t . (monochrome)))
+              )
+
+        ;; Load the theme files before enabling a theme
+        (modus-themes-load-themes)
+        :config
+        ;; Load the theme of your choice
+        (modus-themes-load-vivendi)
+        ;; (modus-themes-load-operandi)
+        (require 'doom-themes-ext-org)
+        (require 'doom-themes-ext-treemacs)
+        (doom-themes-treemacs-config)
+        (doom-themes-org-config)
+        ;; FIXME https://github.com/emacs-lsp/lsp-treemacs/issues/89
+        (with-eval-after-load 'lsp-treemacs
+          (doom-themes-treemacs-config))
+        )
       )
 
   (progn
@@ -295,7 +305,7 @@
 (use-package all-the-icons
   :if (and centaur-icon (display-graphic-p))
   :init (unless (or sys/win32p (font-installed-p "all-the-icons"))
-          (all-the-icons-install-fonts t))
+          (centaur-install-fonts))
   :config
   (with-no-warnings
     (defun all-the-icons-reset ()

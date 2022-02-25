@@ -87,6 +87,10 @@
 ;;            (> (display-pixel-width) 1920))
 ;;   (set-frame-parameter nil 'left 1920))
 
+
+;; Supress "ad-handle-definition: x got redefined" warnings
+(setq ad-redefinition-action 'accept)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

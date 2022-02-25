@@ -41,11 +41,13 @@
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch)
          ("C-c M-g" . magit-file-dispatch))
-  :init (setq magit-diff-refine-hunk t)
+  :init
+  (setq magit-diff-refine-hunk t)
+  (setq magit-no-message '("Turning on magit-auto-revert-mode..."))
   :config
   (setq-default magit-diff-refine-hunk 'all)
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
-;; https://takeonrules.com/2021/08/03/using-magit-built-in-functions-for-workflow/
+  ;; https://takeonrules.com/2021/08/03/using-magit-built-in-functions-for-workflow/
   (setq magit-repolist-columns
         '(("Name"    25 magit-repolist-column-ident ())
           ("Version" 25 magit-repolist-column-version ())
@@ -105,8 +107,9 @@
       (let ((inhibit-message t))
         (magit-todos-mode 1))
       :config
-      (transient-append-suffix 'magit-status-jump '(0 0 -1)
-        '("T " "Todos" magit-todos-jump-to-todos)))))
+      (with-eval-after-load 'magit-status
+        (transient-append-suffix 'magit-status-jump '(0 0 -1)
+          '("t " "Todos" magit-todos-jump-to-todos))))))
 
 ;; Display transient in child frame
 (when (childframe-workable-p)
