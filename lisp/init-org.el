@@ -140,7 +140,10 @@ prepended to the element after the #+HEADER: tag."
         org-startup-indented t
         org-replace-disputed-keys t ;;https://irreal.org/blog/?p=1562
         org-ellipsis (if (and (display-graphic-p) (char-displayable-p ?⏷)) "\t⏷" nil)
-        org-pretty-entities nil
+        org-pretty-entities t
+        org-catch-invisible-edits 'show-and-error
+        org-special-ctrl-a/e t
+        org-insert-heading-respect-content t
         org-imenu-depth 4
         org-hide-emphasis-markers t)
 
@@ -182,8 +185,9 @@ prepended to the element after the #+HEADER: tag."
                                     ;; Looks better for tags
                                     (setq line-spacing 0.1)
                                     ;; Disable Prettify Symbols mode
-                                    (setq prettify-symbols-alist nil)
-                                    (prettify-symbols-mode -1)))))
+                                    ;; (setq prettify-symbols-alist nil)
+                                    ;; (prettify-symbols-mode -1)
+                                    ))))
     (progn
       (when emacs/>=26p
         (use-package org-superstar
