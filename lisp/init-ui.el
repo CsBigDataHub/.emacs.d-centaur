@@ -77,6 +77,7 @@
         :hook (after-load-theme . solaire-global-mode))
 
       (use-package doom-themes
+        :bind ("C-c T" . centaur-load-theme)
         :custom-face
         (doom-modeline-buffer-file ((t (:inherit (mode-line bold)))))
         :custom
@@ -239,7 +240,7 @@
 (use-package all-the-icons
   :if (and centaur-icon (display-graphic-p))
   :init (unless (or sys/win32p (font-installed-p "all-the-icons"))
-          (all-the-icons-install-fonts t))
+          (centaur-install-fonts))
   :config
   (with-no-warnings
     (defun all-the-icons-reset ()

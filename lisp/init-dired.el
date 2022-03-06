@@ -111,8 +111,8 @@
                                                 (when all-the-icons-dired-monochrome
                                                   `(:face ,(face-at-point))))))))
                       (if (member file '("." ".."))
-                          (all-the-icons-dired--add-overlay (point) "   \t")
-                        (all-the-icons-dired--add-overlay (point) (concat " " icon "\t"))))))
+                          (all-the-icons-dired--add-overlay (dired-move-to-filename) "   \t")
+                        (all-the-icons-dired--add-overlay (dired-move-to-filename) (concat " " icon "\t"))))))
                 (forward-line 1)))
           (message "Not display icons because of too many items.")))
       (advice-add #'all-the-icons-dired--refresh :override #'my-all-the-icons-dired--refresh)))

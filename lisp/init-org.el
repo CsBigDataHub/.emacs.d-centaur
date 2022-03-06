@@ -175,19 +175,29 @@ prepended to the element after the #+HEADER: tag."
     (bind-key [remap org-set-tags-command] #'counsel-org-tag org-mode-map))
 
   ;; Prettify UI
-  (when emacs/>=26p
-    (use-package org-superstar
-      :if (and (display-graphic-p) (char-displayable-p ?⚫))
-      :hook (org-mode . org-superstar-mode)
-      :init (setq org-superstar-headline-bullets-list '("⚫" "⚫" "⚫" "⚫"))))
-
-  (use-package org-fancy-priorities
-    :diminish
-    :hook (org-mode . org-fancy-priorities-mode)
-    :init (setq org-fancy-priorities-list
-                (if (and (display-graphic-p) (char-displayable-p ?⯀))
-                    '("⯀" "⯀" "⯀" "⯀")
-                  '("HIGH" "MEDIUM" "LOW" "OPTIONAL"))))
+  (if emacs/>=27p
+      (use-package org-modern
+        :hook ((org-mode . org-modern-mode)
+               (org-modern-mode . (lambda ()
+                                    "Adapt `org-modern-mode'."
+                                    ;; Looks better for tags
+                                    (setq line-spacing 0.1)
+                                    ;; Disable Prettify Symbols mode
+                                    (setq prettify-symbols-alist nil)
+                                    (prettify-symbols-mode -1)))))
+    (progn
+      (when emacs/>=26p
+        (use-package org-superstar
+          :if (and (display-graphic-p) (char-displayable-p ?◉))
+          :hook (org-mode . org-superstar-mode)
+          :init (setq org-superstar-headline-bullets-list '("◉""○""◈""◇""⁕"))))
+      (use-package org-fancy-priorities
+        :diminish
+        :hook (org-mode . org-fancy-priorities-mode)
+        :init (setq org-fancy-priorities-list
+                    (if (and (display-graphic-p) (char-displayable-p ?🅐))
+                        '("🅐" "🅑" "🅒" "🅓")
+                      '("HIGH" "MEDIUM" "LOW" "OPTIONAL"))))))
 
   ;; Babel
   (setq org-confirm-babel-evaluate nil
@@ -243,14 +253,15 @@ prepended to the element after the #+HEADER: tag."
   (use-package org-timeline
     :hook (org-agenda-finalize . org-timeline-insert-timeline))
 
-  ;; Auto-toggle Org LaTeX fragments
-  (use-package org-fragtog
-    :diminish
-    :hook (org-mode . org-fragtog-mode))
+  (when emacs/>=27p
+    ;; Auto-toggle Org LaTeX fragments
+    (use-package org-fragtog
+      :diminish
+      :hook (org-mode . org-fragtog-mode))
 
-  ;; Preview
-  (use-package org-preview-html
-    :diminish)
+    ;; Preview
+    (use-package org-preview-html
+      :diminish))
 
   ;; Presentation
   (use-package org-tree-slide
@@ -312,10 +323,11 @@ prepended to the element after the #+HEADER: tag."
     (unless (file-exists-p org-roam-directory)
       (make-directory org-roam-directory))
 
-    (use-package org-roam-ui
-      :init
-      (when (featurep 'xwidget-internal)
-        (setq org-roam-ui-browser-function #'xwidget-webkit-browse-url)))))
+    (when emacs/>=27p
+      (use-package org-roam-ui
+        :init
+        (when (featurep 'xwidget-internal)
+          (setq org-roam-ui-browser-function #'xwidget-webkit-browse-url))))))
 
 (provide 'init-org)
 

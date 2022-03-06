@@ -33,10 +33,11 @@
 (require 'init-const)
 
 ;; A multi dictionaries interface
-(use-package fanyi
-  :bind (("C-c d f" . fanyi-dwim)
-         ("C-c d d" . fanyi-dwim2)
-         ("C-c d h" . fanyi-from-history)))
+(when emacs/>=27p
+  (use-package fanyi
+    :bind (("C-c d f" . fanyi-dwim)
+           ("C-c d d" . fanyi-dwim2)
+           ("C-c d h" . fanyi-from-history))))
 
 ;; Youdao Dictionary
 (use-package youdao-dictionary
@@ -60,16 +61,16 @@
           (youdao-dictionary-search-at-point-tooltip))
       (youdao-dictionary-search-at-point)))
   :config
-  (with-eval-after-load 'hydra
-    (defhydra youdao-dictionary-hydra (:color blue)
-      ("p" youdao-dictionary-play-voice-of-current-word "play voice of current word")
-      ("y" youdao-dictionary-play-voice-at-point "play voice at point")
-      ("q" quit-window "quit")
-      ("C-g" nil nil)
-      ("h" nil nil)
-      ("?" nil nil)))
-
   (with-no-warnings
+    (with-eval-after-load 'hydra
+      (defhydra youdao-dictionary-hydra (:color blue)
+        ("p" youdao-dictionary-play-voice-of-current-word "play voice of current word")
+        ("y" youdao-dictionary-play-voice-at-point "play voice at point")
+        ("q" quit-window "quit")
+        ("C-g" nil nil)
+        ("h" nil nil)
+        ("?" nil nil)))
+
     (defun my-youdao-dictionary--posframe-tip (string)
       "Show STRING using `posframe-show'."
       (unless (and (require 'posframe nil t) (posframe-workable-p))
