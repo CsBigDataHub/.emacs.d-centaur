@@ -101,6 +101,7 @@
 (evil-set-initial-state 'flymake-diagnostics-buffer-mode 'emacs)
 (evil-set-initial-state 'vterm-mode 'emacs)
 (evil-set-initial-state 'Info-mode 'emacs)
+(evil-set-initial-state 'special-mode 'emacs)
 
 ;; (add-hook 'flymake-diagnostics-buffer-mode-hook
 ;;           (lambda ()
