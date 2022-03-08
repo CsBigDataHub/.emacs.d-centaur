@@ -86,8 +86,7 @@
         :bind ("C-c T" . centaur-load-theme)
         :custom-face
         (doom-modeline-buffer-file ((t (:inherit (mode-line bold)))))
-        :custom
-        (doom-themes-treemacs-theme "doom-colors")
+        :custom (doom-themes-treemacs-theme "doom-colors")
         :init (centaur-load-theme centaur-theme t)
         :config
         ;; Global settings (defaults)
