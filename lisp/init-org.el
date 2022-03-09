@@ -188,8 +188,8 @@ prepended to the element after the #+HEADER: tag."
                                     ;; Looks better for tags
                                     (setq line-spacing 0.1)
                                     ;; Disable Prettify Symbols mode
-                                    ;; (setq prettify-symbols-alist nil)
-                                    ;; (prettify-symbols-mode -1)
+                                    (setq prettify-symbols-alist nil)
+                                    (prettify-symbols-mode -1)
                                     ))))
     (progn
       (when emacs/>=26p
