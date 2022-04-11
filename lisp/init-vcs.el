@@ -1,6 +1,6 @@
 ;; init-vcs.el --- Initialize version control system configurations.	-*- lexical-binding: t -*-
 
-;; Copyright (C) 2016-2021 Vincent Zhang
+;; Copyright (C) 2016-2022 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
 ;; URL: https://github.com/seagle0128/.emacs.d
@@ -91,6 +91,7 @@
   (when (executable-find "cc")
     (use-package forge
       :demand
+      :defines forge-topic-list-columns
       :init
       (setq forge-topic-list-columns
             '(("#" 5 forge-topic-list-sort-by-number (:right-align t) number nil)
@@ -101,6 +102,7 @@
   ;; Show TODOs in magit
   (when emacs/>=25.2p
     (use-package magit-todos
+      :defines magit-todos-nice
       :bind ("C-c C-t" . ivy-magit-todos)
       :init
       (setq magit-todos-nice (if (executable-find "nice") t nil))
@@ -152,8 +154,19 @@
   :bind (:map vc-prefix-map
          ("t" . git-timemachine))
   :hook ((git-timemachine-mode . (lambda ()
-                                   "Display different colors in mode-line."
-                                   (face-remap-add-relative 'mode-line 'custom-saved)))
+                                   "Improve `git-timemachine' buffers."
+                                   ;; Display different colors in mode-line
+                                   (face-remap-add-relative 'mode-line 'custom-state)
+
+                                   ;; Highlight symbols in elisp
+                                   (and (derived-mode-p 'emacs-lisp-mode)
+                                        (fboundp 'highlight-defined-mode)
+                                        (highlight-defined-mode t))
+
+                                   ;; Display line numbers
+                                   (and (derived-mode-p 'prog-mode 'yaml-mode)
+                                        (fboundp 'display-line-numbers-mode)
+                                        (display-line-numbers-mode t))))
          (before-revert . (lambda ()
                             (when (bound-and-true-p git-timemachine-mode)
                               (user-error "Cannot revert the timemachine buffer"))))))

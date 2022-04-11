@@ -1,6 +1,6 @@
 ;; init-ui.el --- Better lookings and appearances.	-*- lexical-binding: t -*-
 
-;; Copyright (C) 2006-2021 Vincent Zhang
+;; Copyright (C) 2006-2022 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
 ;; URL: https://github.com/seagle0128/.emacs.d
@@ -441,7 +441,7 @@
       scroll-preserve-screen-position t)
 
 ;; Good pixel line scrolling
-(if (boundp 'pixel-scroll-precision-mode)
+(if (fboundp 'pixel-scroll-precision-mode)
     (pixel-scroll-precision-mode t)
   (when (and emacs/>=27p (not sys/macp))
     (use-package good-scroll

@@ -1,10 +1,10 @@
 ;;; init.el --- A Fancy and Fast Emacs Configuration.	-*- lexical-binding: t no-byte-compile: t -*-
 
-;; Copyright (C) 2006-2021 Vincent Zhang
+;; Copyright (C) 2006-2022 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
 ;; URL: https://github.com/seagle0128/.emacs.d
-;; Version: 5.9.0
+;; Version: 5.9.1
 ;; Keywords: .emacs.d centaur
 
 ;;

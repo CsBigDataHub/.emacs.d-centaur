@@ -1,6 +1,6 @@
 ;; init-highlight.el --- Initialize highlighting configurations.	-*- lexical-binding: t -*-
 
-;; Copyright (C) 2006-2021 Vincent Zhang
+;; Copyright (C) 2006-2022 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
 ;; URL: https://github.com/seagle0128/.emacs.d
@@ -207,7 +207,7 @@ FACE defaults to inheriting from default and highlight."
 ;; Highlight TODO and similar keywords in comments and strings
 (use-package hl-todo
   :custom-face
-  (hl-todo ((t (:inherit variable-pitch :box (:line-width -1) :height 0.9 :width condensed :weight semibold :underline nil :inverse-video t))))
+  (hl-todo ((t (:inherit variable-pitch :box (:line-width -1) :height 0.85 :width condensed :weight semibold :underline nil :inverse-video t))))
   :bind (:map hl-todo-mode-map
          ([C-f3] . hl-todo-occur)
          ("C-c t p" . hl-todo-previous)

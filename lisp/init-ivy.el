@@ -1,6 +1,6 @@
 ;;; init-ivy.el --- Initialize ivy configurations.	-*- lexical-binding: t -*-
 
-;; Copyright (C) 2016-2021 Vincent Zhang
+;; Copyright (C) 2016-2022 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
 ;; URL: https://github.com/seagle0128/.emacs.d
@@ -313,7 +313,8 @@
 
     (defun my-ivy-switch-to-rg-dwim (&rest _)
       "Switch to `rg-dwim' with the current input."
-      (rg-dwim default-directory))
+      (ivy-quit-and-run
+        (rg-dwim default-directory)))
 
     (defun my-ivy-switch-to-counsel-rg (&rest _)
       "Switch to `counsel-rg' with the current input."
@@ -487,14 +488,7 @@ This is for use in `ivy-re-builders-alist'."
             (counsel-unicode-char . ivy-prescient-non-fuzzy)
             (t . ivy-prescient-re-builder))
           ivy-prescient-sort-commands
-          '(:not swiper swiper-isearch ivy-switch-buffer
-            lsp-ivy-workspace-symbol ivy-resume ivy--restore-session
-            counsel-grep counsel-git-grep counsel-rg counsel-ag
-            counsel-ack counsel-fzf counsel-pt counsel-imenu
-            counsel-org-capture counsel-outline counsel-org-goto
-            counsel-load-theme counsel-yank-pop
-            counsel-recentf counsel-buffer-or-recentf
-            centaur-load-theme))
+          '(counsel-M-x execute-extended-command execute-extended-command-for-buffer))
 
     (ivy-prescient-mode 1))
 

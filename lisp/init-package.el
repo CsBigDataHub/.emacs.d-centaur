@@ -1,6 +1,6 @@
 ;;; init-package.el --- Initialize package configurations.	-*- lexical-binding: t -*-
 
-;; Copyright (C) 2006-2021 Vincent Zhang
+;; Copyright (C) 2006-2022 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
 ;; URL: https://github.com/seagle0128/.emacs.d
@@ -111,10 +111,25 @@
 
 ;; A modern Packages Menu
 (use-package paradox
+  :custom-face
+  (paradox-archive-face ((t (:inherit font-lock-doc-face))))
+  (paradox-description-face ((t (:inherit completions-annotations))))
   :hook (after-init . paradox-enable)
   :init (setq paradox-execute-asynchronously t
               paradox-github-token t
-              paradox-display-star-count nil)
+              paradox-display-star-count nil
+              paradox-status-face-alist ;
+              '(("built-in"  . font-lock-builtin-face)
+                ("available" . success)
+                ("new"       . (success bold))
+                ("held"      . font-lock-constant-face)
+                ("disabled"  . font-lock-warning-face)
+                ("avail-obso" . font-lock-comment-face)
+                ("installed" . font-lock-comment-face)
+                ("dependency" . font-lock-comment-face)
+                ("incompat"  . font-lock-comment-face)
+                ("deleted"   . font-lock-comment-face)
+                ("unsigned"  . font-lock-warning-face)))
   :config
   (when (fboundp 'page-break-lines-mode)
     (add-hook 'paradox-after-execute-functions

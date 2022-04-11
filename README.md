@@ -41,7 +41,7 @@ Emacs power users.
 
 It's able to run on Windows, GNU Linux and macOS. It is compatible **ONLY with
 GNU Emacs 25.1 and above**. In general you're advised to always run with the
-latest stable release - currently **27.2**.
+latest stable release - currently **28.1**.
 
 ## Features
 
@@ -171,7 +171,7 @@ For Example:
 (setq centaur-dashboard nil)                   ; Use dashboard at startup or not: t or nil
 (setq centaur-restore-frame-geometry nil)      ; Restore the frame's geometry at startup: t or nil
 (setq centaur-lsp 'eglot)                      ; Set LSP client: lsp-mode, eglot or nil
-(setq centaur-lsp-format-on-save-ignore-modes '(c-mode c++-mode python-mode)) ; Ignore format on save for some languages
+(setq centaur-lsp-format-on-save-ignore-modes '(c-mode c++-mode python-mode markdown-mode)) ; Ignore format on save for some languages
 (setq centaur-chinese-calendar nil)            ; Use Chinese calendar or not: t or nil
 (setq centaur-prettify-symbols-alist nil)      ; Alist of symbol prettifications. Nil to use font supports ligatures.
 (setq centaur-prettify-org-symbols-alist nil)  ; Alist of symbol prettifications for `org-mode'

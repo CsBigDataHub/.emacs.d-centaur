@@ -1,6 +1,6 @@
 ;; init-funcs.el --- Define functions.	-*- lexical-binding: t -*-
 
-;; Copyright (C) 2018-2021 Vincent Zhang
+;; Copyright (C) 2018-2022 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
 ;; URL: https://github.com/seagle0128/.emacs.d
@@ -625,7 +625,7 @@ If SYNC is non-nil, the updating process is synchronous."
                 (top . ,(frame-parameter nil 'top))
                 (width . ,(frame-parameter nil 'width))
                 (height . ,(frame-parameter nil 'height))
-                (fullscreen . ,(frame-parameter nil 'fullscreen)))))
+                (fullscreen))))
 
 (defun centaur-frame--fullscreen-p ()
   "Returns Non-nil if the frame is fullscreen."

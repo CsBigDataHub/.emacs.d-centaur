@@ -1,6 +1,6 @@
 ;; init-hydra.el --- Initialize hydra configurations.	-*- lexical-binding: t -*-
 
-;; Copyright (C) 2019-2021 Vincent Zhang
+;; Copyright (C) 2019-2022 Vincent Zhang
 
 ;; Author: Vincent Zhang <seagle0128@gmail.com>
 ;; URL: https://github.com/seagle0128/.emacs.d
@@ -33,8 +33,17 @@
 (require 'init-custom)
 (require 'init-funcs)
 
+(use-package hydra
+  :hook (emacs-lisp-mode . hydra-add-imenu))
+
 (use-package pretty-hydra
   :bind ("<f6>" . toggles-hydra/body)
+  :hook (emacs-lisp-mode . (lambda ()
+                             (add-to-list
+                              'imenu-generic-expression
+                              '("Hydras"
+                                "^.*(\\(pretty-hydra-define\\) \\([a-zA-Z-]+\\)"
+                                2))))
   :init
   (cl-defun pretty-hydra-title (title &optional icon-type icon-name
                                       &key face height v-adjust)
