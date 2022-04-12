@@ -104,7 +104,7 @@ Enjoy! :smile:
 troubleshooting.
 
 ``` shell
-emacs -Q --l ~/.emacs.d/init-mini.el
+emacs -Q -l ~/.emacs.d/init-mini.el
 ```
 
 For Symbola font install look in to

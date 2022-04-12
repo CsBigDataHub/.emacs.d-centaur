@@ -113,122 +113,86 @@
            (executable-find "libtool")
            (executable-find "make"))
   (use-package vterm
-    :commands vterm--internal
     :bind (:map vterm-mode-map
            ([f9] . (lambda ()
                      (interactive)
-                     (and (fboundp 'shell-pop)
-                          (shell-pop nil))))
-           ("C-<delete>" . vterm-send-delete))
-    :init (setq vterm-always-compile-module t
-                vterm-kill-buffer-on-exit t)
+                     (and (fboundp 'shell-pop-toggle)
+                          (shell-pop-toggle)))))
+    :init (setq vterm-always-compile-module t)))
 
-    (defun my/vterm-execute-current-line ()
-      "Insert text of current line or region in vterm and execute."
+;; Shell Pop: leverage `popper'
+(with-no-warnings
+  (defvar shell-pop--frame nil)
+  (when (childframe-workable-p)
+    (defun shell-pop-posframe-hidehandler (_)
+      "Hidehandler used by `shell-pop-posframe-toggle'."
+      (not (eq (selected-frame) posframe--frame)))
+
+    (defun shell-pop--shell (&optional arg)
+      "Get shell buffer."
+      (cond ((fboundp 'vterm) (vterm arg))
+            (sys/win32p (eshell arg))
+            (t (shell))))
+
+    (defun shell-pop-posframe-toggle ()
+      "Toggle shell in child frame."
       (interactive)
-      (eval-when-compile (require 'vterm))
-      (eval-when-compile (require 'subr-x))
-      (if (use-region-p)
-          (setq min (region-beginning)
-                max (region-end))
-        (setq min (point-at-bol)
-              max (point-at-eol)))
-      (let ((command (string-trim (buffer-substring min max))))
-        (let ((buf (current-buffer)))
-          (unless (get-buffer vterm-buffer-name)
-            (vterm))
-          (display-buffer vterm-buffer-name t)
-          (switch-to-buffer-other-window vterm-buffer-name)
-          (vterm--goto-line -1)
-          (message command)
-          (vterm-send-string command)
-          (vterm-send-return)
-          (switch-to-buffer-other-window buf)
-          )))
+      (let* ((buffer (shell-pop--shell))
+             (window (get-buffer-window buffer)))
+        ;; Hide window: for `popper'
+        (when (window-live-p window)
+          (delete-window window))
 
-    (global-set-key (kbd "C-x E E") 'my/vterm-execute-current-line)
-    (add-hook 'vterm-mode-hook (lambda() (hungry-delete-mode -1)))
+        (if (and (frame-live-p shell-pop--frame)
+                 (frame-visible-p shell-pop--frame))
+            (progn
+              ;; Hide child frame and refocus in parent frame
+              (make-frame-invisible shell-pop--frame)
+              (select-frame-set-input-focus (frame-parent shell-pop--frame))
+              (setq shell-pop--frame nil))
+          (let ((width  (max 80 (floor (* (frame-width) 0.5))))
+                (height (floor (* (frame-height) 0.5))))
+            ;; Shell pop in child frame
+            (setq shell-pop--frame
+                  (posframe-show
+                   buffer
+                   :poshandler #'posframe-poshandler-frame-center
+                   :hidehandler #'shell-pop-posframe-hidehandler
+                   :left-fringe 8
+                   :right-fringe 8
+                   :width width
+                   :height height
+                   :min-width width
+                   :min-height height
+                   :internal-border-width 3
+                   :internal-border-color (face-foreground 'font-lock-comment-face nil t)
+                   :background-color (face-background 'tooltip nil t)
+                   :override-parameters '((cursor-type . t))
+                   :accept-focus t))
 
-    :config
-    (defun evil-collection-vterm-escape-stay ()
-      "Go back to normal state but don't move
-cursor backwards. Moving cursor backwards is the default vim behavior but it is
-not appropriate in some cases like terminals."
-      (setq-local evil-move-cursor-back nil))
+            ;; Focus in child frame
+            (select-frame-set-input-focus shell-pop--frame)
 
-    (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
+            (with-current-buffer buffer
+              (setq-local cursor-type 'box) ; blink cursor
+              (goto-char (point-max))
+              (when (fboundp 'vterm-reset-cursor-point)
+                (vterm-reset-cursor-point)))))))
+    (bind-key "C-`" #'shell-pop-posframe-toggle))
 
-    (defun vterm-counsel-yank-pop-action (orig-fun &rest args)
-      (if (equal major-mode 'vterm-mode)
-          (let ((inhibit-read-only t)
-                (yank-undo-function (lambda (_start _end) (vterm-undo))))
-            (cl-letf (((symbol-function 'insert-for-yank)
-                       (lambda (str) (vterm-send-string str t))))
-              (apply orig-fun args)))
-        (apply orig-fun args)))
-
-    (advice-add 'counsel-yank-pop-action :around #'vterm-counsel-yank-pop-action)
-
-    (with-no-warnings
-      (when (childframe-workable-p)
-        (defvar vterm-posframe--frame nil)
-
-        (defun vterm-posframe-hidehandler (_)
-          "Hidehandler used by `vterm-posframe-toggle'."
-          (not (eq (selected-frame) posframe--frame)))
-
-        (defun vterm-posframe-toggle ()
-          "Toggle `vterm' child frame."
-          (interactive)
-          (let ((buffer (vterm--internal #'ignore 100)))
-            (if (and vterm-posframe--frame
-                     (frame-live-p vterm-posframe--frame)
-                     (frame-visible-p vterm-posframe--frame))
-                (progn
-                  (posframe-hide buffer)
-                  ;; Focus the parent frame
-                  (select-frame-set-input-focus (frame-parent vterm-posframe--frame)))
-              (let ((width  (max 80 (floor (* (frame-width) 0.62))))
-                    (height (floor (* (frame-height) 0.62))))
-                (setq vterm-posframe--frame
-                      (posframe-show
-                       buffer
-                       :poshandler #'posframe-poshandler-frame-center
-                       :hidehandler #'vterm-posframe-hidehandler
-                       :left-fringe 8
-                       :right-fringe 8
-                       :width width
-                       :height height
-                       :min-width width
-                       :min-height height
-                       :internal-border-width 3
-                       :internal-border-color (face-foreground 'font-lock-comment-face nil t)
-                       :background-color (face-background 'tooltip nil t)
-                       :override-parameters '((cursor-type . t))
-                       :accept-focus t))
-                ;; Blink cursor
-                (with-current-buffer buffer
-                  (save-excursion
-                    (vterm-clear t))
-                  (setq-local cursor-type 'box))
-                ;; Focus the child frame
-                (select-frame-set-input-focus vterm-posframe--frame)))))))))
-
-;; Shell Pop
-(use-package shell-pop
-  :bind (("C-`" . (lambda ()
-                    (interactive)
-                    (if (fboundp 'vterm-posframe-toggle)
-                        (vterm-posframe-toggle)
-                      (shell-pop nil))))
-         ([f9] . shell-pop))
-  :init (setq shell-pop-window-size 50
-              shell-pop-window-position "right"
-              shell-pop-shell-type
-              (cond ((fboundp 'vterm) '("vterm" "*vterm*" #'vterm))
-                    (sys/win32p '("eshell" "*eshell*" #'eshell))
-                    (t '("terminal" "*terminal*"
-                         (lambda () (term shell-pop-term-shell)))))))
+  (defvar shell-pop--window nil)
+  (defun shell-pop-toggle ()
+    "Toggle shell."
+    (interactive)
+    (unless (and (frame-live-p shell-pop--frame)
+                 (frame-visible-p shell-pop--frame))
+      (if (window-live-p shell-pop--window)
+          (progn
+            (delete-window shell-pop--window)
+            (setq shell-pop--window nil))
+        (setq shell-pop--window
+              (get-buffer-window (shell-pop--shell))))))
+  (bind-key [f9] #'shell-pop-toggle))
 
 (use-package flymake-shellcheck
   :commands flymake-shellcheck-load
