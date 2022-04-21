@@ -29,6 +29,7 @@
    ("s-k" . my/kill-this-buffer)
    ("s-0" . delete-window)
    ("s-H-o" . other-window)
+   ("H-M-s-SPC" . major-mode-hydra)
    ))
 
 

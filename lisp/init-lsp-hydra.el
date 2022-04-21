@@ -33,7 +33,37 @@
 
 (when emacs/>=26p
   (pcase centaur-lsp
-
+    ('eglot
+     (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode terraform-mode yaml-mode csharp-mode)
+       (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
+       ("Quick Action"
+        (("d" eldoc-print-current-symbol-info "describe symbol")
+         ("a" eglot-code-actions "code action")
+         ("m" counsel-imenu "imenu")
+         ("i" eldoc-doc-buffer "info at point")
+         ("f" eglot-format "format"))
+        "Find & Goto"
+        (("gr" xref-find-references "references")
+         ("gd" xref-find-definitions "definitions")
+         ;; ("gf" lsp-ivy-workspace-symbol "workspace symbol")
+         )
+        "Errors"
+        (("ee" flymake-show-diagnostics-buffer "list errors")
+         ("er" flymake-goto-next-error "next error")
+         ("ew" flymake-goto-prev-error "prev error")
+         ("es" flymake-start "start checks")
+         ("eS" flymake-stop-all-syntax-checks "stop checks"))
+        "Refactor"
+        (("rs" eglot-rename "rename"))
+        "Connection"
+        (("cc" eglot "start")
+         ("cr" eglot-reconnect "restart")
+         ("cd" eglot-events-buffer "describe session")
+         ("ce" eglot-stderr-buffer "lsp error buffer")
+         ("xx" eglot-shutdown "shutdown")
+         ("XX" eglot-shutdown-all "shutdown all"))
+        ))
+     )
     ('lsp-mode
      (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode terraform-mode yaml-mode csharp-mode)
        (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
@@ -95,40 +125,9 @@
         (("ci" lsp-metals-build-import "import build")
          ("cg" my-lsp-metals-build-restart "restart build"))))
      )
+    )
+  )
 
-    ('eglot
-     (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode terraform-mode yaml-mode csharp-mode)
-       (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
-       ("Quick Action"
-        (("d" eldoc-print-current-symbol-info "describe symbol")
-         ("a" eglot-code-actions "code action")
-         ("m" counsel-imenu "imenu")
-         ("i" eldoc-doc-buffer "info at point")
-         ("f" eglot-format "format"))
-        "Find & Goto"
-        (("gr" xref-find-references "references")
-         ("gd" xref-find-definitions "definitions")
-         ;; ("gf" lsp-ivy-workspace-symbol "workspace symbol")
-         )
-        "Errors"
-        (("ee" flymake-show-diagnostics-buffer "list errors")
-         ("er" flymake-goto-next-error "next error")
-         ("ew" flymake-goto-prev-error "prev error")
-         ("es" flymake-start "start checks")
-         ("eS" flymake-stop-all-syntax-checks "stop checks"))
-        "Refactor"
-        (("rs" eglot-rename "rename"))
-        "Connection"
-        (("cc" eglot "start")
-         ("cr" eglot-reconnect "restart")
-         ("cd" eglot-events-buffer "describe session")
-         ("ce" eglot-stderr-buffer "lsp error buffer")
-         ("xx" eglot-shutdown "shutdown")
-         ("XX" eglot-shutdown-all "shutdown all"))
-        ))
-     )
-
-    ))
 (major-mode-hydra-define+ python-mode
   (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
   ("Quick Action"
