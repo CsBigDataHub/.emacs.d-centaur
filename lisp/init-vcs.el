@@ -90,7 +90,7 @@
   ;; Access Git forges from Magit
   (when (executable-find "cc")
     (use-package forge
-      :demand
+      :demand t
       :defines forge-topic-list-columns
       :init
       (setq forge-topic-list-columns
