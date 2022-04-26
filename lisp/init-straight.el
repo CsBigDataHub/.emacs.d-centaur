@@ -171,4 +171,25 @@
 ;;   :config
 ;;   (setq turbo-console--prefix "✰"))
 
+(use-package jenkinsfile-mode
+  :straight (jenkinsfile-mode :type git :host github :repo "CsBigDataHub/jenkinsfile-mode")
+  :preface
+  (defun my-company-jenkinsfile-mode-company-hook ()
+    (set (make-local-variable 'company-backends) '((company-files)
+                                                   (company-dabbrev
+                                                    company-dabbrev-code
+                                                    company-keywords
+                                                    company-capf
+                                                    company-yasnippet))))
+  :config
+  (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . jenkinsfile-mode))
+  (add-to-list 'auto-mode-alist '("Jenkinsfile" . jenkinsfile-mode))
+  (add-hook 'jenkinsfile-mode-hook 'my-company-jenkinsfile-mode-company-hook)
+  ;; notation below can be used instead of preface
+  ;; (add-hook 'jenkinsfile-mode-hook
+  ;;           '(lambda ()
+  ;;              (set (make-local-variable 'company-backends)
+  ;;                   '((company-dabbrev company-dabbrev-code company-keywords company-files company-capf :with company-yasnippet)))))
+  )
+
 (provide 'init-straight)
