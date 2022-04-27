@@ -574,7 +574,7 @@ _C_: correct   _d_: done checking
      ("C-p" previous-line "↑")
      ("C-f" forward-char "→"))))
   :bind (:map hs-minor-mode-map
-         ("C-~" . hideshow-hydra/body))
+         ("C-`" . hideshow-hydra/body))
   :hook (prog-mode . hs-minor-mode)
   :config
   (defun hs-cycle (&optional level)
