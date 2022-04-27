@@ -139,7 +139,7 @@
   (setq nov-shr-rendering-functions '((img . nov-render-img) (title . nov-render-title)))
   (setq nov-shr-rendering-functions (append nov-shr-rendering-functions shr-external-rendering-functions))
   (with-no-warnings
-    ;; HACK: errors while opening `nov' files with Unicode characters
+    ;; WORKAROUND: errors while opening `nov' files with Unicode characters
     ;; @see https://github.com/wasamasa/nov.el/issues/63
     (defun my-nov-content-unique-identifier (content)
       "Return the the unique identifier for CONTENT."
