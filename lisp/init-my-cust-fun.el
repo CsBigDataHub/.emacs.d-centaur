@@ -1627,6 +1627,16 @@ Version 2018-12-23"
                    (dired-previous-line 1))))
           (dired-next-line 1))))))
 
+(defun dired-get-size ()
+  "get size of marked files"
+  (interactive)
+  (let ((files (dired-get-marked-files)))
+    (with-temp-buffer
+      (apply 'call-process "/usr/bin/du" nil t nil "-sch" files)
+      (message "Size of all marked files: %s"
+               (progn
+                 (re-search-backward "\\(^[0-9.,]+[A-Za-z]+\\).*total$")
+                 (match-string 1))))))
 
 ;;Hydra for Dired
 (pretty-hydra-define my/hydra-dired (:title (pretty-hydra-title "DIRED" 'faicon "folder-open-o" :v-adjust -0.1)
@@ -1671,7 +1681,8 @@ Version 2018-12-23"
    (("e" ora-ediff-files "ediff marked")
     ("d" ztree-dired-diff-toggle "zdiff panes"))
    "Info"
-   (("?" dired-summary "info")
+   (("??" dired-summary "info")
+    ("?/" dired-get-size "marked file size")
     ("I" dired-git-info-mode "git info")
     (">" dired-subtree-toggle "tree")
     ("<" dired-subtree-cycle "tree cycle"))

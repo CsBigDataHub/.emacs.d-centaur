@@ -145,6 +145,9 @@
               ("\\.html?\\'" ,cmd)
               ("\\.md\\'" ,cmd))))
 
+    (setq dired-garbage-files-regexp
+          "\\.idx\\|\\.run\\.xml$\\|\\.bbl$\\|\\.bcf$\\|.blg$\\|-blx.bib$\\|.nav$\\|.snm$\\|.out$\\|.synctex.gz$\\|\\(?:\\.\\(?:aux\\|bak\\|dvi\\|log\\|orig\\|rej\\|toc\\|pyg\\)\\)\\'")
+
     (setq dired-omit-files
           (concat dired-omit-files
                   "\\|^.DS_Store$\\|^.projectile$\\|^.git*\\|^.svn$\\|^.vscode$\\|\\.js\\.meta$\\|\\.meta$\\|\\.elc$\\|^.emacs.*"))))
