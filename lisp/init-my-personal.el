@@ -292,25 +292,25 @@
   ;;   (exec-path-from-shell-copy-envs '("JAVA_HOME" "GROOVY_HOME")))
   )
 
-;; (use-package jenkinsfile-mode
-;;   :preface
-;;   (defun my-company-jenkinsfile-mode-company-hook ()
-;;     (set (make-local-variable 'company-backends) '((company-files)
-;;                                                    (company-dabbrev
-;;                                                     company-dabbrev-code
-;;                                                     company-keywords
-;;                                                     company-capf
-;;                                                     company-yasnippet))))
-;;   :config
-;;   (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . jenkinsfile-mode))
-;;   (add-to-list 'auto-mode-alist '("Jenkinsfile" . jenkinsfile-mode))
-;;   (add-hook 'jenkinsfile-mode-hook 'my-company-jenkinsfile-mode-company-hook)
-;;   ;; notation below can be used instead of preface
-;;   ;; (add-hook 'jenkinsfile-mode-hook
-;;   ;;           '(lambda ()
-;;   ;;              (set (make-local-variable 'company-backends)
-;;   ;;                   '((company-dabbrev company-dabbrev-code company-keywords company-files company-capf :with company-yasnippet)))))
-;;   )
+(use-package jenkinsfile-mode
+  :preface
+  (defun my-company-jenkinsfile-mode-company-hook ()
+    (set (make-local-variable 'company-backends) '((company-files)
+                                                   (company-dabbrev
+                                                    company-dabbrev-code
+                                                    company-keywords
+                                                    company-capf
+                                                    company-yasnippet))))
+  :config
+  (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . jenkinsfile-mode))
+  (add-to-list 'auto-mode-alist '("Jenkinsfile" . jenkinsfile-mode))
+  (add-hook 'jenkinsfile-mode-hook 'my-company-jenkinsfile-mode-company-hook)
+  ;; notation below can be used instead of preface
+  ;; (add-hook 'jenkinsfile-mode-hook
+  ;;           '(lambda ()
+  ;;              (set (make-local-variable 'company-backends)
+  ;;                   '((company-dabbrev company-dabbrev-code company-keywords company-files company-capf :with company-yasnippet)))))
+  )
 
 (use-package groovy-imports)
 (use-package flycheck-gradle)
