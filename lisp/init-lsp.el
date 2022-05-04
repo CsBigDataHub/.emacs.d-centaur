@@ -283,15 +283,16 @@
               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
               ([remap xref-find-references] . lsp-ui-peek-find-references))
        :hook (lsp-mode . lsp-ui-mode)
-       :init (setq lsp-ui-sideline-show-diagnostics nil
-                   lsp-ui-sideline-ignore-duplicate t
-                   lsp-ui-doc-delay 0.1
-                   ;; lsp-ui-doc-position 'at-point
-                   lsp-ui-doc-border (face-foreground 'font-lock-comment-face nil t)
-                   lsp-ui-imenu-colors `(,(face-foreground 'font-lock-keyword-face)
-                                         ,(face-foreground 'font-lock-string-face)
-                                         ,(face-foreground 'font-lock-constant-face)
-                                         ,(face-foreground 'font-lock-variable-name-face)))
+       :init
+       (setq lsp-ui-sideline-show-diagnostics nil
+             lsp-ui-sideline-ignore-duplicate t
+             lsp-ui-doc-delay 0.1
+             lsp-ui-imenu-colors `(,(face-foreground 'font-lock-keyword-face)
+                                   ,(face-foreground 'font-lock-string-face)
+                                   ,(face-foreground 'font-lock-constant-face)
+                                   ,(face-foreground 'font-lock-variable-name-face)))
+       (when (facep 'posframe-border)
+         (setq lsp-ui-doc-border (face-background 'posframe-border nil t)))
        :config
        (with-no-warnings
          ;; Display peek in child frame if possible
@@ -351,46 +352,8 @@
        ;; Reset `lsp-ui-doc-background' after loading theme
        (add-hook 'after-load-theme-hook
                  (lambda ()
-                   (setq lsp-ui-doc-border (face-foreground 'font-lock-comment-face))
-                   (set-face-background 'lsp-ui-doc-background (face-background 'tooltip)))))
-
-     ;; --------- Use company-capf instead of company-lsp ---------
-     ;; Completion
-     ;; (use-package company-lsp
-     ;;      :init (setq company-lsp-cache-candidates 'auto)
-     ;;      :config
-     ;;      (with-no-warnings
-     ;;        ;; WORKAROUND: Fix tons of unrelated completion candidates shown
-     ;;        ;; when a candidate is fulfilled
-     ;;        ;; @see https://github.com/emacs-lsp/lsp-python-ms/issues/79
-     ;;        (add-to-list 'company-lsp-filter-candidates '(mspyls))
-
-     ;;        (defun my-company-lsp--on-completion (response prefix)
-     ;;          "Handle completion RESPONSE.
-     ;; PREFIX is a string of the prefix when the completion is requested.
-     ;; Return a list of strings as the completion candidates."
-     ;;          (let* ((incomplete (and (hash-table-p response) (gethash "isIncomplete" response)))
-     ;;                 (items (cond ((hash-table-p response) (gethash "items" response))
-     ;;                              ((sequencep response) response)))
-     ;;                 (candidates (mapcar (lambda (item)
-     ;;                                       (company-lsp--make-candidate item prefix))
-     ;;                                     (lsp--sort-completions items)))
-     ;;                 (server-id (lsp--client-server-id (lsp--workspace-client lsp--cur-workspace)))
-     ;;                 (should-filter (or (eq company-lsp-cache-candidates 'auto)
-     ;;                                    (and (null company-lsp-cache-candidates)
-     ;;                                         (company-lsp--get-config company-lsp-filter-candidates server-id)))))
-     ;;            (when (null company-lsp--completion-cache)
-     ;;              (add-hook 'company-completion-cancelled-hook #'company-lsp--cleanup-cache nil t)
-     ;;              (add-hook 'company-completion-finished-hook #'company-lsp--cleanup-cache nil t))
-     ;;            (when (eq company-lsp-cache-candidates 'auto)
-     ;;              ;; Only cache candidates on auto mode. If it's t company caches the
-     ;;              ;; candidates for us.
-     ;;              (company-lsp--cache-put prefix (company-lsp--cache-item-new candidates incomplete)))
-     ;;            (if should-filter
-     ;;                (company-lsp--filter-candidates candidates prefix)
-     ;;              candidates)))
-     ;;        (advice-add #'company-lsp--on-completion :override #'my-company-lsp--on-completion)))
-     ;; --------- Use company-capf instead of company-lsp ---------
+                   (setq lsp-ui-doc-border (face-background 'posframe-border nil t)))
+                 t))
 
      ;; Ivy integration
      (use-package lsp-ivy
@@ -661,7 +624,7 @@
 
              (setq lsp-treemacs-theme "centaur-colors")))))
 
-     ;; Python: pyright
+     ;; Python
      (use-package lsp-pyright
        :preface
        ;; Use yapf to format
@@ -709,8 +672,8 @@
      ;; (use-package lsp-julia
      ;;   :hook (julia-mode . (lambda () (require 'lsp-julia))))
 
-     ;; Java support
-     (when emacs/>=25.2p
+     ;; Java
+     (when emacs/>=26p
        (use-package lsp-java
          :hook (java-mode . (lambda () (require 'lsp-java)))))))
 
