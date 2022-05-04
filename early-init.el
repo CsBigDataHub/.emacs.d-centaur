@@ -44,7 +44,7 @@
 (setq frame-inhibit-implied-resize t)
 
 ;;For gcc Emacs
-(cond ((eq system-type 'darwin) (setenv "LIBRARY_PATH" "/Applications/Emacs.app/Contents/MacOS/lib/gcc/11:/Applications/Emacs.app/Contents/MacOS/lib/lib/gcc/11/gcc/x86_64-apple-darwin19/11_2_0")))
+(cond ((eq system-type 'darwin) (setenv "LIBRARY_PATH" "/usr/local/Cellar/libgccjit/11.3.0/lib/gcc/11:/usr/local/opt/libgccjit/lib/gcc/11")))
 (cond ((eq system-type 'gnu/linux) (setenv "LIBRARY_PATH" "/usr/bin/gcc-10")))
 (when (fboundp 'native-comp-available-p)
   (progn

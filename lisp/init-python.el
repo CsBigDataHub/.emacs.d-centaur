@@ -93,12 +93,13 @@
   (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
   )
 
-(use-package blacken
-  :after (python)
-  :init
-  (setq-default blacken-fast-unsafe t)
-  (setq-default blacken-line-length 80)
-  (add-hook 'python-mode-hook #'blacken-mode))
+;; rely on lsp auto-format
+;; (use-package blacken
+;;   :after (python)
+;;   :init
+;;   (setq-default blacken-fast-unsafe t)
+;;   (setq-default blacken-line-length 80)
+;;   (add-hook 'python-mode-hook #'blacken-mode))
 
 (use-package pip-requirements
   :config
