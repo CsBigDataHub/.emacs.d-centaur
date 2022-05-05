@@ -81,19 +81,19 @@
   :bind (:map org-mode-map
          ("C-S-y" . clipboard2org-paste)))
 
-(when (image-type-available-p 'svg)
-  (use-package imgur
-    :straight (imgur
-               :type git
-               :host github
-               :repo "myuhe/imgur.el")))
-
-(when (image-type-available-p 'svg)
-  (use-package meme
-    :straight (meme
-               :type git
-               :host github
-               :repo "larsmagne/meme")))
+;; (when (image-type-available-p 'svg)
+;;   (use-package imgur
+;;     :straight (imgur
+;;                :type git
+;;                :host github
+;;                :repo "myuhe/imgur.el")))
+;; 
+;; (when (image-type-available-p 'svg)
+;;   (use-package meme
+;;     :straight (meme
+;;                :type git
+;;                :host github
+;;                :repo "larsmagne/meme")))
 (when sys/macp
   (use-package apples-mode
     :straight (apples-mode
@@ -117,24 +117,24 @@
              :repo "analyticd/org-table-wrap-functions"))
 
 
-(use-package org-timed-alerts
-  :after (org alert)
-  :straight (org-timed-alerts
-             :type git
-             :host github
-             :repo "legalnonsense/org-timed-alerts")
-  :custom
-  (org-timed-alerts-alert-function #'alert)
-  (org-timed-alerts-tag-exclusions nil)
-  (org-timed-alerts-default-alert-props nil)
-  (org-timed-alerts-warning-times '(-15 -7 -3))
-  (org-timed-alerts-agenda-hook-p t)
-  (org-timed-alert-final-alert-string "IT IS %alert-time\n\n%todo %headline")
-  (org-timed-alert-warning-string (concat "%todo %headline\n at %alert-time\n "
-                                          "it is now %current-time\n "
-                                          "*THIS IS YOUR %warning-time MINUTE WARNING*"))
-  :config
-  (add-hook 'org-mode-hook #'org-timed-alerts-mode))
+;; (use-package org-timed-alerts
+;;   :after (org alert)
+;;   :straight (org-timed-alerts
+;;              :type git
+;;              :host github
+;;              :repo "legalnonsense/org-timed-alerts")
+;;   :custom
+;;   (org-timed-alerts-alert-function #'alert)
+;;   (org-timed-alerts-tag-exclusions nil)
+;;   (org-timed-alerts-default-alert-props nil)
+;;   (org-timed-alerts-warning-times '(-15 -7 -3))
+;;   (org-timed-alerts-agenda-hook-p t)
+;;   (org-timed-alert-final-alert-string "IT IS %alert-time\n\n%todo %headline")
+;;   (org-timed-alert-warning-string (concat "%todo %headline\n at %alert-time\n "
+;;                                           "it is now %current-time\n "
+;;                                           "*THIS IS YOUR %warning-time MINUTE WARNING*"))
+;;   :config
+;;   (add-hook 'org-mode-hook #'org-timed-alerts-mode))
 
 ;; (use-package ob-pwsh
 ;;  :straight (ob-pwsh

@@ -115,6 +115,7 @@ See the command `save-kill-internal'."
 ;; (progn (ad-disable-advice 'kill-new 'after 'savekill) (ad-update 'kill-new))
 
 (add-hook 'after-init-hook (lambda () (load save-kill-file-name t)))
+
 (provide 'init-savekill)
 
 ;; How to save (DO NOT REMOVE!!)

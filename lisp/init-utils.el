@@ -199,18 +199,18 @@ of the buffer text to be displayed in the popup"
   :init (setq olivetti-body-width 0.62))
 
 ;; Edit text for browsers with GhostText or AtomicChrome extension
-(use-package atomic-chrome
-  :hook ((emacs-startup . atomic-chrome-start-server)
-         (atomic-chrome-edit-mode . (lambda ()
-                                      "Enter edit mode and delete other windows."
-                                      (and (fboundp 'olivetti-mode)
-                                           (olivetti-mode 1))
-                                      (delete-other-windows))))
-  :init (setq atomic-chrome-buffer-open-style 'frame)
-  :config
-  (if (fboundp 'gfm-mode)
-      (setq atomic-chrome-url-major-mode-alist
-            '(("github\\.com" . gfm-mode)))))
+;; (use-package atomic-chrome
+;;   :hook ((emacs-startup . atomic-chrome-start-server)
+;;          (atomic-chrome-edit-mode . (lambda ()
+;;                                       "Enter edit mode and delete other windows."
+;;                                       (and (fboundp 'olivetti-mode)
+;;                                            (olivetti-mode 1))
+;;                                       (delete-other-windows))))
+;;   :init (setq atomic-chrome-buffer-open-style 'frame)
+;;   :config
+;;   (if (fboundp 'gfm-mode)
+;;       (setq atomic-chrome-url-major-mode-alist
+;;             '(("github\\.com" . gfm-mode)))))
 
 ;; Music player
 ;; (use-package bongo
@@ -243,7 +243,7 @@ of the buffer text to be displayed in the popup"
 ;; Search
 (use-package webjump
   :ensure nil
-  :bind ("C-c /" . webjump)
+  ;; :bind ("C-c /" . webjump)
   :init (setq webjump-sites
               '(;; Emacs
                 ("Emacs Home Page" .

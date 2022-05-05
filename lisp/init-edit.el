@@ -314,7 +314,7 @@
 
 ;; Multiple cursors
 (use-package multiple-cursors
-  :demand t ;;;; mc/num-cursors is not autoloaded
+  ;; :demand t ;;;; mc/num-cursors is not autoloaded
   :preface
   ;; preface is my-personal config
   ;; insert specific serial number

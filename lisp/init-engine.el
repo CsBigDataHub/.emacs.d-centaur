@@ -2,7 +2,7 @@
 (use-package engine-mode
   :config
   (which-key-add-key-based-replacements
-    "C-x /" "engine-mode")
+    "C-c /" "engine-mode")
   ;; enable engine-mode globally
   (engine-mode t)
 

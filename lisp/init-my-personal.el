@@ -214,15 +214,15 @@
   ("C-x c l" . org-cliplink)
   )
 
-(use-package deft
-  :commands (deft)
-  :init (setq deft-directory "~/GitRepos/my-org-notes/"
-              deft-recursive t
-              deft-text-mode 'org-mode
-              deft-use-filename-as-title t
-              deft-use-filter-string-for-filename t
-              deft-extensions '("org" "md"))
-  )
+;; (use-package deft
+;;   :commands (deft)
+;;   :init (setq deft-directory "~/GitRepos/my-org-notes/"
+;;               deft-recursive t
+;;               deft-text-mode 'org-mode
+;;               deft-use-filename-as-title t
+;;               deft-use-filter-string-for-filename t
+;;               deft-extensions '("org" "md"))
+;;   )
 
 
 (use-package ox-hugo
