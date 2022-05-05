@@ -102,10 +102,7 @@
  '(ispell-choices-win-default-height 3)
  '(lsp-java-jdt-download-url
    "https://download.eclipse.org/jdtls/milestones/1.0.0/jdt-language-server-1.0.0-202104151857.tar.gz")
- '(lsp-ui-doc-border "#5B6268" t)
- '(lsp-ui-sideline-enable nil)
- '(lsp-ui-sideline-ignore-duplicate t t)
- '(lsp-ui-sideline-show-diagnostics nil t)
+ '(lsp-ui-doc-border "#5B6268")
  '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:")
  '(network-stream-use-client-certificates t)
  '(native-comp-async-report-warnings-errors 'silent)
@@ -114,6 +111,9 @@
                   '("github.com" . "github"))
      (magit-todos-exclude-globs "*.elc" "elpa/**" "straight/**" "*.md" "*.org")))
  '(vterm-max-scrollback 10000))
+ '(vterm-max-scrollback 10000)
+ '(windmove-default-keybindings '([ignore] hyper))
+ '(word-wrap-by-category t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -123,6 +123,7 @@
  '(aw-leading-char-face ((t (:inherit font-lock-keyword-face :bold t :height 3.0))))
  '(aw-minibuffer-leading-char-face ((t (:inherit font-lock-keyword-face :bold t :height 2.0))))
  '(aw-mode-line-face ((t (:inherit mode-line-emphasis :bold t))))
+ '(cfrs-border-color ((t (:background "#a8a8a8"))))
  '(dashboard-heading ((t (:inherit (font-lock-string-face bold)))))
  '(diff-hl-change ((t (:foreground "#51afef" :background nil))))
  '(diff-hl-delete ((t (:background nil))))
