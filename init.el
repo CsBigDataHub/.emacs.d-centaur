@@ -192,7 +192,7 @@ Otherwise the startup will be very slow. "
 (require 'init-pass)
 (require 'init-multi-compile)
 (require 'init-multi-scratch)
-(require 'init-savekill)
+;; (require 'init-savekill) ;; used as a package in mypersonal
 (require 'init-org-table-wrap-functions)
 
 ( cond ((eq system-type 'darwin) (require 'init-macos)))
@@ -207,3 +207,4 @@ Otherwise the startup will be very slow. "
               (server-start))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init.el ends here
+(put 'upcase-region 'disabled nil)

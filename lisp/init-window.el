@@ -185,7 +185,7 @@
             process-menu-mode list-environment-mode cargo-process-mode
             youdao-dictionary-mode osx-dictionary-mode fanyi-mode
 
-            "^\\*eshell.*\\*.*$" eshell-mode
+            ;; "^\\*eshell.*\\*.*$" eshell-mode
             "^\\*shell.*\\*.*$"  shell-mode
             "^\\*terminal.*\\*.*$" term-mode
             "^\\*vterm.*\\*.*$"  vterm-mode

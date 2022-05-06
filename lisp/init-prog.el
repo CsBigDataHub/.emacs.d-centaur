@@ -208,7 +208,7 @@ Install the doc if it's not installed."
 (use-package plantuml-mode)
 (use-package powershell)
 ;; (use-package rmsbolt)                   ; A compiler output viewer
-(use-package scala-mode)
+;; (use-package scala-mode)
 ;; (use-package swift-mode)
 (use-package vimrc-mode)
 
@@ -232,10 +232,10 @@ Install the doc if it's not installed."
   :hook (after-init . bmx-mode-setup-defaults))
 
 ;; Fish shell
-(use-package fish-mode
-  :hook (fish-mode . (lambda ()
-                       (add-hook 'before-save-hook
-                                 #'fish_indent-before-save))))
+;; (use-package fish-mode
+;;   :hook (fish-mode . (lambda ()
+;;                        (add-hook 'before-save-hook
+;;                                  #'fish_indent-before-save))))
 
 (use-package eldoc-box
   :commands (eldoc-box-eglot-help-at-point)

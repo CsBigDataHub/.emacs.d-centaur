@@ -110,7 +110,6 @@
    '((add-to-list 'browse-at-remote-remote-type-domains
                   '("github.com" . "github"))
      (magit-todos-exclude-globs "*.elc" "elpa/**" "straight/**" "*.md" "*.org")))
- '(vterm-max-scrollback 10000))
  '(vterm-max-scrollback 10000)
  '(windmove-default-keybindings '([ignore] hyper))
  '(word-wrap-by-category t))

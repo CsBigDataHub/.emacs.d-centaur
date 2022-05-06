@@ -49,8 +49,7 @@
   (require 'vlf-setup))
 
 ;; Enhance fuzzy matching
-(use-package flx
-  :ensure t)
+;; (use-package flx)
 
 ;;(when (<= 26 emacs-major-version)
 ;;(setq-default
@@ -71,7 +70,7 @@
 
 ;; (setq uniquify-buffer-name-style 'post-forward-angle-brackets) ;; or "forward"
 
-(use-package fontify-face)
+;; (use-package fontify-face)
 
 (use-package indent-tools
   :bind
@@ -114,11 +113,11 @@
   :hook ((after-init . global-color-identifiers-mode)))
 
 ;;melpa issue
-(use-package ranger
-  :config (setq ranger-width-preview 0.5))
+;; (use-package ranger
+;;   :config (setq ranger-width-preview 0.5))
 
-(use-package highlight-numbers
-  :hook '(after-init-hook prog-mode-hook text-mode-hook org-mode-hook))
+;; (use-package highlight-numbers
+;;   :hook '(after-init-hook prog-mode-hook text-mode-hook org-mode-hook))
 
 (use-package persistent-scratch
   :config
@@ -173,10 +172,10 @@
              "xdg-open" (file))))))
   (openwith-mode +1))
 
-(use-package gcmh
-  :config
-  (gcmh-mode 1)
-  )
+;; (use-package gcmh
+;;   :config
+;;   (gcmh-mode 1)
+;;   )
 
 (use-package highlight-symbol
   :bind
@@ -304,7 +303,7 @@
   :config
   (add-to-list 'auto-mode-alist '("Jenkinsfile\\'" . jenkinsfile-mode))
   (add-to-list 'auto-mode-alist '("Jenkinsfile" . jenkinsfile-mode))
-  (add-hook 'jenkinsfile-mode-hook 'my-company-jenkinsfile-mode-company-hook)
+  (add-hook 'jenkinsfile-mode 'my-company-jenkinsfile-mode-company-hook)
   ;; notation below can be used instead of preface
   ;; (add-hook 'jenkinsfile-mode-hook
   ;;           '(lambda ()
@@ -383,9 +382,9 @@
   :config
   (super-save-mode +1))
 
-(use-package adaptive-wrap
-  :config
-  (adaptive-wrap-prefix-mode))
+;; (use-package adaptive-wrap
+;;   :config
+;;   (adaptive-wrap-prefix-mode))
 
 (use-package copy-as-format)
 
@@ -494,7 +493,9 @@ If region is active, add its contents to the new buffer."
 (use-package counsel-jq)
 
 ;; Added this to build pdf tools
-(setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig:/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")
+(when sys/macp
+  (setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/libffi/3.4.2/lib/pkgconfig:/usr/local/Cellar/zlib/1.2.12/lib/pkgconfig:/usr/local/lib/pkgconfig")
+  )
 
 (use-package pdf-tools
   :config

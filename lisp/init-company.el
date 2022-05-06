@@ -59,7 +59,7 @@
         ;; company-format-margin-function #'company-detect-icons-margin ;; option for company-mode icons if not using company-box
         ;; company-format-margin-function #'company-vscode-dark-icons-margin
         company-tooltip-limit 12
-        company-idle-delay 0.2
+        company-idle-delay 0
         company-echo-delay (if (display-graphic-p) nil 0)
         company-minimum-prefix-length 1
         company-tooltip-flip-when-above t

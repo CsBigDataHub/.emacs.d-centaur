@@ -81,8 +81,8 @@
 ;;   (setq scss-compile-at-save nil))
 
 ;; New `less-css-mde' in Emacs 26
-(unless (fboundp 'less-css-mode)
-  (use-package less-css-mode))
+;; (unless (fboundp 'less-css-mode)
+;;   (use-package less-css-mode))
 
 ;; JSON mode
 (use-package json-mode)

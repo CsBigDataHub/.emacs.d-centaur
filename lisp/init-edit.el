@@ -407,8 +407,8 @@
     (progn
       ;; place the language-tool directory in $HOME
       (setq langtool-language-tool-jar
-            "/usr/local/Cellar/languagetool/5.3/libexec/languagetool-commandline.jar")
-      (setq langtool-java-bin "/Users/ckoneru/.sdkman/candidates/java/8.0.282.j9-adpt/bin/java")
+            "/usr/local/Cellar/languagetool/5.7/libexec/languagetool-commandline.jar")
+      (setq langtool-java-bin "/Users/ckoneru/.sdkman/candidates/java/11.0.10.j9-adpt/bin/java")
       (setq langtool-bin "/usr/local/bin/languagetool")
       (setq langtool-default-language "en-US")
       (setq langtool-java-user-arguments '("-Dfile.encoding=UTF-8"))
@@ -455,8 +455,8 @@ _C_: correct  _p_: prev error _d_: done checking
   (when sys/macp
     (progn
       (setq languagetool-language-tool-jar
-            "/usr/local/Cellar/languagetool/5.4/libexec/languagetool-commandline.jar")
-      (setq languagetool-java-bin "/Users/ckoneru/.sdkman/candidates/java/8.0.282.j9-adpt/bin/java")
+            "/usr/local/Cellar/languagetool/5.7/libexec/languagetool-commandline.jar")
+      (setq languagetool-java-bin "/Users/ckoneru/.sdkman/candidates/java/11.0.10.j9-adpt/bin/java")
       ))
   )
 

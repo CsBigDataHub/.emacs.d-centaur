@@ -85,10 +85,8 @@
          (proto (if no-ssl "http" "https")))
     `(,(cons 'melpa
              `(,(cons "gnu"   (concat proto "://elpa.gnu.org/packages/"))
-               ,(cons "org"   (concat proto "://orgmode.org/elpa/")) ;; my-personal
-               ,(cons "nongnu" (concat proto "://elpa.nongnu.org/packages/"))
+               ,(cons "nongnu" (concat proto "://elpa.nongnu.org/nongnu/"))
                ,(cons "melpa" (concat proto "://melpa.org/packages/"))
-               ,(cons "melpa-stable" (concat proto "://stable.melpa.org/packages/"))
                ))
       ,(cons 'emacs-china
              `(,(cons "gnu"   (concat proto "://elpa.emacs-china.org/gnu/"))
