@@ -62,6 +62,11 @@
        ))
 
     ('lsp-mode
+     ;; Performace tuning
+     ;; @see https://emacs-lsp.github.io/lsp-mode/page/performance/
+     (setq read-process-output-max (* 1024 1024)) ;; 1MB
+     (setenv "LSP_USE_PLISTS" "true")
+
      ;; Emacs client for the Language Server Protocol
      ;; https://github.com/emacs-lsp/lsp-mode#supported-languages
      (use-package lsp-mode
@@ -114,37 +119,29 @@
               ("C-c C-d" . lsp-describe-thing-at-point)
               ([remap xref-find-definitions] . lsp-find-definition)
               ([remap xref-find-references] . lsp-find-references))
-       :init
-       ;; @see https://emacs-lsp.github.io/lsp-mode/page/performance
-       (setq read-process-output-max (* 1024 1024)) ;; 1MB
+       :init (setq lsp-keymap-prefix "C-c l"
+                   lsp-keep-workspace-alive nil
+                   lsp-signature-auto-activate nil
+                   lsp-modeline-code-actions-enable nil
+                   lsp-modeline-diagnostics-enable nil
+                   lsp-modeline-workspace-status-enable nil
+                   lsp-headerline-breadcrumb-enable nil
 
-       (setq lsp-keymap-prefix "C-c l"
-             lsp-auto-guess-root t
+                   lsp-enable-file-watchers nil
+                   lsp-enable-folding nil
+                   lsp-enable-symbol-highlighting nil
+                   lsp-enable-text-document-color nil
+                   lsp-signature-render-documentation t
 
-             lsp-keep-workspace-alive nil
-             lsp-signature-auto-activate nil
-             lsp-modeline-code-actions-enable nil
-             lsp-modeline-diagnostics-enable nil
-             lsp-modeline-workspace-status-enable nil
-             lsp-headerline-breadcrumb-enable nil
+                   lsp-enable-indentation nil
+                   lsp-enable-snippet t
+                   lsp-enable-xref t
+                   lsp-completion-enable t
+                   lsp-enable-imenu t
+                   lsp-enable-on-type-formatting nil
 
-             lsp-signature-render-documentation t
-
-             lsp-enable-file-watchers nil
-             lsp-enable-folding nil
-             lsp-enable-symbol-highlighting nil
-             lsp-enable-text-document-color nil
-
-             lsp-enable-indentation nil
-             lsp-enable-snippet t
-             lsp-enable-xref t
-             lsp-completion-enable t
-             lsp-enable-imenu t
-             lsp-enable-on-type-formatting nil
-             lsp-enable-symbol-highlighting nil)
-
-       ;; For `lsp-clients'
-       (setq lsp-clients-python-library-directories '("/usr/local/" "/usr/"))
+                   ;; For `lsp-clients'
+                   lsp-clients-python-library-directories '("/usr/local/" "/usr/"))
 
        ;; (setq lsp-csharp-server-install-dir "~/.emacs.d/lsp/omnisharp-roslyn/latest/omnisharp-osx/")
        ;; (setq lsp-csharp-omnisharp-roslyn-server-dir "~/.emacs.d/lsp/omnisharp-roslyn/latest/omnisharp-osx")
