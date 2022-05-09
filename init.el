@@ -164,7 +164,7 @@ Otherwise the startup will be very slow. "
 
 ;;my-personal
 (require 'init-bm)
-;; (require 'init-centaur-tabs)
+(require 'init-centaur-tabs)
 ;; (require 'init-deadgrep)
 ;; (require 'init-emacro)
 ;; (require 'init-window-conf)
