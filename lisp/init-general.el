@@ -17,7 +17,7 @@
   )
 
 (my-spc-leader-def
-  "uu" 'undo-tree-visualize
+  "uu" 'vundo
   "mc" 'my/open-config
   ".." 'imenu
   "C-a" 'mark-whole-buffer

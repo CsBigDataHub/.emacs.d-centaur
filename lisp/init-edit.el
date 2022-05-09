@@ -516,20 +516,31 @@ _C_: correct   _d_: done checking
          ([M-kp-2] . pager-row-down)))
 
 ;; Treat undo history as a tree
-(use-package undo-tree
-  :diminish
-  :hook (after-init . global-undo-tree-mode)
-  :config
-  (add-to-list 'undo-tree-incompatible-major-modes #'magit-modes)
-  :init
-  (setq undo-tree-visualizer-timestamps t
-        undo-tree-enable-undo-in-region nil
-        undo-tree-auto-save-history nil)
+;; (use-package undo-tree
+;;   :diminish
+;;   :hook (after-init . global-undo-tree-mode)
+;;   :config
+;;   (add-to-list 'undo-tree-incompatible-major-modes #'magit-modes)
+;;   :init
+;;   (setq undo-tree-visualizer-timestamps t
+;;         undo-tree-enable-undo-in-region nil
+;;         undo-tree-auto-save-history nil)
 
-  ;; HACK: keep the diff window
-  (with-no-warnings
-    (make-variable-buffer-local 'undo-tree-visualizer-diff)
-    (setq-default undo-tree-visualizer-diff t)))
+;;   ;; HACK: keep the diff window
+;;   (with-no-warnings
+;;     (make-variable-buffer-local 'undo-tree-visualizer-diff)
+;;     (setq-default undo-tree-visualizer-diff t)))
+
+;; vundo (visual undo)
+(use-package vundo
+  :commands (vundo)
+  :bind ("C-x u" . vundo)
+  :custom
+  ;; Use compact layout
+  (vundo-compact-display t)
+  (vundo-roll-back-on-quit nil)
+  ;; Use pretty Unicode characters
+  (vundo-glyph-alist vundo-unicode-symbols))
 
 ;; Goto last change
 (use-package goto-chg

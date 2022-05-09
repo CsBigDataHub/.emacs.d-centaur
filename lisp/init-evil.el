@@ -1,12 +1,14 @@
 ;; init-evil.el --- Initialize evil configurations.	-*- lexical-binding: t -*-
 
 (use-package evil
-  :init
-  (setq evil-disable-insert-state-bindings t) ;;full blown emacs in insert mode
-  (setq evil-want-keybinding nil)
+  :custom
+  (evil-undo-system 'undo-redo)
+  (evil-disable-insert-state-bindings t) ;;full blown emacs in insert mode
+  (evil-want-keybinding nil)
   :config
   (evil-mode 1)
   )
+
 ;;(setq evil-disable-insert-state-bindings t) ;;full blown emacs in insert mode
 ;;(setq evil-want-keybinding nil)
 ;;(require 'evil)

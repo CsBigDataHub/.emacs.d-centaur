@@ -294,8 +294,8 @@ FACE defaults to inheriting from default and highlight."
   ;;-----------------------------------------------------------------------------
   ;; Supporting undo-tree.
   ;;-----------------------------------------------------------------------------
-  (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
-  (vhl/install-extension 'undo-tree)
+  ;; (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
+  ;; (vhl/install-extension 'undo-tree)
   )
 
 ;; Pulse current line
