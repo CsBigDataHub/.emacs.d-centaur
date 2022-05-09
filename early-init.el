@@ -64,6 +64,9 @@
      '(native-comp-async-report-warnings-errors 'silent))
     ))
 
+;; Set default coding system
+(set-language-environment "UTF-8")
+
 ;; Faster to disable these here (before they've been initialized)
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
