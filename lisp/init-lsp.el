@@ -134,10 +134,11 @@
                    lsp-signature-render-documentation t
 
                    lsp-enable-indentation nil
-                   lsp-enable-snippet t
-                   lsp-enable-xref t
-                   lsp-completion-enable t
-                   lsp-enable-imenu t
+                   lsp-auto-guess-root t
+                   ;; lsp-enable-snippet t
+                   ;; lsp-enable-xref t
+                   ;; lsp-completion-enable t
+                   ;; lsp-enable-imenu t
                    lsp-enable-on-type-formatting nil
 
                    ;; For `lsp-clients'

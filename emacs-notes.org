@@ -11158,4 +11158,34 @@ And in emacs:
 
 --------------
 
-*
+*** [[https://stackoverflow.com/a/38648126][repository - How should I work with MELPA and MELPA-stable using Emacs? - Stack Overflow]] :website:
+
+[2022-05-07 Sat 22:21]
+
+**** Article
+
+You can use both =melpa= and =melpa-stable=, and pin certain packages to certain repositories by customizing =package-pin-packages=:
+
+#+begin_example
+ (require 'package)
+
+(add-to-list 'package-archives
+         '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives
+         '("melpa" . "https://melpa.org/packages/") t)
+
+(setq package-pinned-packages
+      '((imenu-anywhere . "melpa-stable")
+        (spaceline . "melpa-stable")
+        (clj-refactor . "melpa-stable")
+        (cider . "melpa-stable")
+        (clojure-mode . "melpa-stable")
+        (linum-relative . "melpa-stable")
+        (aggressive-indent . "melpa-stable")
+        (evil-leader . "melpa-stable")
+        (evil-visualstart . "melpa-stable")
+        (evil-jumper . "melpa-stable")
+        (evil-snipe . "melpa-stable")
+        (evil . "melpa-stable")
+        (evil-commentary . "melpa-stable")))
+#+end_example
