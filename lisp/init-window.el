@@ -37,7 +37,7 @@
   :ensure nil
   ;; :hook (after-init . windmove-default-keybindings) ;;using hyper
   :hook (after-init . (lambda ()
-                        (windmove-default-keybindings 'super)))
+                        (windmove-default-keybindings 'hyper)))
   :config
   ;; http://pragmaticemacs.com/emacs/whizz-between-windows-with-windmove/
   ;;(windmove-default-keybindings 'hyper)
