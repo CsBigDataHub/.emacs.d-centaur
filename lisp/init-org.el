@@ -207,8 +207,7 @@
                                     "Adapt `org-modern-mode'."
                                     ;; Disable Prettify Symbols mode
                                     (setq prettify-symbols-alist nil)
-                                    (prettify-symbols-mode -1))))
-        :init (setq org-modern-label-border nil))
+                                    (prettify-symbols-mode -1)))))
     (progn
       (when emacs/>=26p
         (use-package org-superstar
