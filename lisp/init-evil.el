@@ -9,8 +9,8 @@
   (evil-mode 1)
   )
 
-;;(setq evil-disable-insert-state-bindings t) ;;full blown emacs in insert mode
-;;(setq evil-want-keybinding nil)
+(setq evil-disable-insert-state-bindings t) ;;full blown emacs in insert mode
+(setq evil-want-keybinding nil)
 ;;(require 'evil)
 ;;(evil-mode 1)
 
