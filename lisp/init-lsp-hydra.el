@@ -14,23 +14,6 @@
 (require 'init-funcs)
 (require 'major-mode-hydra)
 
-(defun with-mode-icon (mode str &optional height nospace face)
-  (let* ((v-adjust (if (eq major-mode 'emacs-lisp-mode) 0.0 0.05))
-         (args     `(:height ,(or height 1) :v-adjust ,v-adjust))
-         (_         (when face
-                      (lax-plist-put args :face face)))
-         (icon     (apply #'all-the-icons-icon-for-mode mode args))
-         (icon     (if (symbolp icon)
-                       (apply #'all-the-icons-octicon "file-text" args)
-                     icon)))
-    (s-concat icon (if nospace "" " ") str)))
-
-(defun my-lsp-hydra--title ()
-  (with-mode-icon major-mode
-                  (propertize (s-concat "LSP Commands (" (format-mode-line mode-name) ")")
-                              'face '(:weight bold :height 1.1))
-                  1.1))
-
 (pcase centaur-lsp
   ('eglot
    (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode terraform-mode yaml-mode csharp-mode)
@@ -61,8 +44,7 @@
        ("ce" eglot-stderr-buffer "lsp error buffer")
        ("xx" eglot-shutdown "shutdown")
        ("XX" eglot-shutdown-all "shutdown all"))
-      ))
-   )
+      )))
   ('lsp-mode
    (major-mode-hydra-define+ (rust-mode go-mode python-mode java-mode scala-mode terraform-mode yaml-mode csharp-mode)
      (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
@@ -122,22 +104,19 @@
    (major-mode-hydra-define+ scala-mode nil
      ("Connection"
       (("ci" lsp-metals-build-import "import build")
-       ("cg" my-lsp-metals-build-restart "restart build"))))
-   )
-  )
+       ("cg" my-lsp-metals-build-restart "restart build"))))))
 
-(major-mode-hydra-define+ python-mode
-  (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
-  ("Quick Action"
-   (("B" blacken-buffer "black format")))
-  )
+;; (major-mode-hydra-define+ python-mode
+;;   (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
+;;   ("Quick Action"
+;;    (("B" blacken-buffer "black format"))))
 
 (major-mode-hydra-define+ go-mode
   (:foreign-keys run :color amaranth :quit-key "q" :title (my-lsp-hydra--title))
   ("Quick Action"
    (("Ia" go-import-add "add")
-    ("Ir" go-remove-unused-imports "cleanup")))
-  )
+    ("Ir" go-remove-unused-imports "cleanup"))))
+
 (provide 'init-lsp-hydra)
 
 ;;; init-lsp-hydra.el ends here

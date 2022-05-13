@@ -156,8 +156,25 @@
         ("p T" (centaur-test-package-archives) "speed test" :exit t))))))
 
 ;;;my-personal
-(use-package major-mode-hydra)
-(require 'major-mode-hydra)
+(use-package major-mode-hydra
+  :config
+  (defun with-mode-icon (mode str &optional height nospace face)
+    (let* ((v-adjust (if (eq major-mode 'emacs-lisp-mode) 0.0 0.05))
+           (args     `(:height ,(or height 1) :v-adjust ,v-adjust))
+           (_         (when face
+                        (lax-plist-put args :face face)))
+           (icon     (apply #'all-the-icons-icon-for-mode mode args))
+           (icon     (if (symbolp icon)
+                         (apply #'all-the-icons-octicon "file-text" args)
+                       icon)))
+      (s-concat icon (if nospace "" " ") str)))
+
+  (defun my-lsp-hydra--title ()
+    (with-mode-icon major-mode
+                    (propertize (s-concat "LSP Commands (" (format-mode-line mode-name) ")")
+                                'face '(:weight bold :height 1.1))
+                    1.1)))
+
 ;;;my-personal
 
 (provide 'init-hydra)
