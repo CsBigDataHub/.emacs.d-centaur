@@ -87,7 +87,7 @@
 ;;                :type git
 ;;                :host github
 ;;                :repo "myuhe/imgur.el")))
-;; 
+;;
 ;; (when (image-type-available-p 'svg)
 ;;   (use-package meme
 ;;     :straight (meme
@@ -170,5 +170,20 @@
 ;;          ("C-s-x" . turbo-log-delete-all-logs))
 ;;   :config
 ;;   (setq turbo-console--prefix "✰"))
+
+(use-package flycheck-jenkinsfile
+  :straight (flycheck-jenkinsfile
+             :type git
+             :host github
+             :repo "CsBigDataHub/flycheck-jenkinsfile"))
+
+(use-package jenkins
+  :straight (jenkins
+             :type git
+             :host github
+             :repo "lwiechec/jenkins.el"
+             :branch "implementing-organizations")
+  :config
+  (setq jenkins-api-token (auth-source-pick-first-password :host "jenkins-work")))
 
 (provide 'init-straight)
