@@ -209,11 +209,10 @@
                                     (setq prettify-symbols-alist nil)
                                     (prettify-symbols-mode -1)))))
     (progn
-      (when emacs/>=26p
-        (use-package org-superstar
-          :if (and (display-graphic-p) (char-displayable-p ?◉))
-          :hook (org-mode . org-superstar-mode)
-          :init (setq org-superstar-headline-bullets-list '("◉""○""◈""◇""⁕"))))
+      (use-package org-superstar
+        :if (and (display-graphic-p) (char-displayable-p ?◉))
+        :hook (org-mode . org-superstar-mode)
+        :init (setq org-superstar-headline-bullets-list '("◉""○""◈""◇""⁕")))
       (use-package org-fancy-priorities
         :diminish
         :hook (org-mode . org-fancy-priorities-mode)
@@ -242,9 +241,7 @@
                                (plantuml . t)))
 
   ;; ob-sh renamed to ob-shell since 26.1.
-  (if emacs/>=26p
-      (cl-pushnew '(shell . t) load-language-list)
-    (cl-pushnew '(sh . t) load-language-list))
+  (cl-pushnew '(shell . t) load-language-list)
 
   (use-package ob-go
     :init (cl-pushnew '(go . t) load-language-list))
@@ -623,7 +620,7 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
   (message "org-roam-directory now '%s'" (car
                                           org-roam-directory-alist)))
 
-(when (and emacs/>=26p (executable-find "cc"))
+(when (executable-find "cc")
   (use-package org-roam
     :diminish
     :custom

@@ -32,25 +32,25 @@
 
 (require 'init-const)
 
-(when emacs/>=26p
-  (use-package markdown-mode
-    :hook ((markdown-mode . auto-fill-mode))
-    :mode (("README\\.md\\'" . gfm-mode))
-    :bind (:map markdown-mode-map
-         ("M-<f9>" . my/hydra-markdown-mode/body)
-         )
-    :init
-    (setq markdown-enable-wiki-links t
-          markdown-italic-underscore t
-          markdown-asymmetric-header t
-          markdown-make-gfm-checkboxes-buttons t
-          markdown-gfm-uppercase-checkbox t
-          markdown-fontify-code-blocks-natively t
 
-          markdown-content-type "application/xhtml+xml"
-          markdown-css-paths '("https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css"
-                               "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/github.min.css")
-          markdown-xhtml-header-content "
+(use-package markdown-mode
+  :hook ((markdown-mode . auto-fill-mode))
+  :mode (("README\\.md\\'" . gfm-mode))
+  :bind (:map markdown-mode-map
+              ("M-<f9>" . my/hydra-markdown-mode/body)
+              )
+  :init
+  (setq markdown-enable-wiki-links t
+        markdown-italic-underscore t
+        markdown-asymmetric-header t
+        markdown-make-gfm-checkboxes-buttons t
+        markdown-gfm-uppercase-checkbox t
+        markdown-fontify-code-blocks-natively t
+
+        markdown-content-type "application/xhtml+xml"
+        markdown-css-paths '("https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css"
+                             "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/github.min.css")
+        markdown-xhtml-header-content "
 <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
 <style>
 body {
@@ -83,11 +83,11 @@ mermaid.initialize({
 });
 </script>
 "
-          markdown-gfm-additional-languages "Mermaid")
+        markdown-gfm-additional-languages "Mermaid")
 
-    ;; `multimarkdown' is necessary for `highlight.js' and `mermaid.js'
-    (when (executable-find "multimarkdown")
-      (setq markdown-command "multimarkdown"))
+  ;; `multimarkdown' is necessary for `highlight.js' and `mermaid.js'
+  (when (executable-find "multimarkdown")
+    (setq markdown-command "multimarkdown"))
 
   ;; Use `which-key' instead
   (with-no-warnings
@@ -106,34 +106,34 @@ mermaid.initialize({
   ;;my-personal
   (add-to-list 'markdown-code-lang-modes '("mermaid" . mermaid-mode))
 
-    ;; Preview with built-in webkit
-    (with-no-warnings
-      (defun my-markdown-export-and-preview (fn)
-        "Preview with `xwidget' if applicable, otherwise with the default browser."
-        (if (featurep 'xwidget-internal)
-            (centaur-webkit-browse-url (concat "file://" (markdown-export)) t)
-          (funcall fn)))
-      (advice-add #'markdown-export-and-preview :around #'my-markdown-export-and-preview))
+  ;; Preview with built-in webkit
+  (with-no-warnings
+    (defun my-markdown-export-and-preview (fn)
+      "Preview with `xwidget' if applicable, otherwise with the default browser."
+      (if (featurep 'xwidget-internal)
+          (centaur-webkit-browse-url (concat "file://" (markdown-export)) t)
+        (funcall fn)))
+    (advice-add #'markdown-export-and-preview :around #'my-markdown-export-and-preview))
 
-    ;; Preview via `grip'
-    ;; Install: pip install grip
-    (use-package grip-mode
-      :defines org-mode-map
-      :bind (:map markdown-mode-command-map
-                  ("g" . grip-mode))
-      :init
-      (with-eval-after-load 'org
-        (bind-key "C-c C-g" #'grip-mode org-mode-map))
+  ;; Preview via `grip'
+  ;; Install: pip install grip
+  (use-package grip-mode
+    :defines org-mode-map
+    :bind (:map markdown-mode-command-map
+                ("g" . grip-mode))
+    :init
+    (with-eval-after-load 'org
+      (bind-key "C-c C-g" #'grip-mode org-mode-map))
 
-      (setq grip-update-after-change nil)
-      (when-let ((credential (auth-source-user-and-password "api.github.com")))
-        (setq grip-github-user (car credential)
-              grip-github-password (cadr credential))))
+    (setq grip-update-after-change nil)
+    (when-let ((credential (auth-source-user-and-password "api.github.com")))
+      (setq grip-github-user (car credential)
+            grip-github-password (cadr credential))))
 
-    ;; Table of contents
-    (use-package markdown-toc
-      :bind (:map markdown-mode-command-map
-                  ("r" . markdown-toc-generate-or-refresh-toc)))))
+  ;; Table of contents
+  (use-package markdown-toc
+    :bind (:map markdown-mode-command-map
+                ("r" . markdown-toc-generate-or-refresh-toc))))
 
 (provide 'init-markdown)
 
