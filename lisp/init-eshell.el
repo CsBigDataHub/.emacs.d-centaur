@@ -400,6 +400,28 @@ wisely or prepare to call `eshell-interrupt-process'."
           '(lambda () (setenv "TERM" "dumb")))
 
 (setenv "PAGER" "cat")
+
+;; https://gist.github.com/gregsexton/dd2d6c304d06fc3e6833
+;; Company backend for completing eshell history
+
+(defun company-eshell-history (command &optional arg &rest ignored)
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'company-eshell-history))
+    (prefix (and (eq major-mode 'eshell-mode)
+                 (let ((word (company-grab-word)))
+                   (save-excursion
+                     (eshell-bol)
+                     (and (looking-at-p (s-concat word "$")) word)))))
+    (candidates (remove-duplicates
+                 (->> (ring-elements eshell-history-ring)
+                      (remove-if-not (lambda (item) (s-prefix-p arg item)))
+                      (mapcar 's-trim))
+                 :test 'string=))
+    (sorted t)))
+
+(add-to-list 'company-backends 'company-eshell-history)
+
 ;;; my-personal ends here
 
 (provide 'init-eshell)
