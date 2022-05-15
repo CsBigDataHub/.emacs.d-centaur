@@ -4,19 +4,21 @@
   :demand
   :after evil
   :config
+  (centaur-tabs-headline-match)
+  (centaur-tabs-enable-buffer-reordering)
   (setq centaur-tabs-style "bar"
-        centaur-tabs-height 25
+        centaur-tabs-height 10
         centaur-tabs-set-icons t
+        centaur-tabs-plain-icons t
         centaur-tabs-set-modified-marker t
         centaur-tabs-set-bar 'over
+        centaur-tabs-gray-out-icons 'buffer
+        centaur-tabs-close-button "❎"
+        uniquify-separator "/"
+        uniquify-buffer-name-style 'forward
+        centaur-tabs-adjust-buffer-order t
         x-underline-at-descent-line t)
-  (centaur-tabs-headline-match)
-  ;; (setq centaur-tabs-gray-out-icons 'buffer)
-  ;; (centaur-tabs-enable-buffer-reordering)
-  ;; (setq centaur-tabs-adjust-buffer-order t)
   (centaur-tabs-mode t)
-  (setq uniquify-separator "/")
-  (setq uniquify-buffer-name-style 'forward)
   (defun centaur-tabs-buffer-groups ()
     "`centaur-tabs-buffer-groups' control buffers' group rules.
 
@@ -78,7 +80,7 @@
        (string-prefix-p " *temp" name)
        (string-prefix-p "*Help" name)
        (string-prefix-p "*mybuf" name)
-
+       (string-prefix-p "*vterm" name)
        ;; Is not magit buffer.
        (and (string-prefix-p "magit" name)
             (not (file-name-extension name)))
