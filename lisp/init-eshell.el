@@ -420,7 +420,14 @@ wisely or prepare to call `eshell-interrupt-process'."
                  :test 'string=))
     (sorted t)))
 
-(add-to-list 'company-backends 'company-eshell-history)
+(defun my-company-eshell-mode-company-hook ()
+  (set (make-local-variable 'company-backends) '((company-files)
+                                                 (company-dabbrev
+                                                  company-eshell-history
+                                                  company-capf
+                                                  ))))
+
+(add-hook 'eshell-mode-hook 'my-company-eshell-mode-company-hook)
 
 ;;; my-personal ends here
 

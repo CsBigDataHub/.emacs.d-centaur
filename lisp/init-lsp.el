@@ -104,7 +104,11 @@
       ((t :inherit lsp-headerline-breadcrumb-symbols-face
           :underline (:style wave :color ,(face-foreground 'success)))))
      :hook ((prog-mode . (lambda ()
-                           (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'jenkinsfile-mode 'yaml-mode 'ruby-mode 'enh-ruby-mode 'csharp-mode 'lisp-data-mode)
+                           (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode
+                                                   'jenkinsfile-mode 'groovy-mode
+                                                   'yaml-mode 'ruby-mode
+                                                   'enh-ruby-mode 'csharp-mode
+                                                   'lisp-data-mode 'pip-requirements-mode)
                              (lsp-deferred))))
             (markdown-mode . lsp-deferred)
             (lsp-mode . (lambda ()
@@ -635,7 +639,10 @@
                             (require 'lsp-pyright)
                             (add-hook 'after-save-hook #'lsp-pyright-format-buffer t t)))
      :init (when (executable-find "python3")
-             (setq lsp-pyright-python-executable-cmd "python3")))
+             (setq lsp-pyright-python-executable-cmd "python3"))
+     :config
+     (when sys/macp
+       (setq lsp-pyright-stub-path (concat (getenv "HOME") "/GitRepos/my-projects/python-type-stubs"))))
 
    ;; Microsoft python-language-server support - using pyright
    ;; (use-package lsp-python-ms

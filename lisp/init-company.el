@@ -41,6 +41,7 @@
   (company-box-selection ((t (:inherit company-tooltip :weight semibold :extend t))))
   :bind (("M-/" . company-complete)
          ("C-M-i" . company-complete)
+         ("C-'" . company-dabbrev-code)
          :map company-mode-map
          ("<backtab>" . company-yasnippet)
          :map company-active-map
