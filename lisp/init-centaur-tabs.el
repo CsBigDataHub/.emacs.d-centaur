@@ -9,7 +9,6 @@
   (setq centaur-tabs-style "bar"
         centaur-tabs-height 10
         centaur-tabs-set-icons t
-        centaur-tabs-plain-icons t
         centaur-tabs-set-modified-marker t
         centaur-tabs-set-bar 'over
         centaur-tabs-gray-out-icons 'buffer
