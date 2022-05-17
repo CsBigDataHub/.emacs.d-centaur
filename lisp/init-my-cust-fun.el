@@ -1146,12 +1146,9 @@ Version 2015-10-14"
 
 (defun xah-open-in-external-app (&optional @fname)
   "Open the current file or dired marked files in external app.
-The app is chosen from your OS's preference.
-
 When called in emacs lisp, if @fname is given, open that.
-
-URL `http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html'
-Version 2019-11-04"
+URL `http://xahlee.info/emacs/emacs/emacs_dired_open_file_in_ext_apps.html'
+Version 2019-11-04 2021-02-16"
   (interactive)
   (let* (
          ($file-list
@@ -1168,7 +1165,8 @@ Version 2019-11-04"
        ((string-equal system-type "windows-nt")
         (mapc
          (lambda ($fpath)
-           (w32-shell-execute "open" $fpath)) $file-list))
+           (shell-command (concat "PowerShell -Command \"Invoke-Item -LiteralPath\" " "'" (shell-quote-argument (expand-file-name $fpath )) "'")))
+         $file-list))
        ((string-equal system-type "darwin")
         (mapc
          (lambda ($fpath)
@@ -1177,36 +1175,37 @@ Version 2019-11-04"
        ((string-equal system-type "gnu/linux")
         (mapc
          (lambda ($fpath) (let ((process-connection-type nil))
-                            (start-process "" nil "xdg-open" $fpath))) $file-list))))))
+                       (start-process "" nil "xdg-open" $fpath))) $file-list))))))
 
 (defun xah-show-in-file-manager ()
   "Show current file in desktop.
- (Mac Finder, Windows Explorer, Linux file manager)
- This command can be called when in a file or in `dired'.
-
-URL `http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html'
-Version 2020-02-13"
+ (Mac Finder, File Explorer, Linux file manager)
+This command can be called when in a file buffer or in `dired'.
+URL `http://xahlee.info/emacs/emacs/emacs_dired_open_file_in_ext_apps.html'
+Version 2020-11-20 2021-01-18"
   (interactive)
-  (let (($path (if (buffer-file-name) (buffer-file-name)
-                 (shell-quote-argument default-directory))))
+  (let (($path (if (buffer-file-name) (buffer-file-name) default-directory)))
     (cond
      ((string-equal system-type "windows-nt")
-      (w32-shell-execute "open" default-directory))
+      (shell-command (format "PowerShell -Command Start-Process Explorer -FilePath %s" (shell-quote-argument default-directory)))
+      ;; todo. need to make window highlight the file
+      )
      ((string-equal system-type "darwin")
       (if (eq major-mode 'dired-mode)
           (let (($files (dired-get-marked-files )))
             (if (eq (length $files) 0)
-                (shell-command (concat "open " (shell-quote-argument default-directory)))
+                (shell-command (concat "open " (shell-quote-argument (expand-file-name default-directory ))))
               (shell-command (concat "open -R " (shell-quote-argument (car (dired-get-marked-files )))))))
         (shell-command
-         (concat "open -R " $path))))
+         (concat "open -R " (shell-quote-argument $path)))))
+
      ((string-equal system-type "gnu/linux")
       (let (
             (process-connection-type nil)
-            (openFileProgram (if (file-exists-p "/usr/bin/dolphin")
-                                 "/usr/bin/dolphin"
+            (openFileProgram (if (file-exists-p "/usr/bin/gvfs-open")
+                                 "/usr/bin/gvfs-open"
                                "/usr/bin/xdg-open")))
-        (start-process "" nil openFileProgram $path))
+        (start-process "" nil openFileProgram (shell-quote-argument $path)))
       ;; (shell-command "xdg-open .") ;; 2013-02-10 this sometimes froze emacs till the folder is closed. eg with nautilus
       ))))
 
@@ -1229,18 +1228,19 @@ Version 2020-02-13"
 
 (defun xah-open-in-terminal ()
   "Open the current dir in a new terminal window.
-URL `http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html'
-Version 2020-03-05"
+on Microsoft Windows, it starts cross-platform PowerShell pwsh. You need to have it installed.
+
+URL `http://xahlee.info/emacs/emacs/emacs_dired_open_file_in_ext_apps.html'
+Version 2020-11-21 2021-01-18"
   (interactive)
   (cond
    ((string-equal system-type "windows-nt")
     (let ((process-connection-type nil))
-      (start-process "" nil "powershell" "start-process" "powershell"  "-workingDirectory" default-directory)))
+      (shell-command (concat "PowerShell -Command Start-Process pwsh -WorkingDirectory " (shell-quote-argument default-directory)))
+      ;;
+      ))
    ((string-equal system-type "darwin")
-    (let ((process-connection-type nil))
-      (if (file-exists-p "/System/Applications/")
-          (start-process "" nil "/System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal" default-directory)
-        (start-process "" nil "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal" default-directory))))
+    (shell-command (concat "open -a iterm " (shell-quote-argument (expand-file-name default-directory )))))
    ((string-equal system-type "gnu/linux")
     (let ((process-connection-type nil))
       (start-process "" nil "x-terminal-emulator"

@@ -79,6 +79,7 @@
          ("C-c x" . org-capture)
          :map org-mode-map
          ("s-?" . my-org-hydra/body)
+         ("C-'" . nil) ;; disable org-agenda-cycle keymap
          ("M-;" .  org-comment-dwim-2) ;; moved to here from init-edit.el
          ;; ("<" . (lambda ()
          ;;          "Insert org template."
