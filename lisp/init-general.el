@@ -121,7 +121,7 @@ The prefix map is named 'my-DEF-map'."
  "f" 'org-roam-node-find
  "g" 'org-roam-graph
  "i" 'org-roam-node-insert
- "s" 'org-roam-server-mode
+ "s" 'org-roam-ui-mode
  )
 
 (general-global-spc-menu-definer

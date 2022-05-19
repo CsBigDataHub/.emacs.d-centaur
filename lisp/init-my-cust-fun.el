@@ -2637,7 +2637,7 @@ It sets the transient map to all functions of ALIST."
 
 ;;Ispell
 (setq ispell-program-name "aspell"
-      ispell-choices-win-default-height 3)
+      ispell-choices-win-default-height 4)
 (when sys/macp
   (setq ispell-extra-args
         '("--sug-mode=fast" "--lang=en_US" "--camel-case"

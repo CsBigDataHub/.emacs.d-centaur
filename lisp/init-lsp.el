@@ -107,10 +107,11 @@
                            (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode
                                                    'jenkinsfile-mode 'groovy-mode
                                                    'yaml-mode 'ruby-mode
+                                                   'markdown-mode
                                                    'enh-ruby-mode 'csharp-mode
                                                    'lisp-data-mode 'pip-requirements-mode)
                              (lsp-deferred))))
-            (markdown-mode . lsp-deferred)
+            ;; (markdown-mode . lsp-deferred)
             (lsp-mode . (lambda ()
                           ;; Integrate `which-key'
                           (lsp-enable-which-key-integration)

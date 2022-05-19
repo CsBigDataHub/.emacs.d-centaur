@@ -591,8 +591,16 @@ If region is active, add its contents to the new buffer."
 (setq pdf-view-use-scaling t)
 
 ;;Added this to disable linum in pdf-tools
-(add-hook 'pdf-view-mode-hook (lambda() (linum-relative-mode -1)))
-(add-hook 'pdf-view-mode-hook (lambda() (display-line-numbers-mode -1)))
+;; (add-hook 'pdf-view-mode-hook (lambda() (linum-relative-mode -1)))
+;; (add-hook 'pdf-view-mode-hook (lambda() (display-line-numbers-mode -1)))
+(dolist (modes '(org-mode-hook
+                 term-mode-hook
+                 vterm-mode-hook
+                 pdf-view-mode-hook
+                 shell-mode-hook
+                 treemacs-mode-hook
+                 eshell-mode-hook))
+  (add-hook modes (lambda() (display-line-numbers-mode -1))))
 ;;my-personal-config
 
 (provide 'init-my-personal)
