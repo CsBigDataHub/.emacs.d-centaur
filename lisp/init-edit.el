@@ -381,7 +381,7 @@
   :diminish
   :if (executable-find "aspell")
   :hook (((text-mode outline-mode) . flyspell-mode)
-         (prog-mode . flyspell-prog-mode)
+         ;; (prog-mode . flyspell-prog-mode) ;; disabling due to high resource allocation while using together `lsp-mode'
          (flyspell-mode . (lambda ()
                             (dolist (key '("C-;" "C-," "C-."))
                               (unbind-key key flyspell-mode-map)))))
