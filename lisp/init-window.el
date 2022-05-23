@@ -170,8 +170,9 @@
           "\\*Apropos\\*"
           "\\*Backtrace\\*"
           "\\*Calendar\\*"
-          "\\*Finder\\*"
           "\\*Embark Actions\\*"
+          "\\*Finder\\*"
+          "\\*Kill Ring\\*"
 
           bookmark-bmenu-mode
           comint-mode
