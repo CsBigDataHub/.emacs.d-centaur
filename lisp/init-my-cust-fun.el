@@ -2649,12 +2649,6 @@ It sets the transient map to all functions of ALIST."
 (when sys/linuxp
   (setq ispell-extra-args '("--sug-mode=fast" "--lang=en_US" "--run-together" "--run-together-limit=16")))
 
-;;Ispell for camel-case
-;; Spell Check
-(use-package wucuo
-  :config
-  (setq ispell-extra-args "--run-together"))
-
 ;; set specific browser to open links
 ;; (setq browse-url-browser-function 'browse-url-firefox)
 

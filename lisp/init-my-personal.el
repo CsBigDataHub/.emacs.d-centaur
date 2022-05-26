@@ -492,6 +492,44 @@ If region is active, add its contents to the new buffer."
 
 (use-package counsel-jq)
 
+;; disable use it later
+;;Ispell for camel-case
+;; wucuo is a fast wrapper around flyspell designed to keep your workflow snappy.
+;; flyspell can be notoriously sluggish when used in the conventional way.
+;; wucuo gets around flyspell’s shortcomings by only calling flyspell in
+;; certain circumstances, such as when a buffer is saved to disk, or after a specified time interval.
+;; Wucuo uses Flyspell API. So the good news is your configuration for flyspell still works.
+;; (use-package wucuo
+;;   :after flyspell
+;;   :hook
+;;   ((prog-mode text-mode) . wucuo-start)
+;;   :custom
+;;   ;; How wucuo operates.
+;;   ;; "fast": run `flyspell-region' in `after-save-hook' over visible region.
+;;   ;; "normal": run `flyspell-buffer' in `after-save-hook'.
+;;   (wucuo-flyspell-start-mode "fast")
+;;   ;; How many seconds wucuo waits before running spell-check.
+;;   (wucuo-update-interval 2)
+;;   :init
+;;   ;; Disable flyspell-mode before using wucuo
+;;   (when (bound-and-true-p flyspell-mode)
+;;     (flyspell-mode -1))
+;;   (when (bound-and-true-p flyspell-prog-mode)
+;;     (flyspell-prog-mode -1))
+;;   ;; Tell wucuo to ignore certain majore modes.
+;;   (setq wucuo-spell-check-buffer-predicate
+;;         (lambda ()
+;;           (not (memq major-mode
+;;                      '(dired-mode
+;;                        log-edit-mode
+;;                        compilation-mode
+;;                        help-mode
+;;                        profiler-report-mode
+;;                        speedbar-mode
+;;                        gud-mode
+;;                        calc-mode
+;;                        Info-mode))))))
+
 ;; Added this to build pdf tools
 (when sys/macp
   (setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/libffi/3.4.2/lib/pkgconfig:/usr/local/Cellar/zlib/1.2.12/lib/pkgconfig:/usr/local/lib/pkgconfig")
