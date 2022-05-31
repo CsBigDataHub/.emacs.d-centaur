@@ -35,6 +35,12 @@
 
 (use-package counsel
   :diminish ivy-mode counsel-mode
+  :custom-face
+  (ivy-current-match ((t (:inherit region :distant-foreground nil :background nil))))
+  (ivy-minibuffer-match-face-1 ((t (:foreground "dimgray" :distant-foreground nil :background nil))))
+  (ivy-minibuffer-match-face-2 ((t (:distant-foreground nil :background nil))))
+  (ivy-minibuffer-match-face-3 ((t (:distant-foreground nil :background nil))))
+  (ivy-minibuffer-match-face-4 ((t (:distant-foreground nil :background nil))))
   :bind (("C-s"   . swiper-isearch)
          ("C-r"   . swiper-isearch-backward)
          ("s-f"   . swiper)
@@ -130,6 +136,17 @@
                              "\\`\\*.+-posframe-buffer\\*" "\\` ?\\*company-.+\\*")
         ivy-on-del-error-function #'ignore
         ivy-initial-inputs-alist nil)
+
+  ;; Use orderless regex strategy
+  (setq ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
+
+  ;; Set minibuffer height for different commands
+  (setq ivy-height-alist '((counsel-evil-registers . 5)
+                           (counsel-yank-pop . 8)
+                           (counsel-git-log . 4)
+                           (swiper . 15)
+                           (counsel-projectile-ag . 15)
+                           (counsel-projectile-rg . 15)))
 
   ;; Better performance on Windows
   (when sys/win32p
@@ -502,48 +519,6 @@
     :bind (:map ivy-minibuffer-map
            ("C-'" . ivy-avy)))
 
-  ;; Better sorting and filtering
-  (use-package prescient
-    :commands prescient-persist-mode
-    :init (prescient-persist-mode 1))
-
-  (use-package ivy-prescient
-    :commands ivy-prescient-re-builder
-    :custom-face
-    (ivy-current-match ((t (:inherit hl-line :distant-foreground nil :background nil))))
-    (ivy-minibuffer-match-face-1 ((t (:distant-foreground nil :background nil))))
-    (ivy-minibuffer-match-face-2 ((t (:distant-foreground nil :background nil))))
-    (ivy-minibuffer-match-face-3 ((t (:distant-foreground nil :background nil))))
-    (ivy-minibuffer-match-face-4 ((t (:distant-foreground nil :background nil))))
-    :init
-    (defun ivy-prescient-non-fuzzy (str)
-      "Generate an Ivy-formatted non-fuzzy regexp list for the given STR.
-This is for use in `ivy-re-builders-alist'."
-      (let ((prescient-filter-method '(literal regexp)))
-        (ivy-prescient-re-builder str)))
-
-    (setq ivy-prescient-retain-classic-highlighting t
-          ivy-re-builders-alist
-          '((counsel-ag . ivy-prescient-non-fuzzy)
-            (counsel-rg . ivy-prescient-non-fuzzy)
-            (counsel-pt . ivy-prescient-non-fuzzy)
-            (counsel-grep . ivy-prescient-non-fuzzy)
-            (counsel-fzf . ivy-prescient-non-fuzzy)
-            (counsel-imenu . ivy-prescient-non-fuzzy)
-            (counsel-yank-pop . ivy-prescient-non-fuzzy)
-            (swiper . ivy-prescient-non-fuzzy)
-            (swiper-isearch . ivy-prescient-non-fuzzy)
-            (swiper-all . ivy-prescient-non-fuzzy)
-            (lsp-ivy-workspace-symbol . ivy-prescient-non-fuzzy)
-            (lsp-ivy-global-workspace-symbol . ivy-prescient-non-fuzzy)
-            (insert-char . ivy-prescient-non-fuzzy)
-            (counsel-unicode-char . ivy-prescient-non-fuzzy)
-            (t . ivy-prescient-re-builder))
-          ivy-prescient-sort-commands
-          '(counsel-M-x execute-extended-command execute-extended-command-for-buffer))
-
-    (ivy-prescient-mode 1))
-
   ;; Additional key bindings for Ivy
   (use-package ivy-hydra
     :init
@@ -716,7 +691,7 @@ This is for use in `ivy-re-builders-alist'."
     (ivy-posframe-border ((t (:inherit posframe-border))))
     :hook (ivy-mode . ivy-posframe-mode)
     :init
-    (setq ivy-height 15
+    (setq ivy-height 15                 ; Use bigger minibuffer height for child frame
           ivy-posframe-border-width 3
           ivy-posframe-parameters '((left-fringe . 8)
                                     (right-fringe . 8)))
