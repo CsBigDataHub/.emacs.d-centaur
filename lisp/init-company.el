@@ -380,6 +380,25 @@
                 (Template . ,(all-the-icons-material "format_align_left" :height 1.0 :v-adjust -0.2)))
               company-box-icons-alist 'company-box-icons-all-the-icons)))))
 
+;; personal configuration;;
+;; https://emacs.stackexchange.com/questions/9835/how-can-i-prevent-company-mode-completing-numbers
+;; With this code:
+
+;; 1. remove those non-ANSII candidates.
+;; 2. remove any completion containing numbers.
+;; 3. remove any candidate which is longer than 15 in org-mode.
+
+;; also look at - https://github.com/company-mode/company-mode/issues/358
+(push (apply-partially #'cl-remove-if
+                       (lambda (c)
+                         (or (string-match-p "[^\x00-\x7F]+" c)
+                             (string-match-p "[0-9]+" c)
+                             (if (equal major-mode "org")
+                                 (>= (length c) 15)))))
+      company-transformers)
+;; personal configuration end;;
+
+
 (provide 'init-company)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
