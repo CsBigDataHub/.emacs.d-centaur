@@ -156,6 +156,9 @@ Install the doc if it's not installed."
       (devdocs-lookup nil (thing-at-point 'symbol t)))))
 
 ;; Misc. programming modes
+(when emacs/>=27p
+  (use-package csv-mode))
+
 (use-package cask-mode)
 (use-package cmake-mode)
 
