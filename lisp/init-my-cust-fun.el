@@ -2973,6 +2973,24 @@ That is, remove a non kept file from the recent list."
       (error "Password not found for %S" params))))
 
 
+;;https://emacs.stackexchange.com/questions/13080/reloading-directory-local-variables
+
+(defun my-reload-dir-locals-for-current-buffer ()
+  "reload dir locals for the current buffer"
+  (interactive)
+  (let ((enable-local-variables :all))
+    (hack-dir-local-variables-non-file-buffer)))
+
+(defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
+  "For every buffer with the same `default-directory` as the
+current buffer's, reload dir-locals."
+  (interactive)
+  (let ((dir default-directory))
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        (when (equal default-directory dir)
+          (my-reload-dir-locals-for-current-buffer))))))
+
 (pretty-hydra-define my-hydra (:title (pretty-hydra-title "my custom functions" 'faicon "product-hunt" :v-adjust -0.1)
                                :foreign-keys run :color amaranth :quit-key "q")
   ("📁 File"
