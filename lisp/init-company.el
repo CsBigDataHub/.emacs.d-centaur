@@ -384,13 +384,13 @@
 ;; 3. remove any candidate which is longer than 15 in org-mode.
 
 ;; also look at - https://github.com/company-mode/company-mode/issues/358
-(push (apply-partially #'cl-remove-if
-                       (lambda (c)
-                         (or (string-match-p "[^\x00-\x7F]+" c)
-                             (string-match-p "[0-9]+" c)
-                             (if (equal major-mode "org")
-                                 (>= (length c) 15)))))
-      company-transformers)
+;; (push (apply-partially #'cl-remove-if
+;;                        (lambda (c)
+;;                          (or (string-match-p "[^\x00-\x7F]+" c)
+;;                              (string-match-p "[0-9]+" c)
+;;                              (if (equal major-mode "org")
+;;                                  (>= (length c) 15)))))
+;;       company-transformers)
 ;; personal configuration end;;
 
 
