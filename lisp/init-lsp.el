@@ -48,6 +48,9 @@
             ;; (groovy-mode . eglot-ensure)
             (dockerfile-mode . eglot-ensure)
             ;; (csharp-mode . eglot-ensure)
+            ;; (prog-mode . (lambda ()
+            ;;                (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'makefile-mode)
+            ;;                  (eglot-ensure))))
             )
      :config
      (add-to-list 'eglot-server-programs
@@ -111,7 +114,7 @@
                                                    'enh-ruby-mode 'csharp-mode
                                                    'lisp-data-mode 'pip-requirements-mode)
                              (lsp-deferred))))
-            ;; (markdown-mode . lsp-deferred)
+            ;; ((markdown-mode yaml-mode) . lsp-deferred)
             (lsp-mode . (lambda ()
                           ;; Integrate `which-key'
                           (lsp-enable-which-key-integration)
