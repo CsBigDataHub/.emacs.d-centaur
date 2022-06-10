@@ -40,6 +40,8 @@
 ;; initialization, so we must prevent Emacs from doing it early!
 (setq package-enable-at-startup nil)
 
+(setq load-prefer-newer noninteractive)
+
 ;; Inhibit resizing frame
 (setq frame-inhibit-implied-resize t)
 
