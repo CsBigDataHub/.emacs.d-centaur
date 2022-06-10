@@ -98,8 +98,22 @@
                  :poshandler poshandler
                  :hidehandler #'flycheck-posframe-hidehandler))))
           (advice-add #'flycheck-posframe-show-posframe :override #'my-flycheck-posframe-show-posframe)))
+
+    (use-package flycheck-pos-tip
+      :after flycheck
+      :init
+      (unless (fboundp #'x-hide-tip)
+        (defalias #'x-hide-tip #'ignore))
+      (add-hook 'flycheck-mode-hook #'flycheck-pos-tip-mode)
+      :config
+      (setq flycheck-pos-tip-display-errors-tty-function
+            #'flycheck-popup-tip-show-popup))
+
     (use-package flycheck-popup-tip
-      :hook (flycheck-mode . flycheck-popup-tip-mode))))
+      :commands flycheck-popup-tip-show-popup
+      ;; :hook (flycheck-mode . flycheck-popup-tip-mode)
+      )
+    ))
 
 (provide 'init-flycheck)
 
