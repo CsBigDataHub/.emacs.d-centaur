@@ -60,10 +60,6 @@
   ;;       eshell-visual-options '(("git" "commit" "log"))
   ;;       )
   (with-no-warnings
-    ;; For compatibility
-    (unless (fboundp 'flatten-tree)
-      (defalias 'flatten-tree #'eshell-flatten-list))
-
     (defun eshell/clear ()
       "Clear the eshell buffer."
       (interactive)
