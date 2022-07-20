@@ -107,6 +107,7 @@
  '(magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:")
  '(network-stream-use-client-certificates t)
  '(native-comp-async-report-warnings-errors 'silent)
+ '(org-web-tools-pandoc-sleep-time 0.5)
  '(safe-local-variable-values
    '((add-to-list 'browse-at-remote-remote-type-domains
                   '("github.com" . "github"))
