@@ -41,7 +41,7 @@
 ;;Restart emacs from emacs
 (use-package restart-emacs
   :config (defalias 'emacs-restart #'restart-emacs)
-  :bind* (("C-x M-c" . restart-emacs)))
+  :bind (("C-x M-c" . restart-emacs)))
 
 ;; Open Large file
 (use-package vlf
