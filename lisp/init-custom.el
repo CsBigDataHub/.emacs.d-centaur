@@ -259,9 +259,13 @@ Nil to use font supports ligatures."
   :type '(alist :key-type string :value-type (choice character sexp)))
 
 (defcustom centaur-prettify-org-symbols-alist
-  '(("[ ]" . ?☐)
-    ("[X]" . ?☑)
-    ("[-]" . ?⛝)
+  '(("[ ]"            . ?)
+    ("[-]"            . ?)
+    ("[X]"            . ?)
+
+    (":PROPERTIES:"   . ?)
+    (":ID:"           . ?🪪)
+    (":END:"          . ?🔚)
 
     ("#+ARCHIVE:"     . ?📦)
     ("#+AUTHOR:"      . ?👤)
@@ -269,8 +273,9 @@ Nil to use font supports ligatures."
     ("#+DATE:"        . ?📆)
     ("#+DESCRIPTION:" . ?⸙)
     ("#+EMAIL:"       . ?📧)
-    ("#+OPTIONS:"     . ?⛭)
-    ("#+SETUPFILE:"   . ?⛮)
+    ("#+HEADERS"      . ?☰)
+    ("#+OPTIONS:"     . ?⚙)
+    ("#+SETUPFILE:"   . ?⚒)
     ("#+TAGS:"        . ?🏷)
     ("#+TITLE:"       . ?📓)
 

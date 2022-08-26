@@ -161,7 +161,8 @@
   ;; Use the faster search tools
   (cond
    ((executable-find "ugrep")
-    (setq counsel-grep-base-command "ugrep --color=never -n -e '%s' '%s'"))
+    (setq counsel-grep-base-command "ugrep --color=never -n -e '%s' '%s'")
+    (setq counsel-rg-base-command '("ugrep" "--color=never" "--ignore-files" "-rnEI" "%s")))
    ((executable-find "rg")
     (setq counsel-grep-base-command "rg -S --no-heading --line-number --color never '%s' '%s'")))
 
@@ -181,84 +182,10 @@
       (add-to-list 'savehist-additional-variables 'ivy-views))
 
     ;; Highlight the selected item
-    ;; or https://github.com/seagle0128/.emacs.d/issues/303#issuecomment-828067788
-    (defun my-ivy--make-image (face width height)
-      "Create a PBM bitmap via FACE, WIDTH and HEIGHT."
-      (when (and (display-graphic-p)
-                 (image-type-available-p 'pbm))
-        (propertize
-         " " 'display
-         (let ((color (or (face-background face nil t) "None")))
-           (ignore-errors
-             (create-image
-              (concat (format "P1\n%i %i\n" width height)
-                      (make-string (* width height) ?1)
-                      "\n")
-              'pbm t :foreground color :ascent 'center))))))
-
-    (defun +ivy-rich-describe-variable-transformer (cand)
-      "Previews the value of the variable in the minibuffer"
-      (let* ((sym (intern cand))
-             (val (and (boundp sym) (symbol-value sym)))
-             (print-level 3))
-        (replace-regexp-in-string
-         "[\n\t\^[\^M\^@\^G]" " "
-         (cond ((booleanp val)
-                (propertize (format "%s" val) 'face
-                            (if (null val)
-                                'font-lock-comment-face
-                              'success)))
-               ((symbolp val)
-                (propertize (format "'%s" val)
-                            'face 'highlight-quoted-symbol))
-               ((keymapp val)
-                (propertize "<keymap>" 'face 'font-lock-constant-face))
-               ((listp val)
-                (prin1-to-string val))
-               ((stringp val)
-                (propertize (format "%S" val) 'face 'font-lock-string-face))
-               ((numberp val)
-                (propertize (format "%s" val) 'face 'highlight-numbers-number))
-               ((format "%s" val)))
-         t)))
-
-    ;; Enahnce the appearance of a couple counsel commands
-    (centaur-plist-put ivy-rich-display-transformers-list
-                       'counsel-describe-variable
-                       '(:columns
-                         ((counsel-describe-variable-transformer (:width 40)) ; the original transformer
-                          (+ivy-rich-describe-variable-transformer (:width 50)) ; display variable value
-                          (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
-                       'counsel-M-x
-                       '(:columns
-                         ((counsel-M-x-transformer (:width 60))
-                          (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-                       ;; Apply switch buffer transformers to `counsel-projectile-switch-to-buffer' as well
-                       'counsel-projectile-switch-to-buffer
-                       (plist-get ivy-rich-display-transformers-list 'ivy-switch-buffer)
-                       'counsel-bookmark
-                       '(:columns
-                         ((ivy-rich-candidate (:width 0.5))
-                          (ivy-rich-bookmark-filename-or-empty (:width 60)))))
-
     (defun my-ivy-format-function (cands)
       "Transform CANDS into a string for minibuffer."
-      (if (and (display-graphic-p)
-               (image-type-available-p 'pbm))
-          (let ((width (if sys/macp 3 6))
-                (height (1+ (window-font-height))))
-            (ivy--format-function-generic
-             (lambda (str)
-               (concat
-                (my-ivy--make-image 'highlight width height)
-                (ivy--add-face (concat " " str) 'ivy-current-match)))
-             (lambda (str)
-               (concat
-                (my-ivy--make-image 'default width height)
-                " "
-                str))
-             cands
-             "\n"))
+      (if (display-graphic-p)
+          (ivy-format-function-line cands)
         (ivy-format-function-arrow cands)))
     (setf (alist-get 't ivy-format-functions-alist) #'my-ivy-format-function)
 
@@ -573,15 +500,7 @@
         (hydra-set-posframe-show-params)
         (add-hook 'after-load-theme-hook #'hydra-set-posframe-show-params t))))
 
-  ;; Ivy integration for Projectile
-  (use-package counsel-projectile
-    :hook (counsel-mode . counsel-projectile-mode)
-    :init
-    (setq counsel-projectile-grep-initial-input '(ivy-thing-at-point))
-    (when (executable-find "ugrep")
-      (setq counsel-projectile-grep-base-command "ugrep --color=never -rnEI %s")))
-
-  ;; Integrate yasnippet - MOVED TO init-straight.el
+  ;; Integrate yasnippet
   ;; (use-package ivy-yasnippet
   ;;   :bind ("C-c C-y" . ivy-yasnippet))
 
@@ -655,13 +574,27 @@
   ;;      ivy-re-builders-alist)))
   )
 
-;; Ivy
+;; Use Ivy to open recent directories
 (use-package ivy-dired-history
   :demand t
-  :after (savehist dired)
+  :after dired
+  :defines (savehist-additional-variables desktop-globals-to-save)
   :bind (:map dired-mode-map
          ("," . dired))
-  :init (add-to-list 'savehist-additional-variables 'ivy-dired-history-variable))
+  :init
+  (with-eval-after-load 'savehist
+    (add-to-list 'savehist-additional-variables 'ivy-dired-history-variable))
+  (with-eval-after-load 'desktop
+    (add-to-list 'desktop-globals-to-save 'ivy-dired-history-variable)))
+
+
+;; `projectile' integration
+(use-package counsel-projectile
+  :hook (counsel-mode . counsel-projectile-mode)
+  :init
+  (setq counsel-projectile-grep-initial-input '(ivy-thing-at-point))
+  (when (executable-find "ugrep")
+    (setq counsel-projectile-grep-base-command "ugrep --color=never -rnEI %s")))
 
 ;; Better experience with icons
 ;; Enable it before`ivy-rich-mode' for better performance

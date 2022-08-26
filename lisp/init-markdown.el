@@ -33,7 +33,6 @@
 (require 'init-const)
 (require 'init-funcs)
 
-
 (use-package markdown-mode
   :hook ((markdown-mode . auto-fill-mode))
   :mode (("README\\.md\\'" . gfm-mode))
