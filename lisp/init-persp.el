@@ -47,6 +47,18 @@
               persp-kill-foreign-buffer-behaviour 'kill
               persp-auto-resume-time (if centaur-dashboard 0 1.0))
   :config
+
+  (add-hook 'persp-before-deactivate-functions
+            (defun +workspaces-save-tab-bar-data-h (_)
+              (when (get-current-persp)
+                (set-persp-parameter
+                 'tab-bar-tabs (tab-bar-tabs)))))
+
+  (add-hook 'persp-activated-functions
+            (defun +workspaces-load-tab-bar-data-h (_)
+              (tab-bar-tabs-set (persp-parameter 'tab-bar-tabs))
+              (tab-bar--update-tab-bar-lines t)))
+
   ;; Save and load frame parameters (size & position)
   (defvar persp-frame-file (expand-file-name "persp-frame" persp-save-dir)
     "File of saving frame parameters.")
