@@ -11189,3 +11189,132 @@ You can use both =melpa= and =melpa-stable=, and pin certain packages to certain
         (evil . "melpa-stable")
         (evil-commentary . "melpa-stable")))
 #+end_example
+* [[https://macowners.club/posts/from-ivy-to-vertico/][From Ivy & Counsel to Vertico & Consult | macOS & (open-source) Software]] :website:
+
+[2022-09-02 Fri 09:36]
+
+**** Article
+
+**** Motivation
+
+I like [[https://melpa.org/#/ivy][Ivy]]. I like it a lot. Together with [[https://melpa.org/#/counsel][Counsel]] it makes a fantastic completion framework for Emacs.
+
+However there is something driving me up the wall. Searching the active buffer with [[https://melpa.org/#/swiper][Swiper]] is quite slow. Meaning that the =Minibuffer= sometimes needs more than a second to appear. Which actually feels like 3 seconds.
+
+Now this could have been solved by doing some research to fix it. But it would have not be fun, would it? To be completely honest there are two more reasons for switching.
+
+- I want to try the new and -- according to the community fashionable -- way of doing stuff.
+- Tweaking the Emacs configuration is a wonderful way of getting work done without getting work done.
+
+#+begin_quote
+Vertico provides a performant and minimalistic vertical completion UI, which is based on the default completion system.
+
+#+end_quote
+
+This being the description of the author of [[https://github.com/minad/vertico][vertico.el - VERTical Interactive COmpletion]] himself sounds fairly promising -- maybe even convincing.
+
+Thus my decision to try it out together with [[https://github.com/minad/consult][consult.el - Consulting completing-read]] as my completion framework.
+
+****** Deal Breaker
+
+To got about switching I needed to think about my use of Ivy and the accompanying packages and figure out if there will be proper substitutions for them after the move.
+
+To be frank here I was reasonably sure that I would find equivalents for the following functions. Even if there were no corresponding functions to Vertico or Consult, my experience suggests that the community surely would have been at it.
+
+- ivy-switch-buffer: :: the equivalent function for switching buffers: =consult-buffer=
+- counsel-find-file: :: the equivalent function for opening files with completion: =find-file=
+- counsel-M-x: :: the equivalent for calling interactive functions: =execute-extended-command=
+- swiper: :: the equivalent for searching the current buffer: =consult-line=
+- counsel-projectile-switch-project: :: the equivalent for switching projects: =projectile-switch-project=
+- counsel-bookmark: :: the equivalent for finding saved bookmarks: =consult-bookmark=
+- Ivy actions: :: [[https://github.com/oantolin/embark][Embark]] for actions on completion candidates: =embark-act=.
+
+The changes for the first working code with Vertico & Consult are reflected in [[https://gitlab.com/aimebertrand/dotfiles/-/commit/ba8db69a00947033164cb0148a51d12394fa5f3d][this commit]].
+
+****** Custom configuration
+
+After using Emacs for a fairly significant time -- around 2 years in my case -- one of course customizes the workflows. Custom functions, keybindings and other adjustments become a frequent occurrence. I am no exception here.
+
+Following are a few of changes that I had to make to adjust for the new completions system. These will be formatted as diffs to reflect the changes.
+
+******* Function to open miscellaneous config files:
+
+#+begin_example
+    @@ -477,10 +477,10 @@ This will display a Quicklook of the file at point in macOS."
+
+   (defun timu/find-config-file ()
+   -  "Open a config file with `ivy-completing-read'."
+    +  "Open a config file with `completing-read'."
+      (interactive)
+     (let ((config-file
+   -         (ivy-completing-read
+    +         (completing-read
+              "Select account: "
+             timu-config-files)))
+       (find-file config-file)))
+#+end_example
+
+******* Search my frequently used directories
+
+#+begin_example
+    @@ -426,12 +416,12 @@ This will display a Quicklook of the file at point in macOS."
+
+   (defun timu/search-org-files ()
+     "Grep for a string in the `~/org' using `rg'."
+     (interactive)
+   -  (counsel-rg "" "~/org" nil "Search in Org Files: "))
+    +  (consult-ripgrep "~/org" ""))
+
+   (defun timu/search-project-files ()
+     "Grep for a string in the `~/projects' using `rg'."
+     (interactive)
+   -  (counsel-rg "" "~/projects" nil "Search in Project Files: "))
+    +  (consult-ripgrep "~/projects" ""))
+#+end_example
+
+******* Custom finding of headings in org-mode
+
+#+begin_example
+    @@ -144,15 +144,22 @@ This runs `org-babel-load-file' on `config.org'."
+
+   -(defun timu/ivy-go-to-heading (&optional arg)
+   -  "Like `helm-org-in-buffer-headings', the preconfigured helm for org buffer headings.
+   -This function will use `counsel-outline' and also move the heading to the top of the buffer
+   -with the evil funtion `evil-scroll-line-to-top'"
+    +(defun timu/org-go-to-heading (&optional arg)
+   +  "Go to an outline heading with `consult-org-heading'.
+   +Also move the heading to the top of the buffer with `evil-scroll-line-to-top'"
+      (interactive)
+   -  (counsel-outline)
+    +  (consult-org-heading)
+      (evil-scroll-line-to-top arg))
+#+end_example
+
+******* Filter Elfeed articles by tags
+
+#+begin_example
+    @@ -103,23 +103,23 @@ the buffer."
+
+   -;;; Add "+" tags to filter with ivy
+   -(defun timu/elfeed-ivy-filter-include-tag ()
+    +;;; Add "+" tags to filter with completion
+   +(defun timu/elfeed-filter-include-tag ()
+      "Use Ivy to select tags to include `+'.
+   The function reads the tags from the elfeed db."
+     (interactive)
+   -  (let ((filtered-tag (ivy-completing-read "Select Tags: " (elfeed-db-get-all-tags))))
+    +  (let ((filtered-tag (completing-read "Select Tags: " (elfeed-db-get-all-tags))))
+        (progn
+         (setq elfeed-search-filter (concat elfeed-search-filter " +" filtered-tag))
+         (elfeed-search-update--force))))
+#+end_example
+
+****** Conclusion
+
+The question is... Was the switch worth it? *It definitely was. Let me explain!*
+
+First things first. The switch indeed fixed the speed issue mentioned at the top. With =consult-line= the Minibuffer with candidates appears instantaneously. This already made the whole thing absolutely worth it for me.
+
+Still there are more advantages to switching. One major one being that Vertico & Consult automagically use the Emacs built-in system =completing-read=. I cannot explain the intricacies behind it, but I know one thing. This makes matters easier for me configuring the whole thing.
+
+- Example: :: Instead of using a custom command =counsel-find-file= for finding files, I can just =find-file= and Vertico takes over. Other functions/commands using completion will automatically hand over to Vertico as well. No configuration needed on my part. This is munch much better for scaling and porting.
