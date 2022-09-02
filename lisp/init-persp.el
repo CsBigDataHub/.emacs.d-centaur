@@ -48,6 +48,7 @@
               persp-auto-resume-time (if centaur-dashboard 0 1.0))
   :config
 
+  ;; https://github.com/Bad-ptr/persp-mode.el/issues/122#issuecomment-1224884651
   (add-hook 'persp-before-deactivate-functions
             (defun +workspaces-save-tab-bar-data-h (_)
               (when (get-current-persp)
