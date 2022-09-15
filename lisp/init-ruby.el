@@ -53,6 +53,9 @@
 
 ;; YAML mode
 (use-package yaml-mode)
+(use-package yaml-pro
+  :after yaml-mode
+  :hook (yaml-mode . yaml-pro-mode))
 
 ;; Run a Ruby process in a buffer
 (use-package inf-ruby
