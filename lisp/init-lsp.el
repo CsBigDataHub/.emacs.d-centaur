@@ -74,8 +74,7 @@
    ;; https://github.com/emacs-lsp/lsp-mode#supported-languages
    (use-package lsp-mode
      :diminish
-     :defines (lsp-clients-python-library-directories
-               lsp-rust-server)
+     :defines (lsp-diagnostics-disabled-modes lsp-clients-python-library-directories)
      :commands (lsp-enable-which-key-integration
                 lsp-format-buffer
                 lsp-organize-imports
@@ -152,7 +151,10 @@
                  ;; lsp-enable-imenu t
                  lsp-enable-on-type-formatting nil
 
-                 ;; For `lsp-clients'
+                 ;; For diagnostics
+                 lsp-diagnostics-disabled-modes '(markdown-mode gfm-mode)
+
+                 ;; For clients
                  lsp-clients-python-library-directories '("/usr/local/" "/usr/"))
 
      ;; (setq lsp-csharp-server-install-dir "~/.emacs.d/lsp/omnisharp-roslyn/latest/omnisharp-osx/")
