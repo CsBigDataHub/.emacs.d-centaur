@@ -51,7 +51,7 @@
                          (eshell/alias "lr" "ls -tRFh")
                          (eshell/alias "lrt" "ls -lFcrt")
                          (eshell/alias "lsa" "ls -lah")
-                         (eshell/alias "lt" "ls -ltFh")))
+                         (eshell/alias "lt" "ls -lth")))
   :config
   ;; (with-eval-after-load 'exec-path-from-shell
   ;;   (exec-path-from-shell-copy-envs '("GOPATH" "GO111MODULE" "GOPROXY" "GRADLE_HOME" "GROOVY_HOME" "JAVA_HOME" "MAVEN_HOME" "SBT_HOME" "SCALA_HOME" "WORKON_HOME" "PYENV_ROOT")))
