@@ -412,7 +412,7 @@
     (progn
       ;; place the language-tool directory in $HOME
       (setq langtool-language-tool-jar
-            "/usr/local/Cellar/languagetool/5.7/libexec/languagetool-commandline.jar")
+            "/usr/local/Cellar/languagetool/5.8/libexec/languagetool-commandline.jar")
       (setq langtool-java-bin "/Users/ckoneru/.sdkman/candidates/java/11.0.10.j9-adpt/bin/java")
       (setq langtool-bin "/usr/local/bin/languagetool")
       (setq langtool-default-language "en-US")
@@ -460,7 +460,7 @@ _C_: correct  _p_: prev error _d_: done checking
   (when sys/macp
     (progn
       (setq languagetool-language-tool-jar
-            "/usr/local/Cellar/languagetool/5.7/libexec/languagetool-commandline.jar")
+            "/usr/local/Cellar/languagetool/5.8/libexec/languagetool-commandline.jar")
       (setq languagetool-java-bin "/Users/ckoneru/.sdkman/candidates/java/11.0.10.j9-adpt/bin/java")
       ))
   )
