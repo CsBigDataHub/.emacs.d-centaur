@@ -153,7 +153,7 @@
 ;; Enforce rules for popups
 (use-package popper
   :defines popper-echo-dispatch-actions
-  :commands popper-group-by-projectile
+  :autoload popper-group-by-projectile
   :bind (:map popper-mode-map
          ("C-h z"     . popper-toggle-latest)
          ("C-<tab>"   . popper-cycle)
@@ -182,6 +182,9 @@
           tabulated-list-mode
           Buffer-menu-mode
 
+          flymake-diagnostics-buffer-mode
+          flycheck-error-list-mode flycheck-verify-mode
+
           gnus-article-mode devdocs-mode
           grep-mode occur-mode rg-mode deadgrep-mode ag-mode pt-mode
           ivy-occur-mode ivy-occur-grep-mode
@@ -197,7 +200,6 @@
 
           "\\*DAP Templates\\*$" dap-server-log-mode
           "\\*ELP Profiling Restuls\\*" profiler-report-mode
-          "\\*Flycheck errors\\*$" " \\*Flycheck checker\\*$"
           "\\*Paradox Report\\*$" "\\*package update results\\*$" "\\*Package-Lint\\*$"
           "\\*[Wo]*Man.*\\*$"
           "\\*ert\\*$" overseer-buffer-mode

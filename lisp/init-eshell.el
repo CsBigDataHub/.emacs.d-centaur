@@ -129,7 +129,7 @@
   (use-package eshell-prompt-extras
     :after esh-opt
     :defines eshell-highlight-prompt
-    :commands (epe-theme-lambda epe-theme-dakrone epe-theme-pipeline)
+    :autoload (epe-theme-lambda epe-theme-dakrone epe-theme-pipeline)
     :custom-face
     (epe-pipeline-host-face ((t (:foreground "tomato1"))))
     (epe-pipeline-time-face ((t (:foreground "DarkOrchid1"))))
