@@ -575,7 +575,7 @@
 
 ;; Use Ivy to open recent directories
 (use-package ivy-dired-history
-  :demand t
+  ;; :demand t
   :after dired
   :defines (savehist-additional-variables desktop-globals-to-save)
   :bind (:map dired-mode-map
