@@ -150,6 +150,22 @@
               (cdr project)))))
       (advice-add #'multi-vterm-project-root :override #'my-multi-vterm-project-root))))
 
+;; Powershell
+(use-package powershell
+  :init
+  (defun powershell (&optional buffer)
+    "Launches a powershell in buffer *powershell* and switches to it."
+    (interactive)
+    (let ((buffer (or buffer "*powershell*"))
+          (program (if (executable-find "pwsh") "pwsh"
+                     "powershell")))
+      (make-comint-in-buffer "Powershell" buffer program)
+      (with-current-buffer buffer
+        (setq-local mode-line-format nil))
+      (pop-to-buffer buffer))))
+
+(use-package ob-powershell)
+
 ;; Shell Pop: leverage `popper'
 (with-no-warnings
 
@@ -165,6 +181,7 @@
   (defun shell-pop--shell (&optional arg)
     "Run shell and return the buffer."
     (cond ((fboundp 'vterm) (vterm arg))
+          ((fboundp 'powershell) (powershell arg))
           (sys/win32p (eshell arg))
           (t (shell))))
 
