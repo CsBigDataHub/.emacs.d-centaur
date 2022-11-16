@@ -52,7 +52,7 @@
   :group 'centaur
   :type 'string)
 
-(defcustom centaur-org-directory (expand-file-name "~/org/")
+(defcustom centaur-org-directory (expand-file-name "~/org")
   "Set org directory."
   :group 'centaur
   :type 'string)
@@ -164,9 +164,7 @@ It's only available on macOS currently."
   :group 'centaur
   :type `(choice (const :tag "Auto" auto)
                  (const :tag "Random" random)
-                 ,(if (boundp 'ns-system-appearance)
-                      '(const :tag "System" system)
-                    "")
+                 (const :tag "System" system)
                  ,@(mapcar
                     (lambda (item)
                       (let ((name (car item)))

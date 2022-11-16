@@ -140,7 +140,7 @@
                              (?C . success))
 
         ;; Agenda styling
-        org-agenda-files `(,centaur-org-directory)
+        org-agenda-files (list centaur-org-directory)
         org-agenda-block-separator ?─
         org-agenda-time-grid
         '((daily today require-timed)
