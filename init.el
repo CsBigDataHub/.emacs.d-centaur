@@ -180,7 +180,7 @@ Otherwise the startup will be very slow. "
 (require 'init-gradle)
 (require 'init-hippie-expand)
 ;; (require 'init-image-plus)
-;; (require 'init-kubernetes)
+(require 'init-kubernetes)
 ;; (require 'init-lisp-clojure)
 (require 'init-my-cust-fun)
 (require 'init-my-personal)
