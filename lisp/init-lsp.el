@@ -91,7 +91,7 @@
                           (lsp-enable-which-key-integration)
 
                           ;; Format and organize imports
-                          (unless (apply #'derived-mode-p centaur-lsp-format-on-save-ignore-modes)
+                          (unless (or (apply #'derived-mode-p centaur-lsp-format-on-save-ignore-modes) centaur-lsp-format-disable-on-save)
                             (add-hook 'before-save-hook #'lsp-format-buffer t t)
                             (add-hook 'before-save-hook #'lsp-organize-imports t t)))))
      :bind (:map lsp-mode-map
@@ -191,13 +191,7 @@
                                      :face face)
            (propertize fallback 'face face)))
        (advice-add #'lsp-icons-all-the-icons-material-icon
-                   :override #'my-lsp-icons-all-the-icons-material-icon))
-
-     (defun lsp-update-server ()
-       "Update LSP server."
-       (interactive)
-       ;; Equals to `C-u M-x lsp-install-server'
-       (lsp-install-server t)))
+                   :override #'my-lsp-icons-all-the-icons-material-icon)))
 
    (use-package lsp-ui
      :custom
@@ -206,7 +200,7 @@
      (lsp-ui-sideline-code-action ((t (:inherit warning))))
      :pretty-hydra
      ((:title (pretty-hydra-title "LSP UI" 'faicon "rocket" :face 'all-the-icons-green)
-       :color amaranth :quit-key "q")
+       :color amaranth :quit-key ("q" "C-g"))
       ("Doc"
        (("d e" (progn
                  (lsp-ui-doc-enable (not lsp-ui-doc-mode))

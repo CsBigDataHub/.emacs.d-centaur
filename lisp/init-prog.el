@@ -105,7 +105,7 @@
 (use-package dumb-jump
   :pretty-hydra
   ((:title (pretty-hydra-title "Dump Jump" 'faicon "anchor")
-    :color blue :quit-key "q")
+    :color blue :quit-key ("q" "C-g"))
    ("Jump"
     (("j" dumb-jump-go "Go")
      ("o" dumb-jump-go-other-window "Go other window")
@@ -193,6 +193,9 @@ Install the doc if it's not installed."
 ;; Misc. programming modes
 (when emacs/>=27p
   (use-package csv-mode))
+
+(unless emacs/>=29p
+  (use-package csharp-mode))
 
 (use-package cask-mode)
 (use-package cmake-mode)
