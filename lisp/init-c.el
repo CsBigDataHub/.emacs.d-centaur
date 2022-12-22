@@ -30,17 +30,19 @@
 
 ;;; Code:
 
+(require 'init-funcs)
+
 ;; C/C++ Mode
 (use-package cc-mode
   :ensure nil
   :bind (:map c-mode-base-map
-         ("C-c c" . compile))
-  :hook (c-mode-common . (lambda () (c-set-style "stroustrup")))
-  :init (setq-default c-basic-offset 4)
-  :config
-  (use-package modern-cpp-font-lock
-    :diminish
-    :init (modern-c++-font-lock-global-mode t)))
+         ("<f12>" . compile))
+  :init (setq-default c-basic-offset 4))
+
+(use-package c-ts-mode
+  :ensure nil
+  :when (centaur-treesit-available-p)
+  :init (setq c-ts-mode-indent-offset 4))
 
 (provide 'init-c)
 
