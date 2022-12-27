@@ -634,6 +634,9 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
            ("C-c n j" . org-roam-dailies-capture-today))
     :init
     ;; (setq org-roam-v2-ack t)
+    (setq org-roam-graph-viewer (if (featurep 'xwidget-internal)
+                                    #'xwidget-webkit-browse-url
+                                  #'browse-url))
     :config
     ;; (require 'org-roam-protocol)
     ;; (setq-default org-roam-capture-templates
