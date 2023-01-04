@@ -124,25 +124,16 @@
         :init
         ;; Add all your customization's prior to loading the themes
         (setq modus-themes-italic-constructs t
-              ;; modus-themes-deuteranopia t
               modus-themes-bold-constructs t
-              modus-themes-tabs-accented t
-              modus-themes-lang-checkers '(text-also background)
-              modus-themes-links '(italic bold neutral-underline background)
+              modus-themes-custom-auto-reload t
               modus-themes-prompts '(intense background bold)
-              modus-themes-syntax '(faint alt-syntax green-strings yellow-comments)
-              modus-themes-mode-line '(3d accented)
               modus-themes-completions '((t . (extrabold intense underline background)))
               ;; modus-themes-completions '((matches . (extrabold intense underline background))
               ;;                            (selection . (accented intense italic))
               ;;                            (popup . (accented intense)))
-              modus-themes-fringes 'intense
 	          modus-themes-mixed-fonts 't
-              modus-themes-paren-match '(bold intense underline)
-              modus-themes-region '(accent no-extend)
               modus-themes-org-blocks 'tinted-background
               modus-themes-variable-pitch-ui t
-              modus-themes-hl-line '(underline intense)
 	          modus-themes-headings
 		      '((1 . (background overline variable-pitch 1.5))
 		        (2 . (overline rainbow 1.3))
@@ -150,12 +141,10 @@
 		        (t . (monochrome)))
               )
 
-        ;; Load the theme files before enabling a theme
-        (modus-themes-load-themes)
+        (setq modus-themes-common-palette-overrides
+              modus-themes-preset-overrides-intense)
         :config
-        ;; Load the theme of your choice
-        (modus-themes-load-vivendi)
-        ;; (modus-themes-load-operandi)
+        (load-theme 'modus-vivendi :no-confim)
         (require 'doom-themes-ext-org)
         (require 'doom-themes-ext-treemacs)
         (doom-themes-treemacs-config)
