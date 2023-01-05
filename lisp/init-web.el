@@ -78,9 +78,9 @@
     :init (setq xwwp-follow-link-completion-system 'ivy)))
 
 ;; CSS
-(use-package css-mode
-  :ensure nil
-  :init (setq css-indent-offset 2))
+;; (use-package css-mode
+;;   :ensure nil
+;;   :init (setq css-indent-offset 2))
 
 ;; SCSS mode
 ;; (use-package scss-mode
@@ -97,35 +97,35 @@
   (use-package json-mode))
 
 ;; JavaScript
-(use-package js-mode
-  :ensure nil
-  :defines (js-indent-level flycheck-javascript-eslint-executable)
-  :config
-  (setq js-indent-level 2)
+;; (use-package js-mode
+;;   :ensure nil
+;;   :defines (js-indent-level flycheck-javascript-eslint-executable)
+;;   :config
+;;   (setq js-indent-level 2)
 
-  (with-eval-after-load 'flycheck
-    ;; https://github.com/mantoni/eslint_d.js
-    ;; Install: npm -i -g eslint_d
-    (when (executable-find "eslint_d")
-      (setq flycheck-javascript-eslint-executable "eslint_d"))))
+;;   (with-eval-after-load 'flycheck
+;;     ;; https://github.com/mantoni/eslint_d.js
+;;     ;; Install: npm -i -g eslint_d
+;;     (when (executable-find "eslint_d")
+;;       (setq flycheck-javascript-eslint-executable "eslint_d"))))
 
-(use-package js2-mode
-  :mode (("\\.js\\'" . js2-mode)
-         ("\\.jsx\\'" . js2-jsx-mode))
-  :interpreter (("node" . js2-mode)
-                ("node" . js2-jsx-mode))
-  :hook ((js2-mode . js2-imenu-extras-mode)
-         (js2-mode . js2-highlight-unused-variables-mode))
-  :config
-  ;; Use default keybindings for lsp
-  (when centaur-lsp
-    (unbind-key "M-." js2-mode-map))
+;; (use-package js2-mode
+;;   :mode (("\\.js\\'" . js2-mode)
+;;          ("\\.jsx\\'" . js2-jsx-mode))
+;;   :interpreter (("node" . js2-mode)
+;;                 ("node" . js2-jsx-mode))
+;;   :hook ((js2-mode . js2-imenu-extras-mode)
+;;          (js2-mode . js2-highlight-unused-variables-mode))
+;;   :config
+;;   ;; Use default keybindings for lsp
+;;   (when centaur-lsp
+;;     (unbind-key "M-." js2-mode-map))
 
-  (with-eval-after-load 'flycheck
-    (when (or (executable-find "eslint_d")
-              (executable-find "eslint")
-              (executable-find "jshint"))
-      (setq js2-mode-show-strict-warnings nil))))
+;;   (with-eval-after-load 'flycheck
+;;     (when (or (executable-find "eslint_d")
+;;               (executable-find "eslint")
+;;               (executable-find "jshint"))
+;;       (setq js2-mode-show-strict-warnings nil))))
 
 ;; my-personal
 
