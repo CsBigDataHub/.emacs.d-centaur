@@ -54,7 +54,18 @@
   (evil-set-initial-state 'vterm-mode 'emacs)
   (evil-set-initial-state 'Info-mode 'emacs)
   (evil-set-initial-state 'special-mode 'emacs)
+  ;;for shell-pop
+(evil-define-key 'insert vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
+(evil-define-key 'normal vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
 
+;; to replace with `xref-find-definitions'
+;; https://emacs.stackexchange.com/questions/29684/conditional-key-binding-evil-vs-slime-conflict-for-m
+(define-key evil-normal-state-map (kbd "M-.")
+  `(menu-item "" evil-repeat-pop :filter
+              ,(lambda (cmd) (if (eq last-command 'evil-repeat-pop) cmd))))
+
+
+(evil-define-key 'normal lsp-mode-map (kbd "M-.") #'lsp-find-definition)
   )
 
 ;; (setq evil-disable-insert-state-bindings t) ;;full blown emacs in insert mode
@@ -199,13 +210,13 @@
              evil-snipe-override-mode
              evil-snipe-local-mode
              evil-snipe-override-local-mode)
+  :hook (on-first-input . evil-snipe-override-mode)
+  :hook (on-first-input . evil-snipe-mode)
   :init
   (setq evil-snipe-smart-case t
         evil-snipe-scope 'visible
         evil-snipe-repeat-scope 'visible
         evil-snipe-char-fold t)
-  (evil-snipe-mode 1)
-  (evil-snipe-override-mode 1)
   :config
   ;; and disable in specific modes
   (push 'Info-mode evil-snipe-disabled-modes)
@@ -213,9 +224,7 @@
   (push 'calc-mode evil-snipe-disabled-modes)
   )
 
-;;for shell-pop
-(evil-define-key 'insert vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
-(evil-define-key 'normal vterm-mode-map (kbd "<f9>")      #'shell-pop) ;;Added personally
+
 ;; (evil-define-key 'insert vterm-mode-map (kbd "<delete>")  #'vterm-send-delete) ;;Added personally
 ;; (evil-define-key 'normal vterm-mode-map (kbd "<delete>")  #'vterm-send-delete) ;;Added personally
 
@@ -226,15 +235,6 @@
 
 ;; (add-hook 'evil-mode-hook (lambda()
 ;;                             (local-unset-key (kbd "M-."))))
-
-;; to replace with `xref-find-definitions'
-;; https://emacs.stackexchange.com/questions/29684/conditional-key-binding-evil-vs-slime-conflict-for-m
-(define-key evil-normal-state-map (kbd "M-.")
-  `(menu-item "" evil-repeat-pop :filter
-              ,(lambda (cmd) (if (eq last-command 'evil-repeat-pop) cmd))))
-
-
-(evil-define-key 'normal lsp-mode-map (kbd "M-.") #'lsp-find-definition)
 
 ;; https://blog.meain.io/2020/emacs-highlight-yanked/
 (defun my/evil-yank-advice (orig-fn beg end &rest args)

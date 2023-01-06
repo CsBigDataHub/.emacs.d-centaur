@@ -118,6 +118,7 @@ Otherwise the startup will be very slow. "
 
 (require 'init-basic)
 (require 'init-hydra)
+(require 'init-on)
 
 (require 'init-org)
 (require 'init-ui)
