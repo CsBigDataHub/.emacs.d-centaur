@@ -90,7 +90,7 @@ The prefix map is named 'my-DEF-map'."
 
 (general-global-spc-menu-definer
  "execute" "e"
- "e" 'my/vterm-execute-current-line
+ "e" 'my/vterm-execute-region-or-current-line
  "E" 'my/eshell-execute-current-line)
 
 (general-global-spc-menu-definer
