@@ -140,7 +140,7 @@
   (use-package esh-autosuggest
     :defines ivy-display-functions-alist
     :bind (:map eshell-mode-map
-           ([remap eshell-pcomplete] . completion-at-point))
+                ([remap eshell-pcomplete] . completion-at-point))
     :hook ((eshell-mode . esh-autosuggest-mode)
            (eshell-mode . eshell-setup-ivy-completion))
     :init (defun eshell-setup-ivy-completion ()
@@ -222,18 +222,34 @@ directory."
     (when (derived-mode-p 'eshell-mode)
       (buffer-substring-no-properties beg (eshell-end-of-output)))))
 
-(defun my/eshell-put-last-output-to-buffer ()
-  "Produce a buffer with output of last `eshell' command."
+;;;###autoload
+(defun prot-eshell-export ()
+  "Produce a buffer with output of the last Eshell command.
+If `prot-eshell-output-buffer' does not exist, create it.  Else
+append to it, while separating multiple outputs with
+`prot-eshell-output-delimiter'."
   (interactive)
   (let ((eshell-output (prot-eshell--command-prompt-output)))
-    (with-current-buffer (get-buffer-create  "*last-eshell-output*")
+    (with-current-buffer (get-buffer-create prot-eshell-output-buffer)
       (goto-char (point-max))
       (unless (eq (point-min) (point-max))
-        (insert (format "\n%s\n\n" "* * *")))
+        (insert (format "\n%s\n\n" prot-eshell-output-delimiter)))
       (goto-char (point-at-bol))
       (insert eshell-output)
       (switch-to-buffer-other-window (current-buffer)))))
 
+(defun my/eshell-put-last-output-to-buffer ()
+  "Produce a buffer with output of last `eshell' command."
+  (interactive)
+  (with-current-buffer (get-buffer-create  "*last-eshell-output*")
+    (goto-char (point-max))
+    (unless (eq (point-min) (point-max))
+      (insert (format "\n%s\n\n" "* * *")))
+    (goto-char (point-at-bol))
+    (insert eshell-output)
+    (switch-to-buffer-other-window (current-buffer))))
+
+;;;###autoload
 (defun prot-eshell-find-subdirectory-recursive ()
   "Recursive `eshell/cd' to subdirectory.
 This command has the potential for infinite recursion: use it
@@ -252,6 +268,7 @@ wisely or prepare to call `eshell-interrupt-process'."
     (insert selection)
     (eshell-send-input)))
 
+;;;###autoload
 (defun prot-eshell-root-dir ()
   "Switch to the root directory of the present project."
   (interactive)
@@ -327,14 +344,14 @@ wisely or prepare to call `eshell-interrupt-process'."
   :ensure nil
   :after esh-mode
   :bind (:map eshell-mode-map
-         ("C-c e e" . my/eshell-insert-file-at-point)
-         ("C-c e f" . my/eshell-find-file-at-point)
-         ("C-c e >" . my/eshell-complete-redirect-to-buffer)
-         ("C-c e p" . my/eshell-file-parent-dir)
-         ("C-c e c" . my/eshell-kill-save-file-at-point)
-         ("C-c e o" . my/eshell-put-last-output-to-buffer)
-         ("M-s i" . eshell-next-matching-input)
-         )
+              ("C-c e e" . my/eshell-insert-file-at-point)
+              ("C-c e f" . my/eshell-find-file-at-point)
+              ("C-c e >" . my/eshell-complete-redirect-to-buffer)
+              ("C-c e p" . my/eshell-file-parent-dir)
+              ("C-c e c" . my/eshell-kill-save-file-at-point)
+              ("C-c e o" . my/eshell-put-last-output-to-buffer)
+              ("M-s i" . eshell-next-matching-input)
+              )
   :config
   (setq eshell-hist-ignoredups t)
   (setq eshell-history-size 10000)
