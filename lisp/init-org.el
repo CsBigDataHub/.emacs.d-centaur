@@ -638,6 +638,7 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
                                     #'xwidget-webkit-browse-url
                                   #'browse-url))
     :config
+    (org-roam-db-autosync-enable)
     ;; (require 'org-roam-protocol)
     ;; (setq-default org-roam-capture-templates
     ;;               '(("d" "default" plain "%?" :if-new
