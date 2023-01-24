@@ -1,5 +1,7 @@
 ;;; init-macos.el --- Initialize key-bindings for MacOs.	-*- lexical-binding: t -*-
 
+(require 'init-const)
+
 (when sys/macp
   (bind-keys*
    ("<f13>" . treemacs)
@@ -19,6 +21,7 @@
     ;; (add-to-list 'woman-manpath
     ;;              "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/man")
     (use-package ob-applescript)
+    (setq trash-directory "~/.Trash")
     )
   )
 (provide 'init-macos)
