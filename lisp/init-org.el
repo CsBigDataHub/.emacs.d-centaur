@@ -601,7 +601,7 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 ;; org-roam
 
 (when sys/macp
-  (setq org-roam-directory-alist '("~/GitRepos/my-org-notes/"
+  (setq org-roam-directory-alist '("~/Documents/my-org-notes/"
                                    "~/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/")))
 
 (when sys/linuxp

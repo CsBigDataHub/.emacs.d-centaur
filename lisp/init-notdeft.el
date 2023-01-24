@@ -14,8 +14,8 @@
 (require 'notdeft-autoloads)
 
 (when sys/macp
-  (setq notdeft-directories '("/Users/ckoneru/GitRepos/my-org-notes/"
-                              "/Users/ckoneru/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/")))
+  (setq notdeft-directories '("/Users/ckoneru/Documents/my-org-notes/")))
+;; "$HOME/GitRepos/my-projects/Mac-pref-Backup/org-file-notes/"
 
 (setq notdeft-extension "org")
 (setq notdeft-secondary-extensions '("md" "txt"))
