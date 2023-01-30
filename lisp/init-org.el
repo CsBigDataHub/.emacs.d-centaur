@@ -707,28 +707,29 @@ Inspired by https://github.com/daviderestivo/emacs-config/blob/6086a7013020e19c0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;notification;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; example https://christiantietze.de/posts/2019/12/emacs-notifications/
 
-(use-package alert
-  :config
-  (when sys/macp
-    (setq alert-default-style 'notifier)))
+;; (use-package alert
+;;   :config
+;;   (when sys/macp
+;;     (setq alert-default-style 'notifier)))
 
 ;; simpler code for `org-alert' package
 ;; https://raw.githubusercontent.com/jakecoble/org-alert/master/org-alert.el
-(use-package org-alert
-  :demand t
-  :init
-  (org-alert-enable))
+;;(use-package org-alert
+;;  :demand t
+;; :init
+;; (org-alert-enable)
+;;  )
 
-(use-package org-wild-notifier
-  :after (org alert)
-  :custom
-  (org-wild-notifier-alert-time '(120 60 30 10 5 1))
-  (org-wild-notifier-keyword-whitelist '("TODO"))
-  (org-wild-notifier--day-wide-events t)
-  (org-wild-notifier-keyword-blacklist '("CANCELED" "DONE" "ABORDED" "HAVE" "GIVEN" "CONSUMED" "LOST"))
-  (org-wild-notifier-notification-title "Org Wild Reminder!")
-  :init
-  (org-wild-notifier-mode))
+;; (use-package org-wild-notifier
+;;   :after (org alert)
+;;   :custom
+;;   (org-wild-notifier-alert-time '(120 60 30 10 5 1))
+;;   (org-wild-notifier-keyword-whitelist '("TODO"))
+;;   (org-wild-notifier--day-wide-events t)
+;;   (org-wild-notifier-keyword-blacklist '("CANCELED" "DONE" "ABORDED" "HAVE" "GIVEN" "CONSUMED" "LOST"))
+;;   (org-wild-notifier-notification-title "Org Wild Reminder!")
+;;   :init
+;;   (org-wild-notifier-mode))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
