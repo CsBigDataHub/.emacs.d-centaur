@@ -39,7 +39,7 @@
   ('eglot
    (use-package eglot
      :hook ((go-mode . eglot-ensure)
-            (python-mode . eglot-ensure)
+            ;; (python-mode . eglot-ensure)
             (java-mode . eglot-ensure)
             (sh-mode . eglot-ensure)
             ;; (yaml-mode . eglot-ensure)
@@ -62,6 +62,13 @@
      ;; make sure to delete `-P' in `pwd -P' of run file in `omnisharp' directory when its behind a symlink
      ;; (add-to-list 'eglot-server-programs '(csharp-mode . ("~/bin/omnisharp-osx/run" "-lsp")))
      (add-to-list 'eglot-server-programs '(terraform-mode . ("terraform-ls" "serve")))
+
+     (defun my-eglot-python-hook()
+       (setq eglot-stay-out-of '(flymake))
+       (flymake-ruff-load)
+       (eglot-ensure))
+     (add-hook 'python-mode-hook 'my-eglot-python-hook)
+
      ))
 
   ('lsp-mode

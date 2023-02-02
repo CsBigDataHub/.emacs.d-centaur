@@ -40,33 +40,6 @@
   :init
   ;; Disable readline based native completion
   (setq python-shell-completion-native-enable nil)
-  ;; :mode-hydra ;; moved to init-lsp-hydra.el
-  ;; (python-mode
-  ;;  (:title "Python Commands")
-  ;;  (
-  ;;   "Buffer"
-  ;;   (("d" lsp-describe-thing-at-point)
-  ;;    ("bf" lsp-format-buffer)
-  ;;    ("bb" blacken-buffer "black format")
-  ;;    ("ip" lsp-info-under-point)
-  ;;    ("m" lsp-ui-imenu)
-  ;;    ("q" nil "quit"))
-  ;;   "Errors"
-  ;;   (("e" hydra-flycheck/body)
-  ;;    ("lf" lsp-ui-flycheck-list))
-  ;;   "Refactor"
-  ;;   (("rs" lsp-rename))
-  ;;   "Find"
-  ;;   (("fd" lsp-ui-peek-find-definitions)
-  ;;    ("fi" lsp-ui-peek-find-implementation)
-  ;;    ("fr" lsp-ui-peek-find-references)
-  ;;    ("fs" lsp-ui-peek-find-workspace-symbol))
-  ;;   "Go-to/Jump"
-  ;;   (("gi" lsp-goto-implementation)
-  ;;    ("gt" lsp-goto-type-definition)
-  ;;    ("jn" lsp-ui-peek-jump-forward)
-  ;;    ("jp" lsp-ui-peek-jump-backward))
-  ;;   ))
   :config
   ;; Default to Python 3. Prefer the versioned Python binaries since some
   ;; systems stupidly make the unversioned one point at Python 2.
@@ -92,6 +65,9 @@
   (setq projectile-switch-project-action 'venv-projectile-auto-workon)
   (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
   )
+
+
+(use-package flymake-ruff)
 
 ;; rely on lsp auto-format
 ;; (use-package blacken
@@ -155,13 +131,6 @@
   (setq pyvenv-post-deactivate-hooks
         (list (lambda ()
                 (setq python-shell-interpreter "python3")))))
-
-;; (use-package python-mode
-;;   :ensure nil
-;;   :hook
-;;   (python-mode . pyvenv-mode)
-;;   (python-mode . yas-minor-mode))
-
 
 ;;; my-personal-config end
 
