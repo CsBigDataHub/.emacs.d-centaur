@@ -1,5 +1,6 @@
 ;;; init-linux.el --- Initialize key-bindings for linux.	-*- lexical-binding: t -*-
 
+(require 'init-const)
 
 (when sys/linuxp
   (bind-keys*

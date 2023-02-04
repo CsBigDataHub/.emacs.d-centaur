@@ -1,5 +1,7 @@
 ;;;init-general.el --- Initialize key-bindings for general.	-*- lexical-binding: t -*-
 
+(require 'init-const)
+
 (use-package general
   :config
   (general-evil-setup t)
@@ -9,12 +11,22 @@
   (defalias 'gsetq-default #'general-setq-default))
 
 ;; use `SPC' as leader key
-(general-create-definer my-spc-leader-def
-  :keymaps 'override
-  :prefix "SPC"
-  :non-normal-prefix "M-SPC"
-  :states '(insert emacs normal hybrid motion visual operator)
-  )
+
+(when sys/macp
+  (general-create-definer my-spc-leader-def
+    :keymaps 'override
+    :prefix "SPC"
+    :non-normal-prefix "M-SPC"
+    :states '(insert emacs normal hybrid motion visual operator)
+    ))
+
+(when sys/linuxp
+  (general-create-definer my-spc-leader-def
+    :keymaps 'override
+    :prefix "SPC"
+    :non-normal-prefix "H-SPC"
+    :states '(insert emacs normal hybrid motion visual operator)
+    ))
 
 (my-spc-leader-def
   "uu" 'vundo
