@@ -939,7 +939,7 @@ Open a terminal window and cd into a folder under the repository. Then:
 Now open /tmp2.txt/ in editor, locate your lost code, and find the /commit-id/ on top of it. Then apply the code:
 
 #+BEGIN_SRC sh
-    git stash appl
+    git stash apply <commit id>
 
     rm tmp.txt tmp2.txt
 #+END_SRC
