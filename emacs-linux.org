@@ -600,7 +600,8 @@ Sending email:
 
 Syncing across machines works when imap sync one machine to the remove IMAP server and the other machine do the same, if you want to make it a bit faster you can use syncthing to sync the =~/mail= directory to your other machines, for me I back it up to my phone and other 2 machines at the same time.
 
-** [[https://askubuntu.com/a/1386123][networking - Ubuntu 20.04.2 and Onboard Intel I219-V - Ask Ubuntu]]  :website:
+
+** [[https://askubuntu.com/a/1386123][wired network issue not connecting or keeps disconnecting - Ubuntu 22.04.2 and Onboard Intel I219-V ]] :website:
 
 [2023-02-27 Mon 22:35]
 
