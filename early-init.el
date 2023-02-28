@@ -58,7 +58,7 @@
 
 ;;For gcc Emacs
 (cond ((eq system-type 'darwin) (setenv "LIBRARY_PATH" "/usr/local/Cellar/libgccjit/12.2.0/lib/gcc/12:/usr/local/opt/libgccjit/lib/gcc/12")))
-(cond ((eq system-type 'gnu/linux) (setenv "LIBRARY_PATH" "/usr/bin/gcc-10")))
+(cond ((eq system-type 'gnu/linux) (setenv "LIBRARY_PATH" "/usr/bin/gcc-12")))
 (when (fboundp 'native-comp-available-p)
   (progn
     (require 'comp)

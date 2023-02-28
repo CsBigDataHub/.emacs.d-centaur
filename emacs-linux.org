@@ -599,3 +599,57 @@ Sending email:
 
 
 Syncing across machines works when imap sync one machine to the remove IMAP server and the other machine do the same, if you want to make it a bit faster you can use syncthing to sync the =~/mail= directory to your other machines, for me I back it up to my phone and other 2 machines at the same time.
+
+** [[https://askubuntu.com/a/1386123][networking - Ubuntu 20.04.2 and Onboard Intel I219-V - Ask Ubuntu]]  :website:
+
+[2023-02-27 Mon 22:35]
+
+
+#+BEGIN_QUOTE
+  After reading and tweaking, this is what worked for me. I hope this helps all the others getting to configure the new boards with Intel and Ubuntu.
+
+  1. Download this driver either directly to a directory on your Ubuntu server with the onboard NIC if you have a secondary network connection or to a USB drive: [[https://downloadmirror.intel.com/15817/eng/e1000e-3.8.4.tar.gz]]
+
+  2. Once you get the file in the system do the following:
+
+     #+BEGIN_EXAMPLE
+        sudo tar zxf e1000e-3.8.4.tar.gz
+       sudo cd e1000e-3.8.4/src/
+       sudo apt install make
+       sudo apt install gcc
+       sudo make install
+       sudo modprobe e1000e insmod e1000e
+       sudo reboot
+     #+END_EXAMPLE
+
+  3. Do an:
+
+     #+BEGIN_EXAMPLE
+        ip a
+     #+END_EXAMPLE
+
+     and grab the name of the adapter, in my case =enp0s31f6=.
+
+  4. Edit the network settings:
+
+     #+BEGIN_EXAMPLE
+        $ sudo nano /etc/netplan/00-installer-config.yaml
+
+       network:
+         ethernets:
+           enp0s31f6:
+             dhcp4: true
+         version: 2
+     #+END_EXAMPLE
+
+  5. Save with Ctrl+ X.
+
+  6. Enter at the shell prompt:
+
+     #+BEGIN_EXAMPLE
+        sudo netplan apply
+       sudo reboot
+     #+END_EXAMPLE
+
+  That should do it, hope it helps so you don't have to waster part of your Sunday figuring it out.
+#+END_QUOTE
