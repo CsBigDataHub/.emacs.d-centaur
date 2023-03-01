@@ -35,6 +35,9 @@
 (require 'init-custom)
 (require 'init-funcs)
 
+;; Compatibility
+(use-package compat :demand t)
+
 ;; Personal information
 (setq user-full-name centaur-full-name
       user-mail-address centaur-mail-address)
@@ -104,10 +107,6 @@
           "GOPATH" "GO111MODULE" "GOPROXY" "GRADLE_HOME" "GROOVY_HOME" "JAVA_HOME" "MAVEN_HOME" "SBT_HOME" "SCALA_HOME" "WORKON_HOME" "PYENV_ROOT")
     exec-path-from-shell-arguments '("-l"))
   (exec-path-from-shell-initialize)))
-
-;; Compatibility
-(use-package compat
-  :demand t)
 
 ;; Start server
 (use-package server
@@ -255,9 +254,7 @@
 
 ;; Sqlite
 (when (fboundp 'sqlite-open)
-  (use-package emacsql-sqlite-builtin
-    :defines emacsql-sqlite-c-compilers
-    :init (setq emacsql-sqlite-c-compilers nil)))
+  (use-package emacsql-sqlite-builtin))
 
 (provide 'init-base)
 
