@@ -38,6 +38,7 @@
 (pcase centaur-lsp
   ('eglot
    (use-package eglot
+     :pin gnu
      :hook ((go-mode . eglot-ensure)
             ;; (python-mode . eglot-ensure)
             (java-mode . eglot-ensure)

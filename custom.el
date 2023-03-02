@@ -118,6 +118,9 @@
 ;; Supress "ad-handle-definition: x got redefined" warnings
 (setq ad-redefinition-action 'accept)
 
+(setq package-pinned-packages
+      '((eglot . "gnu")
+        ))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

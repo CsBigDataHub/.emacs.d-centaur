@@ -125,6 +125,10 @@
   ;;       (when mod (insert mod) (forward-line))
   ;;       (when text (insert text))))
 
+  ;; resize-images-in-org-mode
+  ;; https://stackoverflow.com/a/38477233
+  (setq org-image-actual-width nil)
+
   ;; To speed up startup, don't put to init section
   (when sys/macp
     (setq org-agenda-files

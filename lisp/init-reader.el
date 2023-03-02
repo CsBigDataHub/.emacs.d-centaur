@@ -143,7 +143,7 @@
                              ("https://www.reddit.com/r/planetemacs.rss" reddit-planet-emacs)
                              ("https://www.reddit.com/r/emacs.rss" reddit)
                              ("https://itsfoss.com/feed" itsfoss)
-                             ("https://fossbytes.com/feed" fossbytes)
+                             ("https://www.omglinux.com/feed/" omglinux)
                              ("https://www.omgubuntu.co.uk/feed" omgubuntu)
                              ("https://trstringer.com/feed" trstringer)
                              ))
