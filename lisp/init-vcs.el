@@ -47,6 +47,11 @@
   :config
   (setq-default magit-diff-refine-hunk 'all)
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
+
+  ;; https://www.reddit.com/r/emacs/comments/uvantp/comment/i9kjxyi/?utm_source=share&utm_medium=web2x&context=3
+  (transient-append-suffix 'magit-merge "-s"
+    '("-a" "Allow unrelated histories" "--allow-unrelated-histories"))
+
   ;; https://takeonrules.com/2021/08/03/using-magit-built-in-functions-for-workflow/
   (setq magit-repolist-columns
         '(("Name"    25 magit-repolist-column-ident ())

@@ -403,7 +403,8 @@
   (eshell-toggle-size-fraction 2)
   (eshell-toggle-use-projectile-root t)
   (eshell-toggle-run-command nil)
-  (eshell-toggle-window-side 'right)
+  ;; (eshell-toggle-window-side 'right)
+  (eshell-toggle-window-side 'below)
   (eshell-toggle-init-function #'eshell-toggle-init-eshell)
   :bind
   ("<f12>" . eshell-toggle)
