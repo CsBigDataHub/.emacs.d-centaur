@@ -40,6 +40,9 @@
          ("C-c C-p" . wdired-change-to-wdired-mode)
          ( "." . my/hydra-dired/body))
   :config
+  ;; Guess a default target directory
+  (setq dired-dwim-target t)
+
   ;; Always delete and copy recursively
   (setq dired-recursive-deletes 'always
         dired-recursive-copies 'always)
