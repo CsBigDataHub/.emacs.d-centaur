@@ -50,19 +50,20 @@
   ;;https://emacs.stackexchange.com/questions/5603/how-to-quickly-copy-move-file-in-emacs-dired
   (setq dired-dwim-target t)
 
-  (when sys/macp
-    ;; Suppress the warning: `ls does not support --dired'.
-    (setq dired-use-ls-dired nil)
-
-    (when (executable-find "gls")
-      ;; Use GNU ls as `gls' from `coreutils' if available.
-      (setq insert-directory-program "gls")
-      ;; Using `insert-directory-program'
-      (setq ls-lisp-use-insert-directory-program t)))
-
   ;; Show directory first
-  (unless (and sys/macp (not (executable-find "gls")))
-    (setq dired-listing-switches "-alh --group-directories-first"))
+  (setq dired-listing-switches "-alh --group-directories-first")
+
+  (when sys/macp
+    (if (executable-find "gls")
+        (progn
+          ;; Use GNU ls as `gls' from `coreutils' if available.
+          (setq insert-directory-program "gls")
+          ;; Using `insert-directory-program'
+          (setq ls-lisp-use-insert-directory-program t))
+      (progn
+        ;; Suppress the warning: `ls does not support --dired'.
+        (setq dired-use-ls-dired nil)
+        (setq dired-listing-switches "-alh"))))
 
   ;; Quick sort dired buffers via hydra
   (use-package dired-quick-sort
