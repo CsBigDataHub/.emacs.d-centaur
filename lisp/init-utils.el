@@ -310,7 +310,7 @@ of the buffer text to be displayed in the popup"
 
 ;; Misc
 (use-package esup)                      ; Emacs startup profiler
-(use-package focus)                     ; Focus on the current region
+(use-package disk-usage)
 (use-package memory-usage)
 
 (use-package list-environment
