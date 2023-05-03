@@ -161,7 +161,7 @@ Otherwise the startup will be very slow. "
 ;; Programming
 (require 'init-vcs)
 (require 'init-flycheck)
-(require 'init-projectile)
+(require 'init-project)
 (require 'init-lsp)
 (require 'init-lsp-hydra)
 ;; (require 'init-ctags)
