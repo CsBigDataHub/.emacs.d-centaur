@@ -3025,7 +3025,7 @@ current buffer's, reload dir-locals."
    )
   )
 
-(pretty-hydra-define my-org-hydra (:title (pretty-hydra-title "Org-Mode" 'fileicon "org" :face 'all-the-icons-green :height 1.1 :v-adjust 0.0)
+(pretty-hydra-define my-org-hydra (:title (pretty-hydra-title "Org-Mode" 'sucicon "nf-custom-orgmode" :face 'nerd-icons-green :height 1.1 :v-adjust 0.0)
                                    :foreign-keys run :color amaranth :quit-key "q")
   ("basic navigation"
    (("i" org-cycle)

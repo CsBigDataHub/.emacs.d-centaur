@@ -254,6 +254,9 @@
 (when (fboundp 'sqlite-open)
   (use-package emacsql-sqlite-builtin))
 
+(unless emacs/>=29p
+  (use-package sqlite3))
+
 (provide 'init-base)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -164,9 +164,9 @@
            (args     `(:height ,(or height 1) :v-adjust ,v-adjust))
            (_         (when face
                         (lax-plist-put args :face face)))
-           (icon     (apply #'all-the-icons-icon-for-mode mode args))
+           (icon     (apply #'nerd-icons-icon-for-mode mode args))
            (icon     (if (symbolp icon)
-                         (apply #'all-the-icons-octicon "file-text" args)
+                         (apply #'nerd-icons-octicon "file-text" args)
                        icon)))
       (s-concat icon (if nospace "" " ") str)))
 

@@ -141,6 +141,11 @@
    '((add-to-list 'browse-at-remote-remote-type-domains
                   '("github.com" . "github"))
      (magit-todos-exclude-globs "*.elc" "elpa/**" "straight/**" "*.md" "*.org")))
+ '(tramp-connection-properties
+   '(("/scp:" "direct-async-process" t)
+     ("/sftp:" "direct-async-process" t)
+     ("/ssh:" "direct-async-process" t)
+     ("/sshfs:" "direct-async-process" t)))
  '(vterm-max-scrollback 10000)
  '(windmove-default-keybindings '([ignore] hyper))
  '(word-wrap-by-category t))
